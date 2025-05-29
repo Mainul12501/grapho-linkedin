@@ -16,6 +16,8 @@ use App\Http\Controllers\Backend\Employer\SkillsController;
 use App\Http\Controllers\Backend\Employer\IndustryController;
 use App\Http\Controllers\Backend\Employer\JobTypeController;
 use App\Http\Controllers\Backend\Employer\JobLocationTypeController;
+use App\Http\Controllers\Backend\Employer\EmployerCompanyCategoryController;
+use App\Http\Controllers\Backend\SiteControllers\AdvertisementController;
 
 
 Route::middleware([
@@ -42,6 +44,8 @@ Route::middleware([
         'industries' => IndustryController::class,
         'job-types' => JobTypeController::class,
         'job-location-types' => JobLocationTypeController::class,
+        'employer-company-categories' => EmployerCompanyCategoryController::class,
+        'advertisements' => AdvertisementController::class,
     ]);
 
 });
