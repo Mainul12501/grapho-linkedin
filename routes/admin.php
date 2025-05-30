@@ -18,6 +18,7 @@ use App\Http\Controllers\Backend\Employer\JobTypeController;
 use App\Http\Controllers\Backend\Employer\JobLocationTypeController;
 use App\Http\Controllers\Backend\Employer\EmployerCompanyCategoryController;
 use App\Http\Controllers\Backend\SiteControllers\AdvertisementController;
+use App\Http\Controllers\Backend\SiteControllers\SiteSettingsController;
 
 
 Route::middleware([
@@ -46,6 +47,7 @@ Route::middleware([
         'job-location-types' => JobLocationTypeController::class,
         'employer-company-categories' => EmployerCompanyCategoryController::class,
         'advertisements' => AdvertisementController::class,
+        'site-settings' => SiteSettingsController::class,
     ]);
 
 });

@@ -1,0 +1,639 @@
+/* ===============================
+   Reset & Base Styles
+   =============================== */
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+    color: #141C25;
+}
+a{
+  color: #141C25;
+}
+p{
+  color: #141C25;
+}
+body {
+  font-family: 'Geist', sans-serif;
+}
+
+/* ===============================
+   Sidebar Styles
+   =============================== */
+.employeHome .sidebar {
+  width: 250px;
+  height: 100vh;
+}
+
+.employeHome .sidebar .nav-link.active {
+  font-weight: 600;
+  color: #141C25;
+  background-color: #EDEFF2;
+  border-radius: 5px;
+}
+
+/* ===============================
+   Main Content Styles
+   =============================== */
+.employeHome .mainContent {
+  min-height: 100vh;
+  background-color: #F2F2F4;
+  width: 100%;
+}
+
+/* ===============================
+   Search Input Customization
+   =============================== */
+.employeHome .searchInput {
+  max-width: 400px;
+}
+
+/* ===============================
+   Dropdown Styles
+   =============================== */
+.employeHome .dropdown-menu {
+  transition: opacity 0.3s ease;
+}
+
+/* ===============================
+   Mobile Bottom Navigation Styles
+   =============================== */
+.employeMobileNav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  font-size: 12px;
+  z-index: 1050;
+  background-color: #141C25;
+  padding: 10px 0;
+}
+
+.employeMobileNav .nav-link {
+  color: #555;
+  padding: 6px 0;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.employeMobileNav .nav-link.active {
+  color: #fff;
+}
+
+.employeMobileNav i {
+  font-size: 18px;
+}
+
+/* ===============================
+   Navigation Link Styles
+   =============================== */
+.nav-link {
+  font-weight: 400;
+  font-size: 16px;
+  color: #141C25;
+  align-items: center;
+}
+
+/* ===============================
+   Dropdown Toggle Customization
+   =============================== */
+.dropdown-toggle::after {
+  display: none;
+}
+
+/* ===============================
+   Sidebar Boxes Styles
+   =============================== */
+.sidebar-box {
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+}
+
+.sidebar-box.hire {
+  background-color: #FFCB11;
+  color: #000;
+}
+
+.sidebar-box.delegate {
+  background-color: #ffffff;
+  color: #000;
+}
+
+/* ===============================
+   Sidebar Icons Styles
+   =============================== */
+.sidebar-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+  color: white;
+}
+
+.sidebar-icon.hire {
+  background-color: #ffffff;
+}
+
+.sidebar-icon.delegate {
+  background-color: #EDEFF2; /* bootstrap secondary */
+}
+
+/* ===============================
+   Job Card Styles
+   =============================== */
+.job-card {
+  background-color: #fff;
+  border-radius: 0.75rem;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  padding: 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+/* Job Title - responsive truncation */
+.job-title {
+  max-width: 100%;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Job badges */
+.employeHome .job-badges > span {
+  margin-right: 0.5rem;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+/* Job Dates & Applicants section */
+.job-info {
+  min-width: 170px;
+  font-size: 0.8rem;
+  color: #6c757d;
+  flex-shrink: 0;
+}
+
+/* Dropdown 3 dots spacing */
+.job-actions {
+  margin-left: 1rem;
+  flex-shrink: 0;
+}
+
+/* ===============================
+   Talent Cards Styles
+   =============================== */
+.talent-card {
+  background-color: #fff;
+  border-radius: 0.75rem;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  padding: 1rem;
+  gap: 1rem;
+  align-items: center;
+}
+
+/* Talent Images */
+.talent-img {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* Talent details */
+.talent-details h6 {
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.talent-details p {
+  font-size: 0.8rem;
+  color: #6c757d;
+  line-height: 1.2;
+  margin-bottom: 0.5rem;
+}
+
+.talent-meta {
+  font-size: 0.75rem;
+  color: #6c757d;
+}
+
+.talent-meta span {
+  margin-right: 0.75rem;
+  display: inline-flex;
+  align-items: center;
+}
+
+.talent-meta i {
+  margin-right: 0.25rem;
+  font-size: 0.9rem;
+  color: #6c757d;
+}
+
+.employeHome .showall{
+  color: #141C25;
+}
+
+.employeHome .job-info a{
+  color: #141C25;
+}
+
+
+
+/* ===============================
+   myJOb Design
+   =============================== */
+.job-main{
+  display: flex;
+  justify-content: space-between;
+}
+
+.form-check-input:checked {
+    background-color: #FFCB11;
+    border-color: #FFCB11;
+}
+
+.snackbar {
+  visibility: hidden;
+  min-width: 300px;
+  max-width: 400px;
+  background-color: #000;
+  color: #fff;
+  text-align: left;
+  border-radius: 12px;
+  padding: 12px 20px;
+  position: fixed;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  box-shadow: 0 0 10px rgba(0,0,0,0.4);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 600;
+  font-size: 1rem;
+  z-index: 9999;
+  opacity: 0;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.snackbar.show {
+  visibility: visible;
+  opacity: 1;
+}
+
+.snackbar-icon {
+  width: 24px;
+  height: 24px;
+}
+
+.snackbar-text b {
+  color: #ffd400; /* the yellow color like in your image */
+}
+
+.snackbar-close {
+  margin-left: auto;
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-size: 20px;
+  cursor: pointer;
+  font-weight: 700;
+  padding: 0;
+}
+
+/* ===============================
+   myJob  Design
+   =============================== */
+
+
+
+   .myApplication{
+    padding-bottom: 100px;
+   }
+   .table-responsive {
+    overflow-x: unset;
+    -webkit-overflow-scrolling: touch;
+}
+  
+
+   
+
+
+
+
+
+
+
+/* ===============================
+  talent
+   =============================== */
+#applicationTabs .active{
+  background-color: #141C25;
+  color: #fff;
+}
+
+  /* Hide card layouts by default */
+  .pending-cards,
+  .shortlisted-cards,
+  .rejected-cards {
+    display: none;
+  }
+.talentMobileTop{
+  display: flex;
+  justify-content: space-between;
+}
+.talentWrapper .nav-tabs{
+  display: flex;
+  flex-wrap: nowrap;
+}
+  /* ===============================
+  talent
+   =============================== */
+
+
+
+
+  /* ===============================
+  employe profile
+   =============================== */
+.employerProfile .badge{
+  background-color: #167EE61F;
+  color: #167EE6;
+  max-width: fit-content !important;
+}
+
+.employerProfile .skils{
+font-weight: 400;
+font-size: 15px;
+line-height: 160%;
+letter-spacing: -1%;
+color: #141C25;
+}
+.headHUntFielter{
+  display: flex;
+  justify-content: space-between;
+}
+.fullTime{
+  background-color: #167EE61F;
+  color:#167EE6;
+}
+.partTime{
+  background-color: #6D4CF01F;
+  color: #6D4CF0;
+}
+.Internship{
+  background-color: #EE711E1F;
+  color:#EE711E ;
+}
+.Freelancing{
+  background-color: #9638771F;
+  color: #963877;
+}
+.headhuntPP-card .badge{
+  background-color: #EDEFF2!important;
+  color: #484F5B!important;
+  font-size: 13px!important;
+  font-weight: 400;
+}
+  /* ===============================
+   employe profile
+   =============================== */
+   .employeeSettings{
+  background-color: #EDEFF2;
+}
+  .settings .nav-link.active {
+    background-color: #fff!important;
+    font-weight: 600;
+    color: #141C25;
+  }
+
+.topSettingButton span{
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 100%;
+  letter-spacing: -2%;
+  color: #141C25;
+  text-decoration: none;
+}
+
+
+ 
+.settings-content {
+  background: #fff;
+  border-radius: 8px;
+}
+.settingsRightContent .card{
+  border: none;
+}
+.settingsRightContent h2{
+  color: #141C25;
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 100%;
+  letter-spacing: -2%;
+}
+
+
+
+
+
+  /* ===============================
+   settings
+   =============================== */
+
+  /* ===============================
+   settings
+   =============================== */
+
+
+
+
+
+   /* usermanagement */
+     /* Mobile user cards styling */
+ 
+
+  .settingsRightContent .form-control{
+    width: unset;
+  }
+  .add-user-btn{
+    background-color: #141C25;
+    border: none;
+    outline: none;
+    box-shadow: none;
+    color: #fff;
+  }
+
+  .usermanagement-content td{
+    color: #141C25;
+    font-weight: 400;
+    font-size: 14px;
+  }
+
+  .add-user-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+   /* usermanagement */
+
+
+
+
+
+   /* company profile */
+   .companyProfilecontainer__logo {
+  width: 70px;
+  height: 70px;
+  object-fit: contain;
+}
+
+.companyProfilecontainer__contact-item img {
+  width: 22px;
+  height: 22px;
+}
+
+.companyProfilecontainer__right-part p {
+  font-size: 0.9rem;
+  color: #222;
+  line-height: 1.5;
+}
+
+.companyProfilecontainer__footer-info > div {
+  min-width: 120px;
+  font-size: 0.9rem;
+  color: #222;
+}
+
+.companyProfilecontainer__topbar {
+  padding-bottom: 10px;
+}
+
+.companyProfilecontainer__topbar h6 {
+  font-size: 1rem;
+  color: #222;
+}
+
+.companyProfilecontainer__topbar .btn {
+  font-size: 0.85rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 4px;
+}
+.editButtonCompanyProfile{
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 160%;
+  letter-spacing: -1%;
+  text-decoration: underline;
+  text-decoration-style: solid;
+  text-decoration-thickness: 0%;
+  text-decoration-skip-ink: auto;
+  color: #141C25;
+}
+
+   /* company profile */
+
+
+
+
+
+/* ===============================
+   Responsive Design
+   =============================== */
+@media (max-width: 768px) {
+  .employeHome .sidebar {
+    position: absolute;
+    z-index: 1000;
+    left: -250px;
+    transition: left 0.3s ease;
+  }
+
+  .employeHome .sidebar.open {
+    left: 0;
+  }
+
+  .jobCardsWrapper{
+    padding-bottom: 100px;
+  }
+   /* Hide tables on mobile */
+    .tab-pane table {
+      display: none !important;
+    }
+
+    /* Show card layouts on mobile */
+    .pending-cards,
+    .shortlisted-cards,
+    .rejected-cards {
+      display: block !important;
+    }
+
+    /* Style card buttons */
+    .pending-cards .btn,
+    .shortlisted-cards .btn,
+    .rejected-cards .btn {
+      font-size: 14px;
+    }
+    .talentMobileTop{
+      flex-direction: column;
+    }
+
+    .talentsearchbar{
+      order: 2;
+    }
+    .talenttabbutton{
+      order: 2;
+    }
+
+    .profileLeftCard{
+      top: 0!important;
+    }
+.profile-left-card-info{
+  text-align: center;
+}
+
+.topbar {
+  display: none!important;
+}
+
+.headHUntFielter{
+  flex-direction: column;
+}
+.headHuntWrapper{
+  padding-bottom: 100px;
+}
+
+
+    .search-add {
+      width: 100%;
+    }
+    .settingsRightContent .form-control{
+      width: 100%;
+    }
+
+
+}
+
+@media (max-width: 576px) {
+  .employeHome .job-info {
+    min-width: auto;
+    text-align: left;
+  }
+
+  .job-main{
+  flex-direction: column;
+}
+  
+}

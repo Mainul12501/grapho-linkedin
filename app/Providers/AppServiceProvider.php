@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Models\Backend\SiteSetting;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -13,6 +15,9 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         Schema::defaultStringLength(191);
+        View::composer(['backend.master','frontend.home-landing','frontend.employer.master'], function ($view) {
+            $view->with('siteSetting', SiteSetting::first());
+        });
     }
 
     /**

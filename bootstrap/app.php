@@ -24,6 +24,10 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->web([
             \App\Http\Middleware\AuthGates::class,
         ]);
+        $middleware->alias([
+            'isEmployee'    => \App\Http\Middleware\IsEmployeeMiddleware::class,
+            'isEmployer'    => \App\Http\Middleware\IsEmployerMiddleware::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
