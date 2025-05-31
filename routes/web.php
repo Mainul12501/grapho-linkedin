@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Frontend\FrontendViewController;
 use App\Http\Controllers\Frontend\EmployerViewController;
+use App\Http\Controllers\Frontend\EmployeeViewController;
 
 
 
@@ -27,5 +28,15 @@ Route::middleware([
        Route::get('settings', [EmployerViewController::class, 'settings'])->name('settings');
        Route::get('company-profile', [EmployerViewController::class, 'companyProfile'])->name('company-profile');
     });
-
+    Route::prefix('employee')->as('employee.')->middleware('isEmployee')->group(function (){
+        Route::get('home', [EmployeeViewController::class, 'employeeHome'])->name('home');
+        Route::get('show-jobs', [EmployeeViewController::class, 'showJobs'])->name('show-jobs');
+        Route::get('my-saved-jobs', [EmployeeViewController::class, 'mySavedJobs'])->name('my-saved-jobs');
+        Route::get('my-applications', [EmployeeViewController::class, 'myApplications'])->name('my-applications');
+        Route::get('my-profile-viewers', [EmployeeViewController::class, 'myProfileViewers'])->name('my-profile-viewers');
+        Route::get('my-subscriptions', [EmployeeViewController::class, 'mySubscriptions'])->name('my-subscriptions');
+        Route::get('settings', [EmployeeViewController::class, 'settings'])->name('settings');
+        Route::get('my-profile', [EmployeeViewController::class, 'myProfile'])->name('my-profile');
+        Route::get('my-notifications', [EmployeeViewController::class, 'myNotifications'])->name('my-notifications');
+    });
 });

@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\helper;
+namespace App\Helpers;
 
 
 use App\Models\Backend\BatchExamManagement\BatchExam;

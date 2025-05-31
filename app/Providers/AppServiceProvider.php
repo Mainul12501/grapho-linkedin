@@ -15,7 +15,7 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         Schema::defaultStringLength(191);
-        View::composer(['backend.master','frontend.home-landing','frontend.employer.master'], function ($view) {
+        View::composer(['backend.master','frontend.home-landing','frontend.employer.master', 'frontend.employee.master'], function ($view) {
             $view->with('siteSetting', SiteSetting::first());
         });
     }
