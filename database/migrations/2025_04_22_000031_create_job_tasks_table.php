@@ -46,6 +46,8 @@ return new class extends Migration {
                 ->nullable();
             $table->string('banner_image')->nullable();
             $table->string('cgpa')->nullable();
+            $table->text('university_preference')->nullable();
+            $table->text('field_of_study_preference')->nullable();
 
             $table->timestamps();
         });

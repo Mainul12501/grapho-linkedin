@@ -121,91 +121,115 @@
 
             <!-- Search Results Header -->
             <div class="search-header my-3 jobSearchResultText">
-                <h5>Showing 34 "Sales Jobs" results</h5>
+                <h5>Showing {{ count($jobTasks) ?? 0 }} "Sales Jobs" results</h5>
             </div>
 
             <div class="job-listings-container d-flex">
                 <!-- Left Side: List of Jobs -->
                 <div class="job-options">
-                    <div class="job-card" onclick="showJobDetails(1)" id="job-1">
-                        <div class="row">
-                            <div class="col-2">
-                                <img src="{{ asset('/') }}frontend/employee/images/contentImages/jobCardLogo.png" alt="" />
-                            </div>
-                            <div class="col-10">
-                                <h5>Senior Officer, Corporate Banking</h5>
-                                <p>United Commercial Bank PLC</p>
-                                <div class="job-type d-flex justify-content-between">
-                                    <span class="badge">Full Time</span>
-                                    <span class="badge">On-Site</span>
-                                    <span class="badge">Day Shift</span>
+                    @foreach($jobTasks as $key => $jobTask)
+                        <div class="job-card job-card-ajax" {{--onclick="showJobDetails(1)"--}} data-job-id="{{ $jobTask->id }}" id="job-{{ $key }}">
+                            <div class="row">
+                                <div class="col-2">
+                                    <img src="{{ isset($jobTask?->employerCompany?->logo) ? asset($jobTask?->employerCompany?->logo) : asset('/frontend/employee/images/contentImages/jobCardLogo.png') }}" alt="" />
                                 </div>
-                                <p class="job-location mt-2">Gulshan, Dhaka</p>
+                                <div class="col-10">
+                                    <h5>{{ $jobTask->job_task ?? 'Senior Officer, Corporate Banking' }}</h5>
+                                    <p>{{ $jobTask?->employerCompany?->name ?? 'United Commercial Bank PLC' }}</p>
+                                    <div class="job-type d-flex justify-content-between">
+                                        <span class="badge">{{ $jobTask?->jobType?->name ?? 'Full Time' }}</span>
+                                        <span class="badge">{{ $jobTask?->jobLocationType?->name ?? 'On-Site' }}</span>
+{{--                                        <span class="badge">Day Shift</span>--}}
+                                    </div>
+                                    <p class="job-location mt-2">{{ $jobTask?->employerCompany?->address ?? 'Dhaka' }}</p>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    @endforeach
+
 
                     <!-- Repeat for more job cards with different IDs -->
-                    <div class="job-card" onclick="showJobDetails(2)" id="job-2">
-                        <div class="row">
-                            <div class="col-2">
-                                <img src="{{ asset('/') }}frontend/employee/images/contentImages/jobCardLogo.png" alt="" />
-                            </div>
-                            <div class="col-10">
-                                <h5>Senior Officer, Corporate Banking</h5>
-                                <p>United Commercial Bank PLC</p>
-                                <div class="job-type d-flex justify-content-between">
-                                    <span class="badge">Full Time</span>
-                                    <span class="badge">On-Site</span>
-                                    <span class="badge">Day Shift</span>
-                                </div>
-                                <p class="job-location mt-2">Gulshan, Dhaka</p>
-                            </div>
-                        </div>
-                    </div>
+{{--                    <div class="job-card" onclick="showJobDetails(2)" id="job-2">--}}
+{{--                        <div class="row">--}}
+{{--                            <div class="col-2">--}}
+{{--                                <img src="{{ asset('/') }}frontend/employee/images/contentImages/jobCardLogo.png" alt="" />--}}
+{{--                            </div>--}}
+{{--                            <div class="col-10">--}}
+{{--                                <h5>Senior Officer, Corporate Banking</h5>--}}
+{{--                                <p>United Commercial Bank PLC</p>--}}
+{{--                                <div class="job-type d-flex justify-content-between">--}}
+{{--                                    <span class="badge">Full Time</span>--}}
+{{--                                    <span class="badge">On-Site</span>--}}
+{{--                                    <span class="badge">Day Shift</span>--}}
+{{--                                </div>--}}
+{{--                                <p class="job-location mt-2">Gulshan, Dhaka</p>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
                     <!-- Add more job cards as needed -->
 
-                    <div class="job-card" onclick="showJobDetails(3)" id="job-3">
-                        <div class="row">
-                            <div class="col-2">
-                                <img src="{{ asset('/') }}frontend/employee/images/contentImages/jobCardLogo.png" alt="" />
-                            </div>
-                            <div class="col-10">
-                                <h5>Senior Officer, Corporate Banking</h5>
-                                <p>United Commercial Bank PLC</p>
-                                <div class="job-type d-flex justify-content-between">
-                                    <span class="badge">Full Time</span>
-                                    <span class="badge">On-Site</span>
-                                    <span class="badge">Day Shift</span>
-                                </div>
-                                <p class="job-location mt-2">Gulshan, Dhaka</p>
-                            </div>
-                        </div>
-                    </div>
+{{--                    <div class="job-card" onclick="showJobDetails(3)" id="job-3">--}}
+{{--                        <div class="row">--}}
+{{--                            <div class="col-2">--}}
+{{--                                <img src="{{ asset('/') }}frontend/employee/images/contentImages/jobCardLogo.png" alt="" />--}}
+{{--                            </div>--}}
+{{--                            <div class="col-10">--}}
+{{--                                <h5>Senior Officer, Corporate Banking</h5>--}}
+{{--                                <p>United Commercial Bank PLC</p>--}}
+{{--                                <div class="job-type d-flex justify-content-between">--}}
+{{--                                    <span class="badge">Full Time</span>--}}
+{{--                                    <span class="badge">On-Site</span>--}}
+{{--                                    <span class="badge">Day Shift</span>--}}
+{{--                                </div>--}}
+{{--                                <p class="job-location mt-2">Gulshan, Dhaka</p>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
 
-                    <div class="job-card" onclick="showJobDetails(4)" id="job-4">
-                        <div class="row">
-                            <div class="col-2">
-                                <img src="{{ asset('/') }}frontend/employee/images/contentImages/jobCardLogo.png" alt="" />
-                            </div>
-                            <div class="col-10">
-                                <h5>Senior Officer, Corporate Banking</h5>
-                                <p>United Commercial Bank PLC</p>
-                                <div class="job-type d-flex justify-content-between">
-                                    <span class="badge">Full Time</span>
-                                    <span class="badge">On-Site</span>
-                                    <span class="badge">Day Shift</span>
-                                </div>
-                                <p class="job-location mt-2">Gulshan, Dhaka</p>
-                            </div>
-                        </div>
-                    </div>
+{{--                    <div class="job-card" onclick="showJobDetails(4)" id="job-4">--}}
+{{--                        <div class="row">--}}
+{{--                            <div class="col-2">--}}
+{{--                                <img src="{{ asset('/') }}frontend/employee/images/contentImages/jobCardLogo.png" alt="" />--}}
+{{--                            </div>--}}
+{{--                            <div class="col-10">--}}
+{{--                                <h5>Senior Officer, Corporate Banking</h5>--}}
+{{--                                <p>United Commercial Bank PLC</p>--}}
+{{--                                <div class="job-type d-flex justify-content-between">--}}
+{{--                                    <span class="badge">Full Time</span>--}}
+{{--                                    <span class="badge">On-Site</span>--}}
+{{--                                    <span class="badge">Day Shift</span>--}}
+{{--                                </div>--}}
+{{--                                <p class="job-location mt-2">Gulshan, Dhaka</p>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
                 </div>
 
                 <!-- Right Side: Job Details (Initially Visible) -->
                 <div class="job-details" id="job-details">
                     <p>click any job to see details</p>
                 </div>
+
+{{--                <div class="job-details" id="job-details" style="display: block;">--}}
+{{--                    <div class="company-info">--}}
+{{--                        <img src="{{ asset('/') }}frontend/employee/images/contentImages/jobCardLogo.png" alt="United Commercial Bank PLC Logo" class="company-logo">--}}
+{{--                        <div class="company-details">--}}
+{{--                            <h3>United Commercial Bank PLC</h3>--}}
+{{--                            <p>Gulshan, Dhaka</p>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
+{{--                    <h4 class="job-title">Senior Officer, Corporate Banking</h4>--}}
+{{--                    <div class="job-type"><span class="badge">Full Time</span> <span class="badge">On-Site</span> <span class="badge">Day Shift</span></div>--}}
+{{--                    <button class="apply-btn">Easy Apply</button>--}}
+{{--                    <button class="save-btn"><img src="{{ asset('/') }}frontend/employee/images/contentImages/saveIcon.png" alt="Save Icon" class="save-icon"> Save</button>--}}
+{{--                    <h5>About United Commercial Bank PLC</h5>--}}
+{{--                    <p>Be part of the world’s most successful, purpose-led business...</p>--}}
+{{--                    <h5>Job Requirements</h5>--}}
+{{--                    <ul class="job-requirements"><li>Analyse internal data...</li><li>Work with media teams...</li><li>Create communication strategies...</li></ul>--}}
+{{--                </div>--}}
+
+
+
             </div>
         </div>
 
@@ -251,6 +275,35 @@
 {{--Note: customize script js during printing dynamic data in this page--}}
 
 @push('script')
+    <script>
+        $(document).on('click', '.job-card', function () {
+            var jobId = $(this).attr('data-job-id');
+            callAjaxRequest('get-job-details/'+jobId, 'GET').then(function (job) {
+                console.log(job.employer_company);
+                const jobDetailsDiv = document.querySelector('.job-details');
+                jobDetailsDiv.style.display = 'block';
+                jobDetailsDiv.innerHTML = `
+      <div class="company-info">
+        <img src="${job.employer_company.logo}" alt="${job.employer_company.name} Logo" class="company-logo">
+        <div class="company-details">
+          <h3>${job.employer_company.name}</h3>
+          <p>${job.employer_company.address}</p>
+        </div>
+      </div>
+      <h4 class="job-title">${job.job_title}</h4>
+      <div class="job-type">${job.jobType.map(type => `<span class="badge">${type}</span>`).join(' ')}</div>
+      <button class="apply-btn">${job.applyButtonText}</button>
+      <button class="save-btn"><img src="${job.saveButtonIcon}" alt="Save Icon" class="save-icon"> Save</button>
+      <h5>About ${job.companyName}</h5>
+      <p>${job.description}</p>
+      <h5>Job Requirements</h5>
+      <ul class="job-requirements">${job.requirements.map(req => `<li>${req}</li>`).join('')}</ul>
+    `;
+                jobDetailsDiv.querySelector('.apply-btn').addEventListener('click', showEasyApplyModal);
+            });
+
+        })
+    </script>
     <script>
         // Initialize dropdown and handle dynamic resizing
         function initDropdown(dropdownElement) {

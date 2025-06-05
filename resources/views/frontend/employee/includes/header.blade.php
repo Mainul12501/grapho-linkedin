@@ -54,6 +54,10 @@
                             <a href="{{ route('employee.my-profile-viewers') }}"><img src="{{ asset('/') }}frontend/employee/images/header images/Profilerviewers.png" alt="" class="dropdown-icon" /> Profiler viewers</a>
                             <a href="{{ route('employee.my-subscriptions') }}"><img src="{{ asset('/') }}frontend/employee/images/header images/Subscription.png" alt="" class="dropdown-icon" /> Subscription</a>
                             <a href="{{ route('employee.settings') }}"><img src="{{ asset('/') }}frontend/employee/images/header images/Settings.png" alt="" class="dropdown-icon" /> Settings</a>
+                            <a href="" onclick="event.preventDefault(); document.getElementById('logoutForm').submit();"><img src="{{ asset('/') }}frontend/employee/images/header images/Myprofile.png" alt="" class="dropdown-icon" /> Logout</a>
+                            <form action="{{ route('logout') }}" method="post" id="logoutForm">
+                                @csrf
+                            </form>
                         </div>
                     </div>
 

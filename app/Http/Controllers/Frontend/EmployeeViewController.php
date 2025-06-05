@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Helpers\ViewHelper;
 use App\Http\Controllers\Controller;
+use App\Models\Backend\EmployeeWorkExperience;
+use App\Models\Backend\JobTask;
 use Illuminate\Http\Request;
 
 class EmployeeViewController extends Controller
@@ -12,9 +14,12 @@ class EmployeeViewController extends Controller
     {
         return ViewHelper::checkViewForApi([], 'frontend.employee.home.home');
     }
-    public function showJobs()
+    public function showJobs(Request $request)
     {
-        return ViewHelper::checkViewForApi([], 'frontend.employee.jobs.show-jobs');
+        $data = [
+            'jobTasks'  => JobTask::where(['status' => 1])->get(),
+        ];
+        return ViewHelper::checkViewForApi($data, 'frontend.employee.jobs.show-jobs');
     }
     public function mySavedJobs()
     {
@@ -38,7 +43,10 @@ class EmployeeViewController extends Controller
     }
     public function myProfile()
     {
-        return ViewHelper::checkViewForApi([], 'frontend.employee.base-functionalities.my-profile');
+        $data = [
+            'workExperiences'    => EmployeeWorkExperience::where(['user_id' => auth()->id(), 'status' => 1])->get(),
+        ];
+        return ViewHelper::checkViewForApi($data, 'frontend.employee.base-functionalities.my-profile');
     }
     public function myNotifications()
     {

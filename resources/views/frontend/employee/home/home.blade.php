@@ -8,12 +8,13 @@
             <div class="card">
                 <div class="card-body">
                     <img src="{{ asset('/') }}frontend/employee/images/header images/Thumbnail.png" alt="Profile" class="rounded-circle mb-2" width="80" />
-                    <h5>Mohammed Pranto</h5>
-                    <span class="badge d-flex align-items-center"><img src="{{ asset('/') }}frontend/employee/images/contentImages/Ellipse 1.png" alt=""
-                                                                       class="me-2" />
-            Open to work</span>
+                    <h5>{{ auth()->user()->name ?? 'Pranto' }}</h5>
+                    <span class="badge d-flex align-items-center">
+                        <img src="{{ asset('/') }}frontend/employee/images/contentImages/Ellipse 1.png" alt="" class="me-2" />
+                        {{ auth()->user()->is_open_for_hire == 1 ? 'Open to work' : 'Offline' }}
+                    </span>
                     <p class="mt-2">
-                        Mobile App Developer, Flutter Developer Instructor & Mentor
+                        {{ auth()->user()->profile_title ?? 'User Bio' }}
                     </p>
                     <div class="optionsInprofile">
                         <div class="options">
@@ -24,7 +25,7 @@
                                     </div>
                                     <div>
                                         <div class="title">My saved jobs</div>
-                                        <div class="subtitle text-dark">23 saved</div>
+                                        <div class="subtitle text-dark">{{ auth()->user()->employeeSavedJobs()->count() ?? 0 }} saved</div>
                                     </div>
                                     <div class="arrow">
                                         <img src="{{ asset('/') }}frontend/employee/images/contentImages/arrow-right 1.png" alt="" />
@@ -39,7 +40,7 @@
                                     </div>
                                     <div>
                                         <div class="title">My applications</div>
-                                        <div class="subtitle text-dark">15 applications</div>
+                                        <div class="subtitle text-dark">{{ auth()->user()->employeeAppliedJobs()->count() ?? 0 }} applications</div>
                                     </div>
                                     <div class="arrow">
                                         <img src="{{ asset('/') }}frontend/employee/images/contentImages/arrow-right 1.png" alt="" />
@@ -54,7 +55,7 @@
                                     </div>
                                     <div>
                                         <div class="title">Profiler viewers</div>
-                                        <div class="subtitle text-dark">37 viewers</div>
+                                        <div class="subtitle text-dark">{{ auth()->user()->viewedEmployers()->count() ?? 0 }} viewers</div>
                                     </div>
                                     <div class="arrow">
                                         <img src="{{ asset('/') }}frontend/employee/images/contentImages/arrow-right 1.png" alt="" />

@@ -5,12 +5,35 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Frontend\FrontendViewController;
 use App\Http\Controllers\Frontend\EmployerViewController;
 use App\Http\Controllers\Frontend\EmployeeViewController;
+use App\Http\Controllers\Auth\SocialLoginController;
+use App\Http\Controllers\Frontend\Crud\EmployeeWorkExperienceController;
+use App\Http\Controllers\Auth\CustomLoginController;
+use App\Http\Controllers\Frontend\Crud\JobTaskController;
 
 
 
 Route::get('/', [FrontendViewController::class, 'homePage'])->name('/');
 
 Route::get('employee-profile', [EmployerViewController::class, 'employeeProfile'])->name('employee-profile');
+
+Route::get('auth/{provider}/redirect', [SocialLoginController::class , 'redirect'])->name('auth.socialite.redirect');
+Route::get('auth/{provider}/callback', [SocialLoginController::class , 'callback'])->name('auth.socialite.callback');
+Route::post('send-otp', [CustomLoginController::class, 'sendOtp'])->name('send-otp');
+
+
+Route::get('get-job-details/{id}', [JobTaskController::class, 'getJobDetails'])->name('get-job-details');
+
+Route::prefix('auth')->name('auth.')->group(function (){
+    Route::get('select-auth-method', [CustomLoginController::class, 'selectAuthMethod'])->name('select-auth-method');
+    Route::get('set-registration-role', [CustomLoginController::class, 'setRegistrationRole'])->name('set-registration-role');
+    Route::get('set-login-role', [CustomLoginController::class, 'setLoginRole'])->name('set-login-role');
+    Route::get('user-login-page', [CustomLoginController::class, 'userLoginPage'])->name('user-login-page');
+    Route::get('user-registration-page', [CustomLoginController::class, 'userRegistrationPage'])->name('user-registration-page');
+
+    Route::post('custom-registration', [CustomLoginController::class, 'customRegistration'])->name('custom-registration');
+    Route::post('custom-login', [CustomLoginController::class, 'customLogin'])->name('custom-login');
+
+});
 
 Route::middleware([
     'auth:sanctum',
@@ -27,6 +50,10 @@ Route::middleware([
        Route::get('employer-user-management', [EmployerViewController::class, 'employerUserManagement'])->name('employer-user-management');
        Route::get('settings', [EmployerViewController::class, 'settings'])->name('settings');
        Route::get('company-profile', [EmployerViewController::class, 'companyProfile'])->name('company-profile');
+
+       Route::resources([
+           'job-tasks'  => JobTaskController::class
+       ]);
     });
     Route::prefix('employee')->as('employee.')->middleware('isEmployee')->group(function (){
         Route::get('home', [EmployeeViewController::class, 'employeeHome'])->name('home');
@@ -38,5 +65,10 @@ Route::middleware([
         Route::get('settings', [EmployeeViewController::class, 'settings'])->name('settings');
         Route::get('my-profile', [EmployeeViewController::class, 'myProfile'])->name('my-profile');
         Route::get('my-notifications', [EmployeeViewController::class, 'myNotifications'])->name('my-notifications');
+
+//        crud routes
+        Route::resources([
+            'employee-work-experiences' => EmployeeWorkExperienceController::class,
+        ]);
     });
 });

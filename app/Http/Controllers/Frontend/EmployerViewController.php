@@ -2,18 +2,36 @@
 
 namespace App\Http\Controllers\Frontend;
 
+use App\Helpers\ViewHelper;
 use App\Http\Controllers\Controller;
+use App\Models\Backend\FieldOfStudy;
+use App\Models\Backend\JobLocationType;
+use App\Models\Backend\JobTask;
+use App\Models\Backend\JobType;
+use App\Models\Backend\SkillsCategory;
+use App\Models\Backend\UniversityName;
 use Illuminate\Http\Request;
 
 class EmployerViewController extends Controller
 {
     public function employerHome()
     {
-        return view('frontend.employer.home.home');
+        $data = [
+            'jobTasks'  => JobTask::where(['user_id' => ViewHelper::loggedUser()->id, 'status' => 1])->get(),
+        ];
+        return view('frontend.employer.home.home', $data);
     }
     public function myJobs()
     {
-        return view('frontend.employer.jobs.my-jobs');
+        $data = [
+            'jobTypes'  => JobType::where(['status' => 1])->get(['id', 'name']),
+            'jobLocations'  => JobLocationType::where(['status' => 1])->get(['id', 'name']),
+            'universityNames'   => UniversityName::where(['status' => 1])->get(['id', 'name']),
+            'fieldOfStudies'   => FieldOfStudy::where(['status' => 1])->get(['id', 'field_name']),
+            'skillCategories'   => SkillsCategory::where(['status' => 1])->get(['id', 'category_name']),
+            'publishedJobs' => JobTask::where(['user_id' => ViewHelper::loggedUser()->id, 'status' => 1])->get(),
+        ];
+        return view('frontend.employer.jobs.my-jobs', $data);
     }
     public function myJobWiseApplicants()
     {

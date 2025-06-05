@@ -34,6 +34,22 @@ class RoleSeeder extends Seeder
                 'is_default'    => 1,
                 'status'        =>  1
             ],
+            [
+                'id'            => 3,
+                'title'         => 'Employee',
+                'note'          => '',
+                'slug'          => 'employee',
+                'is_default'    => 1,
+                'status'        =>  1
+            ],
+            [
+                'id'            => 4,
+                'title'         => 'Employer',
+                'note'          => '',
+                'slug'          => 'employer',
+                'is_default'    => 1,
+                'status'        =>  1
+            ],
 
         ]);
     }

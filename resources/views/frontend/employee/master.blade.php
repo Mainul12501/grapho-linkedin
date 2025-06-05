@@ -6,12 +6,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="author" content="Your Name" />
     <title>{{ isset($siteSetting) ? $siteSetting->site_title : 'Grapho' }} - @yield('title')</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- Favicon -->
     <link rel="icon" href="{{ isset($siteSetting) ? $siteSetting->site_title : asset('/frontend/employee/images/Logo icon.png') }}" type="image/x-icon" />
     <!-- Google Font: Geist -->
     <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;700&display=swap" rel="stylesheet" />
     <!-- Bootstrap 5 CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" />
+{{--    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" />--}}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous">
+
+    <!-- Toastr Css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" integrity="sha512-vKMx8UnXk60zUwyUnUPM3HbQo8QfmNx7+ltw8Pm5zLusl1XIfwcxo8DbWCqMGKaWeNxWA8yrx5v3SaVpMvR3CA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- Sweet Alert -->
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.min.css" rel="stylesheet" />
+
+
     <link rel="stylesheet" href="{{ asset('/') }}frontend/employee/headerStyle.css" />
     <link rel="stylesheet" href="{{ asset('/') }}frontend/employee/mainstyle.css" />
     @yield('style')
@@ -48,14 +57,78 @@
 {{--    </div>--}}
 {{--</div>--}}
 
+@yield('modal')
+
+<!-- Jquery CDN -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
 <!-- Bootstrap JS -->
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+{{--<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>--}}
+{{--<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>--}}
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"></script>
+<script>
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+</script>
 <script>
     {{--var base_url = "{{ url('/') }}"+'/';--}}
     var base_url = "{{ url('/') }}"+'/frontend/employee/';
 </script>
 <script src="{{ asset('/') }}frontend/employee/script.js"></script>
+
+<!-- Toastr JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+{{--    sweet alert js--}}
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+{!! Toastr::message() !!}
+
+<script>
+    var base_url = "{!! url('/') !!}/";
+
+    let response;
+    async function sendAjaxRequest(url, method, data = {})
+    {
+        response = await callAjaxRequest(url, method, data);
+
+        return response;
+    }
+
+    function callAjaxRequest(url, method, data = {}) {
+        return $.ajax({ // Return the Promise from $.ajax
+            url: base_url + url,
+            method: method,
+            data: data
+        })
+            .done(function (data) { // .done() for success
+
+                // No need to assign to 'response' here, it's passed to .then()
+            })
+            .fail(function (error) { // .fail() for error
+                toastr.error(error);
+                // The error will also be propagated to the .catch() when called
+            });
+    }
+    // function sendAjaxRequest(url, method, data = {}) {
+    //     var response;
+    //     $.ajax({
+    //         url: base_url+url,
+    //         method: method,
+    //         data: data,
+    //         success: function (data) {
+    //             // console.log(data);
+    //             // console.log('console form master');
+    //             response = data;
+    //         },
+    //         error: function (error) {
+    //             toastr.error(error);
+    //         }
+    //     })
+    //     return response;
+    // }
+</script>
 
 @yield('script')
 @stack('script')

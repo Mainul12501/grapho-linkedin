@@ -1624,6 +1624,10 @@ body {
 
 
 
+/* new css */
+.afterContinue {
+  display: none;
+}
 
 
 /* Responsive adjustments */

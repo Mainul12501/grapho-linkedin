@@ -326,9 +326,9 @@ body {
     overflow-x: unset;
     -webkit-overflow-scrolling: touch;
 }
-  
 
-   
+
+
 
 
 
@@ -429,7 +429,7 @@ color: #141C25;
 }
 
 
- 
+
 .settings-content {
   background: #fff;
   border-radius: 8px;
@@ -463,7 +463,7 @@ color: #141C25;
 
    /* usermanagement */
      /* Mobile user cards styling */
- 
+
 
   .settingsRightContent .form-control{
     width: unset;
@@ -635,5 +635,5 @@ color: #141C25;
   .job-main{
   flex-direction: column;
 }
-  
+
 }

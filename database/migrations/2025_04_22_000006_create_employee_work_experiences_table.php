@@ -17,6 +17,7 @@ return new class extends Migration {
             $table->unsignedBigInteger('user_id');
             $table->text('title');
             $table->string('company_name');
+            $table->string('company_logo')->nullable();
             $table->string('position')->nullable();
             $table->text('job_responsibilities')->nullable();
             $table->string('start_date')->nullable();

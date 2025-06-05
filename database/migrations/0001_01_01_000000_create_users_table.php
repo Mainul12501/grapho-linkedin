@@ -41,6 +41,7 @@ return new class extends Migration
                 ])->default('employee')->nullable();
             $table->string('provider')->nullable();
             $table->text('provider_id')->nullable();
+            $table->text('provider_token')->nullable();
             $table->text('google_id')->nullable();
             $table->string('organization_name')->nullable();
             $table->string('subscription_started_from')->nullable();

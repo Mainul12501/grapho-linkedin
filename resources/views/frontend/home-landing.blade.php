@@ -29,10 +29,21 @@
 
         <!-- Notification Icon & Sign In in offcanvas -->
         <div class="d-flex align-items-center gap-3 mb-3">
-            <a href="#" class="btn btn-dark d-flex align-items-center gap-2 px-3 py-2 rounded-3">
-                <img src="{{ asset('/') }}frontend/home-landing/images/signin.png" alt="Login" width="20px">
-                <span>Sign In</span>
-            </a>
+            @if(auth()->check())
+                <a href="#" onclick="event.preventDefault(); document.getElementsByClassName('logoutForm')[0].submit()" class="btn btn-dark d-flex align-items-center gap-2 px-3 py-2 rounded-3">
+{{--                    <img src="{{ asset('/') }}frontend/home-landing/images/signin.png" alt="Login" width="20px">--}}
+                    <span>Logout</span>
+                </a>
+                <form action="{{ route('logout') }}" method="post" class="logoutForm">
+                    @csrf
+                </form>
+            @else
+                <a href="{{ route('auth.select-auth-method') }}" class="btn btn-dark d-flex align-items-center gap-2 px-3 py-2 rounded-3">
+                    <img src="{{ asset('/') }}frontend/home-landing/images/signin.png" alt="Login" width="20px">
+                    <span>Sign In</span>
+                </a>
+            @endif
+
         </div>
 
         <!-- Bottom Image in offcanvas -->
@@ -79,10 +90,20 @@
             <button class="btn btn-link p-0">
                 <img src="{{ asset('/') }}frontend/home-landing/images/notificationbell.png" alt="Notifications" width="30px">
             </button>
-            <a href="#" class="btn btn-dark d-flex align-items-center gap-2 px-3 py-2 rounded-3">
-                <img src="{{ asset('/') }}frontend/home-landing/images/signin.png" alt="Login" width="20px">
-                <span>Sign In</span>
-            </a>
+            @if(auth()->check())
+                <a href="#" onclick="event.preventDefault(); document.getElementsByClassName('logoutForm')[0].submit()" class="btn btn-dark d-flex align-items-center gap-2 px-3 py-2 rounded-3">
+                    {{--                    <img src="{{ asset('/') }}frontend/home-landing/images/signin.png" alt="Login" width="20px">--}}
+                    <span>Logout</span>
+                </a>
+                <form action="{{ route('logout') }}" method="post" class="logoutForm">
+                    @csrf
+                </form>
+            @else
+                <a href="{{ route('auth.select-auth-method') }}" class="btn btn-dark d-flex align-items-center gap-2 px-3 py-2 rounded-3">
+                    <img src="{{ asset('/') }}frontend/home-landing/images/signin.png" alt="Login" width="20px">
+                    <span>Sign In</span>
+                </a>
+            @endif
         </div>
     </div>
 </nav>

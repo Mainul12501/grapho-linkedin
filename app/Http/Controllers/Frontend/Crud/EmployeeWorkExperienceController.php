@@ -1,0 +1,90 @@
+<?php
+
+namespace App\Http\Controllers\Frontend\Crud;
+
+use App\Http\Controllers\Controller;
+use App\Models\Backend\EmployeeWorkExperience;
+use Brian2694\Toastr\Facades\Toastr;
+use Illuminate\Http\Request;
+
+class EmployeeWorkExperienceController extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     */
+    public function index()
+    {
+        //
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        //
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
+    {
+        $request->validate([
+            'title' => 'required',
+            'company_name' => 'required',
+        ]);
+        $workExperience = new EmployeeWorkExperience();
+        $workExperience->user_id    = auth()->id();
+        $workExperience->title  = $request->title;
+        $workExperience->company_name   = $request->company_name;
+        $workExperience->company_logo   = imageUpload($request->file('company_logo'), 'work-exp', 'work-exp', 60, 60, $workExperience->company_logo ?? null);
+        $workExperience->position   = $request->position;
+        $workExperience->job_responsibilities   = $request->job_responsibilities;
+        $workExperience->start_date = $request->start_date;
+        if ($request->is_working_currently != 'on')
+        $workExperience->end_date   = $request->end_date;
+        $workExperience->office_address = $request->office_address;
+        $workExperience->duration   = $request->duration;
+        $workExperience->is_working_currently   = $request->is_working_currently == 'on' ? 1 : 0;
+        $workExperience->job_type   = $request->job_type;
+        $workExperience->status   = 1;
+        $workExperience->save();
+        Toastr::success('Experience Created Successfully.');
+        return back();
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(string $id)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(string $id)
+    {
+        //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, string $id)
+    {
+        //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(/*string $id*/EmployeeWorkExperience $employeeWorkExperience)
+    {
+        $employeeWorkExperience->delete();
+        Toastr::success('Experience deleted Successfully.');
+        return back();
+    }
+}

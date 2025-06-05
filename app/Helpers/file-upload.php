@@ -253,3 +253,23 @@ function file_exists_obs($url)
     }
 
 }
+
+function differTime($start, $end, $info = 'year')
+{
+    $startTime = Carbon::parse($start);
+    $endTime = Carbon::parse($end);
+    $diff = $startTime->diff($endTime);
+
+// Get years and months
+    $years = $diff->y;
+    $months = $diff->m;
+    $duration = '';
+    if ($years > 0) {
+        $duration .= $years . ' year' . ($years > 1 ? 's' : '');
+    }
+    if ($months > 0) {
+        if ($duration !== '') $duration .= ' ';
+        $duration .= $months . ' month' . ($months > 1 ? 's' : '');
+    }
+    return $duration ?: 'Less than a month';
+}

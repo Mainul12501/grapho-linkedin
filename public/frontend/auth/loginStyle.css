@@ -1,0 +1,526 @@
+/* General Body Style */
+.bodyAuthentication {
+  font-family: 'Geist', sans-serif !important;
+
+  background: linear-gradient(to bottom right, #fff, #FFCB11); /* Gradient Background */
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+/* ................... */
+/*       login css        */
+/* ................... */
+/* Card Styling */
+.loginCard {
+  width: 502px;
+  padding: 30px;
+  text-align: center;
+  border-radius: 20px;
+}
+
+/* Company Logo Styling */
+.loginCard img {
+  width: 166px;
+  margin: auto;
+  margin-bottom: 15px;
+}
+
+/* Text Styling */
+.loginCard p {
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 160%;
+  letter-spacing: -1%;
+  text-align: center;
+  color: #141C25;
+  margin-bottom: 30px;
+}
+
+/* Button Styling */
+.login {
+  width: 422px;
+  height: 59px;
+  margin: auto;
+  background-color: #FFCB11; /* Yellow Background */
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 150%;
+  letter-spacing: -1%;
+  text-align: center;
+  color: #141C25;
+  margin-bottom: 10px;
+  transition: all 0.3s ease;
+}
+.login:hover{
+  background-color: #FFD600; /* Darker shade for hover */
+  box-shadow: 0px 1px 2px rgba(20, 28, 37, 0.15), 0px 2px 4px rgba(20, 28, 37, 0.1); /* Shadow effect */
+  transform: translateY(-2px); /* Lift effect on hover */
+  color: #141C25; /* Retain text color */
+}
+
+.createAccount {
+  width: 422px;
+  height: 59px;
+  margin: auto;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 150%;
+  letter-spacing: -1%;
+  text-align: center;
+  color: #141C25;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.384);
+  border: 1.5px solid #DADADA;
+}
+.createAccount:hover{
+  border: 1px solid #141C25;
+  color: #ffffff;
+  background-color: #141C25;
+}
+/* ................... */
+/*       login css        */
+/* ................... */
+
+
+
+
+/* ................... */
+/*       signUp css        */
+/* ................... */
+.signupCard{
+  width: 520px ;
+  text-align: left;
+  padding: 30px;
+  border-radius: 20px;
+}
+.signupCard .signupLogo{
+  width: 24px;
+  margin-bottom: 30px;
+}
+.signupCard h4{
+  font-weight: 600;
+  font-size: 28px;
+  line-height: 100%;
+  letter-spacing: -2%;
+  color: #141C25;
+}
+
+.signupCard p{
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 160%;
+  letter-spacing: -1%;
+  color: #484F5B;
+}
+.userCard span{
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 160%;
+  letter-spacing: -1%;
+  color: #1D1F17;
+}
+
+.userSelectOption{
+  display: flex;
+  text-decoration: none;
+  background-color: #F2F2F4;
+  border-radius: 16px;
+  padding: 15px;
+  align-items: center;
+}
+
+.userSelectOption:hover{
+  background-color: #c9c9ca;
+}
+
+.userSelectOptionIcon{
+  width: 58px;
+  height: 58px;
+}
+
+.arrowIcon{
+  height: 24px;
+  width: 25px!;
+}
+
+.userSelectOption h5{
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 160%;
+  letter-spacing: -1%;
+  color: #141C25;
+}
+.userSelectOption p{
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 160%;
+  letter-spacing: -1%;
+  color: #484F5B;
+}
+/* ................... */
+/*       signUp css        */
+/* ................... */
+
+
+
+
+
+/* ................... */
+/*       signUp as employer   */
+/* ................... */
+
+.signUpCard{
+  width: 520px ;
+  padding: 30px;
+  border-radius: 20px;
+}
+.signupArrow span{
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 160%;
+  letter-spacing: -1%;
+  color: #141C25;
+}
+.signupBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1.5px solid #DADADA;
+  padding: 16px;
+  border-radius: 16px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 150%;
+  letter-spacing: -1%;
+  text-align: center;
+  color: #200124;
+  /* Add drop shadow */
+  box-shadow: 0px 1px 2px rgba(20, 28, 37, 0.15); /* X: 0, Y: 1, Blur: 2px, Color: #141C25 */
+  transition: all 0.3s ease; /* Smooth transition for hover effect */
+}
+
+/* Hover effect with more shadow */
+.signupBtn:hover {
+  box-shadow: 0px 1px 2px rgba(20, 28, 37, 0.15), 0px 2px 4px rgba(20, 28, 37, 0.1); /* Hover shadow */
+  transform: translateY(-2px); /* Lift effect on hover */
+}
+
+.signUpOr span{
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 160%;
+  letter-spacing: -1%;
+  color: #97A1AF;
+}
+.signUpCard label{
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 160%;
+  letter-spacing: -1%;
+  color: #141C25;
+}
+#signUpMail, #organizationName, #supPassword, #fullname{
+  border: 1.5px solid #DADADA;
+  padding: 16px;
+  border-radius: 16px;
+  margin-bottom: 15px;
+  color: #141C25;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 160%;
+  letter-spacing: -1%;
+}
+#signUpMail:focus, #organizationName:focus, #supPassword:focus, #fullname:focus{
+  border: 1.5px solid #DADADA;
+  outline: 1.5px solid #DADADA;
+}
+
+
+.signUpCard button{
+  border: none;
+  padding: 16px;
+  border-radius: 16px;
+  background-color: #FFCB11;
+  width: 100%;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 150%;
+  letter-spacing: -1%;
+  text-align: center;
+  color: #141C25;
+  transition: all 0.3s ease;
+}
+.signUpCard button:hover {
+  background-color: #FFD600; /* Darker shade for hover */
+  box-shadow: 0px 1px 2px rgba(20, 28, 37, 0.15), 0px 2px 4px rgba(20, 28, 37, 0.1); /* Shadow effect */
+  transform: translateY(-2px); /* Lift effect on hover */
+  color: #141C25; /* Retain text color */
+}
+/* ................... */
+/*       signUp as employer   */
+/* ................... */
+
+
+
+/* ................... */
+/*       signUp as employer par2 . just copied existing html  */
+/* ................... */
+.signUpCard .input-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.signUpCard .input-wrapper input {
+  width: 100%;
+  padding-right: 40px; /* Make space for the icon */
+}
+
+.signUpCard .toggle-icon {
+  position: absolute;
+  right: 10px;
+  top: 40%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 18px;
+  color: #aaa;
+}
+.signupCheckbox span{
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 160%;
+  letter-spacing: -1%;
+  text-decoration: underline;
+  text-decoration-style: solid;
+  text-decoration-thickness: 0%;
+  text-decoration-skip-ink: auto;
+  color: #141C25;
+  text-decoration: none;
+}
+
+.signupCheckbox span a{
+  font-weight: 500;
+  color: #141C25;
+}
+
+.signupCheckbox input[type="checkbox"] {
+  background-color: #FFCB11;
+  accent-color: #FFCB11; 
+  border: 1px solid #FFCB11;
+  cursor: pointer;
+}
+/* ................... */
+/*       signUp as employer par2 . just copied existing html  */
+/* ................... */
+
+
+
+/* ................... */
+/*       signUp as job seekr part2 . just copied existing html  */
+/* ................... */
+.phone-wrapper {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.country-select {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  border: 1.5px solid #DADADA;
+  padding: 16px;
+  border-radius: 16px;
+  margin-bottom: 15px;
+  color: #141C25;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 160%;
+  letter-spacing: -1%;
+}
+
+.country-select img {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  margin-right: 8px;
+}
+
+.phone-input {
+  flex: 1;
+  outline: none;
+  border: 1.5px solid #DADADA;
+  padding: 16px;
+  border-radius: 16px;
+  margin-bottom: 15px;
+  color: #141C25;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 160%;
+  letter-spacing: -1%;
+}
+
+.phone-input::placeholder {
+  color: #aaa;
+}
+
+/* ................... */
+/*  login main page  */
+/* ................... */
+.loginMain h1{
+  font-weight: 600;
+  font-size: 28px;
+  line-height: 100%;
+  letter-spacing: -2%;
+  color: #141C25;
+}
+
+.loginMain p{
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 160%;
+  letter-spacing: -1%;
+  color: #484F5B;
+}
+/* ................... */
+/*  login main page  */
+/* ................... */
+
+
+
+
+
+/* ................... */
+/*  login with mobile */
+/* ................... */
+.loginbyMobile h3{
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 160%;
+  letter-spacing: -1%;
+  text-align: center;
+  color: #141C25;
+}
+.loginbyMobile p{
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 160%;
+  letter-spacing: -1%;
+  text-align: center;
+  color: #484F5B;
+}
+.loginbyMobile a{
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 160%;
+  letter-spacing: -1%;
+  text-decoration: underline;
+  text-decoration-style: solid;
+  text-decoration-thickness: 0%;
+  text-decoration-skip-ink: auto;
+  color: #141C25;
+}
+.otp-container {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0 20px;
+  margin-bottom: 20px;
+}
+
+.otp-input {
+  width: 60px;
+  height: 52px;
+  text-align: center;
+  font-size: 40px;
+  font-weight: 600;
+  border: none;
+  border-bottom: 1px solid #97A1AF;
+  background-color: #fff;
+  outline: none;
+}
+
+.otp-input:focus {
+  border-bottom-color: #141C25;
+}
+/* ................... */
+/*  login with mobile */
+/* ................... */
+
+
+
+
+
+
+
+
+
+
+/* Mobile Design Fix */
+@media (max-width: 576px) {
+    /* Align items to the bottom on small screens */
+    .bodyAuthentication {
+      align-items: end;
+  }
+  .loginCard {
+      width: 350px;
+      margin-bottom: 30px;
+  }
+  
+  .login, .createAccount {
+      width: 300px;
+  }
+  .loginCard p {
+  font-weight: 600;
+  font-size: 28px;
+  line-height: 100%;
+  letter-spacing: -2%;
+  text-align: center;
+}
+
+  .userSelectOptionIcon{
+    width: 40px;
+    height: 40px;
+  }
+  .userSelectOption p {
+    font-size: 14px;
+}
+.userSelectOption h5 {
+  font-size: 18px;
+}
+
+.signupCard {
+  padding: 20px;
+}
+.signupCard{
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+.signUpCard {
+  width: 520px;
+  padding: 15px;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.otp-input {
+  width: 42px;
+  height: 45px;
+  font-size: 30px;
+}
+
+  
+}
+
+/* Tablet Design Fix */
+@media (min-width: 577px) and (max-width: 768px) {
+  /* You can add tablet-specific styles here if needed */
+}
+
+/* Desktop Design */
+@media (min-width: 769px) {
+  /* Desktop-specific styles */
+}

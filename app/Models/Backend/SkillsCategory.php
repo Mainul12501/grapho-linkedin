@@ -43,4 +43,8 @@ class SkillsCategory extends Model
     {
         return $this->hasMany(Skill::class);
     }
+    public function publishedSkills()
+    {
+        return $this->hasMany(Skill::class)->where('status', 1);
+    }
 }
