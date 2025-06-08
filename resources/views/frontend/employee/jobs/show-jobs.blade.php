@@ -134,9 +134,9 @@
                                     <img src="{{ isset($jobTask?->employerCompany?->logo) ? asset($jobTask?->employerCompany?->logo) : asset('/frontend/employee/images/contentImages/jobCardLogo.png') }}" alt="" />
                                 </div>
                                 <div class="col-10">
-                                    <h5>{{ $jobTask->job_task ?? 'Senior Officer, Corporate Banking' }}</h5>
+                                    <h5>{{ $jobTask->job_title ?? 'Senior Officer, Corporate Banking' }}</h5>
                                     <p>{{ $jobTask?->employerCompany?->name ?? 'United Commercial Bank PLC' }}</p>
-                                    <div class="job-type d-flex justify-content-between">
+                                    <div class="job-type d-flex ">
                                         <span class="badge">{{ $jobTask?->jobType?->name ?? 'Full Time' }}</span>
                                         <span class="badge">{{ $jobTask?->jobLocationType?->name ?? 'On-Site' }}</span>
 {{--                                        <span class="badge">Day Shift</span>--}}
@@ -206,27 +206,39 @@
                 </div>
 
                 <!-- Right Side: Job Details (Initially Visible) -->
-                <div class="job-details" id="job-details">
-                    <p>click any job to see details</p>
+{{--                <div class="job-details" id="job-details">--}}
+{{--                    <p>click any job to see details</p>--}}
+{{--                </div>--}}
+
+                <div class="job-details" id="" style="display: block;">
+                    <div class="company-info">
+                        <img src="{{ isset($singleJobTask?->employerCompany?->logo) ? asset($singleJobTask?->employerCompany?->logo) : asset('/frontend/employee/images/contentImages/jobCardLogo.png') }}" alt="{{ $singleJobTask?->employerCompany?->name ?? 'job-0' }}" class="company-logo">
+                        <div class="company-details">
+                            <h3>{{ $singleJobTask?->employerCompany?->name ?? 'company name' }}</h3>
+                            <p>{{ $singleJobTask?->employerCompany?->address ?? 'company address' }}</p>
+                        </div>
+                    </div>
+                    <h4 class="job-title">{{ $singleJobTask->job_title }}</h4>
+                    <div class="job-type"><span class="badge">{{ $singleJobTask?->jobType?->name ?? 'job type' }}</span> <span class="badge">{{ $singleJobTask?->jobLocationType?->name ?? 'job location' }}</span> </div>
+                    @if(!$isApplied)
+                        <a href="javascript:void(0)" onclick="document.getElementById('applyJob{{ $singleJobTask->id }}').submit()" class="apply-btn" style="text-decoration: none;">Easy Apply</a>
+                    @endif
+                    @if(!$isSaved)
+                        <button class="save-btn" data-job-id="${job.id}"><img src="{{ asset('/') }}frontend/employee/images/contentImages/saveIcon.png" alt="Save Icon" class="save-icon"> Save</button>
+                    @endif
+                    <form action="{{ route('employee.apply-job', $singleJobTask->id) }}" method="post" id="applyJob{{ $singleJobTask->id }}">
+                        @csrf
+                    </form>
+
+
+                    <h5 style="">About {{ $singleJobTask?->employerCompany?->name ?? 'company Name' }}</h5>
+                    <p>{{ $singleJobTask?->employerCompany?->company_overview ?? 'company overview' }}</p>
+                    <h5>Job Requirements</h5>
+                    <div class="job-requirements">
+                        {!! $singleJobTask->description ?? 'job description here' !!}
+                    </div>
                 </div>
 
-{{--                <div class="job-details" id="job-details" style="display: block;">--}}
-{{--                    <div class="company-info">--}}
-{{--                        <img src="{{ asset('/') }}frontend/employee/images/contentImages/jobCardLogo.png" alt="United Commercial Bank PLC Logo" class="company-logo">--}}
-{{--                        <div class="company-details">--}}
-{{--                            <h3>United Commercial Bank PLC</h3>--}}
-{{--                            <p>Gulshan, Dhaka</p>--}}
-{{--                        </div>--}}
-{{--                    </div>--}}
-{{--                    <h4 class="job-title">Senior Officer, Corporate Banking</h4>--}}
-{{--                    <div class="job-type"><span class="badge">Full Time</span> <span class="badge">On-Site</span> <span class="badge">Day Shift</span></div>--}}
-{{--                    <button class="apply-btn">Easy Apply</button>--}}
-{{--                    <button class="save-btn"><img src="{{ asset('/') }}frontend/employee/images/contentImages/saveIcon.png" alt="Save Icon" class="save-icon"> Save</button>--}}
-{{--                    <h5>About United Commercial Bank PLC</h5>--}}
-{{--                    <p>Be part of the world’s most successful, purpose-led business...</p>--}}
-{{--                    <h5>Job Requirements</h5>--}}
-{{--                    <ul class="job-requirements"><li>Analyse internal data...</li><li>Work with media teams...</li><li>Create communication strategies...</li></ul>--}}
-{{--                </div>--}}
 
 
 
@@ -269,6 +281,7 @@
         <!-- easy apply modal -->
     </section>
 
+
 @endsection
 
 
@@ -276,32 +289,54 @@
 
 @push('script')
     <script>
-        $(document).on('click', '.job-card', function () {
+        $(document).on('click', '.job-card-ajax', function () {
             var jobId = $(this).attr('data-job-id');
-            callAjaxRequest('get-job-details/'+jobId, 'GET').then(function (job) {
-                console.log(job.employer_company);
+            sendAjaxRequest('get-job-details/'+jobId, 'GET').then(function (response) {
+                var job = response.job;
                 const jobDetailsDiv = document.querySelector('.job-details');
                 jobDetailsDiv.style.display = 'block';
                 jobDetailsDiv.innerHTML = `
-      <div class="company-info">
-        <img src="${job.employer_company.logo}" alt="${job.employer_company.name} Logo" class="company-logo">
-        <div class="company-details">
-          <h3>${job.employer_company.name}</h3>
-          <p>${job.employer_company.address}</p>
-        </div>
-      </div>
-      <h4 class="job-title">${job.job_title}</h4>
-      <div class="job-type">${job.jobType.map(type => `<span class="badge">${type}</span>`).join(' ')}</div>
-      <button class="apply-btn">${job.applyButtonText}</button>
-      <button class="save-btn"><img src="${job.saveButtonIcon}" alt="Save Icon" class="save-icon"> Save</button>
-      <h5>About ${job.companyName}</h5>
-      <p>${job.description}</p>
-      <h5>Job Requirements</h5>
-      <ul class="job-requirements">${job.requirements.map(req => `<li>${req}</li>`).join('')}</ul>
-    `;
-                jobDetailsDiv.querySelector('.apply-btn').addEventListener('click', showEasyApplyModal);
+                                    <div class="company-info">
+                        <img src="${base_url+job.employer_company.logo}" alt="${job.employer_company.name}-logo" class="company-logo">
+                        <div class="company-details">
+                            <h3>${job.employer_company.name}</h3>
+                            <p>${job.employer_company.address ?? 'Dhaka'}</p>
+                        </div>
+                    </div>
+                    <h4 class="job-title">${job.job_title ?? 'Job Title'}</h4>
+                    <div class="job-type"><span class="badge">${job.job_type.name}</span> <span class="badge">${job.job_location_type.name}</span> </div>
+                    ${!response.isApplied ? `<a href="javascript:void(0)" onclick="document.getElementById('applyJob${ job.id }').submit()" class="apply-btn" style="text-decoration: none;">Easy Apply</a>` : ''}
+                    ${!response.isSaved ? `<button class="save-btn" data-job-id="${job.id}"><img src="${base_url}frontend/employee/images/contentImages/saveIcon.png" alt="Save Icon" class="save-icon"> Save</button>` : ''}
+
+                    <form action="${base_url}employee/apply-job/${job.id}" method="post" id="applyJob${job.id}">
+                        <input type="hidden" name="_token" value="<?php echo csrf_token() ?>">
+
+                     </form>
+
+
+                    <h5>About ${job.employer_company.name}</h5>
+                    <p>${job.employer_company.company_overview}</p>
+                    <h5>Job Requirements</h5>
+                    <div class="job-requirements">${job.description}</ul>
+                `;
             });
 
+        })
+
+        $(document).on('click', '.save-btn', function () {
+            var jobId = $(this).attr('data-job-id');
+            sendAjaxRequest('employee/save-job/'+jobId, 'GET').then(function (response) {
+                console.log(response);
+                if (response.status == 'success')
+                {
+                    $(this).addClass('d-none');
+                    toastr.success(response.msg);
+                }
+                else if (response.status == 'error')
+                {
+                    toastr.error(response.msg);
+                }
+            })
         })
     </script>
     <script>

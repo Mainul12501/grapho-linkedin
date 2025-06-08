@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Frontend\Crud;
 
 use App\Helpers\ViewHelper;
 use App\Http\Controllers\Controller;
+use App\Models\Backend\EmployeeAppliedJob;
 use App\Models\Backend\JobTask;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Http\Request;
+use phpseclib3\System\SSH\Agent\Identity;
 
 class JobTaskController extends Controller
 {
@@ -100,12 +102,46 @@ class JobTaskController extends Controller
         return back();
     }
 
-    public function getJobDetails(Request $request, String $id)
+    public function getJobDetails(Request $request,String $id)
     {
         $jobTask = JobTask::with(['jobType', 'jobLocationType', 'employerCompany'])->find($id);
+        $isApplied = false;
+        $isSaved = false;
+        if (ViewHelper::loggedUser())
+        {
+            $user = ViewHelper::loggedUser();
+            if ($user->roles[0]->id == 3 )
+            {
+                $savedJobsIds = $user->employeeSavedJobs->pluck('id')->toArray();
+                $isSaved = in_array($id, $savedJobsIds);
+                if (EmployeeAppliedJob::where(['user_id' => $user->id, 'job_task_id' => $id])->first())
+                    $isApplied = true;
+            }
+        }
         if ($jobTask)
-            return response()->json(['status' => 'success', 'job' => $jobTask]);
+            return response()->json(['status' => 'success', 'job' => $jobTask, 'isSaved' => $isSaved, 'isApplied' => $isApplied]);
         else
             return response()->json(['status' => 'error', 'msg' => 'Job not found.']);
+    }
+
+    public static function getJobSaveApplyInfo($id)
+    {
+        $isSaved = false;
+        $isApplied = false;
+        if (ViewHelper::loggedUser())
+        {
+            $user = ViewHelper::loggedUser();
+            if ($user->roles[0]->id == 3 )
+            {
+                $savedJobsIds = $user->employeeSavedJobs->pluck('id')->toArray();
+                $isSaved = in_array($id, $savedJobsIds);
+                if (EmployeeAppliedJob::where(['user_id' => $user->id, 'job_task_id' => $id])->first())
+                    $isApplied = true;
+            }
+        }
+        return [
+            'isSaved'   => $isSaved,
+            'isApplied'   => $isApplied,
+        ];
     }
 }

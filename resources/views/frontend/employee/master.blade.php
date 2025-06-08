@@ -89,21 +89,22 @@
     var base_url = "{!! url('/') !!}/";
 
     let response;
-    async function sendAjaxRequest(url, method, data = {})
-    {
-        response = await callAjaxRequest(url, method, data);
+    // async function callAjaxRequest(url, method, data = {})
+    // {
+    //     response = await callAjaxRequest(url, method, data);
+    //
+    //     return response;
+    // }
 
-        return response;
-    }
-
-    function callAjaxRequest(url, method, data = {}) {
+    function sendAjaxRequest(url, method, data = {}) {
         return $.ajax({ // Return the Promise from $.ajax
             url: base_url + url,
             method: method,
             data: data
         })
             .done(function (data) { // .done() for success
-
+                // console.log(data.job.employer_company);
+                // console.log('print from dno');
                 // No need to assign to 'response' here, it's passed to .then()
             })
             .fail(function (error) { // .fail() for error

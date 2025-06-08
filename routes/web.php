@@ -65,6 +65,9 @@ Route::middleware([
         Route::get('settings', [EmployeeViewController::class, 'settings'])->name('settings');
         Route::get('my-profile', [EmployeeViewController::class, 'myProfile'])->name('my-profile');
         Route::get('my-notifications', [EmployeeViewController::class, 'myNotifications'])->name('my-notifications');
+        Route::get('save-job/{jobTask}', [EmployeeViewController::class, 'saveJob'])->name('save-job');
+
+        Route::post('apply-job/{jobTask}', [EmployeeViewController::class, 'applyJob'])->name('apply-job');
 
 //        crud routes
         Route::resources([

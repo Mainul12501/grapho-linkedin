@@ -3,19 +3,7 @@
 
 namespace App\Helpers;
 
-
-use App\Models\Backend\BatchExamManagement\BatchExam;
-use App\Models\Backend\BatchExamManagement\BatchExamResult;
-use App\Models\Backend\BatchExamManagement\BatchExamSection;
-use App\Models\Backend\BatchExamManagement\BatchExamSectionContent;
-use App\Models\Backend\Course\Course;
-use App\Models\Backend\Course\CourseClassExamResult;
-use App\Models\Backend\Course\CourseExamResult;
-use App\Models\Backend\Course\CourseSection;
-use App\Models\Backend\ExamManagement\ExamOrder;
-use App\Models\Backend\ExamManagement\SubscriptionOrder;
-use App\Models\Backend\OrderManagement\ParentOrder;
-use App\Models\Frontend\CourseOrder\CourseOrder;
+use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Cache;
 use Xenon\LaravelBDSms\Facades\SMS;
@@ -28,17 +16,37 @@ class ViewHelper
     {
         if (str()->contains(url()->current(), '/api/'))
         {
-            if (str()->contains(url()->current(), '/v1/'))
-            {
+//            if (str()->contains(url()->current(), '/v1/'))
+//            {
                 if (empty($data))
                 {
                     return response()->json(isset($jsonErrorMessage) ? $jsonErrorMessage : 'Something went wrong. Please try again.', 400);
                 }
                 return response()->json($data, 200);
-            }
+//            }
         } else {
 
             return view($viewPath, $data);
+        }
+    }
+
+    public static function returnDataForAjaxAndApi($data = [])
+    {
+        if (empty($data))
+        {
+            return response()->json(isset($jsonErrorMessage) ? $jsonErrorMessage : 'Something went wrong. Please try again.', 400);
+        }
+        return response()->json($data, 200);
+        if (str()->contains(url()->current(), '/api/'))
+        {
+//            if (str()->contains(url()->current(), '/v1/'))
+//            {
+
+                return response()->json($data, 200);
+//            }
+        } else {
+
+            return response()->json($data);
         }
     }
 
@@ -46,8 +54,9 @@ class ViewHelper
     {
         if (str()->contains(url()->current(), '/api/'))
         {
-            return response()->json(['error' => $message], 400);
+            return response()->json(['error' => $message, 'status' => 'error'], 400);
         } else {
+            Toastr::error($message);
             return back()->with('error', $message);
         }
     }
@@ -55,8 +64,9 @@ class ViewHelper
     {
         if (str()->contains(url()->current(), '/api/'))
         {
-            return response()->json(['success' => $message], 200);
+            return response()->json(['success' => $message, 'status' => 'success'], 200);
         } else {
+            Toastr::success($message);
             return back()->with('success', $message);
         }
     }

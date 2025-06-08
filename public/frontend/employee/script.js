@@ -181,7 +181,7 @@ window.addEventListener('DOMContentLoaded', function () {
 });
 
 // Initialize job section
-showJobDetails(1);
+// showJobDetails(1);
 
 
   function updateRole(role) {
