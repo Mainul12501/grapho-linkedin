@@ -3,7 +3,9 @@
 
 namespace App\Helpers;
 
+use App\Models\Backend\EmployeeAppliedJob;
 use Brian2694\Toastr\Facades\Toastr;
+use http\Client\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Cache;
 use Xenon\LaravelBDSms\Facades\SMS;
@@ -62,7 +64,7 @@ class ViewHelper
     }
     public static function returnSuccessMessage ($message = null)
     {
-        if (str()->contains(url()->current(), '/api/'))
+        if (str()->contains(url()->current(), '/api/') || \request()->ajax())
         {
             return response()->json(['success' => $message, 'status' => 'success'], 200);
         } else {
@@ -144,5 +146,26 @@ class ViewHelper
             $cachedOtp = session('otp');
         }
         return $cachedOtp;
+    }
+
+    public static function getJobSaveApplyInfo($id)
+    {
+        $isSaved = false;
+        $isApplied = false;
+        if (ViewHelper::loggedUser())
+        {
+            $user = ViewHelper::loggedUser();
+            if ($user->roles[0]->id == 3 )
+            {
+                $savedJobsIds = $user->employeeSavedJobs->pluck('id')->toArray();
+                $isSaved = in_array($id, $savedJobsIds);
+                if (EmployeeAppliedJob::where(['user_id' => $user->id, 'job_task_id' => $id])->first())
+                    $isApplied = true;
+            }
+        }
+        return [
+            'isSaved'   => $isSaved,
+            'isApplied'   => $isApplied,
+        ];
     }
 }

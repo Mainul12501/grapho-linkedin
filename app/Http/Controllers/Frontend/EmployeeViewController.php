@@ -10,6 +10,7 @@ use App\Models\Backend\EmployeeWorkExperience;
 use App\Models\Backend\JobTask;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 use PHPUnit\Util\PHP\Job;
 
 class EmployeeViewController extends Controller
@@ -27,7 +28,7 @@ class EmployeeViewController extends Controller
         } else {
             $singleJobTask  = $jobTasks[0];
         }
-        $getJobSaveApplyInfo = JobTaskController::getJobSaveApplyInfo($singleJobTask->id);
+        $getJobSaveApplyInfo = ViewHelper::getJobSaveApplyInfo($singleJobTask->id);
         $data = [
             'jobTasks'  => $jobTasks,
             'singleJobTask' => $singleJobTask,
@@ -39,8 +40,13 @@ class EmployeeViewController extends Controller
     public function mySavedJobs()
     {
         $loggedUser = ViewHelper::loggedUser();
+        $savedJobs  = $loggedUser->employeeSavedJobs;
+        foreach ($savedJobs as $savedJob)
+        {
+            $savedJob->isApplied    = ViewHelper::getJobSaveApplyInfo($savedJob->id);
+        }
         $data = $loggedUser ? [
-            'savedJobs' => $loggedUser->employeeSavedJobs ?? [],
+            'savedJobs' => $savedJobs ?? [],
         ] : [];
         return ViewHelper::checkViewForApi($data, 'frontend.employee.jobs.my-saved-jobs');
     }
@@ -90,6 +96,18 @@ class EmployeeViewController extends Controller
         }
 
         return ViewHelper::returnDataForAjaxAndApi($data);
+    }
+
+    public function deleteSaveJob(Request $request, JobTask $jobTask)
+    {
+        if ($jobTask)
+        {
+            $user = ViewHelper::loggedUser();
+            $user->employeeSavedJobs()->detach($jobTask->id);
+            return ViewHelper::returnSuccessMessage('Job removed from my jobs.');
+        } else {
+            return ViewHelper::returEexceptionError('Job not found');
+        }
     }
 
     public function applyJob(Request $request, JobTask $jobTask)

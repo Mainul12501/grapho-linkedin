@@ -66,6 +66,7 @@ Route::middleware([
         Route::get('my-profile', [EmployeeViewController::class, 'myProfile'])->name('my-profile');
         Route::get('my-notifications', [EmployeeViewController::class, 'myNotifications'])->name('my-notifications');
         Route::get('save-job/{jobTask}', [EmployeeViewController::class, 'saveJob'])->name('save-job');
+        Route::get('delete-saved-job/{jobTask}', [EmployeeViewController::class, 'deleteSaveJob'])->name('delete-saved-job');
 
         Route::post('apply-job/{jobTask}', [EmployeeViewController::class, 'applyJob'])->name('apply-job');
 

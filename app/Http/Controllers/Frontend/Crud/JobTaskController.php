@@ -124,24 +124,5 @@ class JobTaskController extends Controller
             return response()->json(['status' => 'error', 'msg' => 'Job not found.']);
     }
 
-    public static function getJobSaveApplyInfo($id)
-    {
-        $isSaved = false;
-        $isApplied = false;
-        if (ViewHelper::loggedUser())
-        {
-            $user = ViewHelper::loggedUser();
-            if ($user->roles[0]->id == 3 )
-            {
-                $savedJobsIds = $user->employeeSavedJobs->pluck('id')->toArray();
-                $isSaved = in_array($id, $savedJobsIds);
-                if (EmployeeAppliedJob::where(['user_id' => $user->id, 'job_task_id' => $id])->first())
-                    $isApplied = true;
-            }
-        }
-        return [
-            'isSaved'   => $isSaved,
-            'isApplied'   => $isApplied,
-        ];
-    }
+
 }
