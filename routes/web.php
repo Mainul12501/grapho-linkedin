@@ -9,6 +9,7 @@ use App\Http\Controllers\Auth\SocialLoginController;
 use App\Http\Controllers\Frontend\Crud\EmployeeWorkExperienceController;
 use App\Http\Controllers\Auth\CustomLoginController;
 use App\Http\Controllers\Frontend\Crud\JobTaskController;
+use App\Http\Controllers\Frontend\Crud\EmployeeEducationController;
 
 
 
@@ -69,10 +70,12 @@ Route::middleware([
         Route::get('delete-saved-job/{jobTask}', [EmployeeViewController::class, 'deleteSaveJob'])->name('delete-saved-job');
 
         Route::post('apply-job/{jobTask}', [EmployeeViewController::class, 'applyJob'])->name('apply-job');
+        Route::post('update-profile/{user}', [EmployeeViewController::class, 'updateProfile'])->name('update-profile');
 
 //        crud routes
         Route::resources([
             'employee-work-experiences' => EmployeeWorkExperienceController::class,
+            'employee-educations' => EmployeeEducationController::class,
         ]);
     });
 });

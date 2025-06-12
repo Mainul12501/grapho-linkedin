@@ -114,36 +114,37 @@
                                         </h5>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
-                                    <div class="modal-body">
-                                        <!-- Form for editing contact info -->
-                                        <form>
-                                            <div class="mb-3">
-                                                <label for="locationInput" class="form-label">Location</label>
-                                                <input type="text" class="form-control" id="locationInput" value="Dhaka, Bangladesh" />
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="emailInput" class="form-label">Email</label>
-                                                <input type="email" class="form-control" id="emailInput" value="md.pranto@gmail.com" />
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="phoneInput" class="form-label">Phone</label>
-                                                <input type="tel" class="form-control" id="phoneInput" value="+8801653523779" />
-                                            </div>
+                                    <form action="{{ route('employee.update-profile', auth()->id()) }}" method="post">
+                                        @csrf
+                                        <div class="modal-body">
+                                            <!-- Form for editing contact info -->
+                                                <div class="mb-3">
+                                                    <label for="locationInput" class="form-label">Location</label>
+                                                    <textarea name="address" class="form-control" id="locationInput" cols="30" rows="5">{!! auth()->user()->address ?? '' !!}</textarea>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="emailInput" class="form-label">Email</label>
+                                                    <input type="email" class="form-control" id="emailInput" value="{!! auth()->user()->email ?? '' !!}" placeholder="md.pranto@gmail.com" />
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="phoneInput" class="form-label">Phone</label>
+                                                    <input type="tel" class="form-control" id="phoneInput" value="{!! auth()->user()->mobile ?? '' !!}" name="mobile" placeholder="+8801653523779" />
+                                                </div>
 
-                                            <div class="mb-3">
-                                                <label for="phoneInput" class="form-label">Website</label>
-                                                <input type="tel" class="form-control" id="phoneInput" value="+www.devpranto.com" />
-                                            </div>
-                                        </form>
-                                    </div>
-                                    <div class="modal-footer justify-content-between">
+                                                <div class="mb-3">
+                                                    <label for="phoneInput" class="form-label">Website</label>
+                                                    <input type="tel" class="form-control" id="phoneInput" name="website" value="{!! auth()->user()->website ?? '' !!}" placeholder="www.devpranto.com" />
+                                                </div>
+                                        </div>
+                                        <div class="modal-footer justify-content-between">
                                         <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
                                             Close
                                         </button>
-                                        <button type="button" class="btn btn-primary">
+                                        <button type="submit" class="btn btn-primary">
                                             Save Changes
                                         </button>
                                     </div>
+                                    </form>
                                 </div>
                             </div>
                         </div>
@@ -406,131 +407,107 @@
                     </button>
 
                 </div>
-                <div class="row jobCard border-bottom">
-                    <div class="col-2 col-md-1">
-                        <img src="{{ asset('/') }}frontend/employee/images/profile/norSouthUnivercity.png" alt="Company Logo" class="companyLogo" />
-                        <img style="width: 40px; height: 42px" src="{{ asset('/') }}frontend/employee/images/profile/norSouthUnivercity.png" alt="Company Logo"
-                             class="mobileLogo" />
-                    </div>
-                    <div class="col-10 col-md-11">
-                        <div class="jobPosition d-flex justify-content-between">
-                            <div class="d-flex">
-                                <div class="profileCard">
-                                    <h3>North South University</h3>
-                                    <h4>
-                                        BBA - Marketing
-                                        <img src="{{ asset('/') }}frontend/employee/images/profile/dotDevider.png" alt="" />
-                                        <span>CGPA 3.45</span>
-                                    </h4>
-                                    <p class="mb-0">
-                                        Jan 2025 - Present
-                                        <img src="{{ asset('/') }}frontend/employee/images/profile/2ndDotDevider.png" alt="" />
-                                        <span>2 yrs 5 mos</span>
-                                    </p>
-                                    <p>Dhaka, Bangladesh</p>
+                @forelse($employeeEducations as $employeeEducation)
+                    <div class="row jobCard border-bottom">
+                        <div class="col-2 col-md-1">
+                            <img src="{{ asset('/') }}frontend/employee/images/profile/norSouthUnivercity.png" alt="Company Logo" class="companyLogo" />
+                            <img style="width: 40px; height: 42px" src="{{ asset('/') }}frontend/employee/images/profile/norSouthUnivercity.png" alt="Company Logo"
+                                 class="mobileLogo" />
+                        </div>
+                        <div class="col-10 col-md-11">
+                            <div class="jobPosition d-flex justify-content-between">
+                                <div class="d-flex">
+                                    <div class="profileCard">
+                                        <h3>{{ $employeeEducation?->universityName?->name ?? 'North South University' }}</h3>
+                                        <h4>
+                                            {{ $employeeEducation?->educationDegreeName?->degree_name ?? 'BBA' }} - {{ $employeeEducation?->fieldOfStudy?->field_name ?? 'Marketing' }}
+                                            <img src="{{ asset('/') }}frontend/employee/images/profile/dotDevider.png" alt="" />
+                                            <span>CGPA {{ $employeeEducation->cgpa ?? 0.00 }}</span>
+                                        </h4>
+                                        <p class="mb-0">
+                                            Passing Year: {{ $employeeEducation->passing_year ?? '1990' }}
+{{--                                            <img src="{{ asset('/') }}frontend/employee/images/profile/2ndDotDevider.png" alt="" />--}}
+{{--                                            <span>2 yrs 5 mos</span>--}}
+                                        </p>
+                                        <p>
+                                            {!! $employeeEducation->address ?? '' !!}
+                                        </p>
+                                    </div>
                                 </div>
-                            </div>
-                            <div>
-                                <div class="dropdown">
-                                    <img src="{{ asset('/') }}frontend/employee/images/contentImages/threedot.png"
-                                         alt="Options"
-                                         class="threeDot"
-                                         role="button"
-                                         data-bs-toggle="dropdown"
-                                         aria-expanded="false" />
+                                <div>
+                                    <div class="dropdown">
+                                        <img src="{{ asset('/') }}frontend/employee/images/contentImages/threedot.png"
+                                             alt="Options"
+                                             class="threeDot"
+                                             role="button"
+                                             data-bs-toggle="dropdown"
+                                             aria-expanded="false" />
 
-                                    <ul class="dropdown-menu dropdown-menu-end">
-                                        <li><a class="dropdown-item" href="#">Edit</a></li>
-                                        <li><a class="dropdown-item" href="#">Delete</a></li>
-                                    </ul>
+                                        <ul class="dropdown-menu dropdown-menu-end">
+                                            <li><a class="dropdown-item" href="#">Edit</a></li>
+                                            <li>
+                                                <form action="{{ route('employee.employee-educations.destroy', $employeeEducation->id) }}" method="post">
+                                                    @csrf
+                                                    @method('delete')
+                                                    <button class="dropdown-item" type="submit">Delete</button>
+                                                </form>
+                                            </li>
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="row jobCard border-bottom">
-                    <div class="col-2 col-md-1">
-                        <img src="{{ asset('/') }}frontend/employee/images/profile/noterDemCollage.png" alt="Company Logo" class="companyLogo" />
-                        <img style="width: 40px; height: 42px" src="{{ asset('/') }}frontend/employee/images/profile/noterDemCollage.png" alt="Company Logo"
-                             class="mobileLogo" />
-                    </div>
-                    <div class="col-10 col-md-11">
-                        <div class="jobPosition d-flex justify-content-between">
-                            <div class="d-flex">
-                                <div class="profileCard">
-                                    <h3>Notre Dame College</h3>
-                                    <h4>
-                                        HSC - Science
-                                        <img src="{{ asset('/') }}frontend/employee/images/profile/dotDevider.png" alt="" />
-                                        <span>GPA 5.00</span>
-                                    </h4>
-                                    <p class="mb-0">
-                                        Jan 2025 - Present
-                                        <img src="{{ asset('/') }}frontend/employee/images/profile/2ndDotDevider.png" alt="" />
-                                        <span>2 yrs 5 mos</span>
-                                    </p>
-                                    <p>Dhaka, Bangladesh</p>
-                                </div>
-                            </div>
-                            <div>
-                                <div class="dropdown">
-                                    <img src="{{ asset('/') }}frontend/employee/images/contentImages/threedot.png"
-                                         alt="Options"
-                                         class="threeDot"
-                                         role="button"
-                                         data-bs-toggle="dropdown"
-                                         aria-expanded="false" />
-
-                                    <ul class="dropdown-menu dropdown-menu-end">
-                                        <li><a class="dropdown-item" href="#">Edit</a></li>
-                                        <li><a class="dropdown-item" href="#">Delete</a></li>
-                                    </ul>
-                                </div>
-                            </div>
+                @empty
+                    <div class="row jobCard border-bottom">
+                        <div class="col-12">
+                            <p class="f-s-35">No Education Info Enlisted.</p>
                         </div>
                     </div>
-                </div>
-                <div class="row jobCard border-bottom">
-                    <div class="col-2 col-md-1">
-                        <img src="{{ asset('/') }}frontend/employee/images/profile/sentGourgeScool.png" alt="Company Logo" class="companyLogo" />
-                        <img style="width: 40px; height: 42px" src="{{ asset('/') }}frontend/employee/images/profile/sentGourgeScool.png" alt="Company Logo"
-                             class="mobileLogo" />
-                    </div>
-                    <div class="col-10 col-md-11">
-                        <div class="jobPosition d-flex justify-content-between">
-                            <div class="d-flex">
-                                <div class="profileCard">
-                                    <h3>St. Gregory’s High School</h3>
-                                    <h4>
-                                        SSC - Science<img src="{{ asset('/') }}frontend/employee/images/profile/dotDevider.png" alt="" />
-                                        <span>GPA 5.00</span>
-                                    </h4>
-                                    <p class="mb-0">
-                                        Jan 2025 - Present
-                                        <img src="{{ asset('/') }}frontend/employee/images/profile/2ndDotDevider.png" alt="" />
-                                        <span>2 yrs 5 mos</span>
-                                    </p>
-                                    <p>Dhaka, Bangladesh</p>
-                                </div>
-                            </div>
-                            <div>
-                                <div class="dropdown">
-                                    <img src="{{ asset('/') }}frontend/employee/images/contentImages/threedot.png"
-                                         alt="Options"
-                                         class="threeDot"
-                                         role="button"
-                                         data-bs-toggle="dropdown"
-                                         aria-expanded="false" />
+                @endforelse
 
-                                    <ul class="dropdown-menu dropdown-menu-end">
-                                        <li><a class="dropdown-item" href="#">Edit</a></li>
-                                        <li><a class="dropdown-item" href="#">Delete</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+{{--                <div class="row jobCard border-bottom">--}}
+{{--                    <div class="col-2 col-md-1">--}}
+{{--                        <img src="{{ asset('/') }}frontend/employee/images/profile/noterDemCollage.png" alt="Company Logo" class="companyLogo" />--}}
+{{--                        <img style="width: 40px; height: 42px" src="{{ asset('/') }}frontend/employee/images/profile/noterDemCollage.png" alt="Company Logo"--}}
+{{--                             class="mobileLogo" />--}}
+{{--                    </div>--}}
+{{--                    <div class="col-10 col-md-11">--}}
+{{--                        <div class="jobPosition d-flex justify-content-between">--}}
+{{--                            <div class="d-flex">--}}
+{{--                                <div class="profileCard">--}}
+{{--                                    <h3>Notre Dame College</h3>--}}
+{{--                                    <h4>--}}
+{{--                                        HSC - Science--}}
+{{--                                        <img src="{{ asset('/') }}frontend/employee/images/profile/dotDevider.png" alt="" />--}}
+{{--                                        <span>GPA 5.00</span>--}}
+{{--                                    </h4>--}}
+{{--                                    <p class="mb-0">--}}
+{{--                                        Jan 2025 - Present--}}
+{{--                                        <img src="{{ asset('/') }}frontend/employee/images/profile/2ndDotDevider.png" alt="" />--}}
+{{--                                        <span>2 yrs 5 mos</span>--}}
+{{--                                    </p>--}}
+{{--                                    <p>Dhaka, Bangladesh</p>--}}
+{{--                                </div>--}}
+{{--                            </div>--}}
+{{--                            <div>--}}
+{{--                                <div class="dropdown">--}}
+{{--                                    <img src="{{ asset('/') }}frontend/employee/images/contentImages/threedot.png"--}}
+{{--                                         alt="Options"--}}
+{{--                                         class="threeDot"--}}
+{{--                                         role="button"--}}
+{{--                                         data-bs-toggle="dropdown"--}}
+{{--                                         aria-expanded="false" />--}}
+
+{{--                                    <ul class="dropdown-menu dropdown-menu-end">--}}
+{{--                                        <li><a class="dropdown-item" href="#">Edit</a></li>--}}
+{{--                                        <li><a class="dropdown-item" href="#">Delete</a></li>--}}
+{{--                                    </ul>--}}
+{{--                                </div>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
             </div>
 
             <!-- documents -->
@@ -771,84 +748,108 @@
                     </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
-                    <!-- Form for adding education -->
-                    <form>
+                <form action="{{ route('employee.employee-educations.store') }}" method="post" enctype="multipart/form-data">
+                    @csrf
+                    <div class="modal-body">
+                        <!-- Form for adding education -->
+
                         <div class="mb-4">
-                            <label for="degreeInput" class="form-label">Degree</label>
-                            <input type="text" class="form-control" id="degreeInput" placeholder="Type here" />
+                            <label for="degreeInput" class="form-label">Education Program</label>
+{{--                            <input type="text" class="form-control" id="degreeInput" placeholder="Type here" />--}}
+                            <select name="education_degree_name_id" class="form-control select2" id="">
+                                <option selected disabled>Select Education Program</option>
+                                @foreach($educationDegreeNames as $educationDegreeName)
+                                    <option value="{{ $educationDegreeName->id }}">{{ $educationDegreeName->degree_name }}</option>
+                                @endforeach
+                            </select>
                         </div>
 
                         <div class="mb-4">
                             <label for="universityInput" class="form-label">University name</label>
-                            <input type="text" class="form-control" id="universityInput" placeholder="Type here" />
+{{--                            <input type="text" class="form-control" id="universityInput" placeholder="Type here" />--}}
+                            <select name="university_name_id" class="form-control select2" id="">
+                                <option selected disabled>Select University</option>
+                                @foreach($universityNames as $universityName)
+                                    <option value="{{ $universityName->id }}">{{ $universityName->name }}</option>
+                                @endforeach
+                            </select>
                         </div>
 
                         <div class="mb-4">
                             <label for="fieldOfStudyInput" class="form-label">Field of study</label>
                             <input type="text" class="form-control" id="fieldOfStudyInput" placeholder="Type here" />
+                            <select name="field_of_study_id" class="form-control select2" id="">
+                                <option selected disabled>Select Field of Study</option>
+                                @foreach($fieldOfStudies as $fieldOfStudy)
+                                    <option value="{{ $fieldOfStudy->id }}">{{ $fieldOfStudy->field_name }}</option>
+                                @endforeach
+                            </select>
                         </div>
 
                         <div class="mb-4">
-                            <label for="majorSubjectInput" class="form-label">Major subject</label>
-                            <input type="text" class="form-control" id="majorSubjectInput" placeholder="Type here" />
+                            <label for="passingYear" class="form-label">Passing Year</label>
+                            <input type="text" class="form-control" name="passing_year" id="passingYear" placeholder="Type here" />
                         </div>
+{{--                        <div class="mb-4">--}}
+{{--                            <label for="majorSubjectInput" class="form-label">Major subject</label>--}}
+{{--                            <input type="text" class="form-control" id="majorSubjectInput" placeholder="Type here" />--}}
+{{--                        </div>--}}
 
-                        <div class="mb-4">
-                            <label for="startDateInput" class="form-label">Start date</label>
-                            <div class="d-flex">
-                                <select class="form-control me-2" id="startMonthInput">
-                                    <option value="">Month</option>
-                                    <option value="jan">January</option>
-                                    <option value="feb">February</option>
-                                    <!-- Add other months -->
-                                </select>
-                                <select class="form-control" id="startYearInput">
-                                    <option value="">Year</option>
-                                    <option value="2021">2021</option>
-                                    <option value="2020">2020</option>
-                                    <!-- Add more years -->
-                                </select>
-                            </div>
-                        </div>
+{{--                        <div class="mb-4">--}}
+{{--                            <label for="startDateInput" class="form-label">Start date</label>--}}
+{{--                            <div class="d-flex">--}}
+{{--                                <select class="form-control me-2" id="startMonthInput">--}}
+{{--                                    <option value="">Month</option>--}}
+{{--                                    <option value="jan">January</option>--}}
+{{--                                    <option value="feb">February</option>--}}
+{{--                                    <!-- Add other months -->--}}
+{{--                                </select>--}}
+{{--                                <select class="form-control" id="startYearInput">--}}
+{{--                                    <option value="">Year</option>--}}
+{{--                                    <option value="2021">2021</option>--}}
+{{--                                    <option value="2020">2020</option>--}}
+{{--                                    <!-- Add more years -->--}}
+{{--                                </select>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
 
-                        <div class="mb-4">
-                            <label for="endDateInput" class="form-label">End date</label>
-                            <div class="d-flex">
-                                <select class="form-control me-2" id="endMonthInput">
-                                    <option value="">Month</option>
-                                    <option value="jan">January</option>
-                                    <option value="feb">February</option>
-                                    <!-- Add other months -->
-                                </select>
-                                <select class="form-control" id="endYearInput">
-                                    <option value="">Year</option>
-                                    <option value="2023">2023</option>
-                                    <option value="2022">2022</option>
-                                    <!-- Add more years -->
-                                </select>
-                            </div>
-                        </div>
+{{--                        <div class="mb-4">--}}
+{{--                            <label for="endDateInput" class="form-label">End date</label>--}}
+{{--                            <div class="d-flex">--}}
+{{--                                <select class="form-control me-2" id="endMonthInput">--}}
+{{--                                    <option value="">Month</option>--}}
+{{--                                    <option value="jan">January</option>--}}
+{{--                                    <option value="feb">February</option>--}}
+{{--                                    <!-- Add other months -->--}}
+{{--                                </select>--}}
+{{--                                <select class="form-control" id="endYearInput">--}}
+{{--                                    <option value="">Year</option>--}}
+{{--                                    <option value="2023">2023</option>--}}
+{{--                                    <option value="2022">2022</option>--}}
+{{--                                    <!-- Add more years -->--}}
+{{--                                </select>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
 
                         <div class="mb-4">
                             <label for="cgpaInput" class="form-label">CGPA</label>
-                            <input type="text" class="form-control" id="cgpaInput" placeholder="Type here" />
+                            <input type="text" name="cgpa" class="form-control" id="cgpaInput" placeholder="Type here" />
                         </div>
 
                         <div class="mb-4">
                             <label for="locationInput" class="form-label">Location</label>
-                            <input type="text" class="form-control" id="locationInput" placeholder="Type here" />
+                            <input type="text" name="address" class="form-control" id="locationInput" placeholder="Type here" />
                         </div>
-                    </form>
-                </div>
-                <div class="modal-footer justify-content-between">
-                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-                        Close
-                    </button>
-                    <button type="button" class="btn btn-primary">
-                        Add Education
-                    </button>
-                </div>
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                            Close
+                        </button>
+                        <button type="submit" class="btn btn-primary">
+                            Add Education
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -903,20 +904,20 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
 
-                <div class="modal-body">
-                    <form>
+                <form action="{{ route('employee.update-profile', auth()->id()) }}" method="post">
+                    @csrf
+                    <div class="modal-body">
                         <div class="mb-3">
                             <label for="bioTextarea" class="form-label">Your Bio</label>
-                            <textarea class="form-control" id="bioTextarea" rows="5" placeholder="Write about yourself...">Mobile App Developer, Flutter Developer Instructor & Mentor</textarea>
+                            <textarea class="form-control" id="bioTextarea" name="profile_title" rows="5" placeholder="Write about yourself...">{{ auth()->user()->profile_title ?? 'Mobile App Developer, Flutter Developer Instructor & Mentor' }}</textarea>
                         </div>
-                    </form>
-                </div>
+                    </div>
 
-                <div class="modal-footer justify-content-between">
+                    <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save Bio</button>
+                    <button type="submit" class="btn btn-primary">Save Bio</button>
                 </div>
-
+                </form>
             </div>
         </div>
     </div>
@@ -934,15 +935,8 @@
 @push('script')
 
     <!-- include summernote css/js -->
-    <link href="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            $('.summernote').summernote({
-                height: 300
-            });
-        });
-    </script>
+   @include('common-resource-files.summernote')
+   @include('common-resource-files.selectize')
 
     <!-- jQuery for controlling sticky behavior when modal opens/closes -->
     {{--                        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>--}}

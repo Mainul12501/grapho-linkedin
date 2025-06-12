@@ -5,9 +5,14 @@ namespace App\Http\Controllers\Frontend;
 use App\Helpers\ViewHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Frontend\Crud\JobTaskController;
+use App\Models\Backend\EducationDegreeName;
 use App\Models\Backend\EmployeeAppliedJob;
+use App\Models\Backend\EmployeeEducation;
 use App\Models\Backend\EmployeeWorkExperience;
+use App\Models\Backend\FieldOfStudy;
 use App\Models\Backend\JobTask;
+use App\Models\Backend\UniversityName;
+use App\Models\User;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -52,10 +57,21 @@ class EmployeeViewController extends Controller
     }
     public function myApplications()
     {
-        return ViewHelper::checkViewForApi([], 'frontend.employee.jobs.my-applications');
+        $user = ViewHelper::loggedUser();
+//        return $user->employeeAppliedJobs;
+        $data = [
+//            'myApplications'    => $user->employeeAppliedJobs
+//            'myApplications'    => $user->appliedJobs
+            'myApplications'    => $user->appliedJobsWithJobDetails
+        ];
+        return ViewHelper::checkViewForApi($data, 'frontend.employee.jobs.my-applications');
     }
     public function myProfileViewers()
     {
+        $user = ViewHelper::loggedUser();
+        $data = [
+            'myProfileViewers'  => $user->viewEmployerIds
+        ];
         return ViewHelper::checkViewForApi([], 'frontend.employee.base-functionalities.profile-viewers');
     }
     public function mySubscriptions()
@@ -70,6 +86,10 @@ class EmployeeViewController extends Controller
     {
         $data = [
             'workExperiences'    => EmployeeWorkExperience::where(['user_id' => auth()->id(), 'status' => 1])->get(),
+            'employeeEducations'    => EmployeeEducation::where(['user_id' => auth()->id(), 'status' => 1])->get(),
+            'educationDegreeNames'   => EducationDegreeName::where(['status' => 1])->get(['id', 'degree_name']),
+            'universityNames'   => UniversityName::where(['status' => 1])->get(['id', 'name']),
+            'fieldOfStudies'   => FieldOfStudy::where(['status' => 1])->get(['id', 'field_name']),
         ];
         return ViewHelper::checkViewForApi($data, 'frontend.employee.base-functionalities.my-profile');
     }
@@ -131,5 +151,18 @@ class EmployeeViewController extends Controller
             Toastr::error('Job or User not found.');
             return ViewHelper::returEexceptionError('Job or User not found.');
         }
+    }
+
+    public function updateProfile(Request $request, User $user)
+    {
+//        return $request->all();
+//        return $user;
+        $user->profile_title    = $request->profile_title;
+        $user->email    = $request->email;
+        $user->mobile    = $request->mobile;
+        $user->website    = $request->website;
+        $user->save();
+        Toastr::success('Profile Info updated successfully.');
+        return back();
     }
 }

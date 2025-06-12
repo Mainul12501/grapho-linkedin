@@ -158,6 +158,10 @@ class User extends Authenticatable
     {
         return $this->hasMany(EmployeeAppliedJob::class, 'user_id');
     }
+    public function appliedJobsWithJobDetails()
+    {
+        return $this->hasMany(EmployeeAppliedJob::class, 'user_id')->with('jobTask');
+    }
 
     public function viewEmployerIds()
     {

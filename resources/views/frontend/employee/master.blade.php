@@ -20,6 +20,9 @@
     <!-- Sweet Alert -->
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.min.css" rel="stylesheet" />
 
+    <!-- css class helper -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Mainul12501/css-common-helper-classes/helper.min.css" />
+
 
     <link rel="stylesheet" href="{{ asset('/') }}frontend/employee/headerStyle.css" />
     <link rel="stylesheet" href="{{ asset('/') }}frontend/employee/mainstyle.css" />

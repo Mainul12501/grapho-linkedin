@@ -6,7 +6,7 @@
 
 
     <section class="bg-white forSmall smallTop">
-        <a href="profile.html"><img src="{{ asset('/') }}frontend/employee/images/profile/leftArrowDark.png" alt="" class="me-2"> My applications</a>
+        <a href="{{ route('employee.my-applications') }}"><img src="{{ asset('/') }}frontend/employee/images/profile/leftArrowDark.png" alt="" class="me-2"> My applications</a>
     </section>
 
     <!-- Main Content -->
@@ -31,101 +31,48 @@
                     </div>
 
                     <!-- Row 1 -->
-                    <div class="appliedJobs-row">
-                        <div class="company">
-                            <img src="{{ asset('/') }}frontend/employee/images/profile/appliedJobs1.png" alt="UCB" />
-                            <span>United Commercial Bank…</span>
-                        </div>
-                        <div class="position">Senior Officer, Corporate Ba…</div>
-                        <div class="date">24-09-2024</div>
-                        <div class="status accepted">Accepted</div>
-                        <div class="action">
-                            <div class="action-menu-trigger" onclick="toggleActionMenu(this)">⋮</div>
-                            <div class="action-dropdown">
-                                <div>Message</div>
-                                <div>View Job Post</div>
+                    @forelse($myApplications as $myApplication)
+                        <div class="appliedJobs-row">
+                            <div class="company">
+                                <img src="{{ asset(isset($myApplication?->jobTask?->employerCompany?->logo) ? $myApplication?->jobTask?->employerCompany?->logo :'/frontend/employee/images/profile/appliedJobs1.png') }}" alt="{{ $myApplication?->jobTask?->employerCompany?->name ?? 'company Name' }}" />
+                                <span>{{ $myApplication?->jobTask?->employerCompany?->name ?? 'United Commercial Bank' }}</span>
+                            </div>
+                            <div class="position">{{ $myApplication?->jobTask?->job_title ?? 'Job Title' }}</div>
+                            <div class="date">{{ \Illuminate\Support\Carbon::parse($myApplication?->jobTask?->created_at)->format('d-m-Y') ?? '24-09-2024' }}</div>
+                            <div class="status @if($myApplication?->status == 'approved') accepted @endif @if($myApplication?->status == 'pending') pending @endif @if($myApplication?->status == 'rejected') bg-danger @endif ">@if($myApplication?->status == 'approved') Approved @endif @if($myApplication?->status == 'pending') Pending @endif @if($myApplication?->status == 'rejected') Rejected @endif</div>
+                            <div class="action">
+                                <div class="action-menu-trigger" onclick="toggleActionMenu(this)">⋮</div>
+                                <div class="action-dropdown">
+                                    <div>Message</div>
+                                    <div><a href="{{ route('employee.show-jobs', ['job_task' => $myApplication?->jobTask?->id ]) }}" class="nav-link">View Job Post</a></div>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    @empty
+                        <div class="appliedJobs-row">
+                            <p class="f-s-35">You haven't applied any job yet.</p>
+                        </div>
+                    @endforelse
+
 
                     <!-- Row 2 -->
-                    <div class="appliedJobs-row">
-                        <div class="company">
-                            <img src="{{ asset('/') }}frontend/employee/images/profile/appliedJobs2.png" alt="Unilever" />
-                            <span>Unilever Bangladesh</span>
-                        </div>
-                        <div class="position">Management Trainee</div>
-                        <div class="date">24-09-2024</div>
-                        <div class="status pending">Pending</div>
+{{--                    <div class="appliedJobs-row">--}}
+{{--                        <div class="company">--}}
+{{--                            <img src="{{ asset('/') }}frontend/employee/images/profile/appliedJobs2.png" alt="Unilever" />--}}
+{{--                            <span>Unilever Bangladesh</span>--}}
+{{--                        </div>--}}
+{{--                        <div class="position">Management Trainee</div>--}}
+{{--                        <div class="date">24-09-2024</div>--}}
+{{--                        <div class="status pending">Pending</div>--}}
 
-                        <div class="action">
-                            <div class="action-menu-trigger" onclick="toggleActionMenu(this)">⋮</div>
-                            <div class="action-dropdown">
-                                <div>Message</div>
-                                <div>View Job Post</div>
-                            </div>
-                        </div>
-                    </div>
-
-
-                    <!-- Row 3 -->
-                    <div class="appliedJobs-row">
-                        <div class="company">
-                            <img src="{{ asset('/') }}frontend/employee/images/profile/appliedJobs3.png" alt="Unilever" />
-                            <span>Grameenphone Ltd</span>
-                        </div>
-                        <div class="position">Next Business Leader</div>
-                        <div class="date">24-09-2024</div>
-                        <div class="status pending">Pending</div>
-
-                        <div class="action">
-                            <div class="action-menu-trigger" onclick="toggleActionMenu(this)">⋮</div>
-                            <div class="action-dropdown">
-                                <div>Message</div>
-                                <div>View Job Post</div>
-                            </div>
-                        </div>
-                    </div>
-
-
-                    <!-- Row 4 -->
-                    <div class="appliedJobs-row">
-                        <div class="company">
-                            <img src="{{ asset('/') }}frontend/employee/images/profile/appliedJobs4.png" alt="UCB" />
-                            <span>BRAC Bank Limited</span>
-                        </div>
-                        <div class="position">Management Trainee</div>
-                        <div class="date">24-09-2024</div>
-                        <div class="status accepted">Accepted</div>
-                        <div class="action">
-                            <div class="action-menu-trigger" onclick="toggleActionMenu(this)">⋮</div>
-                            <div class="action-dropdown">
-                                <div>Message</div>
-                                <div>View Job Post</div>
-                            </div>
-                        </div>
-                    </div>
-
-
-                    <!-- Row 5 -->
-                    <div class="appliedJobs-row">
-                        <div class="company">
-                            <img src="{{ asset('/') }}frontend/employee/images/profile/appliedJobs5.png" alt="Unilever" />
-                            <span>Grameenphone Ltd</span>
-                        </div>
-                        <div class="position">Next Business Leader</div>
-                        <div class="date">24-09-2024</div>
-                        <div class="status pending">Pending</div>
-
-                        <div class="action">
-                            <div class="action-menu-trigger" onclick="toggleActionMenu(this)">⋮</div>
-                            <div class="action-dropdown">
-                                <div>Message</div>
-                                <div>View Job Post</div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Repeat similar rows -->
+{{--                        <div class="action">--}}
+{{--                            <div class="action-menu-trigger" onclick="toggleActionMenu(this)">⋮</div>--}}
+{{--                            <div class="action-dropdown">--}}
+{{--                                <div>Message</div>--}}
+{{--                                <div>View Job Post</div>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
                     <!-- ... -->
                 </div>
             </div>
