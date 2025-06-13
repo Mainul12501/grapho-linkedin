@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\Frontend\Crud\JobTaskController;
 use App\Models\Backend\EducationDegreeName;
 use App\Models\Backend\EmployeeAppliedJob;
+use App\Models\Backend\EmployeeDocument;
 use App\Models\Backend\EmployeeEducation;
 use App\Models\Backend\EmployeeWorkExperience;
 use App\Models\Backend\FieldOfStudy;
@@ -15,6 +16,7 @@ use App\Models\Backend\UniversityName;
 use App\Models\User;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\View\View;
 use PHPUnit\Util\PHP\Job;
 
@@ -87,6 +89,7 @@ class EmployeeViewController extends Controller
         $data = [
             'workExperiences'    => EmployeeWorkExperience::where(['user_id' => auth()->id(), 'status' => 1])->get(),
             'employeeEducations'    => EmployeeEducation::where(['user_id' => auth()->id(), 'status' => 1])->get(),
+            'employeeDocuments'    => EmployeeDocument::where(['user_id' => auth()->id(), 'status' => 1])->get(),
             'educationDegreeNames'   => EducationDegreeName::where(['status' => 1])->get(['id', 'degree_name']),
             'universityNames'   => UniversityName::where(['status' => 1])->get(['id', 'name']),
             'fieldOfStudies'   => FieldOfStudy::where(['status' => 1])->get(['id', 'field_name']),
@@ -157,12 +160,34 @@ class EmployeeViewController extends Controller
     {
 //        return $request->all();
 //        return $user;
-        $user->profile_title    = $request->profile_title;
-        $user->email    = $request->email;
-        $user->mobile    = $request->mobile;
-        $user->website    = $request->website;
-        $user->save();
-        Toastr::success('Profile Info updated successfully.');
+        $validator = Validator::make($request->all(), [
+            'email' => $user->email != $request->email ? 'unique:users' : '',
+            'mobile' => $user->mobile != $request->mobile ? 'unique:users' : '',
+        ]);
+        if ($validator->fails())
+        {
+            Toastr::error($validator->errors());
+            return back();
+        }
+        try {
+            if ($user)
+            {
+                $user->profile_title    = $request->profile_title;
+                $user->email    = $request->email;
+                $user->mobile    = $request->mobile;
+                $user->website    = $request->website;
+                if ($request->hasFile('profile_image'))
+                {
+                    $user->profile_image    = imageUpload($request->file('profile_image'), 'profile-image', 'profile_image', 200,200, $user->profile_image ?? null);
+                }
+                $user->address    = $request->address;
+                $user->save();
+            }
+            Toastr::success('Profile Info updated successfully.');
+        } catch (\Exception $exception)
+        {
+            Toastr::error($exception->getMessage());
+        }
         return back();
     }
 }

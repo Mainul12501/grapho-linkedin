@@ -10,6 +10,7 @@ use App\Http\Controllers\Frontend\Crud\EmployeeWorkExperienceController;
 use App\Http\Controllers\Auth\CustomLoginController;
 use App\Http\Controllers\Frontend\Crud\JobTaskController;
 use App\Http\Controllers\Frontend\Crud\EmployeeEducationController;
+use App\Http\Controllers\Frontend\Crud\EmployeeDocumentsController;
 
 
 
@@ -76,6 +77,7 @@ Route::middleware([
         Route::resources([
             'employee-work-experiences' => EmployeeWorkExperienceController::class,
             'employee-educations' => EmployeeEducationController::class,
+            'employee-documents'    => EmployeeDocumentsController::class,
         ]);
     });
 });

@@ -62,6 +62,17 @@ class ViewHelper
             return back()->with('error', $message);
         }
     }
+
+    public static function returnResponseFromPostRequest($status = false, $message = '')
+    {
+        if (str()->contains(url()->current(), '/api/') || \request()->ajax())
+        {
+            return response()->json(['status' => 'success', 'msg' => $message]);
+        } else {
+            Toastr::success($message);
+            return back();
+        }
+    }
     public static function returnSuccessMessage ($message = null)
     {
         if (str()->contains(url()->current(), '/api/') || \request()->ajax())

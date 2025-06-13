@@ -9,7 +9,7 @@
         <aside class="left-panel p-3">
             <div class="card">
                 <div class="card-body profile">
-                    <img src="{{ asset('/') }}frontend/employee/images/header images/Thumbnail.png" alt="Profile" class="rounded-circle mb-2" width="80" />
+                    <img src="{{ asset(auth()->user()->profile_image ?? '/frontend/employee/images/header images/Thumbnail.png') }}" alt="Profile" class="rounded-circle mb-2" width="80" />
                     <h5>{{ auth()->user()->name ?? 'Mohammed Pranto' }}</h5>
 
                     <div class="d-flex justify-content-center justify-content-md-start">
@@ -114,7 +114,7 @@
                                         </h5>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
-                                    <form action="{{ route('employee.update-profile', auth()->id()) }}" method="post">
+                                    <form action="{{ route('employee.update-profile', auth()->id()) }}" method="post" enctype="multipart/form-data">
                                         @csrf
                                         <div class="modal-body">
                                             <!-- Form for editing contact info -->
@@ -129,6 +129,10 @@
                                                 <div class="mb-3">
                                                     <label for="phoneInput" class="form-label">Phone</label>
                                                     <input type="tel" class="form-control" id="phoneInput" value="{!! auth()->user()->mobile ?? '' !!}" name="mobile" placeholder="+8801653523779" />
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="profileImage" class="form-label">Profile Image</label>
+                                                    <input type="file" class="form-control" id="profileImage" name="profile_image" />
                                                 </div>
 
                                                 <div class="mb-3">
@@ -521,120 +525,109 @@
 
                 </div>
 
-                <div class="row jobCard border-bottom">
-                    <div class="col-2">
-                        <img src="{{ asset('/') }}frontend/employee/images/profile/CV.png" alt="Company Logo" class="companyLogo" />
-                        <img style="width: 40px; height: 42px" src="{{ asset('/') }}frontend/employee/images/profile/CV.png" alt="Company Logo" class="mobileLogo" />
-                    </div>
+                @forelse($employeeDocuments as $employeeDocument)
+                    <div class="row jobCard border-bottom">
+                        <div class="col-2">
+                            @if( explode('/', $employeeDocument->file_type)[1] == 'image' )
+                                <img style="max-width: 105px; max-height: 105px;" src="{{ isset($employeeDocument->file_thumb) ? asset($employeeDocument->file_thumb) : 'https://icons.iconarchive.com/icons/icons8/windows-8/512/Very-Basic-Image-File-icon.png' }}" alt="Company Logo" class="companyLogo" />
+                                <img style="width: 40px; height: 42px" src="{{ isset($employeeDocument->file_thumb) ? asset($employeeDocument->file_thumb) : 'https://icons.iconarchive.com/icons/icons8/windows-8/512/Very-Basic-Image-File-icon.png'}}" alt="Company Logo" class="mobileLogo" />
+                            @elseif( explode('/', $employeeDocument->file_type)[1] == 'pdf' )
+                                <img style="max-width: 105px; max-height: 105px;" src="https://www.iconpacks.net/icons/2/free-pdf-icon-3375-thumb.png" alt="Company Logo" class="companyLogo" />
+                                <img style="width: 40px; height: 42px" src="https://www.iconpacks.net/icons/2/free-pdf-icon-3375-thumb.png" alt="Company Logo" class="mobileLogo" />
+                             @elseif( explode('/', $employeeDocument->file_type)[1] == 'vnd.openxmlformats-officedocument.wordprocessingml.document' )
+                                <img style="max-width: 105px; max-height: 105px;" src="https://files.softicons.com/download/toolbar-icons/mono-general-icons-2-by-custom-icon-design/ico/document.ico" alt="Company Logo" class="companyLogo" />
+                                <img style="width: 40px; height: 42px" src="https://files.softicons.com/download/toolbar-icons/mono-general-icons-2-by-custom-icon-design/ico/document.ico" alt="Company Logo" class="mobileLogo" />
+                            @else
+                                <img style="max-width: 105px; max-height: 105px;" src="{{ asset('/') }}frontend/employee/images/profile/CV.png" alt="Company Logo" class="companyLogo" />
+                                <img style="width: 40px; height: 42px" src="{{ asset('/') }}frontend/employee/images/profile/CV.png" alt="Company Logo" class="mobileLogo" />
+                            @endif
 
-                    <div class="col-10">
-                        <div class="jobPosition d-flex justify-content-between">
-                            <div class="d-flex">
-                                <div class="profileCard">
-                                    <h3>Curriculum Vitae</h3>
-                                    <p class="mb-0">
-                                        PDF - Present
-                                        <img src="{{ asset('/') }}frontend/employee/images/profile/2ndDotDevider.png" alt="" />
-                                        <span>325 KB</span>
-                                    </p>
-                                    <p>Dhaka, Bangladesh</p>
-                                    <div class="profileSummery mt-4"></div>
+                        </div>
+
+                        <div class="col-10">
+                            <div class="jobPosition d-flex justify-content-between">
+                                <div class="d-flex">
+                                    <div class="profileCard">
+                                        <h3>{{ $employeeDocument->title }}</h3>
+                                        <p class="mb-0">
+                                            {{ explode('/', $employeeDocument->file_type)[0] }} {{--- Present--}}
+                                            <img src="{{ asset('/') }}frontend/employee/images/profile/2ndDotDevider.png" alt="" />
+                                            <span>{{ $employeeDocument->file_size ?? 0 }} KB</span>
+                                        </p>
+{{--                                        <p>Dhaka, Bangladesh</p>--}}
+                                        <div class="profileSummery mt-4"></div>
+                                    </div>
                                 </div>
-                            </div>
-                            <div>
-                                <div class="dropdown">
-                                    <img src="{{ asset('/') }}frontend/employee/images/contentImages/threedot.png"
-                                         alt="Options"
-                                         class="threeDot"
-                                         role="button"
-                                         data-bs-toggle="dropdown"
-                                         aria-expanded="false" />
+                                <div>
+                                    <div class="dropdown">
+                                        <img src="{{ asset('/') }}frontend/employee/images/contentImages/threedot.png"
+                                             alt="Options"
+                                             class="threeDot"
+                                             role="button"
+                                             data-bs-toggle="dropdown"
+                                             aria-expanded="false" />
 
-                                    <ul class="dropdown-menu dropdown-menu-end">
-                                        <li><a class="dropdown-item" href="#">Edit</a></li>
-                                        <li><a class="dropdown-item" href="#">Delete</a></li>
-                                    </ul>
+                                        <ul class="dropdown-menu dropdown-menu-end">
+                                            <li><a class="dropdown-item" href="#">Edit</a></li>
+                                            <li>
+                                                <form action="{{ route('employee.employee-documents.destroy', $employeeDocument->id) }}" method="post">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button class="dropdown-item" type="submit">Delete</button>
+                                                </form>
+                                            </li>
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-
-                <div class="row jobCard border-bottom">
-                    <div class="col-2">
-                        <img src="{{ asset('/') }}frontend/employee/images/profile/NID.png" alt="Company Logo" class="companyLogo" />
-                        <img style="width: 40px; height: 42px" src="{{ asset('/') }}frontend/employee/images/profile/NID.png" alt="Company Logo" class="mobileLogo" />
-                    </div>
-                    <div class="col-10">
-                        <div class="jobPosition d-flex justify-content-between">
-                            <div class="d-flex">
-                                <div class="profileCard">
-                                    <h3>National ID card</h3>
-                                    <p class="mb-0">
-                                        JPG - Present
-                                        <img src="{{ asset('/') }}frontend/employee/images/profile/2ndDotDevider.png" alt="" />
-                                        <span>325 KB</span>
-                                    </p>
-                                    <p>Dhaka, Bangladesh</p>
-                                    <div class="profileSummery mt-4"></div>
-                                </div>
-                            </div>
-                            <div>
-                                <div class="dropdown">
-                                    <img src="{{ asset('/') }}frontend/employee/images/contentImages/threedot.png"
-                                         alt="Options"
-                                         class="threeDot"
-                                         role="button"
-                                         data-bs-toggle="dropdown"
-                                         aria-expanded="false" />
-
-                                    <ul class="dropdown-menu dropdown-menu-end">
-                                        <li><a class="dropdown-item" href="#">Edit</a></li>
-                                        <li><a class="dropdown-item" href="#">Delete</a></li>
-                                    </ul>
-                                </div>
-                            </div>
+                @empty
+                    <div class="row jobCard border-bottom">
+                        <div class="col-12">
+                            <span class="f-s-35">No Documents available!!!</span>
                         </div>
                     </div>
-                </div>
+                @endforelse
 
-                <div class="row jobCard border-bottom">
-                    <div class="col-2">
-                        <img src="{{ asset('/') }}frontend/employee/images/profile/DMC.png" alt="Company Logo" class="companyLogo" />
-                        <img style="width: 40px; height: 42px" src="{{ asset('/') }}frontend/employee/images/profile/DMC.png" alt="Company Logo" class="mobileLogo" />
-                    </div>
-                    <div class="col-10">
-                        <div class="jobPosition d-flex justify-content-between">
-                            <div class="d-flex">
-                                <div class="profileCard">
-                                    <h3>Digital Marketing Certification</h3>
-                                    <p class="mb-0">
-                                        PDF - Present
-                                        <img src="{{ asset('/') }}frontend/employee/images/profile/2ndDotDevider.png" alt="" />
-                                        <span>325 KB</span>
-                                    </p>
-                                    <p>Dhaka, Bangladesh</p>
-                                    <div class="profileSummery mt-4"></div>
-                                </div>
-                            </div>
-                            <div>
-                                <div class="dropdown">
-                                    <img src="{{ asset('/') }}frontend/employee/images/contentImages/threedot.png"
-                                         alt="Options"
-                                         class="threeDot"
-                                         role="button"
-                                         data-bs-toggle="dropdown"
-                                         aria-expanded="false" />
 
-                                    <ul class="dropdown-menu dropdown-menu-end">
-                                        <li><a class="dropdown-item" href="#">Edit</a></li>
-                                        <li><a class="dropdown-item" href="#">Delete</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+{{--                <div class="row jobCard border-bottom">--}}
+{{--                    <div class="col-2">--}}
+{{--                        <img src="{{ asset('/') }}frontend/employee/images/profile/NID.png" alt="Company Logo" class="companyLogo" />--}}
+{{--                        <img style="width: 40px; height: 42px" src="{{ asset('/') }}frontend/employee/images/profile/NID.png" alt="Company Logo" class="mobileLogo" />--}}
+{{--                    </div>--}}
+{{--                    <div class="col-10">--}}
+{{--                        <div class="jobPosition d-flex justify-content-between">--}}
+{{--                            <div class="d-flex">--}}
+{{--                                <div class="profileCard">--}}
+{{--                                    <h3>National ID card</h3>--}}
+{{--                                    <p class="mb-0">--}}
+{{--                                        JPG - Present--}}
+{{--                                        <img src="{{ asset('/') }}frontend/employee/images/profile/2ndDotDevider.png" alt="" />--}}
+{{--                                        <span>325 KB</span>--}}
+{{--                                    </p>--}}
+{{--                                    <p>Dhaka, Bangladesh</p>--}}
+{{--                                    <div class="profileSummery mt-4"></div>--}}
+{{--                                </div>--}}
+{{--                            </div>--}}
+{{--                            <div>--}}
+{{--                                <div class="dropdown">--}}
+{{--                                    <img src="{{ asset('/') }}frontend/employee/images/contentImages/threedot.png"--}}
+{{--                                         alt="Options"--}}
+{{--                                         class="threeDot"--}}
+{{--                                         role="button"--}}
+{{--                                         data-bs-toggle="dropdown"--}}
+{{--                                         aria-expanded="false" />--}}
+
+{{--                                    <ul class="dropdown-menu dropdown-menu-end">--}}
+{{--                                        <li><a class="dropdown-item" href="#">Edit</a></li>--}}
+{{--                                        <li><a class="dropdown-item" href="#">Delete</a></li>--}}
+{{--                                    </ul>--}}
+{{--                                </div>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
             </div>
         </section>
     </div>
@@ -866,26 +859,36 @@
                     </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
-                    <!-- Form for adding document -->
-                    <form>
-                        <div class="mb-4">
-                            <label for="documentFileInput" class="form-label">Document</label>
-                            <div class="d-flex align-items-center">
-                                <input type="file" class="form-control" id="documentFileInput" />
-                                <span class="ms-2">cv.pdf <small>(PDF - 325 KB)</small></span>
+                <form action="{{ route('employee.employee-documents.store') }}" method="post" enctype="multipart/form-data">
+                    @csrf
+                    <div class="modal-body">
+                        <!-- Form for adding document -->
+
+                            <div class="mb-3">
+                                <label for="documentFileTitleInput" class="form-label">Document Title</label>
+                                <div class="d-flex align-items-center">
+                                    <input type="text" name="title" class="form-control" id="documentFileTitleInput" />
+                                </div>
                             </div>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer justify-content-between">
-                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-                        Close
-                    </button>
-                    <button type="button" class="btn btn-primary">
-                        Upload Document
-                    </button>
-                </div>
+
+                            <div class="mb-4">
+                                <label for="documentFileInput" class="form-label">Document File</label>
+                                <div class="d-flex align-items-center">
+                                    <input type="file" name="file" class="form-control" id="documentFileInput" />
+{{--                                    <span class="ms-2">cv.pdf <small>(PDF - 325 KB)</small></span>--}}
+                                </div>
+                            </div>
+
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                            Close
+                        </button>
+                        <button type="submit" class="btn btn-primary">
+                            Upload Document
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

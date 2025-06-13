@@ -26,7 +26,7 @@ function imageUpload ($image, $imageDirectory, $imageNameString = null, $width =
         {
             $image->move($imageDirectory, $imageName);
         } else {
-            Image::make($image)->resize((isset($width) ? $width : ''), (isset($height) ? $height : ''))->encode('webp',65)->save($imageUrl, 65);
+            Image::make($image)->resize($width ?? '', $height ?? '')->encode('webp',65)->save($imageUrl, 65);
         }
     } else {
         $imageUrl = $modelFileUrl;
@@ -128,7 +128,7 @@ function fileUpload ($fileObject, $directory, $nameString = null, $modelFileUrl 
                 unlink($modelFileUrl);
             }
         }
-        $fileName       = $nameString.str_replace(' ', '-', pathinfo($fileObject->getClientOriginalName(), PATHINFO_FILENAME)).'_'.rand(100,100000).'.'.$fileObject->extension();
+        $fileName       = $nameString.'-'.str_replace(' ', '-', pathinfo($fileObject->getClientOriginalName(), PATHINFO_FILENAME)).'_'.rand(100,100000).'.'.$fileObject->extension();
         $fileDirectory  = 'backend/assets/uploaded-files/'.$directory.'/';
         $fileObject->move($fileDirectory, $fileName);
         return $fileDirectory.$fileName;
