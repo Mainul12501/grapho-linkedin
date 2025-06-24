@@ -22,7 +22,10 @@ class ViewHelper
 //            {
                 if (empty($data))
                 {
-                    return response()->json(isset($jsonErrorMessage) ? $jsonErrorMessage : 'Something went wrong. Please try again.', 400);
+                    return response()->json(['status' => 'empty', 'msg' => 'No Data found.'], 200);
+                } elseif (isset($jsonErrorMessage))
+                {
+                    return response()->json($jsonErrorMessage , 400);
                 }
                 return response()->json($data, 200);
 //            }

@@ -11,6 +11,7 @@ use App\Models\Backend\JobType;
 use App\Models\Backend\SkillsCategory;
 use App\Models\Backend\UniversityName;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class EmployerViewController extends Controller
 {
@@ -19,6 +20,7 @@ class EmployerViewController extends Controller
         $data = [
             'jobTasks'  => JobTask::where(['user_id' => ViewHelper::loggedUser()->id, 'status' => 1])->get(),
         ];
+        return ViewHelper::checkViewForApi($data, 'frontend.employer.home.home');
         return view('frontend.employer.home.home', $data);
     }
     public function myJobs()
@@ -31,10 +33,13 @@ class EmployerViewController extends Controller
             'skillCategories'   => SkillsCategory::where(['status' => 1])->get(['id', 'category_name']),
             'publishedJobs' => JobTask::where(['user_id' => ViewHelper::loggedUser()->id, 'status' => 1])->get(),
         ];
+        return ViewHelper::checkViewForApi($data, 'frontend.employer.jobs.my-jobs');
         return view('frontend.employer.jobs.my-jobs', $data);
     }
     public function myJobWiseApplicants()
     {
+        $data = [];
+        return ViewHelper::checkViewForApi($data, 'frontend.employer.jobs.my-applicants');
         return view('frontend.employer.jobs.my-applicants');
     }
     public function myJobApplicants()

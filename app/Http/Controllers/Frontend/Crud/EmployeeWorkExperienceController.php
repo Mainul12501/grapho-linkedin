@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Frontend\Crud;
 
+use App\Helpers\ViewHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Backend\EmployeeWorkExperience;
 use Brian2694\Toastr\Facades\Toastr;
@@ -34,23 +35,28 @@ class EmployeeWorkExperienceController extends Controller
             'title' => 'required',
             'company_name' => 'required',
         ]);
-        $workExperience = new EmployeeWorkExperience();
-        $workExperience->user_id    = auth()->id();
-        $workExperience->title  = $request->title;
-        $workExperience->company_name   = $request->company_name;
-        $workExperience->company_logo   = imageUpload($request->file('company_logo'), 'work-exp', 'work-exp', 60, 60, $workExperience->company_logo ?? null);
-        $workExperience->position   = $request->position;
-        $workExperience->job_responsibilities   = $request->job_responsibilities;
-        $workExperience->start_date = $request->start_date;
-        if ($request->is_working_currently != 'on')
-        $workExperience->end_date   = $request->end_date;
-        $workExperience->office_address = $request->office_address;
-        $workExperience->duration   = $request->duration;
-        $workExperience->is_working_currently   = $request->is_working_currently == 'on' ? 1 : 0;
-        $workExperience->job_type   = $request->job_type;
-        $workExperience->status   = 1;
-        $workExperience->save();
-        Toastr::success('Experience Created Successfully.');
+        try {
+            $workExperience = new EmployeeWorkExperience();
+            $workExperience->user_id    = auth()->id();
+            $workExperience->title  = $request->title;
+            $workExperience->company_name   = $request->company_name;
+            $workExperience->company_logo   = imageUpload($request->file('company_logo'), 'work-exp', 'work-exp', 60, 60, $workExperience->company_logo ?? null);
+            $workExperience->position   = $request->position;
+            $workExperience->job_responsibilities   = $request->job_responsibilities;
+            $workExperience->start_date = $request->start_date;
+            if ($request->is_working_currently != 'on')
+                $workExperience->end_date   = $request->end_date;
+            $workExperience->office_address = $request->office_address;
+            $workExperience->duration   = $request->duration;
+            $workExperience->is_working_currently   = $request->is_working_currently == 'on' ? 1 : 0;
+            $workExperience->job_type   = $request->job_type;
+            $workExperience->status   = 1;
+            $workExperience->save();
+            return ViewHelper::returnSuccessMessage('Experience Created Successfully.');
+        } catch (\Exception $exception)
+        {
+            return ViewHelper::returEexceptionError($exception->getMessage());
+        }
         return back();
     }
 
@@ -83,8 +89,13 @@ class EmployeeWorkExperienceController extends Controller
      */
     public function destroy(/*string $id*/EmployeeWorkExperience $employeeWorkExperience)
     {
-        $employeeWorkExperience->delete();
-        Toastr::success('Experience deleted Successfully.');
+        try {
+            $employeeWorkExperience->delete();
+            return ViewHelper::returnSuccessMessage('Experience deleted Successfully.');
+        } catch (\Exception $exception)
+        {
+            return ViewHelper::returEexceptionError($exception->getMessage());
+        }
         return back();
     }
 }

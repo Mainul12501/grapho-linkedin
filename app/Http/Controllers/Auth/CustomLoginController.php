@@ -24,6 +24,12 @@ class CustomLoginController extends Controller
     }
     public function userRegistrationPage(Request $request)
     {
+        $data = [
+            'userType' => $request->user,
+            'industries'    => Industry::where('status', 1)->get(['id', 'name']),
+            'companyCategories'    => EmployerCompanyCategory::where('status', 1)->get(['id', 'category_name']),
+        ];
+        return ViewHelper::checkViewForApi($data, 'frontend.auth.user-registration-page');
         return view('frontend.auth.user-registration-page', [
             'userType' => $request->user,
             'industries'    => Industry::where('status', 1)->get(['id', 'name']),

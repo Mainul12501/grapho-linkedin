@@ -24,7 +24,13 @@ class EmployeeViewController extends Controller
 {
     public function employeeHome()
     {
-        return ViewHelper::checkViewForApi([], 'frontend.employee.home.home');
+        $data = [
+            'totalSavedJobs'    => auth()->user()->employeeSavedJobs()->count() ?? 0,
+            'totalAppliedApplications'    => auth()->user()->employeeAppliedJobs()->count() ?? 0,
+            'totalViewedEmployers'    => auth()->user()->viewedEmployers()->count() ?? 0,
+        ];
+        return ViewHelper::checkViewForApi($data, 'frontend.employee.home.home');
+        return \view('frontend.employee.home.home');
     }
     public function showJobs(Request $request)
     {
@@ -184,9 +190,11 @@ class EmployeeViewController extends Controller
                 $user->save();
             }
             Toastr::success('Profile Info updated successfully.');
+            return ViewHelper::returnResponseFromPostRequest(true,'Profile Info updated successfully.');
         } catch (\Exception $exception)
         {
             Toastr::error($exception->getMessage());
+            return ViewHelper::returnResponseFromPostRequest(true, $exception->getMessage());
         }
         return back();
     }

@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Backend\EmployeeEducation;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class EmployeeEducationController extends Controller
 {
@@ -32,24 +33,40 @@ class EmployeeEducationController extends Controller
     public function store(Request $request)
     {
 //        return $request->all();
-        $request->validate([
+//        $request->validate([
+//            'passing_year'  => 'required',
+//            'university_name_id'  => 'required',
+//        ]);
+        $validator = Validator::make($request->all(), [
             'passing_year'  => 'required',
             'university_name_id'  => 'required',
         ]);
-        $employeeEducation = new EmployeeEducation();
-        $employeeEducation->user_id = ViewHelper::loggedUser()->id;
-        $employeeEducation->education_degree_name_id    = $request->education_degree_name_id;
-        $employeeEducation->university_name_id  = $request->university_name_id;
-        $employeeEducation->field_of_study_id   = $request->field_of_study_id;
-        $employeeEducation->main_subject_id = $request->main_subject_id;
-        $employeeEducation->starting_date   = $request->starting_date;
-        $employeeEducation->ending_date = $request->ending_date;
-        $employeeEducation->passing_year    = $request->passing_year;
-        $employeeEducation->cgpa    = $request->cgpa;
-        $employeeEducation->address = $request->address;
+
+        if ($validator->fails())
+        {
+            return ViewHelper::returEexceptionError($validator->errors());
+        }
+
+        try {
+            $employeeEducation = new EmployeeEducation();
+            $employeeEducation->user_id = ViewHelper::loggedUser()->id;
+            $employeeEducation->education_degree_name_id    = $request->education_degree_name_id;
+            $employeeEducation->university_name_id  = $request->university_name_id;
+            $employeeEducation->field_of_study_id   = $request->field_of_study_id;
+            $employeeEducation->main_subject_id = $request->main_subject_id;
+            $employeeEducation->starting_date   = $request->starting_date;
+            $employeeEducation->ending_date = $request->ending_date;
+            $employeeEducation->passing_year    = $request->passing_year;
+            $employeeEducation->cgpa    = $request->cgpa;
+            $employeeEducation->address = $request->address;
 //        $employeeEducation->status  = $request->status;
-        $employeeEducation->save();
-        Toastr::success('Employee Education Info saved successfully.');
+            $employeeEducation->save();
+            return ViewHelper::returnSuccessMessage('Employee Education Info saved successfully.');
+        } catch (\Exception $exception)
+        {
+            return ViewHelper::returEexceptionError($exception->getMessage());
+        }
+
         return back();
     }
 

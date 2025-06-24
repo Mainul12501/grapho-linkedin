@@ -19,6 +19,7 @@ class UserSeeder extends Seeder
                 'id' => 1,
                 'name'  => 'Super Admin',
                 'email' => 'admin@admin.com',
+                'user_type' => 'super_admin',
 //                'mobile' => '01911522517',
                 'password'  => Hash::make('admin@admin.com'), // superadmin
 //                'status'    => 1
@@ -27,6 +28,7 @@ class UserSeeder extends Seeder
                 'id' => 2,
                 'name'  => 'Developer',
                 'email' => 'developer@grapho.com',
+                'user_type' => 'super_admin',
 //                'mobile' => '01646688970',
                 'password'  => Hash::make('mainulislam'), // superadmin
 //                'status'    => 1

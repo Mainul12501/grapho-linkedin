@@ -25,7 +25,7 @@
                                     </div>
                                     <div>
                                         <div class="title">My saved jobs</div>
-                                        <div class="subtitle text-dark">{{ auth()->user()->employeeSavedJobs()->count() ?? 0 }} saved</div>
+                                        <div class="subtitle text-dark">{{ $totalSavedJobs }} saved</div>
                                     </div>
                                     <div class="arrow">
                                         <img src="{{ asset('/') }}frontend/employee/images/contentImages/arrow-right 1.png" alt="" />
@@ -40,7 +40,7 @@
                                     </div>
                                     <div>
                                         <div class="title">My applications</div>
-                                        <div class="subtitle text-dark">{{ auth()->user()->employeeAppliedJobs()->count() ?? 0 }} applications</div>
+                                        <div class="subtitle text-dark">{{ $totalAppliedApplications }} applications</div>
                                     </div>
                                     <div class="arrow">
                                         <img src="{{ asset('/') }}frontend/employee/images/contentImages/arrow-right 1.png" alt="" />
@@ -55,7 +55,7 @@
                                     </div>
                                     <div>
                                         <div class="title">Profiler viewers</div>
-                                        <div class="subtitle text-dark">{{ auth()->user()->viewedEmployers()->count() ?? 0 }} viewers</div>
+                                        <div class="subtitle text-dark">{{ $totalViewedEmployers }} viewers</div>
                                     </div>
                                     <div class="arrow">
                                         <img src="{{ asset('/') }}frontend/employee/images/contentImages/arrow-right 1.png" alt="" />
