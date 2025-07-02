@@ -18,7 +18,7 @@
             </div>
 
             <ul class="dropdown-menu dropdown-menu-end">
-                <li><a class="dropdown-item" href="#">Profile</a></li>
+                <li><a class="dropdown-item" href="{{ route('employer.company-profile') }}">Profile</a></li>
                 <li><a class="dropdown-item" href="#" onclick="event.preventDefault(); document.getElementById('logoutForm').submit();">Logout</a></li>
                 <form action="{{ route('logout') }}" method="post" id="logoutForm">
                     @csrf

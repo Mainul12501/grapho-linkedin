@@ -25,7 +25,7 @@
                                     Full Name
                                 </div>
                                 <div class="border px-5 py-2 rounded" >
-                                    <span>Md. Pranto</span>
+                                    <span>{{ $loggedUser->name ?? 'User Name' }}</span>
                                 </div>
                             </div>
 
@@ -37,7 +37,7 @@
                                 </div>
                                 <div class="d-flex align-items-center text-end" style="gap:8px; cursor:pointer;">
                                     <span>********</span>
-                                    <img src="{{ asset('/') }}frontend/employer/images/employersHome/arrow-right 1.png" alt="">
+                                    <img src="{{ asset('/') }}frontend/employer/images/employersHome/arrow-right 1.png" alt="" data-bs-toggle="modal" data-bs-target="#employeePasswordChangeModal">
                                 </div>
                             </div>
 
@@ -49,7 +49,7 @@
                                 </div>
                                 <div class="d-flex align-items-center text-end" style="gap:8px; cursor:pointer;">
                                     <span class="text-muted">md.pranto@gmail.com</span>
-                                    <img src="{{ asset('/') }}frontend/employer/images/employersHome/arrow-right 1.png" alt="">
+                                    <img src="{{ asset('/') }}frontend/employer/images/employersHome/arrow-right 1.png" alt="" data-bs-toggle="modal" data-bs-target="#employeeSettingsModal">
                                 </div>
                             </div>
 
@@ -72,7 +72,7 @@
                                             <!-- Add more languages here -->
                                         </ul>
                                     </div>
-                                    <img src="{{ asset('/') }}frontend/employer/images/employersHome/arrow-right 1.png" alt="">
+{{--                                    <img src="{{ asset('/') }}frontend/employer/images/employersHome/arrow-right 1.png" alt="">--}}
                                 </div>
                             </div>
 
@@ -83,9 +83,12 @@
                                     <img src="{{ asset('/') }}frontend/employer/images/employersHome/settings-Log out.png" alt="">
                                     Log out
                                 </div>
-                                <a href="#" class="d-flex align-items-center text-decoration-none" style="gap:8px; cursor:pointer;">
+                                <a href="#" class="d-flex align-items-center text-decoration-none" style="gap:8px; cursor:pointer;" onclick="event.preventDefault(); document.getElementById('pageLogoutForm').submit();">
                                     <img src="{{ asset('/') }}frontend/employer/images/employersHome/arrow-right 1.png" alt="">
                                 </a>
+                                <form action="{{ route('logout') }}" method="post" id="pageLogoutForm">
+                                    @csrf
+                                </form>
                             </div>
 
                         </form>
@@ -98,4 +101,70 @@
         </div>
     </div>
 
+@endsection
+
+@section('modal')
+    <!-- Modal -->
+    <div class="modal fade" id="employeeSettingsModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Edit Settings</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="{{ route('employer.update-settings') }}" method="post" enctype="multipart/form-data">
+                    @csrf
+                    <div class="modal-body">
+                        <div>
+                            <label for="">Full Name</label>
+                            <input type="text" class="form-control" name="name" value="{{ $loggedUser->name ?? '' }}" placeholder="Enter Your Full Name" >
+                        </div>
+                        <div class="mt-3">
+                            <label for="">Email</label>
+                            <input type="text" class="form-control" name="email" value="{{ $loggedUser->email ?? '' }}" placeholder="Enter Your Email" >
+                        </div>
+                        <div class="mt-3">
+                            <label for="">Mobile</label>
+                            <input type="text" class="form-control" name="mobile" value="{{ $loggedUser->mobile ?? '' }}" placeholder="Enter Your Email" >
+                        </div>
+                        <div class="mt-3">
+                            <label for="">Profile Image</label>
+                            <input type="file" class="form-control" name="profile_image" placeholder="Enter Profile Image" accept="image/*" />
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="employeePasswordChangeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">change Password</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="{{ route('auth.user-password-update') }}" method="post" enctype="multipart/form-data">
+                    @csrf
+                    <div class="modal-body">
+                        <div>
+                            <label for="">Previous Password</label>
+                            <input type="password" class="form-control" name="old_password" required placeholder="Enter Your Old Password" >
+                        </div>
+                        <div class="mt-3">
+                            <label for="">New Password</label>
+                            <input type="text" class="form-control" name="password" required placeholder="Enter New Password" >
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Change Password</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 @endsection

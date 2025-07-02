@@ -27,6 +27,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'isEmployee'    => \App\Http\Middleware\IsEmployeeMiddleware::class,
             'isEmployer'    => \App\Http\Middleware\IsEmployerMiddleware::class,
+            'redirectToHomeOnSessionOut'    => \App\Http\Middleware\RedirectToHomeOnSessionOut::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

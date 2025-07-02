@@ -1,4 +1,4 @@
-@extends('frontend.employer.master')
+    @extends('frontend.employer.master')
 
 @section('title', 'User Management')
 
@@ -204,18 +204,35 @@
 
                         </div>
                     </div>
+
+                    <div class="mt-3">
+                        <div class="table-responsive">
+                            <table class="table" id="datatable">
+                                <thead>
+                                    <tr>
+                                        <th>Email</th>
+                                        <th>Name</th>
+                                        <th>Role</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </section>
-
-
-
-
-
-
 
             </div>
         </div>
-
-
     </div>
 @endsection
 
@@ -258,3 +275,16 @@
     </div>
 
 @endsection
+
+    @push('script')
+        @include('backend.includes.assets.plugin-files.datatable')
+        <script>
+            $(document).ready(function() {
+                $('#datatable').DataTable({
+                    responsive: true,
+                    lengthChange: false,
+                    autoWidth: false,
+                    buttons: ['copy', 'csv', 'excel', 'pdf', 'print']
+                }).buttons().container().appendTo('#datatable-buttons_wrapper .col-md-6:eq(0)');
+            });
+    @endpush

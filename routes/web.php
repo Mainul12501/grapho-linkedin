@@ -35,13 +35,17 @@ Route::prefix('auth')->name('auth.')->group(function (){
     Route::post('custom-registration', [CustomLoginController::class, 'customRegistration'])->name('custom-registration');
     Route::post('custom-login', [CustomLoginController::class, 'customLogin'])->name('custom-login');
 
+
 });
 
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
     'verified',
+    'redirectToHomeOnSessionOut',
 ])->group(function () {
+
+    Route::post('auth/user-password-update', [CustomLoginController::class, 'userPasswordUpdate'])->name('auth.user-password-update');
 
     Route::prefix('employer')->as('employer.')->middleware('isEmployer')->group(function (){
        Route::get('home', [EmployerViewController::class, 'employerHome'])->name('home');
@@ -52,6 +56,9 @@ Route::middleware([
        Route::get('employer-user-management', [EmployerViewController::class, 'employerUserManagement'])->name('employer-user-management');
        Route::get('settings', [EmployerViewController::class, 'settings'])->name('settings');
        Route::get('company-profile', [EmployerViewController::class, 'companyProfile'])->name('company-profile');
+
+       Route::post('update-settings', [EmployerViewController::class, 'updateSettings'])->name('update-settings');
+       Route::post('update-company-info', [EmployerViewController::class, 'updateCompanyInfo'])->name('update-company-info');
 
        Route::resources([
            'job-tasks'  => JobTaskController::class

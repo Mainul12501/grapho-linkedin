@@ -188,4 +188,28 @@ class CustomLoginController extends Controller
             return response()->json(['status' => 'error', 'msg' => 'No mobile Number found.']);
         }
     }
+
+    public function userPasswordUpdate(Request $request)
+    {
+        $validator = \Validator::make($request->all(), [
+            'old_password' => 'required',
+            'password' => 'required|min:6',
+        ]);
+        if ($validator->fails()) {
+            return ViewHelper::returEexceptionError($validator->errors());
+        }
+        $user = ViewHelper::loggedUser();
+        if (password_verify($request->old_password, $user->password)) {
+            $user->password = bcrypt($request->password);
+            $user->save();
+            if (str()->contains(url()->current(), '/api/')) {
+                return response()->json(['status' => 'success', 'msg' => 'Password updated successfully.']);
+            } else {
+                Toastr::success('Password updated successfully.');
+                return redirect()->back();
+            }
+        } else {
+            return ViewHelper::returEexceptionError('Current password is incorrect.');
+        }
+    }
 }

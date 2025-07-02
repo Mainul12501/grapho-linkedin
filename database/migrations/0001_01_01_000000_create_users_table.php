@@ -57,8 +57,10 @@ return new class extends Migration
             $table->string('dob')->nullable();
             $table->string('language')->nullable();
             $table->tinyInteger('is_open_for_hire')->default(0)->nullable();
-
-
+            $table->enum('employer_agent_active_status', [
+                'active',
+                'inactive',
+            ])->default('inactive')->nullable();
 
 
 

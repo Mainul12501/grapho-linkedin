@@ -24,14 +24,14 @@ Route::post('send-otp', [CustomLoginController::class, 'sendOtp'])->name('send-o
 Route::get('get-job-details/{id}', [JobTaskController::class, 'getJobDetails'])->name('get-job-details');
 
 Route::prefix('auth')->name('auth.')->group(function (){
-    Route::get('select-auth-method', [CustomLoginController::class, 'selectAuthMethod'])->name('select-auth-method');
-    Route::get('set-registration-role', [CustomLoginController::class, 'setRegistrationRole'])->name('set-registration-role');
-    Route::get('set-login-role', [CustomLoginController::class, 'setLoginRole'])->name('set-login-role');
-    Route::get('user-login-page', [CustomLoginController::class, 'userLoginPage'])->name('user-login-page');
-    Route::get('user-registration-page', [CustomLoginController::class, 'userRegistrationPage'])->name('user-registration-page');
+    Route::get('select-auth-method', [CustomLoginController::class, 'selectAuthMethod']);
+    Route::get('set-registration-role', [CustomLoginController::class, 'setRegistrationRole']);
+    Route::get('set-login-role', [CustomLoginController::class, 'setLoginRole']);
+    Route::get('user-login-page', [CustomLoginController::class, 'userLoginPage']);
+    Route::get('user-registration-page', [CustomLoginController::class, 'userRegistrationPage']);
 
-    Route::post('custom-registration', [CustomLoginController::class, 'customRegistration'])->name('custom-registration');
-    Route::post('custom-login', [CustomLoginController::class, 'customLogin'])->name('custom-login');
+    Route::post('custom-registration', [CustomLoginController::class, 'customRegistration']);
+    Route::post('custom-login', [CustomLoginController::class, 'customLogin']);
 
 });
 
@@ -41,35 +41,40 @@ Route::middleware([
 //    'verified',
 ])->group(function () {
 
+    Route::post('auth/user-password-update', [CustomLoginController::class, 'userPasswordUpdate'])->name('auth.user-password-update');
+
     Route::prefix('employer')->as('employer.')->middleware('isEmployer')->group(function (){
-        Route::get('home', [EmployerViewController::class, 'employerHome'])->name('home');
-        Route::get('my-jobs', [EmployerViewController::class, 'myJobs'])->name('my-jobs');
-        Route::get('my-job-wise-applicants', [EmployerViewController::class, 'myJobWiseApplicants'])->name('my-job-wise-applicants');
-        Route::get('my-job-applicants', [EmployerViewController::class, 'myJobApplicants'])->name('my-job-applicants');
-        Route::get('head-hunt', [EmployerViewController::class, 'headHunt'])->name('head-hunt');
-        Route::get('employer-user-management', [EmployerViewController::class, 'employerUserManagement'])->name('employer-user-management');
-        Route::get('settings', [EmployerViewController::class, 'settings'])->name('settings');
-        Route::get('company-profile', [EmployerViewController::class, 'companyProfile'])->name('company-profile');
+        Route::get('home', [EmployerViewController::class, 'employerHome']);
+        Route::get('my-jobs', [EmployerViewController::class, 'myJobs']);
+        Route::get('my-job-wise-applicants', [EmployerViewController::class, 'myJobWiseApplicants']);
+        Route::get('my-job-applicants', [EmployerViewController::class, 'myJobApplicants']);
+        Route::get('head-hunt', [EmployerViewController::class, 'headHunt']);
+        Route::get('employer-user-management', [EmployerViewController::class, 'employerUserManagement']);
+        Route::get('settings', [EmployerViewController::class, 'settings']);
+        Route::get('company-profile', [EmployerViewController::class, 'companyProfile']);
+
+        Route::post('update-settings', [EmployerViewController::class, 'updateSettings']);
+        Route::post('update-company-info', [EmployerViewController::class, 'updateCompanyInfo']);
 
         Route::resources([
             'job-tasks'  => JobTaskController::class
         ]);
     });
     Route::prefix('employee')->as('employee.')->middleware('isEmployee')->group(function (){
-        Route::get('home', [EmployeeViewController::class, 'employeeHome'])->name('home');
-        Route::get('show-jobs', [EmployeeViewController::class, 'showJobs'])->name('show-jobs');
-        Route::get('my-saved-jobs', [EmployeeViewController::class, 'mySavedJobs'])->name('my-saved-jobs');
-        Route::get('my-applications', [EmployeeViewController::class, 'myApplications'])->name('my-applications');
-        Route::get('my-profile-viewers', [EmployeeViewController::class, 'myProfileViewers'])->name('my-profile-viewers');
-        Route::get('my-subscriptions', [EmployeeViewController::class, 'mySubscriptions'])->name('my-subscriptions');
-        Route::get('settings', [EmployeeViewController::class, 'settings'])->name('settings');
-        Route::get('my-profile', [EmployeeViewController::class, 'myProfile'])->name('my-profile');
-        Route::get('my-notifications', [EmployeeViewController::class, 'myNotifications'])->name('my-notifications');
-        Route::get('save-job/{jobTask}', [EmployeeViewController::class, 'saveJob'])->name('save-job');
-        Route::get('delete-saved-job/{jobTask}', [EmployeeViewController::class, 'deleteSaveJob'])->name('delete-saved-job');
+        Route::get('home', [EmployeeViewController::class, 'employeeHome']);
+        Route::get('show-jobs', [EmployeeViewController::class, 'showJobs']);
+        Route::get('my-saved-jobs', [EmployeeViewController::class, 'mySavedJobs']);
+        Route::get('my-applications', [EmployeeViewController::class, 'myApplications']);
+        Route::get('my-profile-viewers', [EmployeeViewController::class, 'myProfileViewers']);
+        Route::get('my-subscriptions', [EmployeeViewController::class, 'mySubscriptions']);
+        Route::get('settings', [EmployeeViewController::class, 'settings']);
+        Route::get('my-profile', [EmployeeViewController::class, 'myProfile']);
+        Route::get('my-notifications', [EmployeeViewController::class, 'myNotifications']);
+        Route::get('save-job/{jobTask}', [EmployeeViewController::class, 'saveJob']);
+        Route::get('delete-saved-job/{jobTask}', [EmployeeViewController::class, 'deleteSaveJob']);
 
-        Route::post('apply-job/{jobTask}', [EmployeeViewController::class, 'applyJob'])->name('apply-job');
-        Route::post('update-profile/{user}', [EmployeeViewController::class, 'updateProfile'])->name('update-profile');
+        Route::post('apply-job/{jobTask}', [EmployeeViewController::class, 'applyJob']);
+        Route::post('update-profile/{user}', [EmployeeViewController::class, 'updateProfile']);
 
 //        crud routes
         Route::resources([

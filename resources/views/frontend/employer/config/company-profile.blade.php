@@ -11,16 +11,16 @@
                 <div class="col-md-4 col-12">
                     <div class="card d-flex flex-column  p-4 border rounded-3">
                         <div class="mb-3">
-                            <img src="{{ asset('/') }}frontend/employer/images/employersHome/gpLogo.png" alt="Grameenphone Logo" class="companyProfilecontainer__logo" />
+                            <img src="{{ asset( $companyDetails->logo ??  '/frontend/employer/images/employersHome/gpLogo.png') }}" alt="{{ $companyDetails->name ?? 'company' }}-Logo" class="companyProfilecontainer__logo" />
                         </div>
-                        <h5 class="fw-semibold mb-4">Grameenphone Ltd.</h5>
+                        <h5 class="fw-semibold mb-4">{{ $companyDetails->name ?? 'Company Name' }}</h5>
 
                         <div class="w-100">
                             <div class="d-flex align-items-center mb-3 companyProfilecontainer__contact-item">
                                 <img src="{{ asset('/') }}frontend/employer/images/employersHome/profile location.png" alt="Location Icon" class="me-3" />
                                 <div>
                                     <div class="fw-semibold small mb-1">Location</div>
-                                    <div class="small text-muted">Dhaka, Bangladesh</div>
+                                    <div class="small text-muted">{!! $companyDetails->address ?? 'Dhaka, Bangladesh' !!}</div>
                                 </div>
                             </div>
 
@@ -28,7 +28,7 @@
                                 <img src="{{ asset('/') }}frontend/employer/images/employersHome/profile mail.png" alt="Email Icon" class="me-3" />
                                 <div>
                                     <div class="fw-semibold small mb-1">Email</div>
-                                    <a href="mailto:contact@gp.com" class="text-decoration-none small">contact@gp.com</a>
+                                    <a href="mailto:contact@gp.com" class="text-decoration-none small">{{ $companyDetails->email ?? 'email@company.com' }}</a>
                                 </div>
                             </div>
 
@@ -36,7 +36,7 @@
                                 <img src="{{ asset('/') }}frontend/employer/images/employersHome/profile phone.png" alt="Phone Icon" class="me-3" />
                                 <div>
                                     <div class="fw-semibold small mb-1">Phone</div>
-                                    <div class="small text-muted">+8801653523779</div>
+                                    <div class="small text-muted">{{ $companyDetails->phone ?? '01600000000' }}</div>
                                 </div>
                             </div>
 
@@ -44,11 +44,11 @@
                                 <img src="{{ asset('/') }}frontend/employer/images/employersHome/profile website.png" alt="Website Icon" class="me-3" />
                                 <div>
                                     <div class="fw-semibold small mb-1">Website</div>
-                                    <a href="https://www.grameenphone.com" target="_blank" class="text-decoration-none small">www.grameenphone.com</a>
+                                    <a href="https://www.grameenphone.com" target="_blank" class="text-decoration-none small">{{ $companyDetails->website ?? 'company.com' }}</a>
                                 </div>
                             </div>
 
-                            <button class="btn btn-link p-0 mt-3 editButtonCompanyProfile" style="font-size: 0.9rem;"> <img src="{{ asset('/') }}frontend/employer/images/employersHome/Edit pencil.png" alt=""> Edit contact info</button>
+                            <button class="btn btn-link p-0 mt-3 editButtonCompanyProfile" data-bs-toggle="modal" data-bs-target="#employerCompanyEditModal" style="font-size: 0.9rem;"> <img src="{{ asset('/') }}frontend/employer/images/employersHome/Edit pencil.png" alt=""> Edit contact info</button>
                         </div>
                     </div>
                 </div>
@@ -58,43 +58,122 @@
                     <div class="card">
                         <div class="d-flex justify-content-between align-items-center mb-3 companyProfilecontainer__topbar p-4">
                             <h6 class="mb-0 fw-semibold">Company overview</h6>
-                            <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#employerCompanyEditModal">Edit</button>
                         </div>
                         <div class=" companyProfilecontainer__right-part p-4">
                             <div class="mb-4">
-                                <p class="mb-3">
-                                    The right and contemporary use of technology is key to the progress of a nation. Keeping this in mind, Grameenphone always brings future-proof technology in order to facilitate your progress. The possibilities in this new world are immense and someone as bright as you should be the forerunner in leading the change. At the end of the day, Grameenphone believes, individual progresses eventually accumulate in progress of a nation.
-                                </p>
-                                <p class="mb-3">
-                                    A career at Grameenphone is about going beyond your ability to help society move ahead. Challenges here are met not by individuals but by teams – teams that live by the values, strives to innovate & are always ready to take on the challenge of creating winning solutions. Armed with the most employee friendly policies of the country and avant-garde infrastructure, the Grameenphone employees are relentless in their mission to help the customers to reap the benefit of staying connected.
-                                </p>
-                                <p>
-                                    In Grameenphone, we believe in the power of people to transform the society for the better. So we are dedicated to build and develop supreme talents that are at par with its unyielding growth. So explore your opportunities with Grameenphone today if you are ready to Go Beyond.
-                                </p>
+                                {!! $companyDetails->company_overview ?? strip_tags('<p class="f-s-30">Company Overview Not found</p>') !!}
                             </div>
 
                             <div class="d-flex flex-wrap gap-4 companyProfilecontainer__footer-info justify-content-between">
                                 <div>
                                     <div class="fw-semibold">Industry</div>
-                                    <div>Telecommunication</div>
+                                    <div>{{ $companyDetails?->industry?->name ?? 'Telecommunication' }}</div>
                                 </div>
                                 <div>
                                     <div class="fw-semibold">Number of employees</div>
-                                    <div>500+</div>
+                                    <div>{{ $companyDetails->total_employees ?? 0 }}</div>
                                 </div>
                                 <div>
                                     <div class="fw-semibold">Founded on</div>
-                                    <div>1997</div>
+                                    <div>{{ $companyDetails->founded_on ?? '1971' }}</div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-
         </div>
-
-
     </div>
-
 @endsection
+
+@section('modal')
+    <!-- modal -->
+    <div class="modal fade" id="employerCompanyEditModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Edit Company Info</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="{{ route('employer.update-company-info') }}" method="post" enctype="multipart/form-data">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label for="">Company Name</label>
+                                <input type="text" class="form-control" name="name" value="{{ $companyDetails->name ?? '' }}" placeholder="Enter Your Full Name" >
+                            </div>
+                            <div class="col-md-4">
+                                <label for="">Email</label>
+                                <input type="text" class="form-control" name="email" value="{{ $companyDetails->email ?? '' }}" placeholder="Enter Your Email" >
+                            </div>
+                            <div class="col-md-4">
+                                <label for="">Mobile</label>
+                                <input type="text" class="form-control" name="phone" value="{{ $companyDetails->phone ?? '' }}" placeholder="Enter Your Mobile Number" >
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-md-4">
+                                <label for="">Website</label>
+                                <input type="text" class="form-control" name="website" value="{{ $companyDetails->website ?? '' }}" placeholder="Enter Company website address" >
+                            </div>
+                            <div class="col-md-4">
+                                <label for="">Number of employees</label>
+                                <input type="text" class="form-control" name="total_employees" value="{{ $companyDetails->total_employees ?? '' }}" placeholder="Enter Number of employees" >
+                            </div>
+                            <div class="col-md-4">
+                                <label for="">Founded on</label>
+                                <input type="text" class="form-control" name="founded_on" value="{{ $companyDetails->founded_on ?? '' }}" placeholder="Enter Founded Year" >
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-md-4">
+                                <label for="selectCompanyCategory">Select Company Category</label>
+                                <select name="employer_company_category_id" id="selectCompanyCategory" class="form-control select2">
+                                    <option value="">Select Industry</option>
+                                    @foreach ($employerCompanyCategories as $employerCompanyCategory)
+                                        <option value="{{ $employerCompanyCategory->id }}" {{ $companyDetails->employer_company_category_id == $employerCompanyCategory->id ? 'selected' : '' }}>{{ $employerCompanyCategory->category_name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="selectIndustry">Select Industry</label>
+                                <select name="industry_id" id="selectIndustry" class="form-control select2">
+                                    <option value="">Select Industry</option>
+                                    @foreach ($industries as $industry)
+                                        <option value="{{ $industry->id }}" {{ $companyDetails->industry_id == $industry->id ? 'selected' : '' }}>{{ $industry->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="setLogo">Set Logo</label>
+                                <div>
+                                    <input type="file" name="logo" class="" accept="image/*" />
+                                    @if(isset($companyDetails->logo))
+                                        <img src="{{ asset($companyDetails->logo) }}" alt="Company Logo" placeholder="Enter Company Logo" class="img-fluid mt-2" style="max-height: 100px; max-width: 100px;">
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-12">
+                                <label for="companyOverview">Company Overview</label>
+                                <textarea name="company_overview" class="form-control summernote" id="" cols="30" rows="10">{!! $companyDetails->company_overview !!}</textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+@endsection
+
+@push('script')
+    @include('common-resource-files.selectize')
+    @include('common-resource-files.summernote')
+@endpush

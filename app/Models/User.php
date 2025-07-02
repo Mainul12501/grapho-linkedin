@@ -59,6 +59,7 @@ class User extends Authenticatable
         'dob',
         'language',
         'is_open_for_hire',
+        'employer_agent_active_status',
     ];
 
     /**
