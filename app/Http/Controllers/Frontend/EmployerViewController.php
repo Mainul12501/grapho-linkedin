@@ -13,6 +13,7 @@ use App\Models\Backend\JobTask;
 use App\Models\Backend\JobType;
 use App\Models\Backend\SkillsCategory;
 use App\Models\Backend\UniversityName;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\View\View;
@@ -61,6 +62,11 @@ class EmployerViewController extends Controller
     }
     public function employerUserManagement()
     {
+        $this->data = [
+            'loggedUser'    =>  ViewHelper::loggedUser(),
+            'employerUsers' =>  User::where(['user_type' => 'sub_employer'])->get(['id', 'name', 'email', 'mobile', 'profile_image', 'user_type', 'employer_agent_active_status']),
+        ];
+        return ViewHelper::checkViewForApi($this->data, 'frontend.employer.config.users');
         return view('frontend.employer.config.users');
     }
     public function settings()

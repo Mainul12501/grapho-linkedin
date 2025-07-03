@@ -210,21 +210,29 @@
                             <table class="table" id="datatable">
                                 <thead>
                                     <tr>
-                                        <th>Email</th>
+                                        <th>#</th>
                                         <th>Name</th>
+                                        <th>Email</th>
+                                        <th>Mobile</th>
                                         <th>Role</th>
                                         <th>Status</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
+                                @foreach($employerUsers as $employerUser)
                                     <tr>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
+                                        <td>{{ $loop->iteration }}</td>
+                                        <td>{{ $employerUser->name ?? 'User Name' }}</td>
+                                        <td>{{ $employerUser->email ?? 'User Email' }}</td>
+                                        <td>{{ $employerUser->mobile ?? '01500000000' }}</td>
+                                        <td>{{ $employerUser->user_type ?? 'User Type' }}</td>
+                                        <td><span class="status badge {{ $employerUser->employer_agent_active_status == 'active' ? 'active bg-success' : 'invited bg-secondary' }}">{{ $employerUser->employer_agent_active_status == 'active' ? 'Active' : 'Inactive' }}</span></td>
+                                        <td>
+                                            <a href="" class="btn btn-sm btn-success m-2"></a>
+                                        </td>
                                     </tr>
+                                @endforeach
                                 </tbody>
                             </table>
                         </div>
