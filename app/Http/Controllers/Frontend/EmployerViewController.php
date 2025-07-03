@@ -62,9 +62,10 @@ class EmployerViewController extends Controller
     }
     public function employerUserManagement()
     {
+        $user = ViewHelper::loggedUser();
         $this->data = [
-            'loggedUser'    =>  ViewHelper::loggedUser(),
-            'employerUsers' =>  User::where(['user_type' => 'sub_employer'])->get(['id', 'name', 'email', 'mobile', 'profile_image', 'user_type', 'employer_agent_active_status']),
+            'loggedUser'    =>  $user,
+            'employerUsers' =>  User::where(['user_type' => 'sub_employer', 'user_id' => $user->id])->get(['id', 'name', 'email', 'mobile', 'profile_image', 'user_type', 'employer_agent_active_status']),
         ];
         return ViewHelper::checkViewForApi($this->data, 'frontend.employer.config.users');
         return view('frontend.employer.config.users');
@@ -156,6 +157,39 @@ class EmployerViewController extends Controller
             $company->save();
             return ViewHelper::returnSuccessMessage('Company information updated successfully');
 
+        } catch (\Exception $e) {
+            return ViewHelper::returEexceptionError($e->getMessage());
+        }
+    }
+
+    public function createSubUser(Request $request)
+    {
+        $user = ViewHelper::loggedUser();
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            'email' => [ 'email', 'unique:users'],
+            'mobile' => ['required', 'unique:users'],
+            'password' => 'required|min:6',
+        ]);
+        if ($validator->fails()) {
+            return ViewHelper::returEexceptionError($validator->errors());
+        }
+        if (User::where(['user_id' => $user->id, 'user_type' => 'sub_employer'])->count() >= 5) {
+            return ViewHelper::returEexceptionError('You can not create more than 5 sub users');
+        }
+        try {
+            $subUser = new User();
+            $subUser->name = $request->name;
+            $subUser->email = $request->email;
+            $subUser->mobile = $request->mobile;
+            $subUser->password = bcrypt($request->password);
+            $subUser->user_type = 'sub_employer';
+            $subUser->user_id = $user->id;
+            $subUser->employer_company_id = $user->employer_company_id;
+            $subUser->organization_name = $user->organization_name;
+            $subUser->employer_agent_active_status = 'active';
+            $subUser->save();
+            return ViewHelper::returnSuccessMessage('Sub user created successfully');
         } catch (\Exception $e) {
             return ViewHelper::returEexceptionError($e->getMessage());
         }

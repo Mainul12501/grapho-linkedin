@@ -59,6 +59,7 @@ Route::middleware([
 
        Route::post('update-settings', [EmployerViewController::class, 'updateSettings'])->name('update-settings');
        Route::post('update-company-info', [EmployerViewController::class, 'updateCompanyInfo'])->name('update-company-info');
+       Route::post('create-sub-user', [EmployerViewController::class, 'createSubUser'])->name('create-sub-user');
 
        Route::resources([
            'job-tasks'  => JobTaskController::class

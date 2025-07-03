@@ -227,9 +227,11 @@
                                         <td>{{ $employerUser->email ?? 'User Email' }}</td>
                                         <td>{{ $employerUser->mobile ?? '01500000000' }}</td>
                                         <td>{{ $employerUser->user_type ?? 'User Type' }}</td>
-                                        <td><span class="status badge {{ $employerUser->employer_agent_active_status == 'active' ? 'active bg-success' : 'invited bg-secondary' }}">{{ $employerUser->employer_agent_active_status == 'active' ? 'Active' : 'Inactive' }}</span></td>
+                                        <td><a href=""><span class="status badge {{ $employerUser->employer_agent_active_status == 'active' ? 'active bg-success' : 'invited bg-secondary' }}">{{ $employerUser->employer_agent_active_status == 'active' ? 'Active' : 'Inactive' }}</span></a></td>
                                         <td>
-                                            <a href="" class="btn btn-sm btn-success m-2"></a>
+                                            <a href="" class="btn btn-sm btn-success mx-1"><i class="fa fa-eye text-white f-s-11"></i></a>
+                                            <a href="" class="btn btn-sm btn-primary mx-1"><i class="fa fa-edit text-white f-s-11"></i></a>
+                                            <a href="" class="btn btn-sm btn-danger mx-1"><i class="fa fa-trash text-white f-s-11"></i></a>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -259,22 +261,35 @@
                     <h5 class="modal-title fw-semibold">Add a user</h5>
                 </div>
                 <div class="modal-body pt-0">
-                    <form>
+                    <form action="{{ route('employer.create-sub-user') }}" method="post" enctype="multipart/form-data">
+                        @csrf
+                        <div class="mb-3">
+                            <label for="userName" class="form-label">User Name</label>
+                            <input type="text" class="form-control rounded-3" id="userName" name="name" placeholder="Enter Your Name" required />
+                        </div>
                         <div class="mb-3">
                             <label for="userEmail" class="form-label">User email</label>
-                            <input type="email" class="form-control rounded-3" id="userEmail" placeholder="hello.world@gmail.com" required>
+                            <input type="email" class="form-control rounded-3" id="userEmail" name="email" placeholder="hello.world@gmail.com" >
                         </div>
-                        <div class="mb-4">
-                            <label for="userRole" class="form-label">Role</label>
-                            <select class="form-select rounded-3" id="userRole" required>
-                                <option>User</option>
-                                <option>Admin</option>
-                                <option>Viewer</option>
-                            </select>
+                        <div class="mb-3">
+                            <label for="userMobile" class="form-label">User Mobile</label>
+                            <input type="text" class="form-control rounded-3" name="mobile" id="userMobile" placeholder="01500000000" required />
                         </div>
+                        <div class="mb-3">
+                            <label for="userPassword" class="form-label">User Password</label>
+                            <input type="text" class="form-control rounded-3" id="userPassword" name="password" placeholder="00000000" required />
+                        </div>
+{{--                        <div class="mb-4">--}}
+{{--                            <label for="userRole" class="form-label">Role</label>--}}
+{{--                            <select class="form-select rounded-3 select2" id="userRole" name="gender" >--}}
+{{--                                <option>User</option>--}}
+{{--                                <option>Admin</option>--}}
+{{--                                <option>Viewer</option>--}}
+{{--                            </select>--}}
+{{--                        </div>--}}
                         <div class="d-flex justify-content-between">
                             <button type="button" class="btn border border-2 rounded-3 px-4 py-2" data-bs-dismiss="modal" style="border-color:#ccc;">Cancel</button>
-                            <button type="submit" class="btn rounded-3 px-4 py-2 text-white fw-semibold" style="background-color: #FFD700;">Send Invite</button>
+                            <button type="submit" class="btn rounded-3 px-4 py-2 text-white fw-semibold" style="background-color: #FFD700;">Create User</button>
                         </div>
                     </form>
                 </div>
@@ -283,6 +298,10 @@
     </div>
 
 @endsection
+
+    @push('style')
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    @endpush
 
     @push('script')
         @include('backend.includes.assets.plugin-files.datatable')
