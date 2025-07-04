@@ -205,7 +205,7 @@
                         </div>
                     </div>
 
-                    <div class="mt-3">
+                    <div class="card usermanagement-content mt-3 p-3">
                         <div class="table-responsive">
                             <table class="table" id="datatable">
                                 <thead>
@@ -220,21 +220,24 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                @foreach($employerUsers as $employerUser)
-                                    <tr>
-                                        <td>{{ $loop->iteration }}</td>
-                                        <td>{{ $employerUser->name ?? 'User Name' }}</td>
-                                        <td>{{ $employerUser->email ?? 'User Email' }}</td>
-                                        <td>{{ $employerUser->mobile ?? '01500000000' }}</td>
-                                        <td>{{ $employerUser->user_type ?? 'User Type' }}</td>
-                                        <td><a href=""><span class="status badge {{ $employerUser->employer_agent_active_status == 'active' ? 'active bg-success' : 'invited bg-secondary' }}">{{ $employerUser->employer_agent_active_status == 'active' ? 'Active' : 'Inactive' }}</span></a></td>
-                                        <td>
-                                            <a href="" class="btn btn-sm btn-success mx-1"><i class="fa fa-eye text-white f-s-11"></i></a>
-                                            <a href="" class="btn btn-sm btn-primary mx-1"><i class="fa fa-edit text-white f-s-11"></i></a>
-                                            <a href="" class="btn btn-sm btn-danger mx-1"><i class="fa fa-trash text-white f-s-11"></i></a>
-                                        </td>
-                                    </tr>
-                                @endforeach
+                                    @foreach($employerUsers as $key => $employerUser)
+                                        <tr>
+                                            <td>{{ $loop->iteration }}</td>
+                                            <td>{{ $employerUser->name ?? 'User Name' }}</td>
+                                            <td>{{ $employerUser->email ?? 'User Email' }}</td>
+                                            <td>{{ $employerUser->mobile ?? '01500000000' }}</td>
+                                            <td>{{ $employerUser->user_type ?? 'User Type' }}</td>
+                                            <td><a href="{{ route('employer.change-sub-employer-status', ['user' => $employerUser->id, 'status' => $employerUser->employer_agent_active_status == 'active' ? 'inactive' : 'active']) }}"><span class="status badge {{ $employerUser->employer_agent_active_status == 'active' ? 'active bg-success' : 'invited bg-secondary' }}">{{ $employerUser->employer_agent_active_status == 'active' ? 'Active' : 'Inactive' }}</span></a></td>
+                                            <td>
+{{--                                                <a href="" class="btn btn-sm btn-success mx-1"><i class="fa fa-eye text-white f-s-11"></i></a>--}}
+                                                <a href="" class="btn btn-sm btn-primary mx-1"><i class="fa fa-edit text-white f-s-11"></i></a>
+                                                <a href="#" class="btn btn-sm btn-danger mx-1" onclick="event.preventDefault(); document.getElementById('delSubEmployer{{ $employerUser->id }}').submit()"><i class="fa fa-trash text-white f-s-11"></i></a>
+                                                <form action="{{ route('employer.delete-sub-employer', $employerUser->id) }}" onsubmit="return confirm('Are you sure to delete this user?')" method="post" id="delSubEmployer{{ $employerUser->id }}">
+                                                    @csrf
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>

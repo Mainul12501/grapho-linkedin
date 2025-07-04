@@ -13,7 +13,6 @@ use App\Http\Controllers\Frontend\Crud\EmployeeEducationController;
 use App\Http\Controllers\Frontend\Crud\EmployeeDocumentsController;
 
 
-
 Route::get('/', [FrontendViewController::class, 'homePage'])->name('/');
 
 Route::get('employee-profile', [EmployerViewController::class, 'employeeProfile'])->name('employee-profile');
@@ -48,22 +47,24 @@ Route::middleware([
     Route::post('auth/user-password-update', [CustomLoginController::class, 'userPasswordUpdate'])->name('auth.user-password-update');
 
     Route::prefix('employer')->as('employer.')->middleware('isEmployer')->group(function (){
-       Route::get('home', [EmployerViewController::class, 'employerHome'])->name('home');
-       Route::get('my-jobs', [EmployerViewController::class, 'myJobs'])->name('my-jobs');
-       Route::get('my-job-wise-applicants', [EmployerViewController::class, 'myJobWiseApplicants'])->name('my-job-wise-applicants');
-       Route::get('my-job-applicants', [EmployerViewController::class, 'myJobApplicants'])->name('my-job-applicants');
-       Route::get('head-hunt', [EmployerViewController::class, 'headHunt'])->name('head-hunt');
-       Route::get('employer-user-management', [EmployerViewController::class, 'employerUserManagement'])->name('employer-user-management');
-       Route::get('settings', [EmployerViewController::class, 'settings'])->name('settings');
-       Route::get('company-profile', [EmployerViewController::class, 'companyProfile'])->name('company-profile');
+        Route::get('home', [EmployerViewController::class, 'employerHome'])->name('home');
+        Route::get('my-jobs', [EmployerViewController::class, 'myJobs'])->name('my-jobs');
+        Route::get('my-job-wise-applicants', [EmployerViewController::class, 'myJobWiseApplicants'])->name('my-job-wise-applicants');
+        Route::get('my-job-applicants', [EmployerViewController::class, 'myJobApplicants'])->name('my-job-applicants');
+        Route::get('head-hunt', [EmployerViewController::class, 'headHunt'])->name('head-hunt');
+        Route::get('employer-user-management', [EmployerViewController::class, 'employerUserManagement'])->name('employer-user-management');
+        Route::get('settings', [EmployerViewController::class, 'settings'])->name('settings');
+        Route::get('company-profile', [EmployerViewController::class, 'companyProfile'])->name('company-profile');
+        Route::get('change-sub-employer-status/{user}/{status}', [EmployerViewController::class, 'changeSubEmployerStatus'])->name('change-sub-employer-status');
 
-       Route::post('update-settings', [EmployerViewController::class, 'updateSettings'])->name('update-settings');
-       Route::post('update-company-info', [EmployerViewController::class, 'updateCompanyInfo'])->name('update-company-info');
-       Route::post('create-sub-user', [EmployerViewController::class, 'createSubUser'])->name('create-sub-user');
+        Route::post('update-settings', [EmployerViewController::class, 'updateSettings'])->name('update-settings');
+        Route::post('update-company-info', [EmployerViewController::class, 'updateCompanyInfo'])->name('update-company-info');
+        Route::post('create-sub-user', [EmployerViewController::class, 'createSubUser'])->name('create-sub-user');
+        Route::post('delete-sub-employer/{user}', [EmployerViewController::class, 'deleteSubEmployer'])->name('delete-sub-employer');
 
-       Route::resources([
-           'job-tasks'  => JobTaskController::class
-       ]);
+        Route::resources([
+            'job-tasks'  => JobTaskController::class
+        ]);
     });
     Route::prefix('employee')->as('employee.')->middleware('isEmployee')->group(function (){
         Route::get('home', [EmployeeViewController::class, 'employeeHome'])->name('home');
@@ -89,3 +90,4 @@ Route::middleware([
         ]);
     });
 });
+

@@ -89,6 +89,24 @@ class EmployerViewController extends Controller
         return ViewHelper::checkViewForApi($this->data, 'frontend.employer.config.company-profile');
         return view('frontend.employer.config.company-profile');
     }
+
+    public function changeSubEmployerStatus(User $user, $status)
+    {
+        $loggedUser = ViewHelper::loggedUser();
+        if ($loggedUser->id == $user->id) {
+            return ViewHelper::returEexceptionError('You can not change your own status');
+        }
+        if ($user->user_type != 'sub_employer' || $user->user_id != $loggedUser->id) {
+            return ViewHelper::returEexceptionError('Invalid user');
+        }
+        try {
+            $user->employer_agent_active_status = $status;
+            $user->save();
+            return ViewHelper::returnSuccessMessage('Sub employer status updated successfully');
+        } catch (\Exception $e) {
+            return ViewHelper::returEexceptionError($e->getMessage());
+        }
+    }
     public function updateSettings(Request $request)
     {
         $user = ViewHelper::loggedUser();
@@ -190,6 +208,23 @@ class EmployerViewController extends Controller
             $subUser->employer_agent_active_status = 'active';
             $subUser->save();
             return ViewHelper::returnSuccessMessage('Sub user created successfully');
+        } catch (\Exception $e) {
+            return ViewHelper::returEexceptionError($e->getMessage());
+        }
+    }
+
+    public function deleteSubEmployer(User $user)
+    {
+        $loggedUser = ViewHelper::loggedUser();
+        if ($loggedUser->id == $user->id) {
+            return ViewHelper::returEexceptionError('You can not delete your own account');
+        }
+        if ($user->user_type != 'sub_employer' || $user->user_id != $loggedUser->id) {
+            return ViewHelper::returEexceptionError('Invalid user');
+        }
+        try {
+            $user->delete();
+            return ViewHelper::returnSuccessMessage('Sub employer deleted successfully');
         } catch (\Exception $e) {
             return ViewHelper::returEexceptionError($e->getMessage());
         }
