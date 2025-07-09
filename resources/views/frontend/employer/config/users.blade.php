@@ -38,172 +38,172 @@
                 <section class="col-md-9 col-12 settingsRightContent">
                     <h2 class="mb-4 settings-menu d-none d-md-block">Users Management</h2>
 
-                    <div class="card usermanagement-content p-3">
+{{--                    <div class="card usermanagement-content p-3">--}}
 
-                        <div class="user-count d-flex justify-content-between align-items-center mb-3">
-                            <div class="d-none d-md-block">Total 3 users</div>
-                            <div class="search-add d-flex gap-2">
-                                <input type="search" placeholder="Search users" class="search-users form-control" />
-                                <button class="add-user-btn btn" data-bs-toggle="modal" data-bs-target="#addUserModal">
-                                    <img src="{{ asset('/') }}frontend/employer/images/employersHome/addUser.png" alt="">
-                                    <span class="d-none d-md-block">Add User</span>
-                                </button>
+{{--                        <div class="user-count d-flex justify-content-between align-items-center mb-3">--}}
+{{--                            <div class="d-none d-md-block">Total 3 users</div>--}}
+{{--                            <div class="search-add d-flex gap-2">--}}
+{{--                                <input type="search" placeholder="Search users" class="search-users form-control" />--}}
+{{--                                <button class="add-user-btn btn" data-bs-toggle="modal" data-bs-target="#addUserModal">--}}
+{{--                                    <img src="{{ asset('/') }}frontend/employer/images/employersHome/addUser.png" alt="">--}}
+{{--                                    <span class="d-none d-md-block">Add User</span>--}}
+{{--                                </button>--}}
 
 
-                            </div>
-                        </div>
-                        <div class="d-md-none mb-3">Total 3 users</div>
+{{--                            </div>--}}
+{{--                        </div>--}}
+{{--                        <div class="d-md-none mb-3">Total 3 users</div>--}}
 
-                        <!-- Desktop Table (visible md and up) -->
-                        <table class="users-table table  d-none d-md-table">
-                            <thead class="bg-light">
-                            <tr>
-                                <th>Email</th>
-                                <th>Name</th>
-                                <th>Role</th>
-                                <th>Status</th>
-                                <th>Action</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                <td>md.pranto@gmail.com</td>
-                                <td>Md. Pranto</td>
-                                <td>Admin</td>
-                                <td><span class="status active badge bg-success">Active</span></td>
-                                <td>
-                                    <div class="dropdown">
-                                        <button class="btn btn-link dropdown-toggle p-0" type="button" id="dropdownMenu1" data-bs-toggle="dropdown" aria-expanded="false" aria-label="User actions">
-                                            ...
-                                        </button>
-                                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenu1">
-                                            <li><a class="dropdown-item" href="#">Edit</a></li>
-                                            <li><a class="dropdown-item" href="#">Delete</a></li>
-                                            <li><a class="dropdown-item" href="#">View Profile</a></li>
-                                        </ul>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>bruce.wayne@gmail.com</td>
-                                <td>Bruce Wayne</td>
-                                <td>User</td>
-                                <td><span class="status active badge bg-success">Active</span></td>
-                                <td>
-                                    <div class="dropdown">
-                                        <button class="btn btn-link dropdown-toggle p-0" type="button" id="dropdownMenu2" data-bs-toggle="dropdown" aria-expanded="false" aria-label="User actions">
-                                            ...
-                                        </button>
-                                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenu2">
-                                            <li><a class="dropdown-item" href="#">Edit</a></li>
-                                            <li><a class="dropdown-item" href="#">Delete</a></li>
-                                            <li><a class="dropdown-item" href="#">View Profile</a></li>
-                                        </ul>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>hello.world@gmail.com</td>
-                                <td>-</td>
-                                <td>User</td>
-                                <td><span class="status invited badge bg-secondary">Invited</span></td>
-                                <td>
-                                    <div class="dropdown">
-                                        <button class="btn btn-link dropdown-toggle p-0" type="button" id="dropdownMenu3" data-bs-toggle="dropdown" aria-expanded="false" aria-label="User actions">
-                                            ...
-                                        </button>
-                                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenu3">
-                                            <li><a class="dropdown-item" href="#">Edit</a></li>
-                                            <li><a class="dropdown-item" href="#">Delete</a></li>
-                                            <li><a class="dropdown-item" href="#">View Profile</a></li>
-                                        </ul>
-                                    </div>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
+{{--                        <!-- Desktop Table (visible md and up) -->--}}
+{{--                        <table class="users-table table  d-none d-md-table">--}}
+{{--                            <thead class="bg-light">--}}
+{{--                            <tr>--}}
+{{--                                <th>Email</th>--}}
+{{--                                <th>Name</th>--}}
+{{--                                <th>Role</th>--}}
+{{--                                <th>Status</th>--}}
+{{--                                <th>Action</th>--}}
+{{--                            </tr>--}}
+{{--                            </thead>--}}
+{{--                            <tbody>--}}
+{{--                            <tr>--}}
+{{--                                <td>md.pranto@gmail.com</td>--}}
+{{--                                <td>Md. Pranto</td>--}}
+{{--                                <td>Admin</td>--}}
+{{--                                <td><span class="status active badge bg-success">Active</span></td>--}}
+{{--                                <td>--}}
+{{--                                    <div class="dropdown">--}}
+{{--                                        <button class="btn btn-link dropdown-toggle p-0" type="button" id="dropdownMenu1" data-bs-toggle="dropdown" aria-expanded="false" aria-label="User actions">--}}
+{{--                                            ...--}}
+{{--                                        </button>--}}
+{{--                                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenu1">--}}
+{{--                                            <li><a class="dropdown-item" href="#">Edit</a></li>--}}
+{{--                                            <li><a class="dropdown-item" href="#">Delete</a></li>--}}
+{{--                                            <li><a class="dropdown-item" href="#">View Profile</a></li>--}}
+{{--                                        </ul>--}}
+{{--                                    </div>--}}
+{{--                                </td>--}}
+{{--                            </tr>--}}
+{{--                            <tr>--}}
+{{--                                <td>bruce.wayne@gmail.com</td>--}}
+{{--                                <td>Bruce Wayne</td>--}}
+{{--                                <td>User</td>--}}
+{{--                                <td><span class="status active badge bg-success">Active</span></td>--}}
+{{--                                <td>--}}
+{{--                                    <div class="dropdown">--}}
+{{--                                        <button class="btn btn-link dropdown-toggle p-0" type="button" id="dropdownMenu2" data-bs-toggle="dropdown" aria-expanded="false" aria-label="User actions">--}}
+{{--                                            ...--}}
+{{--                                        </button>--}}
+{{--                                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenu2">--}}
+{{--                                            <li><a class="dropdown-item" href="#">Edit</a></li>--}}
+{{--                                            <li><a class="dropdown-item" href="#">Delete</a></li>--}}
+{{--                                            <li><a class="dropdown-item" href="#">View Profile</a></li>--}}
+{{--                                        </ul>--}}
+{{--                                    </div>--}}
+{{--                                </td>--}}
+{{--                            </tr>--}}
+{{--                            <tr>--}}
+{{--                                <td>hello.world@gmail.com</td>--}}
+{{--                                <td>-</td>--}}
+{{--                                <td>User</td>--}}
+{{--                                <td><span class="status invited badge bg-secondary">Invited</span></td>--}}
+{{--                                <td>--}}
+{{--                                    <div class="dropdown">--}}
+{{--                                        <button class="btn btn-link dropdown-toggle p-0" type="button" id="dropdownMenu3" data-bs-toggle="dropdown" aria-expanded="false" aria-label="User actions">--}}
+{{--                                            ...--}}
+{{--                                        </button>--}}
+{{--                                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenu3">--}}
+{{--                                            <li><a class="dropdown-item" href="#">Edit</a></li>--}}
+{{--                                            <li><a class="dropdown-item" href="#">Delete</a></li>--}}
+{{--                                            <li><a class="dropdown-item" href="#">View Profile</a></li>--}}
+{{--                                        </ul>--}}
+{{--                                    </div>--}}
+{{--                                </td>--}}
+{{--                            </tr>--}}
+{{--                            </tbody>--}}
+{{--                        </table>--}}
 
-                        <!-- Mobile cards (visible below md) -->
-                        <div class="mobile-user-cards d-md-none">
+{{--                        <!-- Mobile cards (visible below md) -->--}}
+{{--                        <div class="mobile-user-cards d-md-none">--}}
 
-                            <div class="user-card d-flex justify-content-between align-items-center mb-3 p-3 border rounded">
-                                <div class="user-info">
-                                    <div class="email fw-bold">md.pranto@gmail.com</div>
-                                    <div class="name text-muted small">Md. Pranto</div>
-                                    <div class="role text-muted small d-flex align-items-center gap-1 mt-1">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-badge" viewBox="0 0 16 16">
-                                            <path d="M6.5 2a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1h-3z"/>
-                                            <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3z"/>
-                                            <path fill-rule="evenodd" d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
-                                        </svg>
-                                        Admin
-                                    </div>
-                                </div>
-                                <div class="user-actions text-end d-flex flex-column align-items-end gap-2">
-                                    <span class="status active badge bg-success px-3 py-2">Active</span>
-                                    <div class="dropdown">
-                                        <button class="btn btn-link dropdown-toggle p-0 fs-4" type="button" id="mobileDropdown1" data-bs-toggle="dropdown" aria-expanded="false" aria-label="User actions">...</button>
-                                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="mobileDropdown1">
-                                            <li><a class="dropdown-item" href="#">Edit</a></li>
-                                            <li><a class="dropdown-item" href="#">Delete</a></li>
-                                            <li><a class="dropdown-item" href="#">View Profile</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
+{{--                            <div class="user-card d-flex justify-content-between align-items-center mb-3 p-3 border rounded">--}}
+{{--                                <div class="user-info">--}}
+{{--                                    <div class="email fw-bold">md.pranto@gmail.com</div>--}}
+{{--                                    <div class="name text-muted small">Md. Pranto</div>--}}
+{{--                                    <div class="role text-muted small d-flex align-items-center gap-1 mt-1">--}}
+{{--                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-badge" viewBox="0 0 16 16">--}}
+{{--                                            <path d="M6.5 2a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1h-3z"/>--}}
+{{--                                            <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3z"/>--}}
+{{--                                            <path fill-rule="evenodd" d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>--}}
+{{--                                        </svg>--}}
+{{--                                        Admin--}}
+{{--                                    </div>--}}
+{{--                                </div>--}}
+{{--                                <div class="user-actions text-end d-flex flex-column align-items-end gap-2">--}}
+{{--                                    <span class="status active badge bg-success px-3 py-2">Active</span>--}}
+{{--                                    <div class="dropdown">--}}
+{{--                                        <button class="btn btn-link dropdown-toggle p-0 fs-4" type="button" id="mobileDropdown1" data-bs-toggle="dropdown" aria-expanded="false" aria-label="User actions">...</button>--}}
+{{--                                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="mobileDropdown1">--}}
+{{--                                            <li><a class="dropdown-item" href="#">Edit</a></li>--}}
+{{--                                            <li><a class="dropdown-item" href="#">Delete</a></li>--}}
+{{--                                            <li><a class="dropdown-item" href="#">View Profile</a></li>--}}
+{{--                                        </ul>--}}
+{{--                                    </div>--}}
+{{--                                </div>--}}
+{{--                            </div>--}}
 
-                            <div class="user-card d-flex justify-content-between align-items-center mb-3 p-3 border rounded">
-                                <div class="user-info">
-                                    <div class="email fw-bold">bruce.wayne@gmail.com</div>
-                                    <div class="name text-muted small">Bruce Wayne</div>
-                                    <div class="role text-muted small d-flex align-items-center gap-1 mt-1">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person" viewBox="0 0 16 16">
-                                            <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
-                                            <path d="M2 14s-1 0-1-1 1-4 7-4 7 3 7 4-1 1-1 1H2z"/>
-                                        </svg>
-                                        User
-                                    </div>
-                                </div>
-                                <div class="user-actions text-end d-flex flex-column align-items-end gap-2">
-                                    <span class="status active badge bg-success px-3 py-2">Active</span>
-                                    <div class="dropdown">
-                                        <button class="btn btn-link dropdown-toggle p-0 fs-4" type="button" id="mobileDropdown2" data-bs-toggle="dropdown" aria-expanded="false" aria-label="User actions">...</button>
-                                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="mobileDropdown2">
-                                            <li><a class="dropdown-item" href="#">Edit</a></li>
-                                            <li><a class="dropdown-item" href="#">Delete</a></li>
-                                            <li><a class="dropdown-item" href="#">View Profile</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
+{{--                            <div class="user-card d-flex justify-content-between align-items-center mb-3 p-3 border rounded">--}}
+{{--                                <div class="user-info">--}}
+{{--                                    <div class="email fw-bold">bruce.wayne@gmail.com</div>--}}
+{{--                                    <div class="name text-muted small">Bruce Wayne</div>--}}
+{{--                                    <div class="role text-muted small d-flex align-items-center gap-1 mt-1">--}}
+{{--                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person" viewBox="0 0 16 16">--}}
+{{--                                            <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>--}}
+{{--                                            <path d="M2 14s-1 0-1-1 1-4 7-4 7 3 7 4-1 1-1 1H2z"/>--}}
+{{--                                        </svg>--}}
+{{--                                        User--}}
+{{--                                    </div>--}}
+{{--                                </div>--}}
+{{--                                <div class="user-actions text-end d-flex flex-column align-items-end gap-2">--}}
+{{--                                    <span class="status active badge bg-success px-3 py-2">Active</span>--}}
+{{--                                    <div class="dropdown">--}}
+{{--                                        <button class="btn btn-link dropdown-toggle p-0 fs-4" type="button" id="mobileDropdown2" data-bs-toggle="dropdown" aria-expanded="false" aria-label="User actions">...</button>--}}
+{{--                                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="mobileDropdown2">--}}
+{{--                                            <li><a class="dropdown-item" href="#">Edit</a></li>--}}
+{{--                                            <li><a class="dropdown-item" href="#">Delete</a></li>--}}
+{{--                                            <li><a class="dropdown-item" href="#">View Profile</a></li>--}}
+{{--                                        </ul>--}}
+{{--                                    </div>--}}
+{{--                                </div>--}}
+{{--                            </div>--}}
 
-                            <div class="user-card d-flex justify-content-between align-items-center mb-3 p-3 border rounded">
-                                <div class="user-info">
-                                    <div class="email fw-bold">hello.world@gmail.com</div>
-                                    <div class="name text-muted small">-</div>
-                                    <div class="role text-muted small d-flex align-items-center gap-1 mt-1">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person" viewBox="0 0 16 16">
-                                            <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
-                                            <path d="M2 14s-1 0-1-1 1-4 7-4 7 3 7 4-1 1-1 1H2z"/>
-                                        </svg>
-                                        User
-                                    </div>
-                                </div>
-                                <div class="user-actions text-end d-flex flex-column align-items-end gap-2">
-                                    <span class="status invited badge bg-secondary px-3 py-2">Invited</span>
-                                    <div class="dropdown">
-                                        <button class="btn btn-link dropdown-toggle p-0 fs-4" type="button" id="mobileDropdown3" data-bs-toggle="dropdown" aria-expanded="false" aria-label="User actions">...</button>
-                                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="mobileDropdown3">
-                                            <li><a class="dropdown-item" href="#">Edit</a></li>
-                                            <li><a class="dropdown-item" href="#">Delete</a></li>
-                                            <li><a class="dropdown-item" href="#">View Profile</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
+{{--                            <div class="user-card d-flex justify-content-between align-items-center mb-3 p-3 border rounded">--}}
+{{--                                <div class="user-info">--}}
+{{--                                    <div class="email fw-bold">hello.world@gmail.com</div>--}}
+{{--                                    <div class="name text-muted small">-</div>--}}
+{{--                                    <div class="role text-muted small d-flex align-items-center gap-1 mt-1">--}}
+{{--                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person" viewBox="0 0 16 16">--}}
+{{--                                            <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>--}}
+{{--                                            <path d="M2 14s-1 0-1-1 1-4 7-4 7 3 7 4-1 1-1 1H2z"/>--}}
+{{--                                        </svg>--}}
+{{--                                        User--}}
+{{--                                    </div>--}}
+{{--                                </div>--}}
+{{--                                <div class="user-actions text-end d-flex flex-column align-items-end gap-2">--}}
+{{--                                    <span class="status invited badge bg-secondary px-3 py-2">Invited</span>--}}
+{{--                                    <div class="dropdown">--}}
+{{--                                        <button class="btn btn-link dropdown-toggle p-0 fs-4" type="button" id="mobileDropdown3" data-bs-toggle="dropdown" aria-expanded="false" aria-label="User actions">...</button>--}}
+{{--                                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="mobileDropdown3">--}}
+{{--                                            <li><a class="dropdown-item" href="#">Edit</a></li>--}}
+{{--                                            <li><a class="dropdown-item" href="#">Delete</a></li>--}}
+{{--                                            <li><a class="dropdown-item" href="#">View Profile</a></li>--}}
+{{--                                        </ul>--}}
+{{--                                    </div>--}}
+{{--                                </div>--}}
+{{--                            </div>--}}
 
-                        </div>
-                    </div>
+{{--                        </div>--}}
+{{--                    </div>--}}
 
                     <div class="card usermanagement-content mt-3 p-3">
                         <div class="table-responsive">
@@ -219,14 +219,14 @@
                                         <th>Action</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody class="user-card">
                                     @foreach($employerUsers as $key => $employerUser)
-                                        <tr>
+                                        <tr class="user-info">
                                             <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $employerUser->name ?? 'User Name' }}</td>
-                                            <td>{{ $employerUser->email ?? 'User Email' }}</td>
-                                            <td>{{ $employerUser->mobile ?? '01500000000' }}</td>
-                                            <td>{{ $employerUser->user_type ?? 'User Type' }}</td>
+                                            <td class="name">{{ $employerUser->name ?? 'User Name' }}</td>
+                                            <td class="email">{{ $employerUser->email ?? 'User Email' }}</td>
+                                            <td class="email">{{ $employerUser->mobile ?? '01500000000' }}</td>
+                                            <td class="role">{{ $employerUser->user_type ?? 'User Type' }}</td>
                                             <td><a href="{{ route('employer.change-sub-employer-status', ['user' => $employerUser->id, 'status' => $employerUser->employer_agent_active_status == 'active' ? 'inactive' : 'active']) }}"><span class="status badge {{ $employerUser->employer_agent_active_status == 'active' ? 'active bg-success' : 'invited bg-secondary' }}">{{ $employerUser->employer_agent_active_status == 'active' ? 'Active' : 'Inactive' }}</span></a></td>
                                             <td>
 {{--                                                <a href="" class="btn btn-sm btn-success mx-1"><i class="fa fa-eye text-white f-s-11"></i></a>--}}
