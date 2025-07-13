@@ -41,7 +41,7 @@
                         <a href="#" class="menu-item userProfile" onclick="toggleDropdown()">
                             <div class="d-flex align-items-center">
                                 <img src="{{ asset('/') }}frontend/employee/images/header images/pp.png" alt="" class="me-2" />
-                                Md. Pranto
+                                {{ auth()->user()->name ?? 'User' }}
                                 <img src="{{ asset('/') }}frontend/employee/images/header images/down arrow.png" alt="" class="ms-2" />
                             </div>
                         </a>

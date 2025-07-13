@@ -205,6 +205,13 @@
 {{--                        </div>--}}
 {{--                    </div>--}}
 
+                    <div class="mb-3">
+                        <button class="add-user-btn btn flex-start" data-bs-toggle="modal" data-bs-target="#addUserModal">
+                            <img src="{{ asset('/') }}frontend/employer/images/employersHome/addUser.png" alt="">
+                            <span class="d-none d-md-block">Add User</span>
+                        </button>
+                    </div>
+
                     <div class="card usermanagement-content mt-3 p-3">
                         <div class="table-responsive">
                             <table class="table" id="datatable">

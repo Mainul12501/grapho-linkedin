@@ -28,6 +28,9 @@ class EmployeeViewController extends Controller
             'totalSavedJobs'    => auth()->user()->employeeSavedJobs()->count() ?? 0,
             'totalAppliedApplications'    => auth()->user()->employeeAppliedJobs()->count() ?? 0,
             'totalViewedEmployers'    => auth()->user()->viewedEmployers()->count() ?? 0,
+            'topJobsForEmployee'    => JobTask::where([
+                'status' => 1
+            ])->take(5)->latest()->get(),
         ];
         return ViewHelper::checkViewForApi($data, 'frontend.employee.home.home');
         return \view('frontend.employee.home.home');
@@ -49,6 +52,7 @@ class EmployeeViewController extends Controller
             'isApplied'   => $getJobSaveApplyInfo['isApplied'],
         ];
         return ViewHelper::checkViewForApi($data, 'frontend.employee.jobs.show-jobs');
+        return \view('frontend.employee.jobs.show-jobs');
     }
     public function mySavedJobs()
     {
@@ -101,6 +105,7 @@ class EmployeeViewController extends Controller
             'fieldOfStudies'   => FieldOfStudy::where(['status' => 1])->get(['id', 'field_name']),
         ];
         return ViewHelper::checkViewForApi($data, 'frontend.employee.base-functionalities.my-profile');
+        return \view('frontend.employee.base-functionalities.my-profile');
     }
     public function myNotifications()
     {
@@ -112,7 +117,7 @@ class EmployeeViewController extends Controller
         $user = ViewHelper::loggedUser();
         if (isset($jobTask) && $user)
         {
-            $user->employeeSavedJobs()->sync($jobTask->id);
+            $user->employeeSavedJobs()->syncWithoutDetaching($jobTask->id);
             $data = [
                 'status'    => 'success',
                 'msg'   => 'Job Saved successfully.'
@@ -124,7 +129,7 @@ class EmployeeViewController extends Controller
             ];
         }
 
-        return ViewHelper::returnDataForAjaxAndApi($data);
+        return ViewHelper::returnBackViewAndSendDataForApiAndAjax($data);
     }
 
     public function deleteSaveJob(Request $request, JobTask $jobTask)
@@ -178,15 +183,15 @@ class EmployeeViewController extends Controller
         try {
             if ($user)
             {
-                $user->profile_title    = $request->profile_title;
-                $user->email    = $request->email;
-                $user->mobile    = $request->mobile;
-                $user->website    = $request->website;
+                $user->profile_title    = $request->profile_title ?? $user->profile_title;
+                $user->email    = $request->email ?? $user->email;
+                $user->mobile    = $request->mobile ?? $user->mobile;
+                $user->website    = $request->website ?? $user->website;
                 if ($request->hasFile('profile_image'))
                 {
                     $user->profile_image    = imageUpload($request->file('profile_image'), 'profile-image', 'profile_image', 200,200, $user->profile_image ?? null);
                 }
-                $user->address    = $request->address;
+                $user->address    = $request->address ?? $user->address;
                 $user->save();
             }
             Toastr::success('Profile Info updated successfully.');

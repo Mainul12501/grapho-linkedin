@@ -32,7 +32,7 @@
 
 
                     <p class="mt-2">
-                        {{ auth()->user()->profile_title ?? 'Mobile App Developer, Flutter Developer Instructor & Mentor' }}
+                        {{ auth()->user()->profile_title ?? 'user profile title here.' }}
                     </p>
 
                     <div class="viewoProfileforSmallDevice py-4">
@@ -56,7 +56,7 @@
                                 </div>
                                 <div class="col-10">
                                     <h4 class="mb-0">Location</h4>
-                                    <p>Dhaka, Bangladesh</p>
+                                    <p>{{ auth()->user()->address ?? 'User Location' }}</p>
                                 </div>
                             </div>
                         </div>
@@ -67,7 +67,7 @@
                                 </div>
                                 <div class="col-10">
                                     <h4 class="mb-0">Email</h4>
-                                    <p><a href="">md.pranto@gmail.com</a></p>
+                                    <p><a href="">{{ auth()->user()->email ?? 'user email' }}</a></p>
                                 </div>
                             </div>
                         </div>
@@ -78,7 +78,7 @@
                                 </div>
                                 <div class="col-10">
                                     <h4 class="mb-0">Phone</h4>
-                                    <p>+8801653523779</p>
+                                    <p>{{ auth()->user()->mobile ?? '01500000000' }}</p>
                                 </div>
                             </div>
                         </div>
@@ -89,7 +89,7 @@
                                 </div>
                                 <div class="col-10">
                                     <h4 class="mb-0">Website</h4>
-                                    <p><a href="">www.devpranto.com</a></p>
+                                    <p><a href="">{{ auth()->user()->website ?? 'domain.com' }}</a></p>
                                 </div>
                             </div>
                         </div>
@@ -124,7 +124,7 @@
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="emailInput" class="form-label">Email</label>
-                                                    <input type="email" class="form-control" id="emailInput" value="{!! auth()->user()->email ?? '' !!}" placeholder="md.pranto@gmail.com" />
+                                                    <input type="email" name="email" class="form-control" id="emailInput" value="{!! auth()->user()->email ?? '' !!}" placeholder="md.pranto@gmail.com" />
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="phoneInput" class="form-label">Phone</label>
@@ -137,7 +137,7 @@
 
                                                 <div class="mb-3">
                                                     <label for="phoneInput" class="form-label">Website</label>
-                                                    <input type="tel" class="form-control" id="phoneInput" name="website" value="{!! auth()->user()->website ?? '' !!}" placeholder="www.devpranto.com" />
+                                                    <input type="text" class="form-control" id="phoneInput" name="website" value="{!! auth()->user()->website ?? '' !!}" placeholder="www.devpranto.com" />
                                                 </div>
                                         </div>
                                         <div class="modal-footer justify-content-between">
@@ -326,7 +326,7 @@
                                              aria-expanded="false" />
 
                                         <ul class="dropdown-menu dropdown-menu-end">
-                                            <li><a class="dropdown-item" href="#">Edit</a></li>
+                                            <li><a class="dropdown-item edit-work-experience" data-work-experience-id="{{ $workExperience->id }}" href="#">Edit</a></li>
                                             <li>
                                                 <form action="{{ route('employee.employee-work-experiences.destroy', $workExperience->id) }}" method="post">
                                                     @csrf
@@ -342,63 +342,6 @@
                         </div>
                     </div>
                 @endforeach
-
-{{--                <div class="row jobCard border-bottom">--}}
-{{--                    <div class="col-2 col-md-1">--}}
-{{--                        <img src="{{ asset('/') }}frontend/employee/images/profile/hrbcLogo.png" alt="Company Logo" class="companyLogo" />--}}
-{{--                        <img style="width: 40px; height: 42px" src="{{ asset('/') }}frontend/employee/images/profile/hrbcLogo.png" alt="Company Logo"--}}
-{{--                             class="mobileLogo" />--}}
-{{--                    </div>--}}
-{{--                    <div class="col-10 col-md-11">--}}
-{{--                        <div class="jobPosition d-flex justify-content-between">--}}
-{{--                            <div class="d-flex">--}}
-{{--                                <div class="profileCard">--}}
-{{--                                    <h3>Sales Intern</h3>--}}
-{{--                                    <h4>--}}
-{{--                                        HSBC <img src="{{ asset('/') }}frontend/employee/images/profile/dotDevider.png" alt="" />--}}
-{{--                                        <span>Full Time</span>--}}
-{{--                                    </h4>--}}
-{{--                                    <p class="mb-0">--}}
-{{--                                        Jan 2025 - Present--}}
-{{--                                        <img src="{{ asset('/') }}frontend/employee/images/profile/2ndDotDevider.png" alt="" />--}}
-{{--                                        <span>2 yrs 5 mos</span>--}}
-{{--                                    </p>--}}
-{{--                                    <p>Dhaka, Bangladesh</p>--}}
-{{--                                    <div class="profileSummery mt-4">--}}
-{{--                                        <h4>Job Summary:</h4>--}}
-{{--                                        <ul>--}}
-{{--                                            <li>This was my first job in the banking field.</li>--}}
-{{--                                            <li>--}}
-{{--                                                I gained a good amount of leadership skills & learned--}}
-{{--                                                to think about the business side of banking.--}}
-{{--                                            </li>--}}
-{{--                                            <li>--}}
-{{--                                                After a while, I led a team of three . I had to--}}
-{{--                                                maintain communication with the stakeholders.--}}
-{{--                                            </li>--}}
-{{--                                        </ul>--}}
-{{--                                    </div>--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
-{{--                            <div>--}}
-{{--                                <div class="dropdown">--}}
-{{--                                    <img src="{{ asset('/') }}frontend/employee/images/contentImages/threedot.png"--}}
-{{--                                         alt="Options"--}}
-{{--                                         class="threeDot"--}}
-{{--                                         role="button"--}}
-{{--                                         data-bs-toggle="dropdown"--}}
-{{--                                         aria-expanded="false" />--}}
-
-{{--                                    <ul class="dropdown-menu dropdown-menu-end">--}}
-{{--                                        <li><a class="dropdown-item" href="#">Edit</a></li>--}}
-{{--                                        <li><a class="dropdown-item" href="#">Delete</a></li>--}}
-{{--                                    </ul>--}}
-{{--                                </div>--}}
-
-{{--                            </div>--}}
-{{--                        </div>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
             </div>
 
             <!-- education -->
@@ -448,7 +391,7 @@
                                              aria-expanded="false" />
 
                                         <ul class="dropdown-menu dropdown-menu-end">
-                                            <li><a class="dropdown-item" href="#">Edit</a></li>
+                                            <li><a class="dropdown-item edit-education" data-education-id="{{ $employeeEducation->id }}" href="#">Edit</a></li>
                                             <li>
                                                 <form action="{{ route('employee.employee-educations.destroy', $employeeEducation->id) }}" method="post">
                                                     @csrf
@@ -470,48 +413,7 @@
                     </div>
                 @endforelse
 
-{{--                <div class="row jobCard border-bottom">--}}
-{{--                    <div class="col-2 col-md-1">--}}
-{{--                        <img src="{{ asset('/') }}frontend/employee/images/profile/noterDemCollage.png" alt="Company Logo" class="companyLogo" />--}}
-{{--                        <img style="width: 40px; height: 42px" src="{{ asset('/') }}frontend/employee/images/profile/noterDemCollage.png" alt="Company Logo"--}}
-{{--                             class="mobileLogo" />--}}
-{{--                    </div>--}}
-{{--                    <div class="col-10 col-md-11">--}}
-{{--                        <div class="jobPosition d-flex justify-content-between">--}}
-{{--                            <div class="d-flex">--}}
-{{--                                <div class="profileCard">--}}
-{{--                                    <h3>Notre Dame College</h3>--}}
-{{--                                    <h4>--}}
-{{--                                        HSC - Science--}}
-{{--                                        <img src="{{ asset('/') }}frontend/employee/images/profile/dotDevider.png" alt="" />--}}
-{{--                                        <span>GPA 5.00</span>--}}
-{{--                                    </h4>--}}
-{{--                                    <p class="mb-0">--}}
-{{--                                        Jan 2025 - Present--}}
-{{--                                        <img src="{{ asset('/') }}frontend/employee/images/profile/2ndDotDevider.png" alt="" />--}}
-{{--                                        <span>2 yrs 5 mos</span>--}}
-{{--                                    </p>--}}
-{{--                                    <p>Dhaka, Bangladesh</p>--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
-{{--                            <div>--}}
-{{--                                <div class="dropdown">--}}
-{{--                                    <img src="{{ asset('/') }}frontend/employee/images/contentImages/threedot.png"--}}
-{{--                                         alt="Options"--}}
-{{--                                         class="threeDot"--}}
-{{--                                         role="button"--}}
-{{--                                         data-bs-toggle="dropdown"--}}
-{{--                                         aria-expanded="false" />--}}
 
-{{--                                    <ul class="dropdown-menu dropdown-menu-end">--}}
-{{--                                        <li><a class="dropdown-item" href="#">Edit</a></li>--}}
-{{--                                        <li><a class="dropdown-item" href="#">Delete</a></li>--}}
-{{--                                    </ul>--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
             </div>
 
             <!-- documents -->
@@ -568,7 +470,7 @@
                                              aria-expanded="false" />
 
                                         <ul class="dropdown-menu dropdown-menu-end">
-                                            <li><a class="dropdown-item" href="#">Edit</a></li>
+                                            <li><a class="dropdown-item edit-document" data-document-id="{{ $employeeDocument->id }}" href="#">Edit</a></li>
                                             <li>
                                                 <form action="{{ route('employee.employee-documents.destroy', $employeeDocument->id) }}" method="post">
                                                     @csrf
@@ -729,6 +631,24 @@
         </div>
     </div>
 
+    <!-- Modal for Edit Work Experience -->
+    <div class="modal fade" id="editWorkExperienceModal" tabindex="-1"
+         aria-labelledby="addWorkExperienceModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addWorkExperienceModalLabel">
+                        <img src="{{ asset('/') }}frontend/employee/images/profile/profileLeftArrow.png" alt="" class="me-1" />Update Work Experience
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div id="workExperienceEditForm">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Modal for Add Education -->
     <div class="modal fade" id="addEducationModal" tabindex="-1" aria-labelledby="addEducationModalLabel"
          aria-hidden="true">
@@ -847,6 +767,25 @@
         </div>
     </div>
 
+    <!-- Modal for Add Education -->
+    <div class="modal fade" id="editEducationModal" tabindex="-1" aria-labelledby="addEducationModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addEducationModalLabel">
+                        <img src="{{ asset('/') }}frontend/employee/images/profile/profileLeftArrow.png" alt="" class="me-1" />
+                        Edit Education
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div id="educationEditForm">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Modal for Add Document -->
     <div class="modal fade" id="addDocumentModal" tabindex="-1" aria-labelledby="addDocumentModalLabel"
          aria-hidden="true">
@@ -940,6 +879,38 @@
     <!-- include summernote css/js -->
    @include('common-resource-files.summernote')
    @include('common-resource-files.selectize')
+
+
+    <script>
+        $(document).on('click', '.edit-work-experience', function () {
+            var jobId = $(this).attr('data-work-experience-id');
+            var thisObject = $(this);
+            // console.log(thisObject);
+            sendAjaxRequest('employee/employee-work-experiences/'+jobId+'/edit', 'GET').then(function (response) {
+                // console.log(response);
+                $('#workExperienceEditForm').append(response);
+                $('#editWorkSummaryInput').summernote({
+                    height: 300
+                });
+                $('.select2').selectize();
+                $('#editWorkExperienceModal').modal('show');
+            })
+        })
+        $(document).on('click', '.edit-education', function () {
+            var jobId = $(this).attr('data-education-id');
+            var thisObject = $(this);
+            // console.log(thisObject);
+            sendAjaxRequest('employee/employee-educations/'+jobId+'/edit', 'GET').then(function (response) {
+                // console.log(response);
+                $('#educationEditForm').append(response);
+                // $('#editWorkSummaryInput').summernote({
+                //     height: 300
+                // });
+                $('.select2').selectize();
+                $('#editEducationModal').modal('show');
+            })
+        })
+    </script>
 
     <!-- jQuery for controlling sticky behavior when modal opens/closes -->
     {{--                        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>--}}

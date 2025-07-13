@@ -158,8 +158,8 @@ class EmployerViewController extends Controller
             $company->phone = $request->phone ?? $company->phone;
             $company->address = $request->address ?? $company->address;
             $company->website = $request->website ?? $company->website;
-            $company->founded_on = /*date('Y-m-d', strtotime($request->founded_on)) ?? null*/ $request->founded_on;
-            $company->total_employees = (int)$request->total_employees ?? 0;
+            $company->founded_on = /*date('Y-m-d', strtotime($request->founded_on)) ?? null*/ $request->founded_on ?? $company->founded_on;
+            $company->total_employees = (int)$request->total_employees ?? ( $company->total_employees ?? 0);
             $company->industry_id = (int)$request->industry_id ?? 0;
             $company->employer_company_category_id = (int)$request->employer_company_category_id ?? 0;
             if ($request->hasFile('logo')) {

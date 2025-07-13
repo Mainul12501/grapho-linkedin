@@ -131,13 +131,13 @@
                         <div class="job-card job-card-ajax" {{--onclick="showJobDetails(1)"--}} data-job-id="{{ $jobTask->id }}" id="job-{{ $key }}">
                             <div class="row">
                                 <div class="col-2">
-                                    <img src="{{ isset($jobTask?->employerCompany?->logo) ? asset($jobTask?->employerCompany?->logo) : asset('/frontend/employee/images/contentImages/jobCardLogo.png') }}" alt="" />
+                                    <img src="{{ isset($jobTask?->employerCompany?->logo) ? asset($jobTask?->employerCompany?->logo) : asset('/frontend/employee/images/contentImages/jobCardLogo.png') }}" alt="" class="img-fluid" />
                                 </div>
                                 <div class="col-10">
                                     <h5>{{ $jobTask->job_title ?? 'Senior Officer, Corporate Banking' }}</h5>
                                     <p>{{ $jobTask?->employerCompany?->name ?? 'United Commercial Bank PLC' }}</p>
                                     <div class="job-type d-flex ">
-                                        <span class="badge">{{ $jobTask?->jobType?->name ?? 'Full Time' }}</span>
+                                        <span class="badge">{{ $jobTask?->jobType?->name ?? 'Full x Time' }}</span>
                                         <span class="badge">{{ $jobTask?->jobLocationType?->name ?? 'On-Site' }}</span>
 {{--                                        <span class="badge">Day Shift</span>--}}
                                     </div>
@@ -224,7 +224,7 @@
                         <a href="javascript:void(0)" onclick="document.getElementById('applyJob{{ $singleJobTask->id }}').submit()" class="apply-btn" style="text-decoration: none;">Easy Apply</a>
                     @endif
                     @if(!$isSaved)
-                        <button class="save-btn" data-job-id="${job.id}"><img src="{{ asset('/') }}frontend/employee/images/contentImages/saveIcon.png" alt="Save Icon" class="save-icon"> Save</button>
+                        <button class="save-btn" data-job-id="{{ $singleJobTask->id }}"><img src="{{ asset('/') }}frontend/employee/images/contentImages/saveIcon.png" alt="Save Icon" class="save-icon"> Save</button>
                     @endif
                     <form action="{{ route('employee.apply-job', $singleJobTask->id) }}" method="post" id="applyJob{{ $singleJobTask->id }}">
                         @csrf
@@ -326,7 +326,7 @@
         $(document).on('click', '.save-btn', function () {
             var jobId = $(this).attr('data-job-id');
             sendAjaxRequest('employee/save-job/'+jobId, 'GET').then(function (response) {
-                console.log(response);
+                // console.log(response);
                 if (response.status == 'success')
                 {
                     $(this).addClass('d-none');

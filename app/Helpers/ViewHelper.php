@@ -34,6 +34,41 @@ class ViewHelper
             return view($viewPath, $data);
         }
     }
+    public static function returnBackViewAndSendDataForApiAndAjax ($data=[], $viewPath = null, $jsonErrorMessage = null, $successMessage = null, $isReturnBack = false)
+    {
+        if (str()->contains(url()->current(), '/api/') || \request()->ajax())
+        {
+//            if (str()->contains(url()->current(), '/v1/'))
+//            {
+                if (empty($data))
+                {
+                    return response()->json(['status' => 'empty', 'msg' => 'No Data found.'], 200);
+                } elseif (isset($jsonErrorMessage))
+                {
+                    return response()->json($jsonErrorMessage , 400);
+                } elseif (\request()->ajax() && $viewPath != null)
+                {
+//                    return view($viewPath, $data)->render();
+                    return response()->json(view($viewPath, $data)->render());
+                }
+                return response()->json($data, 200);
+//            }
+        } else {
+            if ($viewPath != null)
+            {
+                return view($viewPath, $data);
+            } elseif (count($data) > 0)
+            {
+                Toastr::success($data);
+                return back()->with('data', $data);
+            } elseif ($isReturnBack)
+            {
+                return back()->with('success', $successMessage);
+            } else {
+                return back();
+            }
+        }
+    }
 
     public static function returnDataForAjaxAndApi($data = [])
     {
