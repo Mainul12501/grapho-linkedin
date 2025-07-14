@@ -832,6 +832,26 @@
         </div>
     </div>
 
+    <!-- Modal for Add Document -->
+    <div class="modal fade" id="editDocumentModal" tabindex="-1" aria-labelledby="addDocumentModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addDocumentModalLabel">
+                        <img src="{{ asset('/') }}frontend/employee/images/profile/profileLeftArrow.png" alt="" class="me-1" />
+                        Edit Document
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div id="documentEditForm">
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
 
     <!-- Edit Bio Modal -->
     <div class="modal fade" id="editBioModal" tabindex="-1" aria-labelledby="editBioModalLabel" aria-hidden="true">
@@ -908,6 +928,20 @@
                 // });
                 $('.select2').selectize();
                 $('#editEducationModal').modal('show');
+            })
+        })
+        $(document).on('click', '.edit-document', function () {
+            var jobId = $(this).attr('data-document-id');
+            // var thisObject = $(this);
+            // console.log(thisObject);
+            sendAjaxRequest('employee/employee-documents/'+jobId+'/edit', 'GET').then(function (response) {
+                // console.log(response);
+                $('#documentEditForm').append(response);
+                // $('#editWorkSummaryInput').summernote({
+                //     height: 300
+                // });
+                // $('.select2').selectize();
+                $('#editDocumentModal').modal('show');
             })
         })
     </script>

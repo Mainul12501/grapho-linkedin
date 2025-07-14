@@ -128,7 +128,7 @@ class EmployeeEducationController extends Controller
             $employeeEducation->address = $request->address;
 //        $employeeEducation->status  = $request->status;
             $employeeEducation->save();
-            return ViewHelper::returnSuccessMessage('Employee Education Info saved successfully.');
+            return ViewHelper::returnSuccessMessage('Employee Education Info updated successfully.');
         } catch (\Exception $exception)
         {
             return ViewHelper::returEexceptionError($exception->getMessage());

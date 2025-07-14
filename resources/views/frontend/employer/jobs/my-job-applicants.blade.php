@@ -7,9 +7,9 @@
     <div class="talentWrapper p-4">
         <h4 class="mb-3">
             <img src="{{ asset('/') }}frontend/employer/images/employersHome/leftarrow.png" alt="" />
-            Senior Officer, Corporate Banking
+            {{ $jobTask->job_title ?? 'Job Title' }}
         </h4>
-        <small class="text-muted mb-3 d-block">6 Applicants</small>
+        <small class="text-muted mb-3 d-block">{{ count($jobTask->employeeAppliedJobs) ?? 0 }} Applicants</small>
 
         <!-- Bootstrap Tabs -->
         <div class="talentMobileTop">
@@ -34,9 +34,9 @@
                 </li>
             </ul>
             <!-- Search input -->
-            <div class="mb-3 d-flex justify-content-end talentsearchbar">
-                <input type="search" class="form-control w-100" placeholder="Search applicants" />
-            </div>
+{{--            <div class="mb-3 d-flex justify-content-end talentsearchbar">--}}
+{{--                <input type="search" class="form-control w-100" placeholder="Search applicants" />--}}
+{{--            </div>--}}
         </div>
 
         <!-- Tab Content -->
@@ -57,35 +57,48 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
-                            <td class="d-flex align-items-center gap-3">
-                                <img src="{{ asset('/') }}frontend/employer/images/employersHome/talent-1.png" alt="Ayesha Begum" class="rounded-circle"
-                                     style="width: 38px; height: 38px; object-fit: cover;" />
-                                Ayesha Begum
-                            </td>
-                            <td>Bangladesh University of Engineering</td>
-                            <td>2.9</td>
-                            <td>25-09-2024</td>
-                            <td>
-                                <div class="d-flex align-items-center gap-3">
-                                    <button type="button" class="btn p-0" title="View profile" aria-label="View profile">
-                                        <img src="{{ asset('/') }}frontend/employer/images/employersHome/talen-green-tikIcon.png" alt="Profile icon" style="width: 20px; height: 20px;" />
-                                    </button>
-                                    <button type="button" class="btn p-0" title="View profile" aria-label="View profile">
-                                        <img src="{{ asset('/') }}frontend/employer/images/employersHome/talent-red-closeIcon.png" alt="Profile icon" style="width: 20px; height: 20px;" />
-                                    </button>
-                                    <div class="dropdown">
-                                        <button class="btn p-0" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Actions menu">
-                                            <img src="{{ asset('/') }}frontend/employer/images/employersHome/three dot.png" alt="More options" style="width: 20px; height: 20px;" />
-                                        </button>
-                                        <ul class="dropdown-menu dropdown-menu-end">
-                                            <li><a class="dropdown-item" href="#">Send message</a></li>
-                                            <li><a class="dropdown-item text-danger" href="#">Remove</a></li>
-                                        </ul>
+                        @forelse($pendingApplicants as $pendingApplicant)
+                            <tr>
+                                <td class="d-flex align-items-center gap-3">
+                                    <img src="{{ asset($pendingApplicant?->user->profile_image ?? 'frontend/employer/images/employersHome/talent-1.png') }}" alt="Ayesha Begum" class="rounded-circle"
+                                         style="width: 38px; height: 38px; object-fit: cover;" />
+                                    {{ $pendingApplicant?->user?->name ?? 'User Name' }}
+                                </td>
+                                <td>{{ $pendingApplicant?->user?->versity ?? 'Update this field : University name' }}</td>
+                                <td>{{ $pendingApplicant?->user?->cgpa }}</td>
+                                <td>{{ $pendingApplicant->created_at->format('D-m-Y') ?? '25-09-2024' }}</td>
+                                <td>
+                                    <div class="d-flex align-items-center gap-3">
+                                        <a href="" class="btn p-0" title="View profile" aria-label="View profile">
+{{--                                            <img src="{{ asset('/') }}frontend/employer/images/employersHome/talen-green-tikIcon.png" alt="Profile icon" style="width: 20px; height: 20px;" />--}}
+                                            <span><i class="fas fa-user-circle text-primary" style="width: 20px; height: 20px;"></i></span>
+                                        </a>
+                                        <a href="" class="btn p-0" title="View profile" aria-label="Shortlist applicant">
+                                            <img src="{{ asset('/') }}frontend/employer/images/employersHome/talen-green-tikIcon.png" alt="Profile icon" style="width: 20px; height: 20px;" />
+                                        </a>
+                                        <a href="" class="btn p-0" title="View profile" aria-label="View profile">
+                                            <img src="{{ asset('/') }}frontend/employer/images/employersHome/talent-red-closeIcon.png" alt="Profile icon" style="width: 20px; height: 20px;" />
+                                        </a>
+                                        <div class="dropdown">
+                                            <button class="btn p-0" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Actions menu">
+                                                <img src="{{ asset('/') }}frontend/employer/images/employersHome/three dot.png" alt="More options" style="width: 20px; height: 20px;" />
+                                            </button>
+                                            <ul class="dropdown-menu dropdown-menu-end">
+                                                <li><a class="dropdown-item" href="#">Send message</a></li>
+                                                <li><a class="dropdown-item text-danger" href="#">Remove</a></li>
+                                            </ul>
+                                        </div>
                                     </div>
-                                </div>
-                            </td>
-                        </tr>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="5">
+                                    <p class="f-s-25">No Data Found</p>
+                                </td>
+                            </tr>
+                        @endforelse
+
                         </tbody>
                     </table>
                 </div>
@@ -256,3 +269,7 @@
     </div>
 
 @endsection
+
+@push('style')
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+@endpush

@@ -11,84 +11,37 @@
         </p>
 
         <div class="row g-4">
-
-            <div class="col-12 col-md-6 col-lg-6">
-                <a href="{{ route('employer.my-job-applicants') }}" class="d-flex justify-content-between align-items-center border rounded-3 p-4 text-decoration-none text-dark card-link bg-white">
-                    <div>
-                        <h6 class="mb-1 fw-semibold">Senior Officer, Corporate Banking</h6>
-                        <div class="d-flex align-items-center text-muted small">
-                            <img src="{{ asset('/') }}frontend/employer/images/employersHome/talentUserGroupIcon.png" alt="" class="me-1">
-                            <span class="text-decoration-underline">24 Applicants</span>
+            @forelse($jobTasks as $jobTask)
+                <div class="col-12 col-md-6 col-lg-6">
+                    <a href="{{ route('employer.my-job-applicants', ['jobTask' => $jobTask->id]) }}" class="d-flex justify-content-between align-items-center border rounded-3 p-4 text-decoration-none text-dark card-link bg-white">
+                        <div>
+                            <h6 class="mb-1 fw-semibold">{{ $jobTask->job_title ?? 'Job Title' }}</h6>
+                            <div class="d-flex align-items-center text-muted small">
+                                <img src="{{ asset('/') }}frontend/employer/images/employersHome/talentUserGroupIcon.png" alt="" class="me-1">
+                                <span class="text-decoration-underline">{{ count($jobTask->employeeAppliedJobs) ?? 0 }} Applicants</span>
+                            </div>
                         </div>
-                    </div>
-                    <img src="{{ asset('/') }}frontend/employer/images/employersHome/arrow-right 1.png" alt="Go" class="icon-arrow" />
-                </a>
-            </div>
+                        <img src="{{ asset('/') }}frontend/employer/images/employersHome/arrow-right 1.png" alt="Go" class="icon-arrow" />
+                    </a>
+                </div>
+            @empty
+                <div class="col-12">
+                    <p class="f-s-26">No Active Jobs Available.</p>
+                </div>
+            @endforelse
 
-            <div class="col-12 col-md-6 col-lg-6">
-                <a href="job1.html" class="d-flex justify-content-between align-items-center border rounded-3 p-4 text-decoration-none text-dark card-link bg-white">
-                    <div>
-                        <h6 class="mb-1 fw-semibold">Senior Officer, Corporate Banking</h6>
-                        <div class="d-flex align-items-center text-muted small">
-                            <img src="{{ asset('/') }}frontend/employer/images/employersHome/talentUserGroupIcon.png" alt="" class="me-1">
-                            <span class="text-decoration-underline">24 Applicants</span>
-                        </div>
-                    </div>
-                    <img src="{{ asset('/') }}frontend/employer/images/employersHome/arrow-right 1.png" alt="Go" class="icon-arrow" />
-                </a>
-            </div>
-
-            <div class="col-12 col-md-6 col-lg-6">
-                <a href="job1.html" class="d-flex justify-content-between align-items-center border rounded-3 p-4 text-decoration-none text-dark card-link bg-white">
-                    <div>
-                        <h6 class="mb-1 fw-semibold">Senior Officer, Corporate Banking</h6>
-                        <div class="d-flex align-items-center text-muted small">
-                            <img src="{{ asset('/') }}frontend/employer/images/employersHome/talentUserGroupIcon.png" alt="" class="me-1">
-                            <span class="text-decoration-underline">24 Applicants</span>
-                        </div>
-                    </div>
-                    <img src="{{ asset('/') }}frontend/employer/images/employersHome/arrow-right 1.png" alt="Go" class="icon-arrow" />
-                </a>
-            </div>
-
-            <div class="col-12 col-md-6 col-lg-6">
-                <a href="job1.html" class="d-flex justify-content-between align-items-center border rounded-3 p-4 text-decoration-none text-dark card-link bg-white">
-                    <div>
-                        <h6 class="mb-1 fw-semibold">Senior Officer, Corporate Banking</h6>
-                        <div class="d-flex align-items-center text-muted small">
-                            <img src="{{ asset('/') }}frontend/employer/images/employersHome/talentUserGroupIcon.png" alt="" class="me-1">
-                            <span class="text-decoration-underline">24 Applicants</span>
-                        </div>
-                    </div>
-                    <img src="{{ asset('/') }}frontend/employer/images/employersHome/arrow-right 1.png" alt="Go" class="icon-arrow" />
-                </a>
-            </div>
-
-            <div class="col-12 col-md-6 col-lg-6">
-                <a href="job1.html" class="d-flex justify-content-between align-items-center border rounded-3 p-4 text-decoration-none text-dark card-link bg-white">
-                    <div>
-                        <h6 class="mb-1 fw-semibold">Senior Officer, Corporate Banking</h6>
-                        <div class="d-flex align-items-center text-muted small">
-                            <img src="{{ asset('/') }}frontend/employer/images/employersHome/talentUserGroupIcon.png" alt="" class="me-1">
-                            <span class="text-decoration-underline">24 Applicants</span>
-                        </div>
-                    </div>
-                    <img src="{{ asset('/') }}frontend/employer/images/employersHome/arrow-right 1.png" alt="Go" class="icon-arrow" />
-                </a>
-            </div>
-
-            <div class="col-12 col-md-6 col-lg-6">
-                <a href="job1.html" class="d-flex justify-content-between align-items-center border rounded-3 p-4 text-decoration-none text-dark card-link bg-white">
-                    <div>
-                        <h6 class="mb-1 fw-semibold">Senior Officer, Corporate Banking</h6>
-                        <div class="d-flex align-items-center text-muted small">
-                            <img src="{{ asset('/') }}frontend/employer/images/employersHome/talentUserGroupIcon.png" alt="" class="me-1">
-                            <span class="text-decoration-underline">24 Applicants</span>
-                        </div>
-                    </div>
-                    <img src="{{ asset('/') }}frontend/employer/images/employersHome/arrow-right 1.png" alt="Go" class="icon-arrow" />
-                </a>
-            </div>
+{{--            <div class="col-12 col-md-6 col-lg-6">--}}
+{{--                <a href="job1.html" class="d-flex justify-content-between align-items-center border rounded-3 p-4 text-decoration-none text-dark card-link bg-white">--}}
+{{--                    <div>--}}
+{{--                        <h6 class="mb-1 fw-semibold">Senior Officer, Corporate Banking</h6>--}}
+{{--                        <div class="d-flex align-items-center text-muted small">--}}
+{{--                            <img src="{{ asset('/') }}frontend/employer/images/employersHome/talentUserGroupIcon.png" alt="" class="me-1">--}}
+{{--                            <span class="text-decoration-underline">24 Applicants</span>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
+{{--                    <img src="{{ asset('/') }}frontend/employer/images/employersHome/arrow-right 1.png" alt="Go" class="icon-arrow" />--}}
+{{--                </a>--}}
+{{--            </div>--}}
 
 
         </div>

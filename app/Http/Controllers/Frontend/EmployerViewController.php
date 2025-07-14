@@ -44,12 +44,32 @@ class EmployerViewController extends Controller
     }
     public function myJobWiseApplicants()
     {
-        $data = [];
+        $data = [
+            'jobTasks'  => JobTask::where(['user_id' => ViewHelper::loggedUser()->id, 'status' => 1])->get(['id', 'job_title']),
+        ];
         return ViewHelper::checkViewForApi($data, 'frontend.employer.jobs.my-applicants');
         return view('frontend.employer.jobs.my-applicants');
     }
-    public function myJobApplicants()
+    public function myJobApplicants(JobTask $jobTask, Request $request)
     {
+//        if (!isset($request->status))
+//        {
+//            return redirect(route('employer.my-job-applicants', ['jobTask' => $jobTask->id, 'status' => 'pending']));
+//        }
+        $applicants = $jobTask->employeeAppliedJobs()->with(['user']);
+        $pendingApplicants = $applicants->where(['status' => 'pending'])->get();
+        $approvedApplicants = $applicants->where(['status' => 'approved'])->get();
+        $rejectedApplicants = $applicants->where(['status' => 'rejected'])->get();
+        $shortListedApplicants = $applicants->where(['is_shortlisted' => 1])->get();
+        $this->data = [
+            'jobTask'   => $jobTask,
+//            'applicants' => $jobTask->employeeAppliedJobs()->where(['status' => 'pending'])->with(['user'])->get(),
+            'pendingApplicants' => $pendingApplicants,
+            'approvedApplicants' => $approvedApplicants,
+            'rejectedApplicants' => $rejectedApplicants,
+            'shortListedApplicants' => $shortListedApplicants,
+        ];
+        return ViewHelper::returnBackViewAndSendDataForApiAndAjax($this->data, 'frontend.employer.jobs.my-job-applicants');
         return view('frontend.employer.jobs.my-job-applicants');
     }
     public function headHunt()

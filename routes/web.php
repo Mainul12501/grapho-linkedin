@@ -50,7 +50,7 @@ Route::middleware([
         Route::get('home', [EmployerViewController::class, 'employerHome'])->name('home');
         Route::get('my-jobs', [EmployerViewController::class, 'myJobs'])->name('my-jobs');
         Route::get('my-job-wise-applicants', [EmployerViewController::class, 'myJobWiseApplicants'])->name('my-job-wise-applicants');
-        Route::get('my-job-applicants', [EmployerViewController::class, 'myJobApplicants'])->name('my-job-applicants');
+        Route::get('my-job-applicants/{jobTask}', [EmployerViewController::class, 'myJobApplicants'])->name('my-job-applicants');
         Route::get('head-hunt', [EmployerViewController::class, 'headHunt'])->name('head-hunt');
         Route::get('employer-user-management', [EmployerViewController::class, 'employerUserManagement'])->name('employer-user-management');
         Route::get('settings', [EmployerViewController::class, 'settings'])->name('settings');

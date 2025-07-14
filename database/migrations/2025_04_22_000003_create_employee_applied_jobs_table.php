@@ -17,7 +17,7 @@ return new class extends Migration {
                 ->enum('status', ['pending', 'approved', 'rejected'])
                 ->default('pending');
             $table->unsignedBigInteger('job_task_id');
-
+            $table->tinyInteger('is_shortlisted')->default(0);
             $table->timestamps();
         });
     }

@@ -12,7 +12,7 @@ class EmployeeAppliedJob extends Model
     use HasFactory;
     use Searchable;
 
-    protected $fillable = ['user_id', 'status', 'job_task_id'];
+    protected $fillable = ['user_id', 'status', 'job_task_id', 'is_shortlisted'];
 
     protected $searchableFields = ['*'];
 
