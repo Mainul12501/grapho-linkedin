@@ -59,7 +59,7 @@ class ViewHelper
                 return view($viewPath, $data);
             } elseif (count($data) > 0)
             {
-                Toastr::success($data);
+                Toastr::success($data['msg']);
                 return back()->with('data', $data);
             } elseif ($isReturnBack)
             {

@@ -44,7 +44,7 @@ class SiteSetting extends Model
 
     protected $table = 'site_settings';
 
-    public function createOrUpdateSiteSetting($request)
+    public static function createOrUpdateSiteSetting($request)
     {
         $siteSetting = SiteSetting::first();
         if (!$siteSetting)

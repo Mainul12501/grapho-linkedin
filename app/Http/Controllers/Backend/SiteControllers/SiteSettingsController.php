@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Backend\SiteControllers;
 
+use App\Helpers\ViewHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Backend\SiteSetting;
 use Brian2694\Toastr\Facades\Toastr;
@@ -14,7 +15,7 @@ class SiteSettingsController extends Controller
      */
     public function index()
     {
-        return view('backend.admin-views.site-setting.create', ['siteSetting' => SiteSetting::first()]);
+        return view('backend.admin-views.site-setting.create', ['basicSetting' => SiteSetting::first()]);
     }
 
     /**
@@ -34,8 +35,8 @@ class SiteSettingsController extends Controller
             'site_title'    => 'required',
         ]);
         SiteSetting::createOrUpdateSiteSetting($request);
-        Toastr::success('Site Setting data stored successfully.');
-        return back();
+//        Toastr::success('Site Setting data stored successfully.');
+        return ViewHelper::returnBackViewAndSendDataForApiAndAjax(['status' => 'success', 'msg' => 'Site Setting data stored successfully.']);
     }
 
     /**
@@ -63,8 +64,7 @@ class SiteSettingsController extends Controller
             'site_title'    => 'required',
         ]);
         SiteSetting::createOrUpdateSiteSetting($request);
-        Toastr::success('Site Setting data stored successfully.');
-        return back();
+        return ViewHelper::returnBackViewAndSendDataForApiAndAjax(['status' => 'success', 'msg' => 'Site Setting data stored successfully.']);
     }
 
     /**
