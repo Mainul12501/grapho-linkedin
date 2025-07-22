@@ -60,7 +60,7 @@ class EmployerViewController extends Controller
         $pendingApplicants = $applicants->where(['status' => 'pending'])->get();
         $approvedApplicants = $applicants->where(['status' => 'approved'])->get();
         $rejectedApplicants = $applicants->where(['status' => 'rejected'])->get();
-        $shortListedApplicants = $applicants->where(['is_shortlisted' => 1])->get();
+        $shortListedApplicants = $applicants->where(['status' => 'shortlisted'])->get();
         $this->data = [
             'jobTask'   => $jobTask,
 //            'applicants' => $jobTask->employeeAppliedJobs()->where(['status' => 'pending'])->with(['user'])->get(),
@@ -76,8 +76,10 @@ class EmployerViewController extends Controller
     {
         return view('frontend.employer.jobs.head-hunt');
     }
-    public function employeeProfile()
+    public function employeeProfile($userId)
     {
+        $employee = User::with('employeeEducations', 'employeeDocuments', 'employeeWorkExperiences')->find($userId);
+        return ViewHelper::returnBackViewAndSendDataForApiAndAjax(['employeeDetails' => $employee],'frontend.employer.profile.employer-profile');
         return view('frontend.employer.profile.employer-profile');
     }
     public function employerUserManagement()
@@ -123,6 +125,30 @@ class EmployerViewController extends Controller
             $user->employer_agent_active_status = $status;
             $user->save();
             return ViewHelper::returnSuccessMessage('Sub employer status updated successfully');
+        } catch (\Exception $e) {
+            return ViewHelper::returEexceptionError($e->getMessage());
+        }
+    }
+
+    public function changeEmployeeJobApplicationStatus(Request $request, User $user, JobTask $jobTask, $status = 'pending')
+    {
+        $loggedUser = ViewHelper::loggedUser();
+        if ($loggedUser->id != $jobTask->user_id) {
+            return ViewHelper::returEexceptionError('You are not authorized to change this status');
+        }
+        try {
+            $appliedJob = $jobTask->employeeAppliedJobs()->where(['user_id' => $user->id])->first();
+            if (!$appliedJob) {
+                return ViewHelper::returEexceptionError('Job application not found');
+            }
+
+//            if ($status == 'shortlisted') {
+//                $appliedJob->is_shortlisted = 1;
+//            } else {
+//            }
+            $appliedJob->status = $status;
+            $appliedJob->save();
+            return ViewHelper::returnSuccessMessage('Employee job application status updated successfully');
         } catch (\Exception $e) {
             return ViewHelper::returEexceptionError($e->getMessage());
         }

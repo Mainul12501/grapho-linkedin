@@ -27,7 +27,7 @@
                             </div>
                             <div class="col-md-6">
                                 <label for="">Site Name <span class="text-danger">(required)</span></label>
-                                <input type="text" name="site_name" {{ isset($isShown) ? 'readonly' : '' }} class="form-control" value="{{ isset($basicSetting) ? $basicSetting->site_name : '' }}" />
+                                <input type="text" name="site_name" {{ isset($isShown) ? 'readonly' : '' }} class="form-control" value="{{ isset($basicSetting) ? $basicSetting->site_name : 'Grapho' }}" />
                             </div>
                             <div class="col-md-4 mt-2">
                                 <label for="">Meta Title </label>

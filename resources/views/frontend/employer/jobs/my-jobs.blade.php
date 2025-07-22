@@ -106,7 +106,7 @@
                                             <img src="{{ asset('/') }}frontend/employer/images/employersHome/three dot.png" alt="">
                                         </button>
                                         <ul class="dropdown-menu dropdown-menu-end">
-{{--                                            <li><a class="dropdown-item" href="#">Edit</a></li>--}}
+                                            <li><a class="dropdown-item edit-job" href="javascript:void(0)" data-job-id="{{ $publishedJob->id }}">Edit</a></li>
                                             <li>
                                                 <form action="{{ route('employer.job-tasks.destroy', $publishedJob->id) }}" method="post">
                                                     @csrf
@@ -269,7 +269,7 @@
             <div class="modal-content rounded-4 p-4">
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <h6 class="mb-0 fw-semibold">
-                        <img src="{{ asset('/') }}frontend/employee/images/employersHome/leftarrow.png" alt="" class="me-2"> Job details
+                        <img src="{{ asset('/') }}frontend/employer/images/employersHome/leftarrow.png" alt="" class="me-2"> Job details
                     </h6>
                     <div class="d-flex gap-2">
                         <button class="btn btn-outline-secondary btn-sm">
@@ -319,7 +319,6 @@
 
 
     <!-- Create Job Modal -->
-    <!-- Create Job Modal -->
     <div class="modal fade" id="createJobModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content p-4 rounded-4">
@@ -349,15 +348,6 @@
                                     <label class="btn btn-outline-warning" for="jobType{{ $jobTypesKey }}">{{ $jobType->name ?? 'jt' }}</label>
                                 @endforeach
 
-
-{{--                                <input type="radio" class="btn-check" name="jobType" id="parttime" value="Part time" autocomplete="off">--}}
-{{--                                <label class="btn btn-outline-warning" for="parttime">Part time</label>--}}
-
-{{--                                <input type="radio" class="btn-check" name="jobType" id="internship" value="Internship" autocomplete="off">--}}
-{{--                                <label class="btn btn-outline-warning" for="internship">Internship</label>--}}
-
-{{--                                <input type="radio" class="btn-check" name="jobType" id="freelance" value="Freelance" autocomplete="off">--}}
-{{--                                <label class="btn btn-outline-warning" for="freelance">Freelance</label>--}}
                             </div>
                         </div>
 
@@ -370,12 +360,6 @@
                                     <label class="btn btn-outline-warning" for="jobLocation{{ $jobLocationKey }}">{{ $jobLocation->name ?? 'jl' }}</label>
                                 @endforeach
 
-{{--                                <input type="radio" class="btn-check" name="jobLocation" id="hybrid" value="Hybrid" autocomplete="off" checked>--}}
-{{--                                <label class="btn btn-outline-warning" for="hybrid">Hybrid</label>--}}
-
-{{--                                <input type="radio" class="btn-check" name="jobLocation" id="remote" value="Remote" autocomplete="off">--}}
-{{--                                <label class="btn btn-outline-warning" for="remote">Remote</label>--}}
-                            </div>
                         </div>
 
                         <!-- Footer Buttons -->
@@ -390,8 +374,8 @@
                         <!-- Container and header -->
                         <div class="container-fluid py-3 border-bottom mb-4 bg-white">
                             <div class="d-flex justify-content-between align-items-center">
-                                <div class="d-flex align-items-center gap-2" id="backToStepOne" style="cursor:pointer">
-                                    <img src="{{ asset('/') }}frontend/employer/images/authentication images/leftArrow.png" alt="Back" style="width:20px; height:20px;">
+                                <div class="d-flex align-items-center gap-2 backToStepOne" id="backToStepOne" style="cursor:pointer">
+                                    <img src="{{ asset('/') }}frontend/employee/images/authentication images/leftArrow.png" alt="Back" style="width:20px; height:20px;">
                                     <h5 class="fw-bold mb-0">Create a job</h5>
                                 </div>
                                 <!-- Button triggers modal -->
@@ -629,75 +613,7 @@
 
                         </div>
 
-
-
-
-
-
-
-
-                        <!-- Detailed Job Review Modal -->
-                        <div class="modal fade" id="jobDetailsModal" tabindex="-1" aria-labelledby="jobDetailsModalLabel" aria-hidden="true">
-                            <div class="modal-dialog modal-lg modal-dialog-centered">
-                                <div class="modal-content rounded-4 p-4">
-
-                                    <!-- Header with back arrow and buttons -->
-                                    <div class="d-flex justify-content-between align-items-center mb-4" style="padding: 16px 24px; background: #fff; border-radius: 16px;">
-                                        <h6 class="mb-0 fw-semibold d-flex align-items-center gap-2" style="font-weight: 600; font-size: 1rem; cursor: pointer;">
-                                            <img src="{{ asset('/') }}frontend/employer/images/employersHome/leftarrow.png" alt="Back" style="width: 24px; height: 24px;">
-                                            Review job details
-                                        </h6>
-                                        <button id="modalPostJobBtn" class="btn btn-warning fw-bold" style="padding: 8px 20px; border-radius: 12px; font-weight: 700; font-size: 1rem;">
-                                            Post job
-                                        </button>
-
-                                    </div>
-
-                                    <!-- Snackbar / Toast -->
-                                    <div id="snackbar" class="snackbar">
-                                        <img src="{{ asset('/') }}frontend/employer/images/employersHome/toasterTik.png" alt="Success" class="snackbar-icon">
-                                        <span class="snackbar-text">You posted the job: <b>Senior Officer, Corporate Banking</b></span>
-                                        <button id="snackbar-close" class="snackbar-close"><img src="{{ asset('/') }}frontend/employer/images/employersHome/ToasterCross.png" alt=""></button>
-                                    </div>
-
-                                    <!-- Snackbar / Toast -->
-
-
-                                    <!-- Company Info -->
-                                    <div class="mb-2 d-flex align-items-center gap-2">
-                                        <img src="{{ asset('/') }}frontend/employer/images/employersHome/UCB logo.png" alt="UCB Logo" style="height:24px;">
-                                        <span class="fw-semibold">United Commercial Bank PLC</span>
-                                        <span class="text-muted">&middot; Gulshan, Dhaka</span>
-                                    </div>
-
-                                    <!-- Job Title -->
-                                    <h4 class="fw-bold mb-3">Senior Officer, Corporate Banking</h4>
-
-                                    <!-- Tags -->
-                                    <div class="d-flex flex-wrap gap-2 mb-4">
-                                        <span class="badge bg-light text-dark fw-medium">Full Time</span>
-                                        <span class="badge bg-light text-dark fw-medium">On-Site</span>
-                                        <span class="badge bg-light text-dark fw-medium">Day Shift</span>
-                                    </div>
-
-                                    <!-- About Section -->
-                                    <h6 class="fw-semibold mb-2">About UCB</h6>
-                                    <p class="text-muted" style="line-height: 1.6;">
-                                        Be part of the world's most successful, purpose-led business. Work with brands that are well-loved around the world, that improve the lives of our consumers and the communities around us. We promote innovation, big and small, to make our business win and grow; and we believe in business as a force for good. Unleash your curiosity, challenge ideas and disrupt processes; use your energy to make this happen.
-                                        <br><br>
-                                        Our brilliant business leaders and colleagues provide mentorship and inspiration, so you can be at your best. Every day, nine out of ten Indian households use our products to feel good, look good and get more out of life – giving us a unique opportunity to build a brighter future.
-                                    </p>
-
-                                    <!-- Job Requirements -->
-                                    <h6 class="fw-semibold mt-4 mb-2">Job Requirements</h6>
-                                    <ul class="text-muted" style="line-height: 1.8;">
-                                        <li>Analyse internal and external data to identify geography-wise issues/opportunities and action upon them.</li>
-                                        <li>Work with media teams and other stakeholders to deploy effective communication for Surf across traditional and new-age media platforms.</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-
+                    </div>
 
                         <!-- For brevity not repeating entire step 2 HTML, will render in browser from provided -->
 
@@ -707,6 +623,83 @@
             </div>
         </div>
     </div>
+    <!-- Create Job Modal End -->
+
+    <!-- Detailed Job Review Modal -->
+    <div class="modal fade" id="jobDetailsModal" tabindex="-1" aria-labelledby="jobDetailsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content rounded-4 p-4">
+
+                <!-- Header with back arrow and buttons -->
+                <div class="d-flex justify-content-between align-items-center mb-4" style="padding: 16px 24px; background: #fff; border-radius: 16px;">
+                    <h6 class="mb-0 fw-semibold d-flex align-items-center gap-2" style="font-weight: 600; font-size: 1rem; cursor: pointer;">
+                        <img src="{{ asset('/') }}frontend/employer/images/employersHome/leftarrow.png" alt="Back" style="width: 24px; height: 24px;">
+                        Review job details
+                    </h6>
+                    <button id="modalPostJobBtn" class="btn btn-warning fw-bold" style="padding: 8px 20px; border-radius: 12px; font-weight: 700; font-size: 1rem;">
+                        Post job
+                    </button>
+
+                </div>
+
+                <!-- Snackbar / Toast -->
+                <div id="snackbar" class="snackbar">
+                    <img src="{{ asset('/') }}frontend/employer/images/employersHome/toasterTik.png" alt="Success" class="snackbar-icon">
+                    <span class="snackbar-text">You posted the job: <b>Senior Officer, Corporate Banking</b></span>
+                    <button id="snackbar-close" class="snackbar-close"><img src="{{ asset('/') }}frontend/employer/images/employersHome/ToasterCross.png" alt=""></button>
+                </div>
+
+                <!-- Snackbar / Toast -->
+
+
+                <!-- Company Info -->
+                <div class="mb-2 d-flex align-items-center gap-2">
+                    <img src="{{ asset('/') }}frontend/employer/images/employersHome/UCB logo.png" alt="UCB Logo" style="height:24px;">
+                    <span class="fw-semibold">United Commercial Bank PLC</span>
+                    <span class="text-muted">&middot; Gulshan, Dhaka</span>
+                </div>
+
+                <!-- Job Title -->
+                <h4 class="fw-bold mb-3">Senior Officer, Corporate Banking</h4>
+
+                <!-- Tags -->
+                <div class="d-flex flex-wrap gap-2 mb-4">
+                    <span class="badge bg-light text-dark fw-medium">Full Time</span>
+                    <span class="badge bg-light text-dark fw-medium">On-Site</span>
+                    <span class="badge bg-light text-dark fw-medium">Day Shift</span>
+                </div>
+
+                <!-- About Section -->
+                <h6 class="fw-semibold mb-2">About UCB</h6>
+                <p class="text-muted" style="line-height: 1.6;">
+                    Be part of the world's most successful, purpose-led business. Work with brands that are well-loved around the world, that improve the lives of our consumers and the communities around us. We promote innovation, big and small, to make our business win and grow; and we believe in business as a force for good. Unleash your curiosity, challenge ideas and disrupt processes; use your energy to make this happen.
+                    <br><br>
+                    Our brilliant business leaders and colleagues provide mentorship and inspiration, so you can be at your best. Every day, nine out of ten Indian households use our products to feel good, look good and get more out of life – giving us a unique opportunity to build a brighter future.
+                </p>
+
+                <!-- Job Requirements -->
+                <h6 class="fw-semibold mt-4 mb-2">Job Requirements</h6>
+                <ul class="text-muted" style="line-height: 1.8;">
+                    <li>Analyse internal and external data to identify geography-wise issues/opportunities and action upon them.</li>
+                    <li>Work with media teams and other stakeholders to deploy effective communication for Surf across traditional and new-age media platforms.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Job Modal -->
+    <div class="modal fade" id="editJobModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content p-4 rounded-4">
+
+                <div class="" id="editJobForm">
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- Create Job Modal End -->
 
 @endsection
 
@@ -719,10 +712,28 @@
 @push('script')
 
     @include('common-resource-files.selectize')
+    @include('common-resource-files.summernote')
 
     <!-- include summernote css/js -->
-    <link href="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote.min.js"></script>
+{{--    <link href="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote.min.css" rel="stylesheet">--}}
+{{--    <script src="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote.min.js"></script>--}}
+
+    <script>
+        $(document).on('click', '.edit-job', function () {
+            var jobId = $(this).attr('data-job-id');
+            // var thisObject = $(this);
+            // console.log(thisObject);
+            sendAjaxRequest('employer/job-tasks/'+jobId+'/edit', 'GET').then(function (response) {
+                // console.log(response);
+                $('#editJobForm').empty().append(response);
+                $('.summernote').summernote({
+                    height: 300
+                });
+                $('.select2').selectize();
+                $('#editJobModal').modal('show');
+            })
+        })
+    </script>
 
 {{--    </style>--}}
     <script >
@@ -739,20 +750,40 @@
             $('.stepTwo').addClass('d-none');
             $('.stepOne').removeClass('d-none');
         })
-    </script>
-    <script>
-        document.getElementById('continueToStep2')?.addEventListener('click', function () {
+        $(document).on('click', '#continueToStep2', function () {
             $('#formJobTitle').text($('input[name="job_title"]').val());
             $('#jobJobType').text($('label[for="'+$('input[name="job_type_id"]').attr('id')+'"]').text());
             $('#jobjobLocationType').text($('label[for="'+$('input[name="job_location_type_id"]').attr('id')+'"]').text());
-            document.querySelector('#createJobModal .stepOne').classList.add('d-none');
-            document.querySelector('#createJobModal .jobModalForPost').classList.remove('d-none');
+            // document.querySelector('#createJobModal .stepOne').classList.add('d-none');
+            $('.stepOne').addClass('d-none');
+            // document.querySelector('#createJobModal .jobModalForPost').classList.remove('d-none');
+            $('.jobModalForPost').removeClass('d-none');
             $('.stepTwo').removeClass('d-none');
-        });
+        })
+        $(document).on('click', '#createJobModal #backToStepOne', function () {
+            // document.querySelector('#createJobModal .stepOne').classList.remove('d-none');
+            $('#createJobModal .stepOne').removeClass('d-none');
+            // document.querySelector('#createJobModal .jobModalForPost').classList.add('d-none');
+            $('#createJobModal .jobModalForPost').addClass('d-none');
+        })
+        $(document).on('click', '#editJobModal #backToStepOne', function () {
+            $('#editJobModal .stepOne').removeClass('d-none');
+            $('#editJobModal .jobModalForPost').addClass('d-none');
+        })
+    </script>
+    <script>
+        // document.getElementById('continueToStep2')?.addEventListener('click', function () {
+        //     $('#formJobTitle').text($('input[name="job_title"]').val());
+        //     $('#jobJobType').text($('label[for="'+$('input[name="job_type_id"]').attr('id')+'"]').text());
+        //     $('#jobjobLocationType').text($('label[for="'+$('input[name="job_location_type_id"]').attr('id')+'"]').text());
+        //     document.querySelector('#createJobModal .stepOne').classList.add('d-none');
+        //     document.querySelector('#createJobModal .jobModalForPost').classList.remove('d-none');
+        //     $('.stepTwo').removeClass('d-none');
+        // });
 
-        document.getElementById('backToStepOne')?.addEventListener('click', function () {
-            document.querySelector('#createJobModal .stepOne').classList.remove('d-none');
-            document.querySelector('#createJobModal .jobModalForPost').classList.add('d-none');
-        });
+        // document.getElementById('backToStepOne')?.addEventListener('click', function () {
+        //     document.querySelector('#createJobModal .stepOne').classList.remove('d-none');
+        //     document.querySelector('#createJobModal .jobModalForPost').classList.add('d-none');
+        // });
     </script>
 @endpush

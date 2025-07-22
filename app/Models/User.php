@@ -4,6 +4,9 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Models\Backend\EmployeeAppliedJob;
+use App\Models\Backend\EmployeeDocument;
+use App\Models\Backend\EmployeeEducation;
+use App\Models\Backend\EmployeeWorkExperience;
 use App\Models\Backend\EmployerCompany;
 use App\Models\Backend\JobTask;
 use App\Models\Backend\RoleManagement\Role;

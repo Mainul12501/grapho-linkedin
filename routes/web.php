@@ -15,7 +15,7 @@ use App\Http\Controllers\Frontend\Crud\EmployeeDocumentsController;
 
 Route::get('/', [FrontendViewController::class, 'homePage'])->name('/');
 
-Route::get('employee-profile', [EmployerViewController::class, 'employeeProfile'])->name('employee-profile');
+Route::get('employee-profile/{employeeId}', [EmployerViewController::class, 'employeeProfile'])->name('employee-profile');
 
 Route::get('auth/{provider}/redirect', [SocialLoginController::class , 'redirect'])->name('auth.socialite.redirect');
 Route::get('auth/{provider}/callback', [SocialLoginController::class , 'callback'])->name('auth.socialite.callback');
@@ -56,6 +56,7 @@ Route::middleware([
         Route::get('settings', [EmployerViewController::class, 'settings'])->name('settings');
         Route::get('company-profile', [EmployerViewController::class, 'companyProfile'])->name('company-profile');
         Route::get('change-sub-employer-status/{user}/{status}', [EmployerViewController::class, 'changeSubEmployerStatus'])->name('change-sub-employer-status');
+        Route::get('change-employee-job-application-status/{jobTask}/{user}/{status?}', [EmployerViewController::class, 'changeEmployeeJobApplicationStatus'])->name('change-employee-job-application-status');
 
         Route::post('update-settings', [EmployerViewController::class, 'updateSettings'])->name('update-settings');
         Route::post('update-company-info', [EmployerViewController::class, 'updateCompanyInfo'])->name('update-company-info');

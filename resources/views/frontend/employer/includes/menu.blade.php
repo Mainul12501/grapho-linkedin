@@ -1,6 +1,6 @@
 <aside class="sidebar bg-white p-3">
     <a href="" class="brand mb-3 d-block">
-        <img src="{{ isset($siteSetting) ? asset($siteSetting->logo) : asset('/') }}frontend/employer/images/employersHome/logo.png" alt="" class="" /></a>
+        <img src="{{ isset($siteSetting) ? asset($siteSetting->logo) : asset('/frontend/employer/images/employersHome/logo.png') }}" alt="" class="" style="max-width: 60px; border-radius: 50%" /></a>
     <ul class="nav flex-column">
         <li class="nav-item mb-2">
             <a class="nav-link {{ request()->is('employer/home') ? 'active' : '' }}" href="{{ route('employer.home') }}" ><img src="{{ asset('/') }}frontend/employer/images/employersHome/HomeDesk.png" alt="" class="me-2">Home</a>

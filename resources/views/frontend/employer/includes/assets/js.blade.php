@@ -14,6 +14,51 @@
 <script src="{{ asset('/') }}common-assets/js/sweetalert2@11-11.22.0.js"></script>
 {!! Toastr::message() !!}
 
+<script>
+    var base_url = "{!! url('/') !!}/";
+
+    let response;
+    // async function callAjaxRequest(url, method, data = {})
+    // {
+    //     response = await callAjaxRequest(url, method, data);
+    //
+    //     return response;
+    // }
+
+    function sendAjaxRequest(url, method, data = {}) {
+        return $.ajax({ // Return the Promise from $.ajax
+            url: base_url + url,
+            method: method,
+            data: data
+        })
+            .done(function (data) { // .done() for success
+                // console.log(data.job.employer_company);
+                // console.log('print from dno');
+                // No need to assign to 'response' here, it's passed to .then()
+            })
+            .fail(function (error) { // .fail() for error
+                toastr.error(error);
+                // The error will also be propagated to the .catch() when called
+            });
+    }
+    // function sendAjaxRequest(url, method, data = {}) {
+    //     var response;
+    //     $.ajax({
+    //         url: base_url+url,
+    //         method: method,
+    //         data: data,
+    //         success: function (data) {
+    //             // console.log(data);
+    //             // console.log('console form master');
+    //             response = data;
+    //         },
+    //         error: function (error) {
+    //             toastr.error(error);
+    //         }
+    //     })
+    //     return response;
+    // }
+</script>
 
 {{--common js functions made by me--}}
 <script>
