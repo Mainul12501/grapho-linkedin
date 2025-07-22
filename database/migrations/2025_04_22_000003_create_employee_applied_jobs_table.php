@@ -14,7 +14,7 @@ return new class extends Migration {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id');
             $table
-                ->enum('status', ['pending', 'approved', 'rejected'])
+                ->enum('status', ['pending', 'approved', 'rejected', 'shortlisted'])
                 ->default('pending');
             $table->unsignedBigInteger('job_task_id');
             $table->tinyInteger('is_shortlisted')->default(0);

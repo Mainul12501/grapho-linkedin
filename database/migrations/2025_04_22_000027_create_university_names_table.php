@@ -22,6 +22,7 @@ return new class extends Migration {
                 ->tinyInteger('status')
                 ->default(1)
                 ->nullable();
+            $table->string('logo')->nullable();
             $table->string('slug')->nullable();
 
             $table->timestamps();
