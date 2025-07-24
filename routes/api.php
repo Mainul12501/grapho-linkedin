@@ -19,9 +19,10 @@ Route::get('/user', function (Request $request) {
 
 
 Route::post('send-otp', [CustomLoginController::class, 'sendOtp'])->name('send-otp');
+Route::post('buy-subscription/{subscriptionPlan}', [FrontendViewController::class, 'buySubscription']);
 
-
-Route::get('get-job-details/{id}', [JobTaskController::class, 'getJobDetails'])->name('get-job-details');
+Route::get('employee-profile/{employeeId}', [EmployerViewController::class, 'employeeProfile']);
+Route::get('get-job-details/{id}', [JobTaskController::class, 'getJobDetails']);
 
 Route::prefix('auth')->name('auth.')->group(function (){
     Route::get('select-auth-method', [CustomLoginController::class, 'selectAuthMethod']);
@@ -52,9 +53,13 @@ Route::middleware([
         Route::get('employer-user-management', [EmployerViewController::class, 'employerUserManagement']);
         Route::get('settings', [EmployerViewController::class, 'settings']);
         Route::get('company-profile', [EmployerViewController::class, 'companyProfile']);
+        Route::get('change-sub-employer-status/{user}/{status}', [EmployerViewController::class, 'changeSubEmployerStatus']);
+        Route::get('change-employee-job-application-status/{jobTask}/{user}/{status?}', [EmployerViewController::class, 'changeEmployeeJobApplicationStatus']);
 
         Route::post('update-settings', [EmployerViewController::class, 'updateSettings']);
         Route::post('update-company-info', [EmployerViewController::class, 'updateCompanyInfo']);
+        Route::post('create-sub-user', [EmployerViewController::class, 'createSubUser']);
+        Route::post('delete-sub-employer/{user}', [EmployerViewController::class, 'deleteSubEmployer']);
 
         Route::resources([
             'job-tasks'  => JobTaskController::class

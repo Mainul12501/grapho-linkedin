@@ -40,7 +40,7 @@
                     </div>
                     <div class="option">
                         <span>********</span>
-                        <span data-bs-toggle="modal" data-bs-target="settingModal" style="cursor: pointer">
+                        <span data-bs-toggle="modal" data-bs-target="#settingModal" style="cursor: pointer">
                             <img src="{{ asset('/') }}frontend/employee/images/profile/arrowRightLight.png" alt="Right Arrow"  />
                         </span>
                     </div>
@@ -53,7 +53,9 @@
                     </div>
                     <div class="option">
                         <span>md.pranto@gmail.com</span>
-                        <img src="{{ asset('/') }}frontend/employee/images/profile/arrowRightLight.png" alt="Right Arrow" />
+                        <span data-bs-toggle="modal" data-bs-target="#settingModal" style="cursor: pointer">
+                            <img src="{{ asset('/') }}frontend/employee/images/profile/arrowRightLight.png" alt="Right Arrow" />
+                        </span>
                     </div>
                 </div>
 
@@ -63,7 +65,10 @@
                         <span>Log out</span>
                     </div>
                     <div class="option">
-                        <img src="{{ asset('/') }}frontend/employee/images/profile/arrowRightLight.png" alt="Right Arrow" />
+                        <img src="{{ asset('/') }}frontend/employee/images/profile/arrowRightLight.png" onclick="document.getElementById('logoutForm').submit()" alt="Right Arrow" />
+                        <form action="{{ route('logout') }}" method="post">
+                            @csrf
+                        </form>
                     </div>
                 </div>
             </div>
@@ -80,25 +85,37 @@
                     <h1 class="modal-title fs-5" id="exampleModalLabel">Edit Profile Setting</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form action="" method="post" enctype="multipart/form-data">
+                <form action="{{ route('employee.update-profile') }}" method="post" enctype="multipart/form-data">
                     @csrf
                     <div class="modal-body">
                         <div class="row">
+                            <label for="name" class="col-md-3">Name</label>
+                            <div class="col-md-9">
+                                <input type="text" id="name" name="name" class="form-control" value="{{ auth()->user()->name ?? '' }}" />
+                            </div>
+                        </div>
+                        <div class="row">
                             <label for="email" class="col-md-3">Email</label>
                             <div class="col-md-9">
-                                <input type="email" id="email" name="email" class="" />
+                                <input type="email" id="email" name="email" class="form-control" value="{{ auth()->user()->email ?? '' }}" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label for="mobile" class="col-md-3">Mobile</label>
+                            <div class="col-md-9">
+                                <input type="email" id="mobile" name="mobile" class="form-control" value="{{ auth()->user()->mobile ?? '' }}" />
                             </div>
                         </div>
                         <div class="row mt-2">
                             <label for="prevPass" class="col-md-3">Previous Password</label>
                             <div class="col-md-9">
-                                <input type="password" id="prevPass" name="prev_pass" class="" />
+                                <input type="password" id="prevPass" name="prev_password" class="form-control" />
                             </div>
                         </div>
                         <div class="row mt-2">
                             <label for="newPass" class="col-md-3">New Password</label>
                             <div class="col-md-9">
-                                <input type="password" name="new_pass" id="newPass" class="" />
+                                <input type="password" name="new_password" id="newPass" class="form-control" />
                             </div>
                         </div>
                         <div class="row mt-2">

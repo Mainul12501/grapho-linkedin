@@ -18,6 +18,7 @@ use App\Models\Backend\UserProfileView;
 use App\Models\User;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\View\View;
 use PHPUnit\Util\PHP\Job;
@@ -102,7 +103,11 @@ class EmployeeViewController extends Controller
     }
     public function settings()
     {
-        return ViewHelper::checkViewForApi([], 'frontend.employee.base-functionalities.settings');
+        $this->data = [
+            'loggedUser'    => ViewHelper::loggedUser()
+        ];
+        return ViewHelper::checkViewForApi($this->data, 'frontend.employee.base-functionalities.settings');
+        return \view('frontend.employee.base-functionalities.settings');
     }
     public function myProfile()
     {
@@ -191,7 +196,15 @@ class EmployeeViewController extends Controller
             Toastr::error($validator->errors());
             return back();
         }
+        if (isset($request->prev_password) && isset($request->new_password))
+        {
+            if (!Hash::check($request->prev_password, $user->password))
+            {
+                return ViewHelper::returEexceptionError('Password Mismatch. Please provide correct password.');
+            }
+        }
         try {
+
             if ($user)
             {
                 $user->profile_title    = $request->profile_title ?? $user->profile_title;
@@ -214,4 +227,5 @@ class EmployeeViewController extends Controller
         }
         return back();
     }
+
 }
