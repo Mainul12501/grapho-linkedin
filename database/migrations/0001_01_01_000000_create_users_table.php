@@ -21,11 +21,6 @@ return new class extends Migration
             $table->foreignId('current_team_id')->nullable();
             $table->string('profile_photo_path', 2048)->nullable();
 
-
-
-
-
-
             $table->unsignedBigInteger('user_id')->nullable();
             $table->unsignedBigInteger('subscription_plan_id')->nullable();
             $table->unsignedBigInteger('employer_company_id')->nullable();
@@ -45,6 +40,7 @@ return new class extends Migration
             $table->text('google_id')->nullable();
             $table->string('organization_name')->nullable();
             $table->string('subscription_started_from')->nullable();
+            $table->string('subscription_end_date')->nullable();
             $table->string('profile_image')->nullable();
             $table->string('profile_title')->nullable();
             $table->text('address')->nullable();

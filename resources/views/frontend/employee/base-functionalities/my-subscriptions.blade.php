@@ -16,15 +16,18 @@
         <!-- Right Scrollable Jobs -->
         <section class="w-100 profileOptionRight">
             <h1 class="forLarge">Subscription</h1>
-            <div class="right-panel w-100 subscription">
-                <div class="subscription-card">
-                    <div class="subscription-info">
-                        <h3>Current plan</h3>
-                        <p>Monthly plan, expires on 20 April, 2025</p>
+            @if(isset($loggedUser?->subscriptionPlan?->title))
+                <div class="right-panel w-100 subscription">
+                    <div class="subscription-card">
+                        <div class="subscription-info">
+                            <h3>Current plan</h3>
+                            <p>{{ $loggedUser?->subscriptionPlan?->title ?? 'Plan Title' }}, expires on {{ \Illuminate\Support\Carbon::parse($loggedUser->subscription_end_date)->format('d M, Y') }}</p>
+                        </div>
+{{--                        <button class="view-invoice">View invoice</button>--}}
                     </div>
-                    <button class="view-invoice">View invoice</button>
                 </div>
-            </div>
+            @endif
+
 
 
 
@@ -33,57 +36,49 @@
 
                 <div class="planWrapper row justify-content-between">
 
-                    <div class="col-12 col-md-6 planOne ">
-                        <p class="olanDuration">6 Months Plan</p>
-                        <h2 class="planPrive">Tk. 100</h2>
+                    @forelse($subscriptionPlans as $subscriptionPlan)
+                        <div class="col-12 col-md-6 planOne ">
+                            <p class="olanDuration">{{ $subscriptionPlan->title ?? '' }}</p>
+                            <h2 class="planPrive">Tk. {{ $subscriptionPlan->price ?? 0 }}</h2>
 
-                        <button class="btn w-100 bg-dark text-white my-3">Subscribe</button>
+                            <form action="{{ route('buy-subscription', $subscriptionPlan->id) }}" method="post">
+                                @csrf
+                                <button type="submit" class="btn w-100 bg-dark text-white my-3">Subscribe</button>
+                            </form>
 
-                        <div class="subscription-card-body">
-                            <p class="includes-title">This plan includes</p>
-                            <ul class="plan-features">
-                                <li><span class="checkmark"><img src="{{ asset('/') }}frontend/employee/images/profile/plan-featuresIcon.png" alt=""></span> Starter templates</li>
-                                <li><span class="checkmark"><img src="{{ asset('/') }}frontend/employee/images/profile/plan-featuresIcon.png" alt=""></span> Foundational product analytics</li>
-                                <li><span class="checkmark"><img src="{{ asset('/') }}frontend/employee/images/profile/plan-featuresIcon.png" alt=""></span> Campaign reporting</li>
-                                <li><span class="checkmark"><img src="{{ asset('/') }}frontend/employee/images/profile/plan-featuresIcon.png" alt=""></span> Unlimited feature flags</li>
-                                <li><span class="checkmark"><img src="{{ asset('/') }}frontend/employee/images/profile/plan-featuresIcon.png" alt=""></span> Unlimited sources & destinations</li>
-                            </ul>
+                            <div class="subscription-card-body">
+                                <p class="includes-title">This plan includes</p>
+                                <p class="" style="text-align: justify">{!! $subscriptionPlan->plan_features ?? '' !!}</p>
+                            </div>
                         </div>
-                    </div>
-
-                    <div class="col-12 col-md-6 planOne">
-                        <p class="olanDuration">Yearly Plan</p>
-                        <h2 class="planPrive">Tk. 200</h2>
-
-                        <button class="btn w-100 bg-dark text-white my-3">Subscribe</button>
-
-                        <div class="subscription-card-body">
-                            <p class="includes-title">This plan includes</p>
-                            <ul class="plan-features">
-                                <li><span class="checkmark"><img src="{{ asset('/') }}frontend/employee/images/profile/plan-featuresIcon.png" alt=""></span> Starter templates</li>
-                                <li><span class="checkmark"><img src="{{ asset('/') }}frontend/employee/images/profile/plan-featuresIcon.png" alt=""></span> Foundational product analytics</li>
-                                <li><span class="checkmark"><img src="{{ asset('/') }}frontend/employee/images/profile/plan-featuresIcon.png" alt=""></span> Campaign reporting</li>
-                                <li><span class="checkmark"><img src="{{ asset('/') }}frontend/employee/images/profile/plan-featuresIcon.png" alt=""></span> Unlimited feature flags</li>
-                                <li><span class="checkmark"><img src="{{ asset('/') }}frontend/employee/images/profile/plan-featuresIcon.png" alt=""></span> Unlimited sources & destinations</li>
-                            </ul>
+                    @empty
+                        <div class="col-12 planOne">
+                            <p class="f-s-26 text-center">No Subscription Plan Found</p>
                         </div>
-                    </div>
+                    @endforelse
+
+
+{{--                    <div class="col-12 col-md-6 planOne">--}}
+{{--                        <p class="olanDuration">Yearly Plan</p>--}}
+{{--                        <h2 class="planPrive">Tk. 200</h2>--}}
+
+{{--                        <button class="btn w-100 bg-dark text-white my-3">Subscribe</button>--}}
+
+{{--                        <div class="subscription-card-body">--}}
+{{--                            <p class="includes-title">This plan includes</p>--}}
+{{--                            <ul class="plan-features">--}}
+{{--                                <li><span class="checkmark"><img src="{{ asset('/') }}frontend/employee/images/profile/plan-featuresIcon.png" alt=""></span> Starter templates</li>--}}
+{{--                                <li><span class="checkmark"><img src="{{ asset('/') }}frontend/employee/images/profile/plan-featuresIcon.png" alt=""></span> Foundational product analytics</li>--}}
+{{--                                <li><span class="checkmark"><img src="{{ asset('/') }}frontend/employee/images/profile/plan-featuresIcon.png" alt=""></span> Campaign reporting</li>--}}
+{{--                                <li><span class="checkmark"><img src="{{ asset('/') }}frontend/employee/images/profile/plan-featuresIcon.png" alt=""></span> Unlimited feature flags</li>--}}
+{{--                                <li><span class="checkmark"><img src="{{ asset('/') }}frontend/employee/images/profile/plan-featuresIcon.png" alt=""></span> Unlimited sources & destinations</li>--}}
+{{--                            </ul>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
 
                 </div>
-
             </div>
-
-
         </section>
-
-
-
-
-
-
     </div>
-
-
-
 @endsection
 

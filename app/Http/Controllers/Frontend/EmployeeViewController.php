@@ -12,7 +12,9 @@ use App\Models\Backend\EmployeeEducation;
 use App\Models\Backend\EmployeeWorkExperience;
 use App\Models\Backend\FieldOfStudy;
 use App\Models\Backend\JobTask;
+use App\Models\Backend\SubscriptionPlan;
 use App\Models\Backend\UniversityName;
+use App\Models\Backend\UserProfileView;
 use App\Models\User;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Http\Request;
@@ -22,6 +24,7 @@ use PHPUnit\Util\PHP\Job;
 
 class EmployeeViewController extends Controller
 {
+    protected $data = [];
     public function employeeHome()
     {
         $data = [
@@ -81,14 +84,21 @@ class EmployeeViewController extends Controller
     public function myProfileViewers()
     {
         $user = ViewHelper::loggedUser();
+        $profileViewerIds = UserProfileView::where(['employee_id' => $user->id, 'viewed_by' => 'employer'])->with('employerCompany')->get();
         $data = [
-            'myProfileViewers'  => $user->viewEmployerIds
+            'myProfileViewers'  => $profileViewerIds
         ];
-        return ViewHelper::checkViewForApi([], 'frontend.employee.base-functionalities.profile-viewers');
+        return ViewHelper::checkViewForApi($data, 'frontend.employee.base-functionalities.profile-viewers');
+        return \view('frontend.employee.base-functionalities.profile-viewers');
     }
     public function mySubscriptions()
     {
-        return ViewHelper::checkViewForApi([], 'frontend.employee.base-functionalities.my-subscriptions');
+        $this->data = [
+            'loggedUser'    => ViewHelper::loggedUser(),
+            'subscriptionPlans' => SubscriptionPlan::where(['status' => 1])->get()
+        ];
+        return ViewHelper::checkViewForApi($this->data, 'frontend.employee.base-functionalities.my-subscriptions');
+        return \view('frontend.employee.base-functionalities.my-subscriptions');
     }
     public function settings()
     {

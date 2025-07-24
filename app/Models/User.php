@@ -10,6 +10,7 @@ use App\Models\Backend\EmployeeWorkExperience;
 use App\Models\Backend\EmployerCompany;
 use App\Models\Backend\JobTask;
 use App\Models\Backend\RoleManagement\Role;
+use App\Models\Backend\SubscriptionPlan;
 use App\Models\Backend\UserProfileView;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;

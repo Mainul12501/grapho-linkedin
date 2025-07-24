@@ -19,6 +19,7 @@ use App\Http\Controllers\Backend\Employer\JobLocationTypeController;
 use App\Http\Controllers\Backend\Employer\EmployerCompanyCategoryController;
 use App\Http\Controllers\Backend\SiteControllers\AdvertisementController;
 use App\Http\Controllers\Backend\SiteControllers\SiteSettingsController;
+use App\Http\Controllers\Backend\SiteControllers\SubscriptionController;
 
 
 Route::middleware([
@@ -48,6 +49,7 @@ Route::middleware([
         'employer-company-categories' => EmployerCompanyCategoryController::class,
         'advertisements' => AdvertisementController::class,
         'site-settings' => SiteSettingsController::class,
+        'subscriptions' => SubscriptionController::class,
     ]);
 
 });

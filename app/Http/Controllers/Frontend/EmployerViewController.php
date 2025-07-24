@@ -13,6 +13,7 @@ use App\Models\Backend\JobTask;
 use App\Models\Backend\JobType;
 use App\Models\Backend\SkillsCategory;
 use App\Models\Backend\UniversityName;
+use App\Models\Backend\UserProfileView;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -78,6 +79,23 @@ class EmployerViewController extends Controller
     }
     public function employeeProfile($userId)
     {
+        $loggedUser = ViewHelper::loggedUser();
+        if ($loggedUser)
+        {
+            if ($loggedUser->user_type == 'employer')
+            {
+                $existProfileView = UserProfileView::where(['employee_id' => $userId, 'employer_id' => $loggedUser->id, 'viewed_by' => 'employer'])->first();
+                if (!$existProfileView)
+                {
+                    $newProfileView = new UserProfileView();
+                    $newProfileView->employee_id    = $userId;
+                    $newProfileView->employer_id    = $loggedUser->id;
+                    $newProfileView->viewed_by    = 'employer';
+                    $newProfileView->employer_company_id    = $loggedUser?->employerCompany?->id;
+                    $newProfileView->save();
+                }
+            }
+        }
         $employee = User::with('employeeEducations', 'employeeDocuments', 'employeeWorkExperiences')->find($userId);
         return ViewHelper::returnBackViewAndSendDataForApiAndAjax(['employeeDetails' => $employee],'frontend.employer.profile.employer-profile');
         return view('frontend.employer.profile.employer-profile');

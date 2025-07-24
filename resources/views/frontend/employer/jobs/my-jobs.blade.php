@@ -94,7 +94,7 @@
                                             </div>
                                             <div>
                                                 <img src="{{ asset('/') }}frontend/employer/images/employersHome/24application.png" class="me-1" alt="">
-                                                <a href="#" class="text-decoration-underline">24 Applicants</a>
+                                                <a href="{{ route('employer.my-job-applicants', ['jobTask' => $publishedJob->id]) }}" class="text-decoration-underline">{{ $publishedJob->employeeAppliedJobs->count() ?? 0 }} Applicants</a>
                                             </div>
                                         </div>
                                     </div>
