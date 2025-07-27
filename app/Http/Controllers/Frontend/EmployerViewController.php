@@ -26,6 +26,7 @@ class EmployerViewController extends Controller
     {
         $data = [
             'jobTasks'  => JobTask::where(['user_id' => ViewHelper::loggedUser()->id, 'status' => 1])->get(),
+            'employees' => User::where(['user_type' => 'employee', 'is_open_for_hire' => 1])->take(3)->get(['id', 'name', 'profile_title', 'address', 'profile_image']),
         ];
         return ViewHelper::checkViewForApi($data, 'frontend.employer.home.home');
         return view('frontend.employer.home.home', $data);
@@ -73,8 +74,18 @@ class EmployerViewController extends Controller
         return ViewHelper::returnBackViewAndSendDataForApiAndAjax($this->data, 'frontend.employer.jobs.my-job-applicants');
         return view('frontend.employer.jobs.my-job-applicants');
     }
-    public function headHunt()
+    public function headHunt(Request $request)
     {
+        $data = [
+            'employees' => User::where(['user_type' => 'employee', 'is_open_for_hire' => 1])->get(['id', 'name', 'profile_title', 'address', 'profile_image']),
+            'industries' => Industry::where(['status' => 1])->get(['id', 'name']),
+            'jobTypes' => JobType::where(['status' => 1])->get(['id', 'name']),
+            'jobLocations' => JobLocationType::where(['status' => 1])->get(['id', 'name']),
+            'universityNames' => UniversityName::where(['status' => 1])->get(['id', 'name']),
+            'fieldOfStudies' => FieldOfStudy::where(['status' => 1])->get(['id', 'field_name']),
+            'skillCategories' => SkillsCategory::where(['status' => 1])->get(['id', 'category_name']),
+        ];
+        return ViewHelper::checkViewForApi($data, 'frontend.employer.jobs.head-hunt');
         return view('frontend.employer.jobs.head-hunt');
     }
     public function employeeProfile($userId)

@@ -558,7 +558,7 @@
 
                             @csrf
                             <div class="mb-4">
-                                <label for="jobTitleInput" class="form-label">Job title</label>
+                                <label for="jobTitleInput" class="form-label">Position</label>
                                 <input type="text" class="form-control" name="title" id="jobTitleInput" placeholder="Type here" />
                             </div>
 
@@ -613,7 +613,7 @@
                             </div>
 
                             <div class="mb-4">
-                                <label for="workSummaryInput" class="form-label">Job summary</label>
+                                <label for="workSummaryInput" class="form-label">Responsibilities</label>
                                 <textarea class="form-control summernote" name="job_responsibilities" id="workSummaryInput" rows="4" placeholder="Type here"></textarea>
                             </div>
 

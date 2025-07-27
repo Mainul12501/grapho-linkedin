@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Backend\RolePermissionManagement\Permission\PermissionCategoryController;
 use App\Http\Controllers\Backend\RolePermissionManagement\Permission\PermissionController;
 use App\Http\Controllers\Backend\RolePermissionManagement\Role\RoleController;
+use App\Http\Controllers\Backend\UserManagement\UserController;
 use App\Http\Controllers\Backend\ViewControllers\AdminViewController;
 
 use App\Http\Controllers\Backend\Employee\EducationDegreeNameController;
@@ -29,12 +30,17 @@ Route::middleware([
 ])->group(function () {
 
     Route::get('/dashboard', [AdminViewController::class, 'dashboard'])->name('dashboard');
+    Route::prefix('admin')->group(function () {
+        Route::get('/pending-users', [UserController::class, 'PendingUsers'])->name('pending-users');
+        Route::post('/change-user-approve-status/{user}/{status?}', [UserController::class, 'changeUserApproveStatus'])->name('change-user-approve-status');
+        Route::get('/view-employer-jobs/{user}', [UserController::class, 'viewEmployerJobs'])->name('view-employer-jobs');
+    });
 
     Route::resources([
         'permission-categories' => PermissionCategoryController::class,
         'permissions' => PermissionController::class,
         'roles' => RoleController::class,
-//        'users' => UserController::class,
+        'users' => UserController::class,
 
         'education-degree-names' => EducationDegreeNameController::class,
         'field-of-studies' => FieldOfStudyController::class,

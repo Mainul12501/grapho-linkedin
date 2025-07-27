@@ -10,7 +10,11 @@ use App\Models\Backend\EmployeeAppliedJob;
 use App\Models\Backend\EmployeeDocument;
 use App\Models\Backend\EmployeeEducation;
 use App\Models\Backend\EmployeeWorkExperience;
+use App\Models\Backend\EmployerCompany;
+use App\Models\Backend\EmployerCompanyCategory;
 use App\Models\Backend\FieldOfStudy;
+use App\Models\Backend\Industry;
+use App\Models\Backend\JobLocationType;
 use App\Models\Backend\JobTask;
 use App\Models\Backend\SubscriptionPlan;
 use App\Models\Backend\UniversityName;
@@ -41,7 +45,7 @@ class EmployeeViewController extends Controller
     }
     public function showJobs(Request $request)
     {
-        $jobTasks = JobTask::where(['status' => 1])->get();
+        $jobTasks = JobTask::where(['status' => 1])->latest()->get();
         if (isset($request->job_task))
         {
             $singleJobTask  = JobTask::find($request->job_task);
@@ -54,6 +58,10 @@ class EmployeeViewController extends Controller
             'singleJobTask' => $singleJobTask,
             'isSaved'   => $getJobSaveApplyInfo['isSaved'],
             'isApplied'   => $getJobSaveApplyInfo['isApplied'],
+            'jobLocationTypes' => JobLocationType::where(['status' => 1])->get(['id', 'name']),
+            'industries' => Industry::where(['status' => 1])->get(['id', 'name']),
+            'companies' => EmployerCompany::where(['status' => 1])->get(['id', 'name']),
+            'companyTypes' => EmployerCompanyCategory::where(['status' => 1])->get(['id', 'category_name']),
         ];
         return ViewHelper::checkViewForApi($data, 'frontend.employee.jobs.show-jobs');
         return \view('frontend.employee.jobs.show-jobs');

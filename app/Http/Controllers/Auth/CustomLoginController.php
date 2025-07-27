@@ -73,6 +73,7 @@ class CustomLoginController extends Controller
             $user->organization_name     = $request->organization_name;
             $user->user_type     = $request->user_type;
             $user->gender     = $request->gender;
+            $user->is_approved     = $request->user_type == 'Employer' ? 0 : 1;
             $user->user_slug     = str_replace(' ', '-', $request->name);
             $user->password     = bcrypt($request->password);
 //            $user->status   = 1;
@@ -84,6 +85,8 @@ class CustomLoginController extends Controller
                 $company->industry_id   = $request->industry_id;
                 $company->employer_company_category_id   = $request->employer_company_category_id;
                 $company->name  = $request->organization_name;
+                $company->bin_number = $request->bin_number;
+                $company->trade_license_number = $request->trade_license_number;
                 $company->status    = 1;
                 $company->save();
             }

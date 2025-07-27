@@ -28,6 +28,8 @@ return new class extends Migration {
             $table->tinyInteger('status')->nullable();
             $table->string('slug')->nullable();
             $table->string('logo')->nullable();
+            $table->string('bin_number')->nullable();
+            $table->string('trade_license_number')->nullable();
 
             $table->timestamps();
         });

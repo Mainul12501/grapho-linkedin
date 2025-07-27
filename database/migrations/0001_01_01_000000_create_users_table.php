@@ -58,11 +58,8 @@ return new class extends Migration
                 'inactive',
             ])->default('inactive')->nullable();
 
-
-
-
-
-
+            $table->string('status')->default('active')->nullable();
+            $table->tinyInteger('is_approved')->default(0)->nullable()->comment('0 = not approved, 1 = approved, 2 = rejected');
             $table->timestamps();
         });
 

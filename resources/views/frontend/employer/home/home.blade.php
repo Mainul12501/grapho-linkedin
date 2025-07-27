@@ -164,55 +164,60 @@
 
                     <div class="row g-3">
                         <!-- Talent Card 1 -->
-                        <div class="col-md-4 col-sm-6">
-                            <article class="talent-card">
-                                <img src="{{ asset('/') }}frontend/employer/images/employersHome/talent (1).png"
-                                     alt="Mohammed Pranto" class="talent-img" />
-                                <div class="talent-details">
-                                    <h6>Mohammed Pranto</h6>
-                                    <p>Mobile App Developer,<br />Flutter Developer, Instructor & Mentor</p>
-                                    <div class="talent-meta">
-                                        <span><i class="bi bi-geo-alt-fill"></i>Uttara, Dhaka</span>
-                                        <span class="badge bg-light text-secondary">3+ yrs</span>
-                                        <span class="badge bg-light text-secondary">3.50 CGPA</span>
-                                    </div>
-                                </div>
-                            </article>
-                        </div>
+                        @foreach($employees as $employee)
+                            <div class="col-md-4 col-sm-6">
+                                <a href="{{ route('employee-profile', $employee->id) }}">
+                                    <article class="talent-card">
+                                        <img src="{{ asset($employee->profile_image ?? '/frontend/employer/images/employersHome/talent (1).png') }}"
+                                             alt="Mohammed Pranto" class="talent-img" />
+                                        <div class="talent-details">
+                                            <h6>{{ $employee->name ?? 'Employee Name' }}</h6>
+                                            <p>{{ $employee->profile_title ?? 'Employee Profile Title' }}</p>
+                                            <div class="talent-meta">
+                                                <span><i class="bi bi-geo-alt-fill"></i>{!! $employee->address ?? 'Employee Address' !!}</span>
+                                                {{--                                            <span class="badge bg-light text-secondary">{{ $employee->exp ?? '' }}+ yrs</span>--}}
+                                                {{--                                            <span class="badge bg-light text-secondary">3.50 CGPA</span>--}}
+                                            </div>
+                                        </div>
+                                    </article>
+                                </a>
+                            </div>
+                        @endforeach
+
 
                         <!-- Talent Card 2 -->
-                        <div class="col-md-4 col-sm-6">
-                            <article class="talent-card">
-                                <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Ayesha Rahman"
-                                     class="talent-img" />
-                                <div class="talent-details">
-                                    <h6>Ayesha Rahman</h6>
-                                    <p>Front-end Developer,<br />ReactJS Specialist, UI/UX Designer</p>
-                                    <div class="talent-meta">
-                                        <span><i class="bi bi-geo-alt-fill"></i>Gulshan, Dhaka</span>
-                                        <span class="badge bg-light text-secondary">2+ yrs</span>
-                                        <span class="badge bg-light text-secondary">3.80 CGPA</span>
-                                    </div>
-                                </div>
-                            </article>
-                        </div>
+{{--                        <div class="col-md-4 col-sm-6">--}}
+{{--                            <article class="talent-card">--}}
+{{--                                <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Ayesha Rahman"--}}
+{{--                                     class="talent-img" />--}}
+{{--                                <div class="talent-details">--}}
+{{--                                    <h6>Ayesha Rahman</h6>--}}
+{{--                                    <p>Front-end Developer,<br />ReactJS Specialist, UI/UX Designer</p>--}}
+{{--                                    <div class="talent-meta">--}}
+{{--                                        <span><i class="bi bi-geo-alt-fill"></i>Gulshan, Dhaka</span>--}}
+{{--                                        <span class="badge bg-light text-secondary">2+ yrs</span>--}}
+{{--                                        <span class="badge bg-light text-secondary">3.80 CGPA</span>--}}
+{{--                                    </div>--}}
+{{--                                </div>--}}
+{{--                            </article>--}}
+{{--                        </div>--}}
 
-                        <!-- Talent Card 3 -->
-                        <div class="col-md-4 col-sm-6">
-                            <article class="talent-card">
-                                <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Rafiq Hossain"
-                                     class="talent-img" />
-                                <div class="talent-details">
-                                    <h6>Rafiq Hossain</h6>
-                                    <p>Backend Developer, Node.js Expert, Software Architect</p>
-                                    <div class="talent-meta">
-                                        <span><i class="bi bi-geo-alt-fill"></i>Dhanmondi, Dhaka</span>
-                                        <span class="badge bg-light text-secondary">5+ yrs</span>
-                                        <span class="badge bg-light text-secondary">3.60 CGPA</span>
-                                    </div>
-                                </div>
-                            </article>
-                        </div>
+{{--                        <!-- Talent Card 3 -->--}}
+{{--                        <div class="col-md-4 col-sm-6">--}}
+{{--                            <article class="talent-card">--}}
+{{--                                <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Rafiq Hossain"--}}
+{{--                                     class="talent-img" />--}}
+{{--                                <div class="talent-details">--}}
+{{--                                    <h6>Rafiq Hossain</h6>--}}
+{{--                                    <p>Backend Developer, Node.js Expert, Software Architect</p>--}}
+{{--                                    <div class="talent-meta">--}}
+{{--                                        <span><i class="bi bi-geo-alt-fill"></i>Dhanmondi, Dhaka</span>--}}
+{{--                                        <span class="badge bg-light text-secondary">5+ yrs</span>--}}
+{{--                                        <span class="badge bg-light text-secondary">3.60 CGPA</span>--}}
+{{--                                    </div>--}}
+{{--                                </div>--}}
+{{--                            </article>--}}
+{{--                        </div>--}}
                     </div>
                 </section>
             </div>

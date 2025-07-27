@@ -64,6 +64,8 @@ class User extends Authenticatable
         'language',
         'is_open_for_hire',
         'employer_agent_active_status',
+        'is_approved',
+        'status',
     ];
 
     /**

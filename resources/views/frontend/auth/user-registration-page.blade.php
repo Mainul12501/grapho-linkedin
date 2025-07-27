@@ -56,7 +56,7 @@
             <div id="signUpEmailDiv1">
                 <label for="signUpMail">Email address</label>
                 <div>
-                    <input type="text" id="signUpMail" placeholder="Type here" class="w-100 signUpMail">
+                    <input type="text" id="signUpMail" placeholder="Type here" class="w-100 signUpMail form-control">
                     <span class="text-danger" id="signUpMailError"></span>
                 </div>
 
@@ -70,7 +70,7 @@
                         <input type="email" id="signUpMail" name="email" value="shetu@xyz.com" class="printSignUpMail w-100">
                     </div>
 
-                    <label for="fullname">Full name</label>
+                    <label for="fullname">{{ isset($_GET['user']) && $_GET['user'] == 'Employer' ? 'Company Name' : 'Full name' }}</label>
                     <div>
                         <input type="text" id="fullname" name="name" placeholder="Type here" class="w-100">
                         @error('name') <span class="text-danger">{{ $errors->first('name') }}</span> @enderror
@@ -78,7 +78,7 @@
 
 
                     <label for="phoneInput">Phone number</label>
-                    <div class="phone-wrapper">
+                    <div class="phone-wrapper" style="margin-bottom: 0px!important;">
 {{--                        <div class="country-select">--}}
 {{--                            <img id="flagIcon" src="https://flagcdn.com/w40/bd.png" alt="Flag">--}}
 {{--                            <select id="countryCode" style="border: none; outline: none; font-weight: 500;" >--}}
@@ -115,21 +115,40 @@
                         </div>
                         <label for="organizationName" class="mt-3">Organization name</label>
                         <div>
-                            <input type="text" name="organization_name" id="organizationName" placeholder="Type here" class="w-100">
+                            <input type="text" name="organization_name" id="organizationName" placeholder="Type here" class="w-100" style="margin-bottom: 0px!important;" />
                             @error('organization_name') <span class="text-danger">{{ $errors->first('organization_name') }}</span> @enderror
                         </div>
                     @endif
+                    @if(isset($_GET['user']) && $_GET['user'] == 'Employer')
+                        <div class="">
+                            <label for="binNumber" class="mt-3">Bin Number</label>
+                            <div>
+                                <input type="text" name="bin_number" id="binNumber" placeholder="Enter Bin Number" class="w-100 form-control">
+                                @error('bin_number') <span class="text-danger">{{ $errors->first('bin_number') }}</span> @enderror
+                            </div>
+                        </div>
+                        <div class="">
+                            <label for="tradeLicenseNumber" class="mt-3">Trade License number</label>
+                            <div>
+                                <input type="text" name="trade_license_number" id="tradeLicenseNumber" placeholder="Enter Trade License number" class="w-100 form-control">
+                                @error('trade_license_number') <span class="text-danger">{{ $errors->first('trade_license_number') }}</span> @enderror
+                            </div>
+                        </div>
+                    @endif
 
-                    <label for="organizationName">Gender</label>
-                    <div>
-                        <select name="gender" class="w-100 form-control select2" id="" data-placeholder="Select Industry">
-                            {{--                                <option selected disabled >Hi</option>--}}
-                            <option value="male">Male</option>
-                            <option value="female">Female</option>
-                            <option value="other">Other</option>
-                        </select>
-                        @error('industry_id') <span class="text-danger">{{ $errors->first('industry_id') }}</span> @enderror
-                    </div>
+                    @if(isset($_GET['user']) && $_GET['user'] != 'Employer')
+                        <label for="organizationName">Gender</label>
+                        <div>
+                            <select name="gender" class="w-100 form-control select2" id="" data-placeholder="Select Industry">
+                                {{--                                <option selected disabled >Hi</option>--}}
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                                <option value="other">Other</option>
+                            </select>
+                            @error('industry_id') <span class="text-danger">{{ $errors->first('industry_id') }}</span> @enderror
+                        </div>
+                    @endif
+
 
                     <label for="supPassword">Password</label>
                     <div class="input-wrapper">
@@ -144,7 +163,7 @@
 {{--                    </div>--}}
 
 
-                    <button type="submit">Create account</button>
+                    <button type="submit" class="mt-2">Create account</button>
                 </div>
             </div>
         </form>
