@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Helpers\ViewHelper;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Payment\SSLCommerzController;
 use App\Models\Backend\SubscriptionPlan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -18,15 +19,22 @@ class FrontendViewController extends Controller
     public function buySubscription(SubscriptionPlan $subscriptionPlan, Request $request)
     {
         $loggedUser = ViewHelper::loggedUser();
-        if ($loggedUser)
-        {
-            $loggedUser->subscription_plan_id  = $subscriptionPlan->id;
-            $loggedUser->subscription_started_from  = now();
-            $loggedUser->subscription_end_date  = Carbon::now()->addDays($subscriptionPlan->duration_in_days ?? 0);
-            $loggedUser->save();
-            return ViewHelper::returnSuccessMessage('Your subscription plan is active.');
-        } else {
-            return ViewHelper::returEexceptionError('Unauthenticated user');
-        }
+        $data = [];
+        $data['user_id']    = $loggedUser->id;
+        $data['subscription_id']    = $subscriptionPlan->id;
+        $data['redirect_url']    = url()->previous();
+        $data['total_amount']    = $subscriptionPlan->price ?? 0;
+        session()->put('requestData', $data);
+        return SSLCommerzController::sendOrderRequestToSSLZ($subscriptionPlan->price ?? 0, $subscriptionPlan->name ?? 'Subscription Plan Title');
+//        if ($loggedUser)
+//        {
+//            $loggedUser->subscription_plan_id  = $subscriptionPlan->id;
+//            $loggedUser->subscription_started_from  = now();
+//            $loggedUser->subscription_end_date  = Carbon::now()->addDays($subscriptionPlan->duration_in_days ?? 0);
+//            $loggedUser->save();
+//            return ViewHelper::returnSuccessMessage('Your subscription plan is active.');
+//        } else {
+//            return ViewHelper::returEexceptionError('Unauthenticated user');
+//        }
     }
 }

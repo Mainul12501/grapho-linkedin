@@ -66,6 +66,7 @@ class User extends Authenticatable
         'employer_agent_active_status',
         'is_approved',
         'status',
+        'subscription_system_status',
     ];
 
     /**

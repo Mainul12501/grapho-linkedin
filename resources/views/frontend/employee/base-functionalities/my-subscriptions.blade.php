@@ -36,15 +36,20 @@
 
                 <div class="planWrapper row justify-content-between">
 
-                    @forelse($subscriptionPlans as $subscriptionPlan)
+                    @forelse($subscriptionPlans as $key => $subscriptionPlan)
                         <div class="col-12 col-md-6 planOne ">
                             <p class="olanDuration">{{ $subscriptionPlan->title ?? '' }}</p>
                             <h2 class="planPrive">Tk. {{ $subscriptionPlan->price ?? 0 }}</h2>
 
-                            <form action="{{ route('buy-subscription', $subscriptionPlan->id) }}" method="post">
-                                @csrf
-                                <button type="submit" class="btn w-100 bg-dark text-white my-3">Subscribe</button>
-                            </form>
+                            @if($subscriptionPlan->id != $loggedUser->subscription_plan_id)
+                                <form id="subsForm{{$key}}" action="{{ route('buy-subscription', $subscriptionPlan->id) }}" method="post">
+                                    @csrf
+                                    <button type="submit" onsubmit="return confirm('Are you sure to Purchase this plan. Your previous plan will be replaced if exists.')" class="btn w-100 bg-dark text-white my-3">Subscribe</button>
+                                </form>
+                            @else
+                                <button type="button" disabled class="btn w-100 bg-dark text-white my-3">Already Purchased</button>
+                            @endif
+
 
                             <div class="subscription-card-body">
                                 <p class="includes-title">This plan includes</p>

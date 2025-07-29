@@ -29,6 +29,9 @@ return Application::configure(basePath: dirname(__DIR__))
             'isEmployer'    => \App\Http\Middleware\IsEmployerMiddleware::class,
             'redirectToHomeOnSessionOut'    => \App\Http\Middleware\RedirectToHomeOnSessionOut::class,
         ]);
+        $middleware->validateCsrfTokens(except: [
+            'sslcommerz/*'
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

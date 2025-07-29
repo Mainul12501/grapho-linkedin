@@ -4,6 +4,7 @@
 namespace App\Helpers;
 
 use App\Models\Backend\EmployeeAppliedJob;
+use App\Models\User;
 use Brian2694\Toastr\Facades\Toastr;
 use http\Client\Request;
 use Illuminate\Support\Carbon;
@@ -216,5 +217,20 @@ class ViewHelper
             'isSaved'   => $isSaved,
             'isApplied'   => $isApplied,
         ];
+    }
+
+    public static function placeSubscriptionOrder($user_id, $subscription_id)
+    {
+        try {
+            $loggedUser = User::find($user_id);
+            $loggedUser->subscription_plan_id  = $subscription_id;
+            $loggedUser->subscription_started_from  = now();
+            $loggedUser->subscription_end_date  = Carbon::now()->addDays($subscriptionPlan->duration_in_days ?? 0);
+            $loggedUser->save();
+            return ['status' => 'success', 'msg' => 'Your subscription plan is active.'];
+        } catch (\Exception $exception)
+        {
+            return ['status' => 'error', 'msg' => $exception->getMessage()];
+        }
     }
 }

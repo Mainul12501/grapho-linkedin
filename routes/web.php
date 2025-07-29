@@ -11,6 +11,7 @@ use App\Http\Controllers\Auth\CustomLoginController;
 use App\Http\Controllers\Frontend\Crud\JobTaskController;
 use App\Http\Controllers\Frontend\Crud\EmployeeEducationController;
 use App\Http\Controllers\Frontend\Crud\EmployeeDocumentsController;
+use App\Http\Controllers\Payment\SSLCommerzController;
 
 
 Route::get('/', [FrontendViewController::class, 'homePage'])->name('/');
@@ -37,6 +38,11 @@ Route::prefix('auth')->name('auth.')->group(function (){
 
 
 });
+
+Route::post('sslcommerz/success',[SSLCommerzController::class, 'paymentSuccess'])->name('payment.success');
+Route::post('sslcommerz/failure',[SSLCommerzController::class, 'paymentFailure'])->name('payment.failure');
+Route::post('sslcommerz/cancel',[SSLCommerzController::class, 'paymentCancel'])->name('payment.cancel');
+Route::post('sslcommerz/ipn',[SSLCommerzController::class, 'ipn'])->name('payment.ipn');
 
 Route::middleware([
     'auth:sanctum',
