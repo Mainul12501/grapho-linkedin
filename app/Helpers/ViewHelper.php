@@ -10,6 +10,7 @@ use http\Client\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Cache;
 use Xenon\LaravelBDSms\Facades\SMS;
+use function Pest\Laravel\json;
 
 class ViewHelper
 {
@@ -232,5 +233,29 @@ class ViewHelper
         {
             return ['status' => 'error', 'msg' => $exception->getMessage()];
         }
+    }
+
+    public static function saveImagePathInJson($imageFileObject, $imageDirectory, $imageNameString = null, $width = null, $height = null, $previousJsonString = null)
+    {
+        if ($previousJsonString)
+        {
+            foreach (json_decode($previousJsonString) as $previousImage)
+            {
+                if (file_exists($previousImage))
+                {
+                    unlink($previousImage);
+                }
+            }
+        }
+        $imageFileString = [];
+        if ($imageFileObject)
+        {
+            foreach ($imageFileObject as $key => $image)
+            {
+                $imageFileString[] = imageUpload($image, $imageDirectory, $imageNameString, $width, $height);
+            }
+
+        }
+        return json_encode($imageFileString);
     }
 }

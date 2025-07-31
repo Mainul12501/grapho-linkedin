@@ -12,6 +12,7 @@ use App\Models\Backend\JobLocationType;
 use App\Models\Backend\JobTask;
 use App\Models\Backend\JobType;
 use App\Models\Backend\SkillsCategory;
+use App\Models\Backend\SubscriptionPlan;
 use App\Models\Backend\UniversityName;
 use App\Models\Backend\UserProfileView;
 use App\Models\User;
@@ -76,14 +77,41 @@ class EmployerViewController extends Controller
     }
     public function headHunt(Request $request)
     {
+        $employees = User::query();
+        if (isset($request->job_type))
+        {
+
+        }
+        if (isset($request->job_location))
+        {
+
+        }
+        if (isset($request->university_name))
+        {
+
+        }
+        if (isset($request->industry))
+        {
+
+        }
+        if (isset($request->field_of_study))
+        {
+
+        }
+        if (isset($request->skill))
+        {
+
+        }
+        $employees = $employees->where(['user_type' => 'employee', 'is_open_for_hire' => 1])->get(['id', 'name', 'profile_title', 'address', 'profile_image']);
+
         $data = [
-            'employees' => User::where(['user_type' => 'employee', 'is_open_for_hire' => 1])->get(['id', 'name', 'profile_title', 'address', 'profile_image']),
-            'industries' => Industry::where(['status' => 1])->get(['id', 'name']),
-            'jobTypes' => JobType::where(['status' => 1])->get(['id', 'name']),
-            'jobLocations' => JobLocationType::where(['status' => 1])->get(['id', 'name']),
-            'universityNames' => UniversityName::where(['status' => 1])->get(['id', 'name']),
-            'fieldOfStudies' => FieldOfStudy::where(['status' => 1])->get(['id', 'field_name']),
-            'skillCategories' => SkillsCategory::where(['status' => 1])->get(['id', 'category_name']),
+            'employees' => $employees,
+            'industries' => Industry::where(['status' => 1])->get(['id', 'name', 'slug']),
+            'jobTypes' => JobType::where(['status' => 1])->get(['id', 'name', 'slug']),
+            'jobLocations' => JobLocationType::where(['status' => 1])->get(['id', 'name', 'slug']),
+            'universityNames' => UniversityName::where(['status' => 1])->get(['id', 'name', 'slug']),
+            'fieldOfStudies' => FieldOfStudy::where(['status' => 1])->get(['id', 'field_name', 'slug']),
+            'skillCategories' => SkillsCategory::where(['status' => 1])->get(['id', 'category_name', 'slug']),
         ];
         return ViewHelper::checkViewForApi($data, 'frontend.employer.jobs.head-hunt');
         return view('frontend.employer.jobs.head-hunt');
@@ -303,5 +331,15 @@ class EmployerViewController extends Controller
         } catch (\Exception $e) {
             return ViewHelper::returEexceptionError($e->getMessage());
         }
+    }
+
+    public function employerSubscriptions()
+    {
+        $this->data = [
+            'loggedUser'    => ViewHelper::loggedUser(),
+            'subscriptionPlans' => SubscriptionPlan::where(['status' => 1])->get()
+        ];
+        return ViewHelper::checkViewForApi($this->data, 'frontend.employer.config.my-subscriptions');
+        return \view('frontend.employer.config.my-subscriptions');
     }
 }

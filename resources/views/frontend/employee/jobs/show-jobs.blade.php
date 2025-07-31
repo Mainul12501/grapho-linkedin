@@ -13,136 +13,45 @@
                 </div>
             </div>
 
-            <!-- First Dropdown -->
-{{--            <div class="custom-select">--}}
-{{--                <input type="text" class="form-control select-box locationSearch" value="Most Recent" readonly />--}}
-{{--                <div class="dropdown-menu locationDropdown">--}}
-{{--                    <input type="text" class="form-control search-box searchBar" placeholder="Search location..." />--}}
-{{--                    <div class="checkbox-item">--}}
-{{--                        <input type="checkbox" class="locationCheckbox" id="dhaka1" checked />--}}
-{{--                        <label for="dhaka1">Last 24 hours</label>--}}
-{{--                    </div>--}}
-{{--                    <div class="checkbox-item">--}}
-{{--                        <input type="checkbox" class="locationCheckbox" id="chittagong1" />--}}
-{{--                        <label for="chittagong1">Last 7 days</label>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
-{{--            </div>--}}
-            <span>
-                <select name="" id="" class="select2 mx-1">
-                    <option value="" disabled selected>Select Company Type</option>
-                    @foreach($companyTypes as $companyType)
-                        <option value="{{ $companyType->id }}">{{ $companyType->category_name }}</option>
-                    @endforeach
-                </select>
-            </span>
-            <span>
-                <select name="" id="" class="select2 mx-1">
-                    <option value="" disabled selected>Select Location Type</option>
-                    @foreach($jobLocationTypes as $jobLocationType)
-                        <option value="{{ $jobLocationType->id }}">{{ $jobLocationType->name }}</option>
-                    @endforeach
-                </select>
-            </span>
-            <span>
-                <select name="" id="" class="select2 mx-1">
-                    <option value="" disabled selected>Select Industry</option>
-                    @foreach($industries as $industry)
-                        <option value="{{ $industry->id }}">{{ $industry->name }}</option>
-                    @endforeach
-                </select>
-            </span>
-            <span>
-                <select name="" id="" class="select2 mx-1">
-                    <option value="" disabled selected>Select Company</option>
-                    @foreach($companies as $company)
-                        <option value="{{ $company->id }}">{{ $company->name }}</option>
-                    @endforeach
-                </select>
-            </span>
+            <div class="d-flex">
+                <form action="">
+                <span class="d-inline-flex">
+                    <select name="company_type" id="" class="select2 mx-1" style="width: 200px">
+                        <option value="" disabled selected>Select Company Type</option>
+                        @foreach($companyTypes as $companyType)
+                            <option value="{{ $companyType->id }}">{{ $companyType->category_name }}</option>
+                        @endforeach
+                    </select>
+                </span>
+                    <span class="d-inline-flex">
+                    <select name="job_location_type" id="" class="select2 mx-1" style="width: 200px">
+                        <option value="" disabled selected>Select Location Type</option>
+                        @foreach($jobLocationTypes as $jobLocationType)
+                            <option value="{{ $jobLocationType->id }}">{{ $jobLocationType->name }}</option>
+                        @endforeach
+                    </select>
+                </span>
+                    <span class="d-inline-flex">
+                    <select name="industry" id="" class="select2 mx-1" style="width: 200px">
+                        <option value="" disabled selected>Select Industry</option>
+                        @foreach($industries as $industry)
+                            <option value="{{ $industry->id }}">{{ $industry->name }}</option>
+                        @endforeach
+                    </select>
+                </span>
+                    <span class="d-inline-flex">
+                    <select name="company" id="" class="select2 mx-1" style="width: 200px">
+                        <option value="" disabled selected>Select Company</option>
+                        @foreach($companies as $company)
+                            <option value="{{ $company->id }}">{{ $company->name }}</option>
+                        @endforeach
+                    </select>
+                </span>
 
-            <!-- Second Dropdown -->
-{{--            <div class="custom-select">--}}
-{{--                <input type="text" class="form-control select-box locationSearch" value="Private Firm" readonly />--}}
-{{--                <div class="dropdown-menu locationDropdown">--}}
-{{--                    <input type="text" class="form-control search-box searchBar" placeholder="Search location..." />--}}
-{{--                    <div class="checkbox-item">--}}
-{{--                        <input type="checkbox" class="locationCheckbox" id="dhaka2" checked />--}}
-{{--                        <label for="dhaka2">Consulting Firms</label>--}}
-{{--                    </div>--}}
-{{--                    <div class="checkbox-item">--}}
-{{--                        <input type="checkbox" class="locationCheckbox" id="chittagong2" />--}}
-{{--                        <label for="chittagong2">Law Firms</label>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
-{{--            </div>--}}
-
-{{--            <!-- Third Dropdown -->--}}
-{{--            <div class="custom-select">--}}
-{{--                <input type="text" class="form-control select-box locationSearch select-boxCustom" value="Dhaka" readonly />--}}
-{{--                <div class="dropdown-menu locationDropdown">--}}
-{{--                    <input type="text" class="form-control search-box searchBar" placeholder="Search location..." />--}}
-{{--                    <div class="checkbox-item">--}}
-{{--                        <input type="checkbox" class="locationCheckbox" id="dhaka3" checked />--}}
-{{--                        <label for="dhaka3">Dhaka</label>--}}
-{{--                    </div>--}}
-{{--                    <div class="checkbox-item">--}}
-{{--                        <input type="checkbox" class="locationCheckbox" id="chittagong3" />--}}
-{{--                        <label for="chittagong3">Chittagong</label>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
-{{--            </div>--}}
-
-{{--            <!-- Fourth Dropdown -->--}}
-{{--            <div class="custom-select">--}}
-{{--                <input type="text" class="form-control select-box locationSearch select-boxCustom" value="Industry" readonly />--}}
-{{--                <div class="dropdown-menu locationDropdown">--}}
-{{--                    <input type="text" class="form-control search-box searchBar" placeholder="Search location..." />--}}
-{{--                    <div class="checkbox-item">--}}
-{{--                        <input type="checkbox" class="locationCheckbox" id="dhaka4" checked />--}}
-{{--                        <label for="dhaka4">Information Technology</label>--}}
-{{--                    </div>--}}
-{{--                    <div class="checkbox-item">--}}
-{{--                        <input type="checkbox" class="locationCheckbox" id="chittagong4" />--}}
-{{--                        <label for="chittagong4">Finance & Accounting</label>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
-{{--            </div>--}}
-
-{{--            <!-- Fifth Dropdown -->--}}
-{{--            <div class="custom-select">--}}
-{{--                <input type="text" class="form-control select-box locationSearch" value="Company" readonly />--}}
-{{--                <div class="dropdown-menu locationDropdown">--}}
-{{--                    <input type="text" class="form-control search-box searchBar" placeholder="Search location..." />--}}
-{{--                    <div class="checkbox-item">--}}
-{{--                        <input type="checkbox" class="locationCheckbox" id="dhaka5" checked />--}}
-{{--                        <label for="dhaka5">Google</label>--}}
-{{--                    </div>--}}
-{{--                    <div class="checkbox-item">--}}
-{{--                        <input type="checkbox" class="locationCheckbox" id="chittagong5" />--}}
-{{--                        <label for="chittagong5">Microsoft</label>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
-{{--            </div>--}}
-
-            <!-- Sixth Dropdown -->
-{{--            <div class="custom-select">--}}
-{{--                <input type="text" class="form-control select-box locationSearch" value="Salary" readonly />--}}
-{{--                <div class="dropdown-menu locationDropdown">--}}
-{{--                    <input type="text" class="form-control search-box searchBar" placeholder="Search location..." />--}}
-{{--                    <div class="checkbox-item">--}}
-{{--                        <input type="checkbox" class="locationCheckbox" id="dhaka6" checked />--}}
-{{--                        <label for="dhaka6">Below 20,000 BDT</label>--}}
-{{--                    </div>--}}
-{{--                    <div class="checkbox-item">--}}
-{{--                        <input type="checkbox" class="locationCheckbox" id="chittagong6" />--}}
-{{--                        <label for="chittagong6">20,000 - 50,000 BDT</label>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
-{{--            </div>--}}
-
-            <!-- Clear All Button -->
-            <button class="clear-all-btn d-flex" id="clearAllBtn">Clear All</button>
+                    <!-- Clear All Button -->
+                    <button type="submit" class="clear-all-btn d-inline-flex" id="clearAllBtn">Filter</button>
+                </form>
+            </div>
         </div>
     </section>
 
@@ -320,6 +229,7 @@
 {{--Note: customize script js during printing dynamic data in this page--}}
 
 @push('script')
+    @include('common-resource-files.selectize')
     <script>
         $(document).on('click', '.job-card-ajax', function () {
             var jobId = $(this).attr('data-job-id');

@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Backend\SiteControllers;
 
+use App\Helpers\ViewHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Backend\SubscriptionPlan;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 
 class SubscriptionController extends Controller
 {
@@ -99,5 +101,42 @@ class SubscriptionController extends Controller
         $subscription->delete();
         Toastr::success('Subscription plan deleted successfully.');
         return back();
+    }
+
+    public function setSubsToAllUser(Request $request)
+    {
+        $siteSettings = \App\Models\Backend\SiteSetting::first();
+        $users = [];
+        if (!$siteSettings || $siteSettings->subscription_system_status == 0)
+        {
+            return ViewHelper::returEexceptionError('Subscription system is not enabled. Please enable it from site settings first.');
+        }
+        if ($request->user_type == 'employee')
+        {
+            $users = \App\Models\User::where('user_type', 'employee')->get();
+        }
+        elseif ($request->user_type == 'employer')
+        {
+            $users = \App\Models\User::where('user_type', 'employer')->get();
+        }
+        elseif ($request->user_type == 'all')
+        {
+            $users = \App\Models\User::whereNotIn('user_type', ['super_admin', 'admin'])->get();
+        }
+        if ($users->count() > 0)
+        {
+            $subscription = SubscriptionPlan::find($request->subscription_plan_id);
+            foreach ($users as $user)
+            {
+                $user->subscription_plan_id = $subscription->id;
+                $user->subscription_end_date = Carbon::parse($user->created_at)->addDays($subscription->duration_in_days);
+                $user->save();
+            }
+            return ViewHelper::returnSuccessMessage('Subscription plan set to all users successfully.');
+        }
+        else
+        {
+            return ViewHelper::returEexceptionError('No users found for the selected user type.');
+        }
     }
 }

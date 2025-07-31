@@ -152,15 +152,15 @@
                             </div>
 
                         </div>
-{{--                        <div class="mt-2">--}}
-{{--                            <label for="">Active</label>--}}
-{{--                            <div>--}}
-{{--                                <div class="material-switch">--}}
-{{--                                    <input id="someSwitchOptionInfo" name="status" {{ isset($isShown) ? 'disabled' : '' }}  class="form-check-input success check-outline outline-success" type="checkbox" {{ isset($basicSetting) && $basicSetting->status == 0 ? '' : 'checked' }} />--}}
-{{--                                    <label for="someSwitchOptionInfo" class="label-info"></label>--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
+                        <div class="mt-2">
+                            <label for="">Active Subscription Feature</label>
+                            <div>
+                                <div class="material-switch">
+                                    <input id="someSwitchOptionInfo" name="subscription_system_status" {{ isset($isShown) ? 'disabled' : '' }}  class="form-check-input success check-outline outline-success" type="checkbox" {{ isset($basicSetting) && $basicSetting->subscription_system_status == 0 ? '' : 'checked' }} />
+                                    <label for="someSwitchOptionInfo" class="label-info"></label>
+                                </div>
+                            </div>
+                        </div>
                         @if(!isset($isShown))
                         <div class="mt-2">
                             <input type="submit" class="btn btn-success btn-sm float-end" value="{{ isset($basicSetting) ? 'Update' : 'Create' }} Basic Setting" />
@@ -171,6 +171,7 @@
             </div>
         </div>
     </div>
+
 
 
 @endsection

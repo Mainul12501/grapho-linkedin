@@ -3,6 +3,21 @@
 @section('title', 'Subscription Plan')
 
 @section('body')
+    <div class="card card-body mt-4">
+        <div class="row ">
+            <div class="col-6">
+                <div>
+                    <h3>Set Free Subscription to Users</h3>
+                </div>
+            </div>
+            <div class="col-6 text-end">
+                <div>
+                    <button type="button" data-bs-toggle="modal" data-bs-target="#FreeSubscriptionModal" class="btn btn-sm- btn-success" >Set Free Subscription</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="row py-5">
         <div class="col-12">
             <div class="card">
@@ -62,6 +77,58 @@
             </div>
         </div>
     </div>
+
+    <div class="modal" id="FreeSubscriptionModal">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Set Free Subscription</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal">x</button>
+                </div>
+                <div class="modal-body">
+                    <form action="{{ route('set-subs-to-all-user') }}" method="post">
+                        @csrf
+                        {{--                        <div class="mb-3">--}}
+                        {{--                            <label for="">Select User</label>--}}
+                        {{--                            <select name="user_id" class="form-select selectize" required>--}}
+                        {{--                                <option value="">Select User</option>--}}
+                        {{--                                @foreach($users as $user)--}}
+                        {{--                                    <option value="{{ $user->id }}">{{ $user->name }} ({{ $user->email }})</option>--}}
+                        {{--                                @endforeach--}}
+                        {{--                            </select>--}}
+                        {{--                        </div>--}}
+                        {{--                        <div class="mb-3">--}}
+                        {{--                            <label for="">Subscription Duration (in days)</label>--}}
+                        {{--                            <input type="number" name="duration" class="form-control" required />--}}
+                        {{--                        </div>--}}
+                        <div class="mt-2">
+                            <label for="subsUserType">Select User Type</label>
+                            <select name="user_type" id="subsUserType" class="select2">
+                                <option value="" disabled selected>Select a User Type</option>
+                                <option value="employee">Employee</option>
+                                <option value="employer">Employer</option>
+                                <option value="all">All</option>
+                            </select>
+                        </div>
+                        <div class="mt-2">
+                            <label for="subscriptionPlanSelect">Select Subscription Plan</label>
+                            <select name="subscription_plan_id" id="subscriptionPlanSelect" class="select2">
+                                <option value="" disabled selected>Select a Subscription Plan</option>
+                                @foreach($subscriptions as $plan)
+
+                                    <option value="{{ $plan->id }}" >{{ $plan->title ?? '' }} - ({{ $plan->duration_in_days ?? 0 }} days)</option>
+
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="text-end mt-3">
+                            <button type="submit" class="btn btn-success">Set Free Subscription</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @push('style')
@@ -74,6 +141,7 @@
     <!-- Required datatable js -->
 
 @include('backend.includes.assets.plugin-files.datatable')
+{{--@include('common-resource-files.selectize')--}}
 
 
 

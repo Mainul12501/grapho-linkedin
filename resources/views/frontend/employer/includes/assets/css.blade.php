@@ -14,6 +14,10 @@
 <!-- Sweet Alert -->
 {{--<link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.min.css" rel="stylesheet" />--}}
 <link rel="stylesheet" href="{{ asset('/') }}common-assets/css/sweetalert2-11.7.3.min.css" />
+
+<!-- Helper CSS -->
+<link rel="stylesheet" href="{{ asset('/') }}common-assets/css/helper.min.css" />
+
 <!-- Your Custom CSS -->
 <link rel="stylesheet" href="{{ asset('/') }}frontend/employer/style.css" />
 

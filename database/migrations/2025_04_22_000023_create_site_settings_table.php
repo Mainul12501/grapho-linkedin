@@ -37,7 +37,7 @@ return new class extends Migration {
             $table->string('country')->nullable();
             $table->string('country_code', 3)->nullable();
             $table->string('site_name');
-
+            $table->tinyInteger('subscription_system_status')->default(0)->nullable()->comment('0 = On, 1 = Off');
             $table->timestamps();
         });
     }

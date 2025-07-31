@@ -12,6 +12,7 @@ use App\Http\Controllers\Frontend\Crud\JobTaskController;
 use App\Http\Controllers\Frontend\Crud\EmployeeEducationController;
 use App\Http\Controllers\Frontend\Crud\EmployeeDocumentsController;
 use App\Http\Controllers\Payment\SSLCommerzController;
+use App\Http\Controllers\Frontend\Crud\PostController;
 
 
 Route::get('/', [FrontendViewController::class, 'homePage'])->name('/');
@@ -64,6 +65,7 @@ Route::middleware([
         Route::get('company-profile', [EmployerViewController::class, 'companyProfile'])->name('company-profile');
         Route::get('change-sub-employer-status/{user}/{status}', [EmployerViewController::class, 'changeSubEmployerStatus'])->name('change-sub-employer-status');
         Route::get('change-employee-job-application-status/{jobTask}/{user}/{status?}', [EmployerViewController::class, 'changeEmployeeJobApplicationStatus'])->name('change-employee-job-application-status');
+        Route::get('employer-subscriptions', [EmployerViewController::class, 'employerSubscriptions'])->name('employer-subscriptions');
 
         Route::post('update-settings', [EmployerViewController::class, 'updateSettings'])->name('update-settings');
         Route::post('update-company-info', [EmployerViewController::class, 'updateCompanyInfo'])->name('update-company-info');
@@ -71,7 +73,8 @@ Route::middleware([
         Route::post('delete-sub-employer/{user}', [EmployerViewController::class, 'deleteSubEmployer'])->name('delete-sub-employer');
 
         Route::resources([
-            'job-tasks'  => JobTaskController::class
+            'job-tasks'  => JobTaskController::class,
+            'posts'  => PostController::class
         ]);
     });
     Route::prefix('employee')->as('employee.')->middleware('isEmployee')->group(function (){

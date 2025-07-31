@@ -14,20 +14,28 @@
                             <img src="{{ asset('/') }}frontend/employer/images/employersHome/findYour next Hire.png" alt="">
                         </div>
                         <h5 class="fw-bold">Find your next hire</h5>
-                        <p class="small mb-3">More than 10,000 talents are on the network waiting for your call
+                        <p class="small mb-3">More than {{ \App\Models\User::where('user_type', 'employee')->count() ?? 0 }} talents are on the network waiting for your call
                         </p>
-                        <button class="btn btn-dark btn-sm px-4">Post a job</button>
+                        <a href="{{ route('employer.my-jobs') }}" class="btn btn-dark btn-sm px-4">Post a job</a>
                     </div>
 
                     <!-- Delegate your tasks -->
+{{--                    <div class="sidebar-box delegate mt-4">--}}
+{{--                        <div class="sidebar-icon delegate">--}}
+{{--                            <img src="{{ asset('/') }}frontend/employer/images/employersHome/user.png" alt="">--}}
+{{--                        </div>--}}
+{{--                        <h6 class="fw-bold">Delegate your tasks</h6>--}}
+{{--                        <p class="small mb-3">You can add users who can do tasks so that you don't have to do--}}
+{{--                            all the work</p>--}}
+{{--                        <button class="btn btn-dark btn-sm px-4">Add user</button>--}}
+{{--                    </div>--}}
                     <div class="sidebar-box delegate mt-4">
                         <div class="sidebar-icon delegate">
                             <img src="{{ asset('/') }}frontend/employer/images/employersHome/user.png" alt="">
                         </div>
-                        <h6 class="fw-bold">Delegate your tasks</h6>
-                        <p class="small mb-3">You can add users who can do tasks so that you don't have to do
-                            all the work</p>
-                        <button class="btn btn-dark btn-sm px-4">Add user</button>
+                        <h6 class="fw-bold">Find Talent Employees</h6>
+                        <p class="small mb-3 text-capitalize">search, filter and Find Best employees for your company.</p>
+                        <a href="{{ route('employer.head-hunt') }}" class="btn btn-dark btn-sm px-4">Head Hunt</a>
                     </div>
                 </aside>
 
@@ -63,22 +71,22 @@
                                                                                                                                                         class="text-decoration-underline">24 Applicants</a></div>
                                     </div>
 
-                                    <div class="job-actions dropdown">
-                                        <button class="btn btn-link p-0 text-secondary" type="button"
-                                                data-bs-toggle="dropdown" aria-expanded="false">
-                                            <img src="{{ asset('/') }}frontend/employer/images/employersHome/three dot.png" alt="">
-                                        </button>
-                                        <ul class="dropdown-menu dropdown-menu-end">
+{{--                                    <div class="job-actions dropdown">--}}
+{{--                                        <button class="btn btn-link p-0 text-secondary" type="button"--}}
+{{--                                                data-bs-toggle="dropdown" aria-expanded="false">--}}
+{{--                                            <img src="{{ asset('/') }}frontend/employer/images/employersHome/three dot.png" alt="">--}}
+{{--                                        </button>--}}
+{{--                                        <ul class="dropdown-menu dropdown-menu-end">--}}
 {{--                                            <li><a class="dropdown-item" href="#">Edit</a></li>--}}
-                                            <li>
-                                                <form action="{{ route('employer.job-tasks.destroy', $jobTask->id) }}" method="post">
-                                                    @csrf
-                                                    @method('delete')
-                                                    <button class="dropdown-item" type="submit">Delete</button>
-                                                </form>
-                                            </li>
-                                        </ul>
-                                    </div>
+{{--                                            <li>--}}
+{{--                                                <form action="{{ route('employer.job-tasks.destroy', $jobTask->id) }}" method="post">--}}
+{{--                                                    @csrf--}}
+{{--                                                    @method('delete')--}}
+{{--                                                    <button class="dropdown-item" type="submit">Delete</button>--}}
+{{--                                                </form>--}}
+{{--                                            </li>--}}
+{{--                                        </ul>--}}
+{{--                                    </div>--}}
                                 </article>
                             </div>
                         @empty

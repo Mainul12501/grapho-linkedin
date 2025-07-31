@@ -38,6 +38,7 @@ class SiteSetting extends Model
         'country',
         'country_code',
         'site_name',
+        'subscription_system_status',
     ];
 
     protected $searchableFields = ['*'];
@@ -76,6 +77,7 @@ class SiteSetting extends Model
         $siteSetting->country   = $request->country;
         $siteSetting->country_code  = $request->country_code;
         $siteSetting->site_name = $request->site_name;
+        $siteSetting->subscription_system_status = $request->subscription_system_status == 'on' ? 1 : 0;
         $siteSetting->save();
         return $siteSetting;
     }
