@@ -11,6 +11,7 @@ use App\Models\Backend\Industry;
 use App\Models\Backend\JobLocationType;
 use App\Models\Backend\JobTask;
 use App\Models\Backend\JobType;
+use App\Models\Backend\Post;
 use App\Models\Backend\SkillsCategory;
 use App\Models\Backend\SubscriptionPlan;
 use App\Models\Backend\UniversityName;
@@ -23,14 +24,41 @@ use Illuminate\View\View;
 class EmployerViewController extends Controller
 {
     protected array $data = [];
-    public function employerHome()
+    public function employerHome(Request $request)
+    {
+        $posts = Post::query()->latest();
+        if (isset($request->start_number))
+            $posts  = $posts->skip($request->start_number)->take(10);
+        $posts = $posts->where(['status' => 1, 'user_type' => 'employer'])->with(['employer' => function ($employer) {
+            $employer->select('id', 'name', 'employer_company_id')->with(['employerCompany' => function ($employerCompany) {
+                $employerCompany->select('id', 'name', 'logo');
+            }]);
+        }])->get();
+//        return response()->json($posts);
+//        return $posts;
+        if (str()->contains(url()->current(), '/api/'))
+        {
+            return  response()->json($posts);
+        }
+        if ($request->ajax() )
+        {
+            return \view('frontend.employer.include-edit-forms.home-append', ['posts' => $posts])->render();
+        }
+        $data = [
+
+        ];
+        return ViewHelper::checkViewForApi($data, 'frontend.employer.home.home');
+        return view('frontend.employer.home.home', $data);
+    }
+
+    public function dashboard()
     {
         $data = [
             'jobTasks'  => JobTask::where(['user_id' => ViewHelper::loggedUser()->id, 'status' => 1])->get(),
             'employees' => User::where(['user_type' => 'employee', 'is_open_for_hire' => 1])->take(3)->get(['id', 'name', 'profile_title', 'address', 'profile_image']),
         ];
-        return ViewHelper::checkViewForApi($data, 'frontend.employer.home.home');
-        return view('frontend.employer.home.home', $data);
+        return ViewHelper::checkViewForApi($data, 'frontend.employer.home.dashboard');
+        return view('frontend.employer.home.dashboard', $data);
     }
     public function myJobs()
     {

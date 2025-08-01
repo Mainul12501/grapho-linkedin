@@ -4,6 +4,7 @@ namespace App\Models\Backend;
 
 use App\Helpers\ViewHelper;
 use App\Models\Scopes\Searchable;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use function Pest\Laravel\post;
@@ -69,5 +70,10 @@ class Post extends Model
     public function postViewers()
     {
         return $this->hasMany(PostViewer::class);
+    }
+
+    public function employer()
+    {
+        return $this->belongsTo(User::class, 'user_id');
     }
 }

@@ -148,7 +148,7 @@ class User extends Authenticatable
 
     public function employerCompany()
     {
-        return $this->belongsTo(EmployerCompany::class);
+        return $this->belongsTo(EmployerCompany::class, 'employer_company_id');
     }
 
     public function employerCompanies()

@@ -6,6 +6,9 @@
             <a class="nav-link {{ request()->is('employer/home') ? 'active' : '' }}" href="{{ route('employer.home') }}" ><img src="{{ asset('/') }}frontend/employer/images/employersHome/HomeDesk.png" alt="" class="me-2">Home</a>
         </li>
         <li class="nav-item mb-2">
+            <a class="nav-link {{ request()->is('employer/dashboard') ? 'active' : '' }}" href="{{ route('employer.dashboard') }}" ><img src="{{ asset('/') }}frontend/employer/images/employersHome/HomeDesk.png" alt="" class="me-2">Dashboard</a>
+        </li>
+        <li class="nav-item mb-2">
             <a class="nav-link {{ request()->is('employer/my-jobs') ? 'active' : '' }}" href="{{ route('employer.my-jobs') }}"><img src="{{ asset('/') }}frontend/employer/images/employersHome/My JobsDesk.png" alt="" class="me-2">My Jobs</a>
         </li>
         <li class="nav-item mb-2">

@@ -70,6 +70,19 @@ class PostController extends Controller
              'post' => Post::find($id)
         ]);
     }
+    public function viewPost(string $id)
+    {
+        $post = Post::with(['employer' => function ($employer) {
+            $employer->select('id', 'name', 'employer_company_id')->with(['employerCompany' => function ($employerCompany) {
+                $employerCompany->select('id', 'user_id', 'logo');
+            }]);
+        }])->find($id);
+        $data = [
+            'post'  => $post,
+        ];
+        return ViewHelper::checkViewForApi($data, 'frontend.employer.home.view-post');
+         return view('frontend.employer.home.view-post');
+    }
 
     /**
      * Show the form for editing the specified resource.

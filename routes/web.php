@@ -56,6 +56,7 @@ Route::middleware([
 
     Route::prefix('employer')->as('employer.')->middleware('isEmployer')->group(function (){
         Route::get('home', [EmployerViewController::class, 'employerHome'])->name('home');
+        Route::get('dashboard', [EmployerViewController::class, 'dashboard'])->name('dashboard');
         Route::get('my-jobs', [EmployerViewController::class, 'myJobs'])->name('my-jobs');
         Route::get('my-job-wise-applicants', [EmployerViewController::class, 'myJobWiseApplicants'])->name('my-job-wise-applicants');
         Route::get('my-job-applicants/{jobTask}', [EmployerViewController::class, 'myJobApplicants'])->name('my-job-applicants');
@@ -66,6 +67,7 @@ Route::middleware([
         Route::get('change-sub-employer-status/{user}/{status}', [EmployerViewController::class, 'changeSubEmployerStatus'])->name('change-sub-employer-status');
         Route::get('change-employee-job-application-status/{jobTask}/{user}/{status?}', [EmployerViewController::class, 'changeEmployeeJobApplicationStatus'])->name('change-employee-job-application-status');
         Route::get('employer-subscriptions', [EmployerViewController::class, 'employerSubscriptions'])->name('employer-subscriptions');
+        Route::get('view-post/{post}', [PostController::class, 'viewPost'])->name('view-post');
 
         Route::post('update-settings', [EmployerViewController::class, 'updateSettings'])->name('update-settings');
         Route::post('update-company-info', [EmployerViewController::class, 'updateCompanyInfo'])->name('update-company-info');
