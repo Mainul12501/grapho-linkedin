@@ -87,6 +87,7 @@ class CustomLoginController extends Controller
                 $company->name  = $request->organization_name;
                 $company->bin_number = $request->bin_number;
                 $company->trade_license_number = $request->trade_license_number;
+                $company->slug    = str_replace(' ', '-', $request->organization_name);
                 $company->status    = 1;
                 $company->save();
             }

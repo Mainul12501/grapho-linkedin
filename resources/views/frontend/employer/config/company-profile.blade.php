@@ -162,6 +162,16 @@
                                 <textarea name="company_overview" class="form-control summernote" id="" cols="30" rows="10">{!! $companyDetails->company_overview !!}</textarea>
                             </div>
                         </div>
+                        <div class="row mt-3">
+                            <div class="col-md-6">
+                                <label for="">BIN Number</label>
+                                <input type="text" class="form-control" name="bin_number" value="{{ $companyDetails->bin_number ?? '' }}" />
+                            </div>
+                            <div class="col-md-6">
+                                <label for="">Trade License Number</label>
+                                <input type="text" class="form-control" name="trade_license_number" value="{{ $companyDetails->trade_license_number ?? '' }}" />
+                            </div>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

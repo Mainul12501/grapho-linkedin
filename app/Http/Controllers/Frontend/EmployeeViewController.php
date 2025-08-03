@@ -19,6 +19,7 @@ use App\Models\Backend\JobTask;
 use App\Models\Backend\SubscriptionPlan;
 use App\Models\Backend\UniversityName;
 use App\Models\Backend\UserProfileView;
+use App\Models\Backend\WebNotification;
 use App\Models\User;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Http\Request;
@@ -45,7 +46,37 @@ class EmployeeViewController extends Controller
     }
     public function showJobs(Request $request)
     {
-        $jobTasks = JobTask::where(['status' => 1])->latest()->get();
+        $jobTasks = JobTask::query()->with(['employerCompany.employerCompanyCategory', 'jobLocationType', 'industry']);
+
+        // Filter by Company Type (via EmployerCompanyCategory slug)
+        if ($request->has('company_type') && is_array($request->company_type)) {
+            $jobTasks = $jobTasks->whereHas('employerCompany.employerCompanyCategory', function ($q) use ($request) {
+                $q->whereIn('slug', $request->company_type);
+            });
+        }
+
+        // Filter by Job Location Type
+        if ($request->has('job_location_type') && is_array($request->job_location_type)) {
+            $jobTasks = $jobTasks->whereHas('jobLocationType', function ($q) use ($request) {
+                $q->whereIn('slug', $request->job_location_type);
+            });
+        }
+
+        // Filter by Industry
+        if ($request->has('industry') && is_array($request->industry)) {
+            $jobTasks = $jobTasks->whereHas('industry', function ($q) use ($request) {
+                $q->whereIn('slug', $request->industry);
+            });
+        }
+
+        // Filter by Company
+        if ($request->has('company') && is_array($request->company)) {
+            $jobTasks = $jobTasks->whereHas('employerCompany', function ($q) use ($request) {
+                $q->whereIn('slug', $request->company);
+            });
+        }
+
+        $jobTasks = $jobTasks->where(['status' => 1])->latest()->get();
         if (isset($request->job_task))
         {
             $singleJobTask  = JobTask::find($request->job_task);
@@ -58,10 +89,10 @@ class EmployeeViewController extends Controller
             'singleJobTask' => $singleJobTask,
             'isSaved'   => $getJobSaveApplyInfo['isSaved'],
             'isApplied'   => $getJobSaveApplyInfo['isApplied'],
-            'jobLocationTypes' => JobLocationType::where(['status' => 1])->get(['id', 'name']),
-            'industries' => Industry::where(['status' => 1])->get(['id', 'name']),
-            'companies' => EmployerCompany::where(['status' => 1])->get(['id', 'name']),
-            'companyTypes' => EmployerCompanyCategory::where(['status' => 1])->get(['id', 'category_name']),
+            'jobLocationTypes' => JobLocationType::where(['status' => 1])->get(['id', 'name', 'slug']),
+            'industries' => Industry::where(['status' => 1])->get(['id', 'name', 'slug']),
+            'companies' => EmployerCompany::where(['status' => 1])->get(['id', 'name', 'slug']),
+            'companyTypes' => EmployerCompanyCategory::where(['status' => 1])->get(['id', 'category_name', 'slug']),
         ];
         return ViewHelper::checkViewForApi($data, 'frontend.employee.jobs.show-jobs');
         return \view('frontend.employee.jobs.show-jobs');
@@ -133,7 +164,16 @@ class EmployeeViewController extends Controller
     }
     public function myNotifications()
     {
-        return ViewHelper::checkViewForApi([], 'frontend.employee.base-functionalities.my-notifications');
+        $loggedUser = ViewHelper::loggedUser();
+        $webNotifications = WebNotification::where(['status' => 1])->where('viewed_user_id', $loggedUser->id)->get();
+        $newNotifications = $webNotifications->where('is_seen', 0)->count();
+        $data = [
+            'notifications' => $webNotifications,
+            'newNotifications' => $newNotifications,
+
+        ];
+        return ViewHelper::checkViewForApi($data, 'frontend.employee.base-functionalities.my-notifications');
+        return \view('frontend.employee.base-functionalities.my-notifications');
     }
 
     public function saveJob(Request $request, JobTask $jobTask)

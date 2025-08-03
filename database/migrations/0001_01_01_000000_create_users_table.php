@@ -60,6 +60,13 @@ return new class extends Migration
 
             $table->string('status')->default('active')->nullable();
             $table->tinyInteger('is_approved')->default(0)->nullable()->comment('0 = not approved, 1 = approved, 2 = rejected');
+            $table
+                ->tinyInteger('subscription_system_status')
+                ->default(0)
+                ->nullable();
+            $table->unsignedBigInteger('university_name_id')->nullable();
+            $table->unsignedBigInteger('industry_id')->nullable();
+            $table->unsignedBigInteger('field_of_study_id')->nullable();
             $table->timestamps();
         });
 

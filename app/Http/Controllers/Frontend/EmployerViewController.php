@@ -16,6 +16,7 @@ use App\Models\Backend\SkillsCategory;
 use App\Models\Backend\SubscriptionPlan;
 use App\Models\Backend\UniversityName;
 use App\Models\Backend\UserProfileView;
+use App\Models\Backend\WebNotification;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -34,6 +35,10 @@ class EmployerViewController extends Controller
                 $employerCompany->select('id', 'name', 'logo');
             }]);
         }])->get();
+        foreach ($posts as $post)
+        {
+            $post['follow_history_status'] = ViewHelper::checkFollowHistory($post->user_id, ViewHelper::loggedUser()->id) ?? false;
+        }
 //        return response()->json($posts);
 //        return $posts;
         if (str()->contains(url()->current(), '/api/'))
@@ -69,6 +74,7 @@ class EmployerViewController extends Controller
             'fieldOfStudies'   => FieldOfStudy::where(['status' => 1])->get(['id', 'field_name']),
             'skillCategories'   => SkillsCategory::where(['status' => 1])->get(['id', 'category_name']),
             'publishedJobs' => JobTask::where(['user_id' => ViewHelper::loggedUser()->id, 'status' => 1])->get(),
+            'industries'    => Industry::where(['status' => 1])->get(['id', 'name', 'slug']),
         ];
         return ViewHelper::checkViewForApi($data, 'frontend.employer.jobs.my-jobs');
         return view('frontend.employer.jobs.my-jobs', $data);
@@ -105,31 +111,101 @@ class EmployerViewController extends Controller
     }
     public function headHunt(Request $request)
     {
-        $employees = User::query();
-        if (isset($request->job_type))
-        {
+        $employees = User::query()->with([
+            'universityName',
+            'industry',
+            'fieldOfStudy',
+            'jobTypes',
+            'jobLocationTypes'
+        ]);
 
-        }
-        if (isset($request->job_location))
-        {
+        // Helper function to ensure array input
+        $ensureArray = function ($value) {
+            if (empty($value)) return [];
+            return is_array($value) ? $value : [$value];
+        };
 
+// Search text filter
+        if ($request->filled('search_text')) {
+            $searchText = $request->input('search_text');
+            $employees = $employees->where(function($query) use ($searchText) {
+                $query->where('name', 'like', "%$searchText%")
+                    ->orWhereHas('universityName', function($q) use ($searchText) {
+                        $q->where('name', 'like', "%$searchText%");
+                    })
+                    ->orWhereHas('industry', function($q) use ($searchText) {
+                        $q->where('name', 'like', "%$searchText%");
+                    })
+                    ->orWhereHas('fieldOfStudy', function($q) use ($searchText) {
+                        $q->where('field_name', 'like', "%$searchText%");
+                    })
+                    ->orWhereHas('jobTypes', function($q) use ($searchText) {
+                        $q->where('name', 'like', "%$searchText%");
+                    })
+                    ->orWhereHas('jobLocationTypes', function($q) use ($searchText) {
+                        $q->where('name', 'like', "%$searchText%");
+                    });
+            });
         }
-        if (isset($request->university_name))
-        {
 
+// Job Type filter
+        if ($request->filled('job_type')) {
+            $jobTypes = $ensureArray($request->input('job_type'));
+            $employees = $employees->where(function($query) use ($jobTypes) {
+                $query->whereHas('jobTypes', function($q) use ($jobTypes) {
+                    $q->whereIn('slug', $jobTypes);
+                })->orWhereDoesntHave('jobTypes');
+            });
         }
-        if (isset($request->industry))
-        {
 
+// Job Location filter
+        if ($request->filled('job_location')) {
+            $jobLocations = $ensureArray($request->input('job_location'));
+            $employees = $employees->where(function($query) use ($jobLocations) {
+                $query->whereHas('jobLocationTypes', function($q) use ($jobLocations) {
+                    $q->whereIn('slug', $jobLocations);
+                })->orWhereDoesntHave('jobLocationTypes');
+            });
         }
-        if (isset($request->field_of_study))
-        {
 
+// University filter
+        if ($request->filled('university_name')) {
+            $universities = $ensureArray($request->input('university_name'));
+            $employees = $employees->where(function($query) use ($universities) {
+                $query->whereHas('universityName', function($q) use ($universities) {
+                    $q->whereIn('slug', $universities);
+                })->orWhereDoesntHave('universityName');
+            });
         }
-        if (isset($request->skill))
-        {
 
+// Industry filter
+        if ($request->filled('industry')) {
+            $industries = $ensureArray($request->input('industry'));
+            $employees = $employees->where(function($query) use ($industries) {
+                $query->whereHas('industry', function($q) use ($industries) {
+                    $q->whereIn('slug', $industries);
+                })->orWhereDoesntHave('industry');
+            });
         }
+
+// Field of Study filter
+        if ($request->filled('field_of_study')) {
+            $fields = $ensureArray($request->input('field_of_study'));
+            $employees = $employees->where(function($query) use ($fields) {
+                $query->whereHas('fieldOfStudy', function($q) use ($fields) {
+                    $q->whereIn('slug', $fields);
+                })->orWhereDoesntHave('fieldOfStudy');
+            });
+        }
+
+// Skills filter
+        if ($request->filled('skills')) {
+            $skills = $ensureArray($request->input('skills'));
+            $employees = $employees->whereHas('skills', function($query) use ($skills) {
+                $query->whereIn('slug', $skills);
+            });
+        }
+
         $employees = $employees->where(['user_type' => 'employee', 'is_open_for_hire' => 1])->get(['id', 'name', 'profile_title', 'address', 'profile_image']);
 
         $data = [
@@ -139,7 +215,7 @@ class EmployerViewController extends Controller
             'jobLocations' => JobLocationType::where(['status' => 1])->get(['id', 'name', 'slug']),
             'universityNames' => UniversityName::where(['status' => 1])->get(['id', 'name', 'slug']),
             'fieldOfStudies' => FieldOfStudy::where(['status' => 1])->get(['id', 'field_name', 'slug']),
-            'skillCategories' => SkillsCategory::where(['status' => 1])->get(['id', 'category_name', 'slug']),
+            'skillCategories' => SkillsCategory::where(['status' => 1])->with('skills')->get(['id', 'category_name', 'slug']),
         ];
         return ViewHelper::checkViewForApi($data, 'frontend.employer.jobs.head-hunt');
         return view('frontend.employer.jobs.head-hunt');
@@ -162,6 +238,12 @@ class EmployerViewController extends Controller
                     $newProfileView->save();
                 }
             }
+            $webNotification = new WebNotification();
+            $webNotification->viewer_id = $loggedUser->id;
+            $webNotification->viewed_user_id = $userId;
+            $webNotification->notification_type = 'view_profile';
+            $webNotification->msg = "$loggedUser->name have viewed your profile.";
+            $webNotification->save();
         }
         $employee = User::with('employeeEducations', 'employeeDocuments', 'employeeWorkExperiences')->find($userId);
         return ViewHelper::returnBackViewAndSendDataForApiAndAjax(['employeeDetails' => $employee],'frontend.employer.profile.employer-profile');
@@ -289,6 +371,8 @@ class EmployerViewController extends Controller
             $company->phone = $request->phone ?? $company->phone;
             $company->address = $request->address ?? $company->address;
             $company->website = $request->website ?? $company->website;
+            $company->bin_number = $request->bin_number ?? $company->bin_number;
+            $company->trade_license_number = $request->trade_license_number ?? $company->trade_license_number;
             $company->founded_on = /*date('Y-m-d', strtotime($request->founded_on)) ?? null*/ $request->founded_on ?? $company->founded_on;
             $company->total_employees = (int)$request->total_employees ?? ( $company->total_employees ?? 0);
             $company->industry_id = (int)$request->industry_id ?? 0;

@@ -7,6 +7,9 @@
     <link rel="icon" href="images/fav.png" type="image/x-icon">
     <title>Grapho</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Helper CSS -->
+    <link rel="stylesheet" href="{{ asset('/') }}common-assets/css/helper.min.css" />
+    <link rel="stylesheet" href="{{ asset('/') }}frontend/auth/loginStyle.css">
     <link rel="stylesheet" href="{{ asset('/') }}frontend/home-landing/style.css">
 </head>
 
@@ -58,7 +61,7 @@
     <div class="container d-flex justify-content-between align-items-center">
 
         <!-- Brand / Logo -->
-        <a class="navbar-brand" href="index.html">
+        <a class="navbar-brand" href="{{ route('/') }}">
             <img src="{{ asset('/') }}frontend/home-landing/images/Compnay logo.png" alt="">
         </a>
 
@@ -76,13 +79,13 @@
 
         <!-- Main Links -->
         <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
-            <ul class="navbar-nav gap-3">
-                <li class="nav-item"><a class="nav-link custom-hover fw-semibold" href="#">Community</a></li>
-                <li class="nav-item"><a class="nav-link custom-hover fw-semibold" href="#">Jobs</a></li>
-                <li class="nav-item"><a class="nav-link custom-hover fw-semibold" href="#">Companies</a></li>
-                <li class="nav-item"><a class="nav-link custom-hover fw-semibold" href="#">Salaries</a></li>
-                <li class="nav-item"><a class="nav-link custom-hover fw-semibold" href="#">For Employers</a></li>
-            </ul>
+{{--            <ul class="navbar-nav gap-3">--}}
+{{--                <li class="nav-item"><a class="nav-link custom-hover fw-semibold" href="#">Community</a></li>--}}
+{{--                <li class="nav-item"><a class="nav-link custom-hover fw-semibold" href="#">Jobs</a></li>--}}
+{{--                <li class="nav-item"><a class="nav-link custom-hover fw-semibold" href="#">Companies</a></li>--}}
+{{--                <li class="nav-item"><a class="nav-link custom-hover fw-semibold" href="#">Salaries</a></li>--}}
+{{--                <li class="nav-item"><a class="nav-link custom-hover fw-semibold" href="#">For Employers</a></li>--}}
+{{--            </ul>--}}
         </div>
 
         <!-- Notification Icon & Sign In (hidden on mobile) -->
@@ -138,12 +141,12 @@
 
                 <!-- Login Buttons -->
                 <div class="d-flex flex-column mb-4">
-                    <button class="btn btn-outline-dark mb-2">
+                    <button class="btn btn-outline-dark mb-2" type="button" data-bs-toggle="modal" data-bs-target="#googleUserTypeSelect">
                         <img src="{{ asset('/') }}frontend/home-landing/images/gooleIcon.png" alt="Google Icon" style="width: 30px;"> Continue with Google
                     </button>
-                    <button class="btn btn-outline-dark mb-2">
-                        <img src="{{ asset('/') }}frontend/home-landing/images/appleIcon.png" alt="Apple Icon" style="width: 30px;"> Continue with Apple
-                    </button>
+{{--                    <button class="btn btn-outline-dark mb-2">--}}
+{{--                        <img src="{{ asset('/') }}frontend/home-landing/images/appleIcon.png" alt="Apple Icon" style="width: 30px;"> Continue with Apple--}}
+{{--                    </button>--}}
 
                     <!-- Divider with "or" -->
                     <div class="d-flex align-items-center my-3">
@@ -154,12 +157,12 @@
 
                     <!-- Email Input Label + Field -->
                     <div class="mb-3 text-start">
-                        <label for="email" class="form-label fw-semibold">Enter email</label>
-                        <input type="email" id="email" class="form-control rounded-3" placeholder="" required>
+{{--                        <label for="email" class="form-label fw-semibold">Enter email</label>--}}
+{{--                        <input type="email" id="email" class="form-control rounded-3" placeholder="" required>--}}
                     </div>
 
 
-                    <button class="btn btn-outline-dark mb-2">Continue with Email</button>
+                    <a href="{{ route('auth.select-auth-method') }}" class="btn btn-outline-dark mb-2">Continue with Email</a>
                 </div>
             </div>
 
@@ -227,7 +230,7 @@
     <div class="container">
         <div class="row mb-4">
             <div class="col-md-2 mb-3">
-                <a href="index.html" class="d-inline-block mb-3"><img src="{{ asset('/') }}frontend/home-landing/images/Compnay logo.png" alt=""></a>
+                <a href="{{ route('/') }}" class="d-inline-block mb-3"><img src="{{ asset('/') }}frontend/home-landing/images/Compnay logo.png" alt=""></a>
                 <ul class="list-unstyled small">
                     <li><a href="#" class="text-decoration-none text-dark">About / Press</a></li>
                     <li><a href="#" class="text-decoration-none text-dark">Awards</a></li>
@@ -323,6 +326,60 @@
         </div>
     </div>
 </footer>
+
+
+<!-- Modal -->
+<div class="modal fade " id="googleUserTypeSelect">
+    <div class="modal-dialog">
+        <div class="modal-content bg-transparent border-0">
+            <div class="modal-body ">
+                <div class="">
+                    <div class="card shadow signupCard">
+                        <a href="{{ route('/') }}"><img src="{{ asset('frontend/employee/images/authentication images/Compnay logo.png') }}" alt="" class="signupLogo w-25"></a>
+
+
+                        <div class="userCard">
+                            <div>
+                                <a href="{{ route('auth.socialite.redirect', ['provider' => 'google', 'user' => 'Employer']) }}" class="userSelectOption mb-3">
+                                    <div class="row d-flex align-items-center w-100">
+                                        <div class="col-2  iconWrapper">
+                                            <img src="{{ asset('frontend/employee/images/authentication images/employeeIcon.png') }}" alt="" class="userSelectOptionIcon">
+                                        </div>
+                                        <div class="col-9">
+                                            <h5>Employer</h5>
+                                            <p>Looking to scale your team.</p>
+                                        </div>
+                                        <div class="col-1">
+                                            <img src="{{ asset('frontend/employee/images/authentication images/arrow-right 1.png') }}" alt="" class="arrowIcon">
+                                        </div>
+                                    </div>
+                                </a>
+
+                                <a href="{{ route('auth.socialite.redirect', ['provider' => 'google', 'user' => 'Employee']) }}" class="userSelectOption">
+                                    <div class="row d-flex align-items-center w-100">
+                                        <div class="col-2  iconWrapper">
+                                            <img src="{{ asset('frontend/employee/images/authentication images/jobSeekerIcon.png') }}" alt="" class="userSelectOptionIcon">
+                                        </div>
+                                        <div class="col-9">
+                                            <h5>Job-seeker</h5>
+                                            <p>Looking for job opportunities.</p>
+                                        </div>
+                                        <div class="col-1">
+                                            <img src="{{ asset('frontend/employee/images/authentication images/arrow-right 1.png') }}" alt="" class="arrowIcon">
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
 
 
 <!-- Bootstrap JS and Dependencies -->

@@ -16,40 +16,40 @@
             <div class="d-flex">
                 <form action="">
                 <span class="d-inline-flex">
-                    <select name="company_type" id="" class="select2 mx-1" style="width: 200px">
+                    <select name="company_type[]" id="" class="select2 mx-1" multiple style="width: 200px">
                         <option value="" disabled selected>Select Company Type</option>
                         @foreach($companyTypes as $companyType)
-                            <option value="{{ $companyType->id }}">{{ $companyType->category_name }}</option>
+                            <option value="{{ $companyType->slug }}">{{ $companyType->category_name }}</option>
                         @endforeach
                     </select>
                 </span>
                     <span class="d-inline-flex">
-                    <select name="job_location_type" id="" class="select2 mx-1" style="width: 200px">
+                    <select name="job_location_type[]" multiple id="" class="select2 mx-1" style="width: 200px">
                         <option value="" disabled selected>Select Location Type</option>
                         @foreach($jobLocationTypes as $jobLocationType)
-                            <option value="{{ $jobLocationType->id }}">{{ $jobLocationType->name }}</option>
+                            <option value="{{ $jobLocationType->slug }}">{{ $jobLocationType->name }}</option>
                         @endforeach
                     </select>
                 </span>
                     <span class="d-inline-flex">
-                    <select name="industry" id="" class="select2 mx-1" style="width: 200px">
+                    <select name="industry[]" multiple id="" class="select2 mx-1" style="width: 200px">
                         <option value="" disabled selected>Select Industry</option>
                         @foreach($industries as $industry)
-                            <option value="{{ $industry->id }}">{{ $industry->name }}</option>
+                            <option value="{{ $industry->slug }}">{{ $industry->name }}</option>
                         @endforeach
                     </select>
                 </span>
                     <span class="d-inline-flex">
-                    <select name="company" id="" class="select2 mx-1" style="width: 200px">
+                    <select name="company[]" multiple id="" class="select2 ms-1" style="width: 200px">
                         <option value="" disabled selected>Select Company</option>
                         @foreach($companies as $company)
-                            <option value="{{ $company->id }}">{{ $company->name }}</option>
+                            <option value="{{ $company->slug }}">{{ $company->name }}</option>
                         @endforeach
                     </select>
                 </span>
 
                     <!-- Clear All Button -->
-                    <button type="submit" class="clear-all-btn d-inline-flex" id="clearAllBtn">Filter</button>
+                    <button type="submit" class="clear-all-btn d-inline-flex btn" id="clearAllBtn">Filter</button>
                 </form>
             </div>
         </div>

@@ -98,6 +98,17 @@
                     </div>
                 </div>
             </div>
+            <!-- Industry -->
+            <div class="container mb-4">
+                <div class="bg-white rounded-4 p-4 shadow-sm">
+                    <h6 class="fw-semibold mb-3">Industry</h6>
+                    <select name="industry_id" id="select2-div" class=" select2"  >
+                        @foreach($industries as $industryKey => $industry)
+                            <option value="{{ $industry->id }}" {{ $jobTask->industry_id == $industry->id ? 'selected' : '' }}>{{ $industry->name ?? 'un' }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
             <!-- University Preference -->
             <div class="container mb-4">
                 <div class="bg-white rounded-4 p-4 shadow-sm">

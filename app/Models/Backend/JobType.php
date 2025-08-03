@@ -3,6 +3,7 @@
 namespace App\Models\Backend;
 
 use App\Models\Scopes\Searchable;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -33,5 +34,10 @@ class JobType extends Model
     public function jobs()
     {
         return $this->hasMany(JobTask::class, 'job_type_id');
+    }
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class);
     }
 }

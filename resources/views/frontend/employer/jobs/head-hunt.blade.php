@@ -18,7 +18,7 @@
                 <div class="d-flex flex-wrap gap-2 mb-3 filter-dropdowns ">
 
                     <span style="width: 150px">
-                        <select name="job_type" id="" class="select2" multiple>
+                        <select name="job_type[]" id="" class="select2" multiple>
                             <option value="" selected disabled>Select Job Type</option>
                             @foreach($jobTypes as $jobType)
                                 <option value="{{ $jobType->slug }}">{{ $jobType->name }}</option>
@@ -26,7 +26,7 @@
                         </select>
                     </span>
                     <span style="width: 150px">
-                    <select name="job_location" id="" class="select2" multiple>
+                    <select name="job_location[]" id="" class="select2" multiple>
                         <option value="" selected disabled>Select Job Location</option>
                         @foreach($jobLocations as $jobLocation)
                             <option value="{{ $jobLocation->slug }}">{{ $jobLocation->name }}</option>
@@ -34,7 +34,7 @@
                     </select>
                 </span>
                     <span style="width: 150px">
-                    <select name="university_name" id="" class="select2" multiple>
+                    <select name="university_name[]" id="" class="select2" multiple>
                         <option value="" selected disabled>Select University</option>
                         @foreach($universityNames as $universityName)
                             <option value="{{ $universityName->slug }}">{{ $universityName->name }}</option>
@@ -42,7 +42,7 @@
                     </select>
                 </span>
                     <span style="width: 150px">
-                    <select name="industry" id="" class="select2" multiple>
+                    <select name="industry[]" id="" class="select2" multiple>
                         <option value="" selected disabled>Select Industry</option>
                         @foreach($industries as $industry)
                             <option value="{{ $industry->slug }}">{{ $industry->name }}</option>
@@ -50,7 +50,7 @@
                     </select>
                 </span>
                     <span style="width: 150px">
-                    <select name="field_of_study" id="" class="select2" multiple>
+                    <select name="field_of_study[]" id="" class="select2" multiple>
                         <option value="" selected disabled>Select Field Of Study</option>
                         @foreach($fieldOfStudies as $fieldOfStudy)
                             <option value="{{ $fieldOfStudy->slug }}">{{ $fieldOfStudy->field_name }}</option>
@@ -58,16 +58,17 @@
                     </select>
                 </span>
                     <span style="width: 150px">
-                    <select name="skill_category" id="" class="select2" multiple>
+                    <select name="skills[]" id="" class="select2" multiple>
                         <option value="" selected disabled>Select Skill Category</option>
                         @foreach($skillCategories as $skillCategory)
-                            <option value="{{ $skillCategory->slug }}">{{ $skillCategory->category_name }}</option>
+                            <optgroup label="{{ $skillCategory->category_name }}">
+                                @foreach($skillCategory->skills as $skill)
+                                    <option value="{{ $skill->slug }}">{{ $skill->name }}</option>
+                                @endforeach
+                            </optgroup>
                         @endforeach
                     </select>
                 </span>
-
-
-
                 </div>
 
                 <div class="input-group mb-4" style="max-width: 350px;">

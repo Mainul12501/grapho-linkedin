@@ -6,6 +6,7 @@ use App\Helpers\ViewHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Backend\EmployeeAppliedJob;
 use App\Models\Backend\FieldOfStudy;
+use App\Models\Backend\Industry;
 use App\Models\Backend\JobLocationType;
 use App\Models\Backend\JobTask;
 use App\Models\Backend\JobType;
@@ -32,7 +33,17 @@ class JobTaskController extends Controller
      */
     public function create()
     {
-        //
+        $data = [
+            'jobTypes'  => JobType::where(['status' => 1])->get(['id', 'name']),
+            'jobLocations'  => JobLocationType::where(['status' => 1])->get(['id', 'name']),
+            'universityNames'   => UniversityName::where(['status' => 1])->get(['id', 'name']),
+            'fieldOfStudies'   => FieldOfStudy::where(['status' => 1])->get(['id', 'field_name']),
+            'skillCategories'   => SkillsCategory::where(['status' => 1])->get(['id', 'category_name']),
+            'publishedJobs' => JobTask::where(['user_id' => ViewHelper::loggedUser()->id, 'status' => 1])->get(),
+            'industries'    => Industry::where(['status' => 1])->get(['id', 'name', 'slug']),
+        ];
+        return ViewHelper::checkViewForApi($data, 'frontend.employer.jobs.create-jobs');
+        return view('frontend.employer.jobs.my-jobs', $data);
     }
 
     /**
@@ -54,6 +65,7 @@ class JobTaskController extends Controller
             $jobTask->job_title = $request->job_title;
             $jobTask->job_type_id = $request->job_type_id;
             $jobTask->job_location_type_id = $request->job_location_type_id;
+            $jobTask->industry_id = $request->industry_id;
             $jobTask->employer_company_id = ViewHelper::loggedUser()?->employerCompanies[0]?->id;
             $jobTask->required_experience = $request->required_experience;
             $jobTask->job_pref_salary_payment_type = $request->job_pref_salary_payment_type;
@@ -98,6 +110,7 @@ class JobTaskController extends Controller
         return \view('frontend.employer.include-edit-forms.job-edit', [
             'jobTask' => $jobTask,
             'jobTypes'  => JobType::where(['status' => 1])->get(['id', 'name']),
+            'industries'  => Industry::where(['status' => 1])->get(['id', 'name']),
             'jobLocations'  => JobLocationType::where(['status' => 1])->get(['id', 'name']),
             'universityNames'   => UniversityName::where(['status' => 1])->get(['id', 'name']),
             'fieldOfStudies'   => FieldOfStudy::where(['status' => 1])->get(['id', 'field_name']),
@@ -124,6 +137,7 @@ class JobTaskController extends Controller
             $jobTask->job_title = $request->job_title;
             $jobTask->job_type_id = $request->job_type_id;
             $jobTask->job_location_type_id = $request->job_location_type_id;
+            $jobTask->industry_id = $request->industry_id;
             $jobTask->employer_company_id = ViewHelper::loggedUser()?->employerCompanies[0]?->id;
             $jobTask->required_experience = $request->required_experience;
             $jobTask->job_pref_salary_payment_type = $request->job_pref_salary_payment_type;

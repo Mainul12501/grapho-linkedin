@@ -38,6 +38,13 @@ return new class extends Migration {
                 ->on('employer_companies')
                 ->onUpdate('CASCADE')
                 ->onDelete('CASCADE');
+
+            $table
+                ->foreign('industry_id')
+                ->references('id')
+                ->on('industries')
+                ->onUpdate('CASCADE')
+                ->onDelete('CASCADE');
         });
     }
 
@@ -51,6 +58,7 @@ return new class extends Migration {
             $table->dropForeign(['job_location_type_id']);
             $table->dropForeign(['user_id']);
             $table->dropForeign(['employer_company_id']);
+            $table->dropForeign(['industry_id']);
         });
     }
 };

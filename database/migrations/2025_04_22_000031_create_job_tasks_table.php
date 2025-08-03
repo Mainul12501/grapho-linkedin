@@ -17,6 +17,7 @@ return new class extends Migration {
             $table->unsignedBigInteger('job_location_type_id');
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('employer_company_id');
+            $table->unsignedBigInteger('industry_id');
             $table->string('required_experience')->nullable();
             $table
                 ->enum('job_pref_salary_payment_type', [

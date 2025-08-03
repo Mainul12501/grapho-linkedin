@@ -4,6 +4,7 @@
 namespace App\Helpers;
 
 use App\Models\Backend\EmployeeAppliedJob;
+use App\Models\Backend\FollowerHistory;
 use App\Models\User;
 use Brian2694\Toastr\Facades\Toastr;
 use http\Client\Request;
@@ -257,5 +258,15 @@ class ViewHelper
 
         }
         return json_encode($imageFileString);
+    }
+
+    public static function checkFollowHistory($companyEmployerId, $followerId, $unfollowStatus = 0)
+    {
+        $existHistory = FollowerHistory::where(['employer_id' => $companyEmployerId, 'follower_id' => $followerId])->first();
+        if ($existHistory)
+        {
+            return true;
+        }
+        return false;
     }
 }

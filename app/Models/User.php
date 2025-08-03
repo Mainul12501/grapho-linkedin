@@ -8,10 +8,19 @@ use App\Models\Backend\EmployeeDocument;
 use App\Models\Backend\EmployeeEducation;
 use App\Models\Backend\EmployeeWorkExperience;
 use App\Models\Backend\EmployerCompany;
+use App\Models\Backend\FieldOfStudy;
+use App\Models\Backend\FollowerHistory;
+use App\Models\Backend\Industry;
+use App\Models\Backend\JobLocationType;
 use App\Models\Backend\JobTask;
+use App\Models\Backend\JobType;
+use App\Models\Backend\Post;
+use App\Models\Backend\PostViewer;
 use App\Models\Backend\RoleManagement\Role;
 use App\Models\Backend\SubscriptionPlan;
+use App\Models\Backend\UniversityName;
 use App\Models\Backend\UserProfileView;
+use App\Models\Backend\WebNotification;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -66,6 +75,10 @@ class User extends Authenticatable
         'employer_agent_active_status',
         'is_approved',
         'status',
+        'subscription_system_status',
+        'university_name_id',
+        'industry_id',
+        'field_of_study_id',
     ];
 
     /**
@@ -156,6 +169,50 @@ class User extends Authenticatable
         return $this->hasMany(EmployerCompany::class);
     }
 
+    public function universityName()
+    {
+        return $this->belongsTo(UniversityName::class);
+    }
+
+    public function industry()
+    {
+        return $this->belongsTo(Industry::class);
+    }
+
+    public function fieldOfStudy()
+    {
+        return $this->belongsTo(FieldOfStudy::class);
+    }
+    public function posts()
+    {
+        return $this->hasMany(Post::class);
+    }
+
+    public function postViewers()
+    {
+        return $this->hasMany(PostViewer::class, 'viewer_id');
+    }
+
+    public function followedEmployers()
+    {
+        return $this->hasMany(FollowerHistory::class, 'employer_id');
+    }
+
+    public function employerFollowers()
+    {
+        return $this->hasMany(FollowerHistory::class, 'follower_id');
+    }
+
+    public function jobTypes()
+    {
+        return $this->belongsToMany(JobType::class);
+    }
+
+    public function jobLocationTypes()
+    {
+        return $this->belongsToMany(JobLocationType::class);
+    }
+
     public function jobs()
     {
         return $this->hasMany(JobTask::class, 'user_id');
@@ -188,6 +245,16 @@ class User extends Authenticatable
     public function roles()
     {
         return $this->belongsToMany(Role::class);
+    }
+
+    public function viewerWebNotifications()
+    {
+        return $this->hasMany(WebNotification::class, 'viewer_id');
+    }
+
+    public function viewedUserwebNotifications()
+    {
+        return $this->hasMany(WebNotification::class, 'viewed_user_id');
     }
 
     public function employeeAppliedJobs()

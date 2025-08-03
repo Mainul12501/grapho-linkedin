@@ -17,6 +17,7 @@ class JobTask extends Model
         'job_type_id',
         'job_location_type_id',
         'user_id',
+        'industry_id',
         'employer_company_id',
         'required_experience',
         'job_pref_salary_payment_type',
@@ -56,6 +57,10 @@ class JobTask extends Model
     public function employerCompany()
     {
         return $this->belongsTo(EmployerCompany::class);
+    }
+    public function industry()
+    {
+        return $this->belongsTo(Industry::class);
     }
 
     public function employeeAppliedJobs()

@@ -45,5 +45,29 @@
         });
 
     </script>
+
+    <script>
+        $(document).on('click', '.follow-btn', function () {
+            let companyEmployerId = $(this).attr('data-employer-id');
+            let postId = $(this).attr('data-post-id');
+            let followHistoryStatus = $(this).attr('data-follow-history-status');
+            sendAjaxRequest(`employer/set-follow-history?employer_id=${companyEmployerId}&status=${ followHistoryStatus == 1 ? 'false' : 'true' }`, 'GET').then(function (response) {
+                console.log(response);
+                if (response.status == 'success' )
+                {
+                    if (response.follow_status == 1)
+                    {
+                        $('#followBtn'+postId).text('Unfollow').attr('data-follow-history-status', 1);
+
+                    } else if (response.follow_status == 0)
+                    {
+                        $('#followBtn'+postId).text('Follow').attr('data-follow-history-status', 0);
+                    }
+                } else {
+                    alert('Please try again.')
+                }
+            })
+        })
+    </script>
 @endpush
 

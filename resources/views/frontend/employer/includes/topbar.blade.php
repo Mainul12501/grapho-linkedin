@@ -1,5 +1,6 @@
 <nav class="topbar d-flex justify-content-between align-items-center p-3">
-    <input type="search" class="form-control searchInput w-50 me-3" placeholder="Search jobs or talents" />
+{{--    <input type="search" class="form-control searchInput w-50 me-3" placeholder="Search jobs or talents" />--}}
+    <span class="search-input"></span>
 
     <div class="d-flex align-items-center gap-3">
         <a href="#"><img src="{{ asset('/') }}frontend/employer/images/employersHome/notification.png" alt="" class="me-3" /></a>

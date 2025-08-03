@@ -22,10 +22,11 @@
                                 </div>
                                 <!-- Post a job button -->
                                 <!-- Post a job button -->
-                                <button class="btn btn-warning text-dark fw-semibold rounded-3 px-4 py-2"
-                                        data-bs-toggle="modal" data-bs-target="#createJobModal">
-                                    Post a job
-                                </button>
+{{--                                <button class="btn btn-warning text-dark fw-semibold rounded-3 px-4 py-2"--}}
+{{--                                        data-bs-toggle="modal" data-bs-target="#createJobModal">--}}
+{{--                                    Post a job--}}
+{{--                                </button>--}}
+                                <a href="{{ route('employer.job-tasks.create') }}"  class="btn btn-warning text-dark fw-semibold rounded-3 px-4 py-2">Post a job</a>
 
                             </div>
 
@@ -441,6 +442,19 @@
                             </div>
 
 
+                            <!-- Industry -->
+                            <div class="container mb-4">
+                                <div class="bg-white rounded-4 p-4 shadow-sm">
+                                    <h6 class="fw-semibold mb-3">Industry</h6>
+{{--                                    <input type="text" class="form-control mb-3" name="" placeholder="Search universities">--}}
+                                    <select name="industry_id" id="select2-div" class=" select2"  >
+
+                                        @foreach($industries as $industryKey => $industry)
+                                            <option value="{{ $industry->id }}">{{ $industry->name ?? 'un' }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
                             <!-- University Preference -->
                             <div class="container mb-4">
                                 <div class="bg-white rounded-4 p-4 shadow-sm">
@@ -452,27 +466,19 @@
                                             <option value="{{ $universityName->id }}">{{ $universityName->name ?? 'un' }}</option>
                                         @endforeach
                                     </select>
-{{--                                    <div class="d-flex flex-wrap gap-2">--}}
-{{--                                        <span class="badge bg-light text-dark">North South University <img src="{{ asset('/') }}frontend/employer/images/employersHome/crossCirle.png" alt=""></span>--}}
-{{--                                        <span class="badge bg-light text-dark">IBA, Dhaka University <img src="{{ asset('/') }}frontend/employer/images/employersHome/crossCirle.png" alt=""></span>--}}
-{{--                                    </div>--}}
                                 </div>
                             </div>
 
                             <!-- Field of Study -->
                             <div class="container mb-4">
                                 <div class="bg-white rounded-4 p-4 shadow-sm">
-                                    <h6 class="fw-semibold mb-3">Field of study</h6>
+                                    <h6 class="fw-semibold mb-3">Field of study preference</h6>
 {{--                                    <input type="text" class="form-control mb-3" placeholder="Search field of study">--}}
                                     <select name="field_of_study_preference[]" id="" class=" select2" multiple="multiple">
                                         @foreach($fieldOfStudies as $fieldOfStudyKey => $fieldOfStudy)
                                             <option value="{{ $fieldOfStudy->id }}">{{ $fieldOfStudy->field_name ?? 'un' }}</option>
                                         @endforeach
                                     </select>
-{{--                                    <div class="d-flex flex-wrap gap-2">--}}
-{{--                                        <span class="badge bg-light text-dark">Business <img src="{{ asset('/') }}frontend/employer/images/employersHome/crossCirle.png" alt=""></span>--}}
-{{--                                        <span class="badge bg-light text-dark">Marketing <img src="{{ asset('/') }}frontend/employer/images/employersHome/crossCirle.png" alt=""></span>--}}
-{{--                                    </div>--}}
                                 </div>
                             </div>
 

@@ -13,6 +13,7 @@ use App\Http\Controllers\Frontend\Crud\EmployeeEducationController;
 use App\Http\Controllers\Frontend\Crud\EmployeeDocumentsController;
 use App\Http\Controllers\Payment\SSLCommerzController;
 use App\Http\Controllers\Frontend\Crud\PostController;
+use App\Http\Controllers\Frontend\Crud\FollowerHistroyController;
 
 
 Route::get('/', [FrontendViewController::class, 'homePage'])->name('/');
@@ -68,6 +69,7 @@ Route::middleware([
         Route::get('change-employee-job-application-status/{jobTask}/{user}/{status?}', [EmployerViewController::class, 'changeEmployeeJobApplicationStatus'])->name('change-employee-job-application-status');
         Route::get('employer-subscriptions', [EmployerViewController::class, 'employerSubscriptions'])->name('employer-subscriptions');
         Route::get('view-post/{post}', [PostController::class, 'viewPost'])->name('view-post');
+        Route::get('set-follow-history', [FollowerHistroyController::class, 'store'])->name('set-follow-history');
 
         Route::post('update-settings', [EmployerViewController::class, 'updateSettings'])->name('update-settings');
         Route::post('update-company-info', [EmployerViewController::class, 'updateCompanyInfo'])->name('update-company-info');

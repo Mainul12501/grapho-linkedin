@@ -67,8 +67,7 @@
                                     <div class="job-info">
                                         <div class="mb-2"><img src="{{ asset('/') }}frontend/employer/images/employersHome/postdOn.png" alt="" class="me-2">Posted on: {{ $jobTask->created_at->format('d M, Y') ?? '16 Feb, 2025' }}</div>
                                         <div class="mb-2"><img src="{{ asset('/') }}frontend/employer/images/employersHome/Dedline.png" alt="" class="me-2">Deadline: {{ \Illuminate\Support\Carbon::parse($jobTask->deadline)->format('d M, Y') ?? '16 Feb, 2025' }}</div>
-                                        <div><img src="{{ asset('/') }}frontend/employer/images/employersHome/24application.png" alt="" class="me-2"><a href="#"
-                                                                                                                                                        class="text-decoration-underline">24 Applicants</a></div>
+                                        <div><img src="{{ asset('/') }}frontend/employer/images/employersHome/24application.png" alt="" class="me-2"><a href="#" class="text-decoration-underline">{{ $jobTask->employeeAppliedJobs->count() ?? 0 }} Applicants</a></div>
                                     </div>
 
 {{--                                    <div class="job-actions dropdown">--}}
