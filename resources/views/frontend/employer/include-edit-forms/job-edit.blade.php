@@ -95,6 +95,13 @@
 
                         <input type="radio" class="btn-check" name="required_experience" id="exp-0" value="0" autocomplete="off" {{ $jobTask->required_experience == '0' ? 'checked' : '' }} >
                         <label class="btn btn-outline-warning" for="exp-0">N/A</label>
+
+                        <input type="radio" class="btn-check" name="required_experience" id="custom" value="custom" {{ $jobTask->is_custom_exp == 1 ? 'checked' : '' }} autocomplete="off">
+                        <label id="showCustomExperienceField" class="btn btn-outline-warning" for="custom">Custom</label>
+
+                        <span id="customExperienceField" style="display: none">
+                                                            <input type="text" style="width: 60px; background-color: darkgrey;" class="btn btn-outline-primary " value="{{ $jobTask->is_custom_exp == 1 ? explode('-', $jobTask->required_experience)[0] : 0 }}" name="exp_range_start"> to <input type="text" style="width: 60px; background-color: darkgrey;" class="btn btn-outline-primary " value="{{ $jobTask->is_custom_exp == 1 ?explode('-', $jobTask->required_experience)[1] : 1 }}" name="exp_range_end"> Years
+                                                        </span>
                     </div>
                 </div>
             </div>

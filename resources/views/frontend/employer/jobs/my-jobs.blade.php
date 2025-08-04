@@ -427,6 +427,11 @@
                                         <input type="radio" class="btn-check" name="required_experience" id="exp-0" value="0" autocomplete="off">
                                         <label class="btn btn-outline-warning" for="exp-0">N/A</label>
 
+                                        <input type="radio" class="btn-check" name="required_experience" id="custom" value="custom" autocomplete="off">
+                                        <label id="showCustomExperienceField" class="btn btn-outline-warning" for="custom">Custom</label>
+                                        <span id="customExperienceField" style="display: none">
+                                                            <input type="text" style="width: 60px; background-color: darkgrey;" class="btn btn-outline-primary " name="exp_range_start"> to <input type="text" style="width: 60px; background-color: darkgrey;" class="btn btn-outline-primary " name="exp_range_end"> Years
+                                                        </span>
 {{--                                        <input type="radio" class="btn-check" name="required_experience" id="exp-3to5" value="3–5 yrs" autocomplete="off">--}}
 {{--                                        <label class="btn btn-outline-warning" for="exp-3to5">3–5 yrs</label>--}}
 
@@ -775,6 +780,9 @@
         $(document).on('click', '#editJobModal #backToStepOne', function () {
             $('#editJobModal .stepOne').removeClass('d-none');
             $('#editJobModal .jobModalForPost').addClass('d-none');
+        })
+        $(document).on('click', '#showCustomExperienceField', function () {
+            $('#customExperienceField').toggle();
         })
     </script>
     <script>

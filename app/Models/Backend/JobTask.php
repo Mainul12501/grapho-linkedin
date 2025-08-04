@@ -33,6 +33,7 @@ class JobTask extends Model
         'cgpa',
         'university_preference',
         'field_of_study_preference',
+        'is_custom_exp',
     ];
 
     protected $searchableFields = ['*'];

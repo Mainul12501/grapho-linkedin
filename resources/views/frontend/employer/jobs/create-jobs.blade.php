@@ -107,14 +107,20 @@
                                                 <div class="bg-white rounded-4 p-4 shadow-sm">
                                                     <h6 class="fw-semibold mb-3">Required years of experience</h6>
                                                     <div class="d-flex flex-wrap gap-2">
-                                                        <input type="radio" class="btn-check" name="required_experience" id="exp-any" value="Any" autocomplete="off" checked>
+                                                        <input type="radio" class="btn-check" name="required_experience" id="exp-any" value="any" autocomplete="off" checked>
                                                         <label class="btn btn-outline-warning" for="exp-any">Any</label>
 
-                                                        <input type="radio" class="btn-check" name="required_experience" id="exp-1to3" value="1–3 yrs" autocomplete="off">
+                                                        <input type="radio" class="btn-check" name="required_experience" id="exp-1to3" value="1–3" autocomplete="off">
                                                         <label class="btn btn-outline-warning" for="exp-1to3">1–3 yrs</label>
 
                                                         <input type="radio" class="btn-check" name="required_experience" id="exp-0" value="0" autocomplete="off">
                                                         <label class="btn btn-outline-warning" for="exp-0">N/A</label>
+
+                                                        <input type="radio" class="btn-check" name="required_experience" id="custom" value="custom" autocomplete="off">
+                                                        <label id="showCustomExperienceField" class="btn btn-outline-warning" for="custom">Custom</label>
+                                                        <span id="customExperienceField" style="display: none">
+                                                            <input type="text" style="width: 60px; background-color: darkgrey;" class="btn btn-outline-primary " name="exp_range_start"> to <input type="text" style="width: 60px; background-color: darkgrey;" class="btn btn-outline-primary " name="exp_range_end"> Years
+                                                        </span>
 
                                                         {{--                                        <input type="radio" class="btn-check" name="required_experience" id="exp-3to5" value="3–5 yrs" autocomplete="off">--}}
                                                         {{--                                        <label class="btn btn-outline-warning" for="exp-3to5">3–5 yrs</label>--}}
@@ -396,6 +402,9 @@
         $(document).on('click', '#editJobModal #backToStepOne', function () {
             $('#editJobModal .stepOne').removeClass('d-none');
             $('#editJobModal .jobModalForPost').addClass('d-none');
+        })
+        $(document).on('click', '#showCustomExperienceField', function () {
+            $('#customExperienceField').toggle();
         })
     </script>
     <script>

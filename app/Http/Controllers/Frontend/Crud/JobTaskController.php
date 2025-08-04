@@ -43,7 +43,7 @@ class JobTaskController extends Controller
             'industries'    => Industry::where(['status' => 1])->get(['id', 'name', 'slug']),
         ];
         return ViewHelper::checkViewForApi($data, 'frontend.employer.jobs.create-jobs');
-        return view('frontend.employer.jobs.my-jobs', $data);
+        return view('frontend.employer.jobs.create-jobs', $data);
     }
 
     /**
@@ -67,7 +67,8 @@ class JobTaskController extends Controller
             $jobTask->job_location_type_id = $request->job_location_type_id;
             $jobTask->industry_id = $request->industry_id;
             $jobTask->employer_company_id = ViewHelper::loggedUser()?->employerCompanies[0]?->id;
-            $jobTask->required_experience = $request->required_experience;
+            $jobTask->is_custom_exp = $request->required_experience == 'custom' ? 1 : 0;
+            $jobTask->required_experience = $request->required_experience == 'custom' ? $request->exp_range_start.'-'.$request->exp_range_end: $request->required_experience;
             $jobTask->job_pref_salary_payment_type = $request->job_pref_salary_payment_type;
             $jobTask->salary_amount = $request->salary_amount;
             $jobTask->salary_range_start = $request->salary_range_start;
@@ -139,7 +140,8 @@ class JobTaskController extends Controller
             $jobTask->job_location_type_id = $request->job_location_type_id;
             $jobTask->industry_id = $request->industry_id;
             $jobTask->employer_company_id = ViewHelper::loggedUser()?->employerCompanies[0]?->id;
-            $jobTask->required_experience = $request->required_experience;
+            $jobTask->is_custom_exp = $request->required_experience == 'custom' ? 1 : 0;
+            $jobTask->required_experience = $request->required_experience == 'custom' ? $request->exp_range_start.'-'.$request->exp_range_end: $request->required_experience;
             $jobTask->job_pref_salary_payment_type = $request->job_pref_salary_payment_type;
             $jobTask->salary_amount = $request->salary_amount;
             $jobTask->salary_range_start = $request->salary_range_start;
