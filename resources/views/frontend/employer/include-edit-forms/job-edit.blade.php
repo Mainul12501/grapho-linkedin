@@ -147,6 +147,18 @@
                     <input type="text" name="cgpa" value="{{ $jobTask->cgpa ?? 0 }}" class="form-control" placeholder="EX: 3.50 to 3.90">
                 </div>
             </div>
+            <!-- Gender Preference -->
+            <div class="container mb-4">
+                <div class="bg-white rounded-4 p-4 shadow-sm">
+                    <h6 class="fw-semibold mb-3">Gender preference</h6>
+                    <select name="gender" id="" class="form-control select2">
+                        <option value="" disabled selected>Select a gender</option>
+                        <option value="male" {{ $jobTask->gender == 'male' ? 'selected' : '' }}>Male</option>
+                        <option value="female" {{ $jobTask->gender == 'female' ? 'selected' : '' }}>Female</option>
+                        <option value="all" {{ $jobTask->gender == 'all' ? 'selected' : '' }}>All</option>
+                    </select>
+                </div>
+            </div>
             <!-- Salary Section -->
             <div class="container mb-4">
                 <div class="bg-white rounded-4 p-4 shadow-sm">

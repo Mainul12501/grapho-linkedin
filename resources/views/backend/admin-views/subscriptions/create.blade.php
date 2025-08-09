@@ -31,6 +31,14 @@
                                 <label for="">Duration (In days)</label>
                                 <input type="number" name="duration_in_days" {{ $isShown ? 'disabled' : '' }} class="form-control" value="{{ isset($subscription) ? $subscription->duration_in_days : '' }}" />
                             </div>
+                            <div class="col-md-6 mt-2">
+                                <label for="userType">User Type</label>
+                                <select name="subscription_for" class="select2 form-control"  id="userType">
+                                    <option value="" selected disabled>Select a User type</option>
+                                    <option value="employer" {{ isset($subscription) && $subscription->subscription_for == 'employer' ? 'selected' : '' }}>Employer</option>
+                                    <option value="employee" {{ isset($subscription) && $subscription->subscription_for == 'employee' ? 'selected' : '' }}>Employee</option>
+                                </select>
+                            </div>
                             <div class="col-12 mt-2">
                                 <label for="">Features</label>
                                 <textarea name="plan_features" class="form-control summernote" {{ $isShown ? 'disabled' : '' }} id="elm1" cols="30" rows="10">{!! isset($subscription) ? $subscription->plan_features : '' !!}</textarea>

@@ -36,6 +36,7 @@
                                 <th>#</th>
                                 <th>Title</th>
                                 <th>Price</th>
+                                <th>For</th>
                                 <th>Duration</th>
                                 <th>Features</th>
                                 <th>Note</th>
@@ -49,6 +50,7 @@
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $subscription->title ?? '' }}</td>
                                 <td>{{ $subscription->price ?? '0' }}</td>
+                                <td>{{ $subscription->subscription_for ?? '0' }}</td>
                                 <td>{{ $subscription->duration_in_days ?? '0' }}</td>
                                 <td>{!! \Illuminate\Support\Str::words($subscription->plan_features, 30, '...') ?? '' !!}</td>
                                 <td>{!! \Illuminate\Support\Str::words($subscription->note, 30, '...') ?? '' !!}</td>

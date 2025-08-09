@@ -19,6 +19,7 @@ class SubscriptionPlan extends Model
         'note',
         'status',
         'slug',
+        'subscription_for',
     ];
 
     protected $searchableFields = ['*'];
@@ -34,6 +35,7 @@ class SubscriptionPlan extends Model
         $subscription->title = $request->title;
         $subscription->price = $request->price;
         $subscription->duration_in_days = $request->duration_in_days;
+        $subscription->subscription_for = $request->subscription_for;
         $subscription->plan_features = $request->plan_features;
         $subscription->note = $request->note;
         $subscription->status = $request->status == 'on' ? 1 : 0;

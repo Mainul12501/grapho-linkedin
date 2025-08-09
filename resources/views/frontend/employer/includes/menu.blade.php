@@ -14,9 +14,9 @@
         <li class="nav-item mb-2">
             <a class="nav-link {{ request()->is('employer/my-job-wise-applicants') ? 'active' : '' }}" href="{{ route('employer.my-job-wise-applicants') }}"><img src="{{ asset('/') }}frontend/employer/images/employersHome/ApplicantsDesk.png" alt="" class="me-2">Applicants</a>
         </li>
-        <li class="nav-item mb-2">
-            <a class="nav-link {{ request()->is('employer/head-hunt') ? 'active' : '' }}" href="{{ route('employer.head-hunt') }}"><img src="{{ asset('/') }}frontend/employer/images/employersHome/Head HuntDesk.png" alt="" class="me-2">Head Hunt</a>
-        </li>
+{{--        <li class="nav-item mb-2">--}}
+{{--            <a class="nav-link {{ request()->is('employer/head-hunt') ? 'active' : '' }}" href="{{ route('employer.head-hunt') }}"><img src="{{ asset('/') }}frontend/employer/images/employersHome/Head HuntDesk.png" alt="" class="me-2">Head Hunt</a>--}}
+{{--        </li>--}}
         <li class="nav-item mb-2">
             <a class="nav-link {{ request()->is('employer.employer-subscriptions') ? 'active' : '' }}" href="{{ route('employer.employer-subscriptions') }}"><img src="{{ asset('/') }}frontend/employer/images/employersHome/Head HuntDesk.png" alt="" class="me-2">Subscriptions</a>
         </li>

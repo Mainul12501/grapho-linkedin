@@ -107,7 +107,8 @@
                                             <img src="{{ asset('/') }}frontend/employer/images/employersHome/three dot.png" alt="">
                                         </button>
                                         <ul class="dropdown-menu dropdown-menu-end">
-                                            <li><a class="dropdown-item edit-job" href="javascript:void(0)" data-job-id="{{ $publishedJob->id }}">Edit</a></li>
+{{--                                            <li><a class="dropdown-item edit-job" href="javascript:void(0)" data-job-id="{{ $publishedJob->id }}">Edit</a></li>--}}
+                                            <li><a class="dropdown-item " href="{{ route('employer.job-tasks.edit', $publishedJob->id) }}" data-job-id="{{ $publishedJob->id }}">Edit</a></li>
                                             <li>
                                                 <form action="{{ route('employer.job-tasks.destroy', $publishedJob->id) }}" method="post">
                                                     @csrf

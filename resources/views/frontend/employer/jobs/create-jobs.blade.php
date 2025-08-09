@@ -142,7 +142,7 @@
                                                 <div class="bg-white rounded-4 p-4 shadow-sm">
                                                     <h6 class="fw-semibold mb-3">Industry</h6>
                                                     {{--                                    <input type="text" class="form-control mb-3" name="" placeholder="Search universities">--}}
-                                                    <select name="industry_id" id="select2-div" class=" select2"  >
+                                                    <select name="industry_id" id="select2-div" class="select2 form-control w-100"  >
 
                                                         @foreach($industries as $industryKey => $industry)
                                                             <option value="{{ $industry->id }}">{{ $industry->name ?? 'un' }}</option>
@@ -182,6 +182,18 @@
                                                 <div class="bg-white rounded-4 p-4 shadow-sm">
                                                     <h6 class="fw-semibold mb-3">CGPA preference</h6>
                                                     <input type="text" name="cgpa" class="form-control" placeholder="e.g. 3.50 to 3.90">
+                                                </div>
+                                            </div>
+                                            <!-- Gender Preference -->
+                                            <div class="container mb-4">
+                                                <div class="bg-white rounded-4 p-4 shadow-sm">
+                                                    <h6 class="fw-semibold mb-3">Gender preference</h6>
+                                                    <select name="gender" id="" class="form-control select2 w-100">
+                                                        <option value="" disabled selected>Select a gender</option>
+                                                        <option value="male">Male</option>
+                                                        <option value="female">Female</option>
+                                                        <option value="all">All</option>
+                                                    </select>
                                                 </div>
                                             </div>
 

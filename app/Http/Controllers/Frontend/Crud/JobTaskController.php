@@ -76,6 +76,7 @@ class JobTaskController extends Controller
             $jobTask->description = $request->description;
             $jobTask->deadline = $request->deadline;
             $jobTask->cgpa = $request->cgpa;
+            $jobTask->gender = $request->gender;
             $jobTask->require_sector_looking_for = json_encode($request->require_sector_looking_for);
             $jobTask->slug = str_replace(' ', '-', $request->job_title);
             $jobTask->save();
@@ -108,7 +109,7 @@ class JobTaskController extends Controller
      */
     public function edit(JobTask  $jobTask/*string $id*/)
     {
-        return \view('frontend.employer.include-edit-forms.job-edit', [
+        return \view('frontend.employer.jobs.edit-jobs', [
             'jobTask' => $jobTask,
             'jobTypes'  => JobType::where(['status' => 1])->get(['id', 'name']),
             'industries'  => Industry::where(['status' => 1])->get(['id', 'name']),
@@ -116,7 +117,16 @@ class JobTaskController extends Controller
             'universityNames'   => UniversityName::where(['status' => 1])->get(['id', 'name']),
             'fieldOfStudies'   => FieldOfStudy::where(['status' => 1])->get(['id', 'field_name']),
             'skillCategories'   => SkillsCategory::where(['status' => 1])->get(['id', 'category_name']),
-        ])->render();
+        ]);
+//        return \view('frontend.employer.include-edit-forms.job-edit', [
+//            'jobTask' => $jobTask,
+//            'jobTypes'  => JobType::where(['status' => 1])->get(['id', 'name']),
+//            'industries'  => Industry::where(['status' => 1])->get(['id', 'name']),
+//            'jobLocations'  => JobLocationType::where(['status' => 1])->get(['id', 'name']),
+//            'universityNames'   => UniversityName::where(['status' => 1])->get(['id', 'name']),
+//            'fieldOfStudies'   => FieldOfStudy::where(['status' => 1])->get(['id', 'field_name']),
+//            'skillCategories'   => SkillsCategory::where(['status' => 1])->get(['id', 'category_name']),
+//        ])->render();
     }
 
     /**
@@ -149,6 +159,7 @@ class JobTaskController extends Controller
             $jobTask->description = $request->description;
             $jobTask->deadline = $request->deadline;
             $jobTask->cgpa = $request->cgpa;
+            $jobTask->gender = $request->gender;
             $jobTask->require_sector_looking_for = json_encode($request->require_sector_looking_for);
             $jobTask->slug = str_replace(' ', '-', $request->job_title);
             $jobTask->save();
@@ -160,7 +171,8 @@ class JobTaskController extends Controller
                 $jobTask->employerPrefferableFieldOfStudyNames()->sync($request->field_of_study_preference);
                 $jobTask->jobRequiredskills()->sync($request->required_skills);
             }
-            return ViewHelper::returnSuccessMessage('Job Updated Successfully.');
+            return ViewHelper::returnRedirectWithMessage(route('employer.my-jobs'), 'success', 'Job Updated Successfully.');
+//            return ViewHelper::returnSuccessMessage('Job Updated Successfully.');
         } catch (\Exception $exception)
         {
             return ViewHelper::returEexceptionError($exception->getMessage());

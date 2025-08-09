@@ -103,6 +103,19 @@ class ViewHelper
             return back()->with('error', $message);
         }
     }
+    public static function returnRedirectWithMessage ($route, $messageType = 'success', $message = null)
+    {
+        if (str()->contains(url()->current(), '/api/'))
+        {
+            if ($messageType == 'error')
+            return response()->json(['error' => $message, 'status' => 'error'], 400);
+                else
+            return response()->json(['success' => $message, 'status' => 'success'], 400);
+        } else {
+            $messageType == 'error' ? Toastr::error($message) : Toastr::success($message);
+            return redirect($route);
+        }
+    }
 
     public static function returnResponseFromPostRequest($status = false, $message = '')
     {
