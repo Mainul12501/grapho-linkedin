@@ -67,6 +67,10 @@ return new class extends Migration
             $table->unsignedBigInteger('university_name_id')->nullable();
             $table->unsignedBigInteger('industry_id')->nullable();
             $table->unsignedBigInteger('field_of_study_id')->nullable();
+            $table->string('division')->nullable();
+            $table->string('district')->nullable();
+            $table->string('post_office')->nullable();
+            $table->string('postal_code')->nullable();
             $table->timestamps();
         });
 

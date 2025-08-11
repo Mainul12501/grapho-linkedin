@@ -4,7 +4,7 @@
 
 @section('body')
     <div class="container container-main mt-3">
-        <aside class="left-panel p-3">
+        <aside class="left-panel p-3 col-md-3">
             <div class="card">
                 <div class="card-body">
                     <img src="{{ asset('/') }}frontend/employee/images/header images/Thumbnail.png" alt="Profile" class="rounded-circle mb-2" width="80" />

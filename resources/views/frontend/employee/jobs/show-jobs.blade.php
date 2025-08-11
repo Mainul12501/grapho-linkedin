@@ -14,42 +14,46 @@
             </div>
 
             <div class="d-flex">
-                <form action="">
-                <span class="d-inline-flex">
-                    <select name="company_type[]" id="" class="select2 mx-1" multiple style="width: 200px">
-                        <option value="" disabled selected>Select Company Type</option>
-                        @foreach($companyTypes as $companyType)
-                            <option value="{{ $companyType->slug }}">{{ $companyType->category_name }}</option>
-                        @endforeach
+                <form action="" class="d-flex">
+
+                    <span class="mx-1">
+                        <div>
+                            <label for="searchLocationType">Location Type</label>
+                        </div>
+                        <div>
+                            <select name="job_location_type[]" multiple id="searchLocationType" class="select2 mx-1" style="width: 200px" data-placeholder="Select Location Type">
+{{--                        <option value="" disabled selected>Select Location Type</option>--}}
+                                @foreach($jobLocationTypes as $jobLocationType)
+                                    <option value="{{ $jobLocationType->slug }}">{{ $jobLocationType->name }}</option>
+                                @endforeach
                     </select>
+                        </div>
                 </span>
-                    <span class="d-inline-flex">
-                    <select name="job_location_type[]" multiple id="" class="select2 mx-1" style="width: 200px">
-                        <option value="" disabled selected>Select Location Type</option>
-                        @foreach($jobLocationTypes as $jobLocationType)
-                            <option value="{{ $jobLocationType->slug }}">{{ $jobLocationType->name }}</option>
-                        @endforeach
-                    </select>
-                </span>
-                    <span class="d-inline-flex">
-                    <select name="industry[]" multiple id="" class="select2 mx-1" style="width: 200px">
-                        <option value="" disabled selected>Select Industry</option>
+                    <span class="mx-1">
+                        <label for="searchIndustry">Industry</label> <br>
+                    <select name="industry[]" multiple id="searchIndustry" class="select2 mx-1" style="width: 200px" data-placeholder="Select Industry">
+{{--                        <option value="" disabled selected>Select Industry</option>--}}
                         @foreach($industries as $industry)
                             <option value="{{ $industry->slug }}">{{ $industry->name }}</option>
                         @endforeach
                     </select>
                 </span>
-                    <span class="d-inline-flex">
-                    <select name="company[]" multiple id="" class="select2 ms-1" style="width: 200px">
-                        <option value="" disabled selected>Select Company</option>
+                    <span class="mx-1">
+                        <label for="searchCompany">Company</label> <br>
+                    <select name="company[]" multiple id="searchCompany" class="select2 ms-1" style="width: 200px" data-placeholder="Select Company">
+{{--                        <option value="" disabled selected>Select Company</option>--}}
                         @foreach($companies as $company)
                             <option value="{{ $company->slug }}">{{ $company->name }}</option>
                         @endforeach
                     </select>
                 </span>
+                    <span class="mx-1">
+                        <label for="searchCompany">Search Job</label> <br>
+                        <input type="text" name="search_text" class="form-control" />
+                    </span>
 
                     <!-- Clear All Button -->
-                    <button type="submit" class="clear-all-btn d-inline-flex btn" id="clearAllBtn">Filter</button>
+                    <button type="submit" class="clear-all-btn border-1 btn btn-outline-primary btn-sm" id="clearAllBtn">Filter</button>
                 </form>
             </div>
         </div>

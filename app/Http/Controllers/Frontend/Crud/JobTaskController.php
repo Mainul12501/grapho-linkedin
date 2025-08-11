@@ -160,6 +160,7 @@ class JobTaskController extends Controller
             $jobTask->deadline = $request->deadline;
             $jobTask->cgpa = $request->cgpa;
             $jobTask->gender = $request->gender;
+            $jobTask->status = $request->status == 'on' ? 1 : 0;
             $jobTask->require_sector_looking_for = json_encode($request->require_sector_looking_for);
             $jobTask->slug = str_replace(' ', '-', $request->job_title);
             $jobTask->save();

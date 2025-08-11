@@ -48,6 +48,22 @@ class EmployeeViewController extends Controller
     {
         $jobTasks = JobTask::query()->with(['employerCompany.employerCompanyCategory', 'jobLocationType', 'industry']);
 
+
+        // Search by text (job title, company name, or industry name)
+        if ($request->has('search_text') && !empty($request->search_text)) {
+            $searchText = $request->search_text;
+
+            $jobTasks = $jobTasks->where(function($query) use ($searchText) {
+                $query->where('job_title', 'like', '%'.$searchText.'%')
+                    ->orWhereHas('employerCompany', function($q) use ($searchText) {
+                        $q->where('name', 'like', '%'.$searchText.'%');
+                    })
+                    ->orWhereHas('industry', function($q) use ($searchText) {
+                        $q->where('name', 'like', '%'.$searchText.'%');
+                    });
+            });
+        }
+
         // Filter by Company Type (via EmployerCompanyCategory slug)
         if ($request->has('company_type') && is_array($request->company_type)) {
             $jobTasks = $jobTasks->whereHas('employerCompany.employerCompanyCategory', function ($q) use ($request) {
@@ -259,6 +275,10 @@ class EmployeeViewController extends Controller
                 $user->email    = $request->email ?? $user->email;
                 $user->mobile    = $request->mobile ?? $user->mobile;
                 $user->website    = $request->website ?? $user->website;
+                $user->division    = $request->division ?? $user->division;
+                $user->district    = $request->district ?? $user->district;
+                $user->post_office    = $request->post_office ?? $user->post_office;
+                $user->postal_code    = $request->postal_code ?? $user->postal_code;
                 if ($request->hasFile('profile_image'))
                 {
                     $user->profile_image    = imageUpload($request->file('profile_image'), 'profile-image', 'profile_image', 200,200, $user->profile_image ?? null);
@@ -266,7 +286,7 @@ class EmployeeViewController extends Controller
                 $user->address    = $request->address ?? $user->address;
                 $user->save();
             }
-            Toastr::success('Profile Info updated successfully.');
+//            Toastr::success('Profile Info updated successfully.');
             return ViewHelper::returnResponseFromPostRequest(true,'Profile Info updated successfully.');
         } catch (\Exception $exception)
         {

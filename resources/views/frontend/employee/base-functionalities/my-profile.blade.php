@@ -14,10 +14,10 @@
 
                     <div class="d-flex justify-content-center justify-content-md-start">
                         <div class="dropdown d-flex align-items-center">
-    <span class="badge d-flex align-items-center">
-      <img src="{{ asset('/') }}frontend/employee/images/profile/Ellipse 1.png" alt="" class="me-2" />
-      <span id="selectedRole">{{ auth()->user()->is_open_for_hire == 1 ? 'Open to Hire' : 'Offline' }}</span>
-    </span>
+                            <span class="badge d-flex align-items-center">
+                              <img src="{{ asset('/') }}frontend/employee/images/profile/Ellipse 1.png" alt="" class="me-2" />
+                              <span id="selectedRole">{{ auth()->user()->is_open_for_hire == 1 ? 'Open to Hire' : 'Offline' }}</span>
+                            </span>
                             <img src="{{ asset('/') }}frontend/employee/images/profile/downArrow.png" alt="" data-bs-toggle="dropdown" aria-expanded="false" class="ms-2" style="cursor: pointer;" />
 
                             <ul class="dropdown-menu">
@@ -138,6 +138,35 @@
                                                 <div class="mb-3">
                                                     <label for="phoneInput" class="form-label">Website</label>
                                                     <input type="text" class="form-control" id="phoneInput" name="website" value="{!! auth()->user()->website ?? '' !!}" placeholder="www.devpranto.com" />
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="divisions" class="form-label">Division</label>
+                                                    <select name="division" id="divisions" onchange="divisionsList()" class="form-control w-100" data-placeholder="Select Division">
+                                                        <option value="Barishal" {{ auth()->user()->division == 'Barishal' ? 'selected' : '' }}>Barishal</option>
+                                                        <option value="Chattogram" {{ auth()->user()->division == 'Chattogram' ? 'selected' : '' }}>Chattogram</option>
+                                                        <option value="Dhaka" {{ auth()->user()->division == 'Dhaka' ? 'selected' : '' }}>Dhaka</option>
+                                                        <option value="Khulna" {{ auth()->user()->division == 'Khulna' ? 'selected' : '' }}>Khulna</option>
+                                                        <option value="Mymensingh" {{ auth()->user()->division == 'Mymensingh' ? 'selected' : '' }}>Mymensingh</option>
+                                                        <option value="Rajshahi" {{ auth()->user()->division == 'Rajshahi' ? 'selected' : '' }}>Rajshahi</option>
+                                                        <option value="Rangpur" {{ auth()->user()->division == 'Rangpur' ? 'selected' : '' }}>Rangpur</option>
+                                                        <option value="Sylhet" {{ auth()->user()->division == 'Sylhet' ? 'selected' : '' }}>Sylhet</option>
+                                                    </select>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="distr" class="form-label">District</label>
+                                                    <select name="district" id="distr" onchange="thanaList()" class="form-control w-100" data-placeholder="Select District">
+                                                        <option value="">{{ auth()->user()->district ?? '' }}</option>
+                                                    </select>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="polic_sta" class="form-label">Post Office</label>
+                                                    <select name="post_office" id="polic_sta"  class="form-control w-100" data-placeholder="Select District">
+                                                        <option value="">{{ auth()->user()->post_office ?? '' }}</option>
+                                                    </select>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="polic_sta" class="form-label">Post Code</label>
+                                                    <input type="text" name="postal_code" value="{{ auth()->user()->postal_code ?? '' }}" class="form-control" />
                                                 </div>
                                         </div>
                                         <div class="modal-footer justify-content-between">
@@ -884,15 +913,6 @@
         </div>
     </div>
 
-
-
-
-
-
-
-
-
-
 @endsection
 @push('script')
 
@@ -900,6 +920,7 @@
    @include('common-resource-files.summernote')
    @include('common-resource-files.selectize')
 
+    <script src="{{ asset('/frontend/employee/division-Districts-post-station/javascript.js') }}"></script>
 
     <script>
         $(document).on('click', '.edit-work-experience', function () {

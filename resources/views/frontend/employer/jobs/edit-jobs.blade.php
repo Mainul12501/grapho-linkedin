@@ -238,6 +238,24 @@
 
                                         </div>
 
+                                        <!-- Job Status -->
+                                        <div class="container mb-4">
+                                            <div class="bg-white rounded-4 p-4 shadow-sm">
+                                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                                    <h6 class="fw-semibold mb-0">Job Status</h6>
+                                                </div>
+                                                <div>
+                                                    <div class="">
+{{--                                                        <input type="date" name="deadline"  class="form-control" value="{{ $jobTask->deadline ?? '' }}" />--}}
+                                                        <div class="form-check form-switch">
+                                                            <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" name="status" {{ $jobTask->status == 1 ? 'checked' : '' }} >
+                                                            <label class="form-check-label" for="flexSwitchCheckChecked"></label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
                                         <div class="container mb-3">
                                             <div class="bg-white rounded-4 p-4 shadow-sm" style="padding-bottom: 65px!important;">
                                                 <button type="submit" class="btn btn-warning text-dark fw-semibold px-4 py-2 rounded-3 float-end">Submit</button>

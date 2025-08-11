@@ -46,6 +46,7 @@ Route::post('sslcommerz/failure',[SSLCommerzController::class, 'paymentFailure']
 Route::post('sslcommerz/cancel',[SSLCommerzController::class, 'paymentCancel'])->name('payment.cancel');
 Route::post('sslcommerz/ipn',[SSLCommerzController::class, 'ipn'])->name('payment.ipn');
 
+
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),

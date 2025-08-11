@@ -148,6 +148,34 @@ class EmployerViewController extends Controller
             });
         }
 
+        if ($request->filled('gender'))
+        {
+            $employees = $employees->where('gender', $request->gender);
+        }
+        if ($request->filled('district'))
+        {
+            $employees = $employees->where('district', $request->district);
+        }
+
+        // CGPA filter (minimum value)
+        if ($request->filled('cgpa')) {
+            $minCgpa = (float)$request->input('cgpa');
+            $employees = $employees->whereHas('employeeEducations', function($query) use ($minCgpa) {
+                $query->where('cgpa', '>=', $minCgpa)
+                    ->orderBy('cgpa', 'desc'); // Get the highest CGPA for each user
+            });
+        }
+
+// Experience filter (minimum years)
+        if ($request->filled('experience')) {
+            $minExperience = (float)$request->input('experience');
+            $employees = $employees->whereHas('employeeWorkExperiences', function($query) use ($minExperience) {
+                $query->select('user_id')
+                    ->groupBy('user_id')
+                    ->havingRaw('SUM(duration) >= ?', [$minExperience]);
+            });
+        }
+
 // Job Type filter
         if ($request->filled('job_type')) {
             $jobTypes = $ensureArray($request->input('job_type'));
@@ -206,7 +234,7 @@ class EmployerViewController extends Controller
             });
         }
 
-        $employees = $employees->where(['user_type' => 'employee', 'is_open_for_hire' => 1])->get(['id', 'name', 'profile_title', 'address', 'profile_image']);
+        $employees = $employees->where(['user_type' => 'employee', 'is_open_for_hire' => 1])->select(['id', 'name', 'profile_title', 'address', 'profile_image'])->paginate(21);
 
         $data = [
             'employees' => $employees,

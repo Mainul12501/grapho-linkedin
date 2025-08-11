@@ -117,7 +117,7 @@
 
 
 <!-- Hero Section (Main Content) -->
-<section class="my-5 py-5 border-bottom">
+<section class="my-5 py-5 border-bottom" style="background-color: #FFCB11">
     <div class="container">
         <!-- Mobile Illustration (Shown only on mobile) -->
         <div class="d-lg-none text-center mb-4">
