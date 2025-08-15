@@ -17,6 +17,7 @@ use App\Http\Controllers\Frontend\Crud\FollowerHistroyController;
 use App\Http\Controllers\Frontend\Twilio\TwilioVideoController;
 
 Route::get('/', [FrontendViewController::class, 'homePage'])->name('/');
+Route::get('/page/{slug?}', [FrontendViewController::class, 'showCommonPage'])->name('show-common-page');
 
 Route::get('employee-profile/{employeeId}', [EmployerViewController::class, 'employeeProfile'])->name('employee-profile');
 

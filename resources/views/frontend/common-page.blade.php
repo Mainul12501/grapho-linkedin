@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="author" content="Like Wise BD">
-    <meta name="title" content="Like Wise BD">
+    <meta name="author" content="Your Name or Company Name">
     <link rel="icon" href="images/fav.png" type="image/x-icon">
     {!! $siteSetting->meta_header ?? '' !!}
     <title>{!! $siteSetting->meta_title ?? 'Like Wise BD' !!}</title>
@@ -114,116 +113,17 @@
 </nav>
 
 
-
-
-
-
-<!-- Hero Section (Main Content) -->
-<section class="my-5 py-5 border-bottom" style="background-color: #FFCB11">
+{{--page content section--}}
+<section class="mt-3">
     <div class="container">
-        <!-- Mobile Illustration (Shown only on mobile) -->
-        <div class="d-lg-none text-center mb-4">
-            <img src="{{ asset('/') }}frontend/home-landing/images/5.png" alt="Mobile Illustration" class="img-fluid">
-        </div>
-        <h1 class="d-none d-lg-block text-center">Your work people are here</h1>
-
-        <div class="row justify-content-center align-items-center">
-            <!-- Left Illustration (Hidden on mobile) -->
-            <div class="col-lg-4 d-none d-lg-block">
-                <img src="{{ asset('/') }}frontend/home-landing/images/2.png" alt="Illustration Left" class="img-fluid">
+        <div class="row">
+            <div class="col-md-6 mx-auto">
+                <h2>{{ $page->title ?? 'Page Title Here' }}</h2>
             </div>
-
-            <!-- Main Content Container -->
-            <div class="col-12 col-lg-4 text-center">
-                <!-- Header -->
-                <div class="mb-4">
-                    <h1 class="d-lg-none">Your work people are here</h1>
-                    <p>By continuing, you agree to our <a href="" class="text-dark">Terms of Use and Privacy Policy.</a></p>
-                </div>
-
-                <!-- Login Buttons -->
-                <div class="d-flex flex-column mb-4">
-                    <button class="btn btn-outline-dark mb-2" type="button" data-bs-toggle="modal" data-bs-target="#googleUserTypeSelect">
-                        <img src="{{ asset('/') }}frontend/home-landing/images/gooleIcon.png" alt="Google Icon" style="width: 30px;"> Continue with Google
-                    </button>
-{{--                    <button class="btn btn-outline-dark mb-2">--}}
-{{--                        <img src="{{ asset('/') }}frontend/home-landing/images/appleIcon.png" alt="Apple Icon" style="width: 30px;"> Continue with Apple--}}
-{{--                    </button>--}}
-
-                    <!-- Divider with "or" -->
-                    <div class="d-flex align-items-center my-3">
-                        <hr class="flex-grow-1">
-                        <span class="px-2 text-muted">or</span>
-                        <hr class="flex-grow-1">
-                    </div>
-
-                    <!-- Email Input Label + Field -->
-                    <div class="mb-3 text-start">
-{{--                        <label for="email" class="form-label fw-semibold">Enter email</label>--}}
-{{--                        <input type="email" id="email" class="form-control rounded-3" placeholder="" required>--}}
-                    </div>
-
-
-                    <a href="{{ route('auth.select-auth-method') }}" class="btn btn-outline-dark mb-2">Continue with Email</a>
-                </div>
-            </div>
-
-            <!-- Right Illustration (Hidden on mobile) -->
-            <div class="col-lg-4 d-none d-lg-block">
-                <img src="{{ asset('/') }}frontend/home-landing/images/3.png" alt="Illustration Right" class="img-fluid">
+            <div class="col-md-12 mt-3">
+                <p style="text-align: justify">{!! $page->content ?? 'Page content here' !!}</p>
             </div>
         </div>
-    </div>
-</section>
-
-<!-- Get Ahead with Glassdoor Section -->
-<section class="container text-center py-5">
-    <h2 class="fw-semibold mb-2">Get ahead with LikeWiseBD</h2>
-    <p class="text-muted mb-4">We're serving up trusted insights and anonymous conversation, so you'll have the goods you need to succeed.</p>
-
-    <div class="row justify-content-center g-4">
-        <div class="col-6 col-md-3">
-            <div class="d-flex flex-column align-items-center">
-                <div class="rounded-circle border d-flex justify-content-center align-items-center" style="width: 72px; height: 72px;">
-                    <img src="{{ asset('/') }}frontend/home-landing/images/jobcummunity.png" alt="Community" style="width: 40px;">
-                </div>
-                <span class="mt-2">Join your work community</span>
-            </div>
-        </div>
-        <div class="col-6 col-md-3">
-            <div class="d-flex flex-column align-items-center">
-                <div class="rounded-circle border d-flex justify-content-center align-items-center" style="width: 72px; height: 72px;">
-                    <img src="{{ asset('/') }}frontend/home-landing/images/jobsearch.png" alt="Search Jobs" style="width: 40px;">
-                </div>
-                <span class="mt-2">Find and apply to jobs</span>
-            </div>
-        </div>
-        <div class="col-6 col-md-3">
-            <div class="d-flex flex-column align-items-center">
-                <div class="rounded-circle border d-flex justify-content-center align-items-center" style="width: 72px; height: 72px;">
-                    <img src="{{ asset('/') }}frontend/home-landing/images/searchcompany.png" alt="Company Reviews" style="width: 40px;">
-                </div>
-                <span class="mt-2">Search company reviews</span>
-            </div>
-        </div>
-        <div class="col-6 col-md-3">
-            <div class="d-flex flex-column align-items-center">
-                <div class="rounded-circle border d-flex justify-content-center align-items-center" style="width: 72px; height: 72px;">
-                    <img src="{{ asset('/') }}frontend/home-landing/images/salary.png" alt="Salaries" style="width: 40px;">
-                </div>
-                <span class="mt-2">Compare salaries</span>
-            </div>
-        </div>
-    </div>
-</section>
-
-
-<!-- Start Your Search Section -->
-<section class="text-center py-5 bg-light">
-    <div class="container">
-        <h3>Start your search</h3>
-        <p>Need some inspiration? See what millions of people are looking for on Grapho today.</p>
-        <input type="text" class="form-control mx-auto" placeholder="Search for jobs, companies, or salaries" style="max-width: 600px;">
     </div>
 </section>
 
@@ -388,5 +288,6 @@
 <!-- Bootstrap JS and Dependencies -->
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+{!! $siteSetting->meta_footer ?? '' !!}
 </body>
 </html>

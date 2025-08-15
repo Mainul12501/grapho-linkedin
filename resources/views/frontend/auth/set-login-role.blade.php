@@ -6,7 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="author" content="Your Name">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Grapho</title>
+    <title>Like Wise BD</title>
+    {!! $siteSetting->meta_header ?? '' !!}
 
     <!-- Favicon -->
     <link rel="icon" href="images/Logo icon.png" type="image/x-icon">
@@ -196,6 +197,7 @@
         $('.beforeContinue').css('display', 'block');
     })
 </script>
+{!! $siteSetting->meta_footer ?? '' !!}
 </body>
 
 </html>

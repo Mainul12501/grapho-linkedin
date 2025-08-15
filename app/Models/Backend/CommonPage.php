@@ -19,6 +19,7 @@ class CommonPage extends Model
         'status',
         'seo_header',
         'seo_footer',
+        'slug',
     ];
 
     protected $searchableFields = ['*'];
@@ -39,6 +40,7 @@ class CommonPage extends Model
         $commonPage->status = $request->status == 'on' ? 1 : 0;
         $commonPage->seo_header = $request->seo_header;
         $commonPage->seo_footer = $request->seo_footer;
+        $commonPage->slug = str_replace(' ', '-', $request->title);
         $commonPage->save();
         return $commonPage;
     }

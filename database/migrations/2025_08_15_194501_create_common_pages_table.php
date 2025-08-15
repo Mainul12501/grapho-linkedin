@@ -20,6 +20,7 @@ return new class extends Migration
             $table->tinyInteger('status')->nullable();
             $table->longText('seo_header')->nullable();
             $table->longText('seo_footer')->nullable();
+            $table->text('slug')->nullable();
 
             $table->timestamps();
         });

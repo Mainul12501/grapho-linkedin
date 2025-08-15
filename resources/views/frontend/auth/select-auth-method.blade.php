@@ -5,8 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="author" content="Your Name">
-    <title>Grapho</title>
-
+    <title>Like Wise BD</title>
+    {!! $siteSetting->meta_header ?? '' !!}
     <!-- Favicon -->
     <link rel="icon" href="images/Logo icon.png" type="image/x-icon">
 
@@ -38,7 +38,7 @@
 <!-- Bootstrap 5 JS and Popper.js (Bootstrap 5 no longer needs jQuery) -->
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
-
+{!! $siteSetting->meta_footer ?? '' !!}
 </body>
 
 </html>
