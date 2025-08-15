@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Frontend;
 use App\Helpers\ViewHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Payment\SSLCommerzController;
+use App\Models\Backend\CommonPage;
 use App\Models\Backend\SubscriptionPlan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -13,6 +14,10 @@ class FrontendViewController extends Controller
 {
     public function homePage()
     {
+        $data = [
+            'commonPages'   => CommonPage::where(['status' => 1])->get()
+        ];
+        return ViewHelper::checkViewForApi($data, 'frontend.home-landing');
         return view('frontend.home-landing');
     }
 

@@ -220,7 +220,7 @@
 <section class="text-center py-5 bg-light">
     <div class="container">
         <h3>Start your search</h3>
-        <p>Need some inspiration? See what millions of people are looking for on Glassdoor today.</p>
+        <p>Need some inspiration? See what millions of people are looking for on Grapho today.</p>
         <input type="text" class="form-control mx-auto" placeholder="Search for jobs, companies, or salaries" style="max-width: 600px;">
     </div>
 </section>
@@ -231,40 +231,43 @@
         <div class="row mb-4">
             <div class="col-md-2 mb-3">
                 <a href="{{ route('/') }}" class="d-inline-block mb-3"><img src="{{ asset('/') }}frontend/home-landing/images/Compnay logo.png" alt=""></a>
-                <ul class="list-unstyled small">
-                    <li><a href="#" class="text-decoration-none text-dark">About / Press</a></li>
-                    <li><a href="#" class="text-decoration-none text-dark">Awards</a></li>
-                    <li><a href="#" class="text-decoration-none text-dark">Blog</a></li>
-                    <li><a href="#" class="text-decoration-none text-dark">Research</a></li>
-                    <li><a href="#" class="text-decoration-none text-dark">Contact Us</a></li>
-                    <li><a href="#" class="text-decoration-none text-dark">Guides</a></li>
-                </ul>
+{{--                <ul class="list-unstyled small">--}}
+{{--                    <li><a href="#" class="text-decoration-none text-dark">About / Press</a></li>--}}
+{{--                    <li><a href="#" class="text-decoration-none text-dark">Awards</a></li>--}}
+{{--                    <li><a href="#" class="text-decoration-none text-dark">Blog</a></li>--}}
+{{--                    <li><a href="#" class="text-decoration-none text-dark">Research</a></li>--}}
+{{--                    <li><a href="#" class="text-decoration-none text-dark">Contact Us</a></li>--}}
+{{--                    <li><a href="#" class="text-decoration-none text-dark">Guides</a></li>--}}
+{{--                </ul>--}}
+                <p class="" style="text-align: justify">Grapho is job hub.. More content here..</p>
             </div>
             <div class="col-md-2 mb-3">
                 <h6 class="fw-semibold">Employers</h6>
                 <ul class="list-unstyled small">
-                    <li><a href="#" class="text-decoration-none text-dark">Get a Free Employer Account</a></li>
-                    <li><a href="#" class="text-decoration-none text-dark">Employer Center</a></li>
+                    <li><a href="{{ url('auth/user-registration-page?user=Employer') }}" class="text-decoration-none text-dark">Get a Free Employer Account</a></li>
+                    <li><a href="{{ url('auth/user-registration-page?user=Employer') }}" class="text-decoration-none text-dark">Employer Center</a></li>
                 </ul>
             </div>
             <div class="col-md-3 mb-3">
-                <h6 class="fw-semibold">Information</h6>
+                <h6 class="fw-semibold">Pages</h6>
                 <ul class="list-unstyled small">
-                    <li><a href="#" class="text-decoration-none text-dark">Help</a></li>
-                    <li><a href="#" class="text-decoration-none text-dark">Guidelines</a></li>
-                    <li><a href="#" class="text-decoration-none text-dark">Terms of Use</a></li>
-                    <li><a href="#" class="text-decoration-none text-dark">Privacy & Ad Choices</a></li>
-                    <li><a href="#" class="text-decoration-none text-dark">Do Not Sell Or Share</a></li>
-                    <li><a href="#" class="text-decoration-none text-dark">My Information</a></li>
-                    <li><a href="#" class="text-decoration-none text-dark">Cookie Consent Tool</a></li>
-                    <li><a href="#" class="text-decoration-none text-dark">Security</a></li>
+                    @foreach($commonPages as $commonPage)
+                        <li><a href="#" class="text-decoration-none text-dark">{{ $commonPage->title ?? 'page name' }}</a></li>
+                    @endforeach
+{{--                    <li><a href="#" class="text-decoration-none text-dark">Guidelines</a></li>--}}
+{{--                    <li><a href="#" class="text-decoration-none text-dark">Terms of Use</a></li>--}}
+{{--                    <li><a href="#" class="text-decoration-none text-dark">Privacy & Ad Choices</a></li>--}}
+{{--                    <li><a href="#" class="text-decoration-none text-dark">Do Not Sell Or Share</a></li>--}}
+{{--                    <li><a href="#" class="text-decoration-none text-dark">My Information</a></li>--}}
+{{--                    <li><a href="#" class="text-decoration-none text-dark">Cookie Consent Tool</a></li>--}}
+{{--                    <li><a href="#" class="text-decoration-none text-dark">Security</a></li>--}}
                 </ul>
             </div>
             <div class="col-md-2 mb-3">
                 <h6 class="fw-semibold">Work With Us</h6>
                 <ul class="list-unstyled small">
-                    <li><a href="#" class="text-decoration-none text-dark">Advertisers</a></li>
-                    <li><a href="#" class="text-decoration-none text-dark">Careers</a></li>
+                    <li><a href="{{ url('auth/user-registration-page?user=Employer') }}" class="text-decoration-none text-dark">Advertisers</a></li>
+                    <li><a href="{{ url('auth/user-registration-page?user=Employee') }}" class="text-decoration-none text-dark">Careers</a></li>
                 </ul>
             </div>
 
@@ -272,40 +275,38 @@
                 <div class="mb-2">
                     <span class="small">Download the App</span>
                     <div class="d-inline-flex gap-2 ms-2">
-                        <a href="#" aria-label="Download on Android">
+                        <a href="{{ isset($siteSetting) ? $siteSetting->apk_link : 'javascript:void(0)' }}" aria-label="Download on Android">
                             <img src="{{ asset('/') }}frontend/home-landing/images/android.png" alt="Android" style="width: 30px;">
                         </a>
-                        <a href="#" aria-label="Download on iOS">
+                        <a href="{{ isset($siteSetting) ? $siteSetting->ios_link : 'javascript:void(0)' }}" aria-label="Download on iOS">
                             <img src="{{ asset('/') }}frontend/home-landing/images/appleIcon.png" alt="Apple" style="width: 30px;">
                         </a>
                     </div>
                 </div>
                 <div class="d-flex gap-3 mb-2">
-                    <a href="#" aria-label="Glassdoor Community" class="btn btn-outline-secondary btn-sm rounded-circle p-2">
-                        <img src="{{ asset('/') }}frontend/home-landing/images/quote.png" alt="Quote Icon" style="width: 30px;">
-                    </a>
-                    <a href="#" aria-label="Facebook" class="btn btn-outline-secondary btn-sm rounded-circle p-2">
+{{--                    <a href="{{ isset($siteSetting) ? $siteSetting->fb : 'javascript:void(0)' }}" aria-label="Glassdoor Community" class="btn btn-outline-secondary btn-sm rounded-circle p-2">--}}
+{{--                        <img src="{{ asset('/') }}frontend/home-landing/images/quote.png" alt="Quote Icon" style="width: 30px;">--}}
+{{--                    </a>--}}
+                    <a href="{{ isset($siteSetting) ? $siteSetting->fb : 'javascript:void(0)' }}" aria-label="Facebook" class="btn btn-outline-secondary btn-sm rounded-circle p-2">
                         <img src="{{ asset('/') }}frontend/home-landing/images/facebook.png" alt="Facebook" style="width: 30px;">
                     </a>
-                    <a href="#" aria-label="X" class="btn btn-outline-secondary btn-sm rounded-circle p-2">
+                    <a href="{{ isset($siteSetting) ? $siteSetting->x_link : 'javascript:void(0)' }}" aria-label="X" class="btn btn-outline-secondary btn-sm rounded-circle p-2">
                         <img src="{{ asset('/') }}frontend/home-landing/images/x.png" alt="X" style="width: 30px;">
                     </a>
-                    <a href="#" aria-label="YouTube" class="btn btn-outline-secondary btn-sm rounded-circle p-2">
+                    <a href="{{ isset($siteSetting) ? $siteSetting->youtube : 'javascript:void(0)' }}" aria-label="YouTube" class="btn btn-outline-secondary btn-sm rounded-circle p-2">
                         <img src="{{ asset('/') }}frontend/home-landing/images/youtube.png" alt="YouTube" style="width: 30px;">
                     </a>
-                    <a href="#" aria-label="Instagram" class="btn btn-outline-secondary btn-sm rounded-circle p-2">
+                    <a href="{{ isset($siteSetting) ? $siteSetting->insta : 'javascript:void(0)' }}" aria-label="Instagram" class="btn btn-outline-secondary btn-sm rounded-circle p-2">
                         <img src="{{ asset('/') }}frontend/home-landing/images/instagram.png" alt="Instagram" style="width: 30px;">
                     </a>
-                    <a href="#" aria-label="TikTok" class="btn btn-outline-secondary btn-sm rounded-circle p-2">
+                    <a href="{{ isset($siteSetting) ? $siteSetting->tiktalk : 'javascript:void(0)' }}" aria-label="TikTok" class="btn btn-outline-secondary btn-sm rounded-circle p-2">
                         <img src="{{ asset('/') }}frontend/home-landing/images/tiktok.png" alt="TikTok" style="width: 30px;">
                     </a>
                 </div>
 
                 <select class="form-select form-select-sm w-auto" aria-label="Select country">
-                    <option selected>United States</option>
-                    <option value="1">Canada</option>
-                    <option value="2">United Kingdom</option>
-                    <option value="3">Australia</option>
+                    <option value="en">English</option>
+                    <option value="bn">Bangla</option>
                 </select>
             </div>
         </div>

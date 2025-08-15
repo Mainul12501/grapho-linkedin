@@ -14,7 +14,7 @@ use App\Http\Controllers\Frontend\Crud\EmployeeDocumentsController;
 use App\Http\Controllers\Payment\SSLCommerzController;
 use App\Http\Controllers\Frontend\Crud\PostController;
 use App\Http\Controllers\Frontend\Crud\FollowerHistroyController;
-
+use App\Http\Controllers\Frontend\Twilio\TwilioVideoController;
 
 Route::get('/', [FrontendViewController::class, 'homePage'])->name('/');
 
@@ -46,6 +46,19 @@ Route::post('sslcommerz/failure',[SSLCommerzController::class, 'paymentFailure']
 Route::post('sslcommerz/cancel',[SSLCommerzController::class, 'paymentCancel'])->name('payment.cancel');
 Route::post('sslcommerz/ipn',[SSLCommerzController::class, 'ipn'])->name('payment.ipn');
 
+//twilio video page routes
+Route::get('/view-twilio-video-page', [TwilioVideoController::class, 'viewPage'])->name('twilio.view');
+Route::post('/video/token', [TwilioVideoController::class, 'token'])->name('video.token');
+Route::post('/audio/token', [TwilioVideoController::class, 'audioToken'])->name('audio.token');
+// Protected (host actions) -- twilio
+Route::middleware(['auth:sanctum'])->group(function(){
+    Route::post('/twilio/invite', [TwilioVideoController::class, 'inviteCreate'])->name('twilio.invite');
+    Route::post('/twilio/kick', [TwilioVideoController::class, 'kickParticipant'])->name('twilio.kick');
+    Route::get('/twilio/logs', [TwilioVideoController::class, 'logs'])->name('twilio.logs');
+    Route::post('/twilio/mark-started', [TwilioVideoController::class, 'markStarted'])->name('twilio.markStarted');
+    Route::post('/twilio/complete', [TwilioVideoController::class, 'completeRoom'])->name('twilio.complete');
+});
+
 
 Route::middleware([
     'auth:sanctum',
@@ -55,6 +68,8 @@ Route::middleware([
 ])->group(function () {
 
     Route::post('auth/user-password-update', [CustomLoginController::class, 'userPasswordUpdate'])->name('auth.user-password-update');
+    Route::get('call-user/{type?}', [TwilioVideoController::class, 'viewPage'])->name('employer.call-user');
+
 
     Route::prefix('employer')->as('employer.')->middleware('isEmployer')->group(function (){
         Route::get('home', [EmployerViewController::class, 'employerHome'])->name('home');

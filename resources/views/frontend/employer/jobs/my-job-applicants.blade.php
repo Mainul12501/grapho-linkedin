@@ -91,7 +91,7 @@
                                                 <img src="{{ asset('/') }}frontend/employer/images/employersHome/three dot.png" alt="More options" style="width: 20px; height: 20px;" />
                                             </button>
                                             <ul class="dropdown-menu dropdown-menu-end">
-                                                <li><a class="dropdown-item" href="#">Send message</a></li>
+                                                <li><a class="dropdown-item" href="{{ route('user', $pendingApplicant?->user?->id) }}" target="_blank">Send message</a></li>
 {{--                                                <li><a class="dropdown-item text-danger" href="#">Remove</a></li>--}}
                                             </ul>
                                         </div>
@@ -184,7 +184,7 @@
                                                 <img src="{{ asset('/') }}frontend/employer/images/employersHome/three dot.png" alt="More options" style="width: 20px; height: 20px;" />
                                             </button>
                                             <ul class="dropdown-menu dropdown-menu-end">
-                                                <li><a class="dropdown-item" href="#">Send message</a></li>
+                                                <li><a class="dropdown-item" href="{{ route('user', $shortListedApplicant?->user?->id) }}">Send message</a></li>
 {{--                                                <li><a class="dropdown-item text-danger" href="#">Remove</a></li>--}}
                                             </ul>
                                         </div>

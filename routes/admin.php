@@ -21,6 +21,7 @@ use App\Http\Controllers\Backend\Employer\EmployerCompanyCategoryController;
 use App\Http\Controllers\Backend\SiteControllers\AdvertisementController;
 use App\Http\Controllers\Backend\SiteControllers\SiteSettingsController;
 use App\Http\Controllers\Backend\SiteControllers\SubscriptionController;
+use App\Http\Controllers\Backend\SiteControllers\CommonPageController;
 
 
 Route::middleware([
@@ -42,6 +43,7 @@ Route::middleware([
         'permissions' => PermissionController::class,
         'roles' => RoleController::class,
         'users' => UserController::class,
+        'common-pages' => CommonPageController::class,
 
         'education-degree-names' => EducationDegreeNameController::class,
         'field-of-studies' => FieldOfStudyController::class,
