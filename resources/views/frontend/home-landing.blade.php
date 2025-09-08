@@ -13,6 +13,37 @@
     <link rel="stylesheet" href="{{ asset('/') }}common-assets/css/helper.min.css" />
     <link rel="stylesheet" href="{{ asset('/') }}frontend/auth/loginStyle.css">
     <link rel="stylesheet" href="{{ asset('/') }}frontend/home-landing/style.css">
+
+    <!-- Geist Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Mulish:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
+    <style>
+        @media only screen and (max-width: 600px) {
+            .signupCard {
+                width: 100% !important;
+            }
+            .userSelectOption {
+                padding: 10px !important;
+            }
+            .userSelectOptionIcon {
+                width: 30px !important;
+            }
+
+        }
+        p span {
+            font-family: "Mulish", sans-serif;
+            font-optical-sizing: auto;
+            font-weight: 400;
+            font-style: normal;
+        }
+        h1 h2 h3 h4 h5 h6 {
+            font-family: "Mulish", sans-serif;
+            font-optical-sizing: auto;
+            font-weight: 600;
+            font-style: normal;
+        }
+    </style>
 </head>
 
 <body>
@@ -26,10 +57,10 @@
     <div class="offcanvas-body d-flex flex-column justify-content-between">
         <ul class="navbar-nav mb-3">
 {{--            <li class="nav-item"><a class="nav-link custom-hover" href="#">Community</a></li>--}}
-            <li class="nav-item"><a class="nav-link custom-hover" href="#">Jobs</a></li>
-            <li class="nav-item"><a class="nav-link custom-hover" href="#">Companies</a></li>
-            <li class="nav-item"><a class="nav-link custom-hover" href="#">Salaries</a></li>
-            <li class="nav-item"><a class="nav-link custom-hover" href="#">For Employers</a></li>
+{{--            <li class="nav-item"><a class="nav-link custom-hover" href="#">Jobs</a></li>--}}
+            <li class="nav-item"><a class="nav-link custom-hover" href="{{ route('auth.set-login-role') }}">Companies</a></li>
+{{--            <li class="nav-item"><a class="nav-link custom-hover" href="#">Salaries</a></li>--}}
+            <li class="nav-item"><a class="nav-link custom-hover" href="{{ route('auth.set-login-role') }}">For Employers</a></li>
         </ul>
 
         <!-- Notification Icon & Sign In in offcanvas -->
@@ -70,9 +101,9 @@
         <!-- Mobile notification bell and hamburger grouped -->
         <div class="d-flex align-items-center gap-2 d-lg-none">
             <!-- Notification Bell -->
-            <button class="btn btn-link p-0">
-                <img src="{{ asset('/') }}frontend/home-landing/images/notificationbell.png" alt="Notifications" width="30px">
-            </button>
+{{--            <button class="btn btn-link p-0">--}}
+{{--                <img src="{{ asset('/') }}frontend/home-landing/images/notificationbell.png" alt="Notifications" width="30px">--}}
+{{--            </button>--}}
             <!-- Hamburger -->
             <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
                 <span class="navbar-toggler-icon"></span>
@@ -92,9 +123,9 @@
 
         <!-- Notification Icon & Sign In (hidden on mobile) -->
         <div class="d-flex align-items-center gap-3 d-none d-lg-flex">
-            <button class="btn btn-link p-0">
-                <img src="{{ asset('/') }}frontend/home-landing/images/notificationbell.png" alt="Notifications" width="30px">
-            </button>
+{{--            <button class="btn btn-link p-0">--}}
+{{--                <img src="{{ asset('/') }}frontend/home-landing/images/notificationbell.png" alt="Notifications" width="30px">--}}
+{{--            </button>--}}
             @if(auth()->check())
                 <a href="#" onclick="event.preventDefault(); document.getElementsByClassName('logoutForm')[0].submit()" class="btn btn-dark d-flex align-items-center gap-2 px-3 py-2 rounded-3">
                     {{--                    <img src="{{ asset('/') }}frontend/home-landing/images/signin.png" alt="Login" width="20px">--}}
@@ -333,12 +364,15 @@
 
 <!-- Modal -->
 <div class="modal fade " id="googleUserTypeSelect">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content bg-transparent border-0">
             <div class="modal-body ">
                 <div class="">
                     <div class="card shadow signupCard">
-                        <a href="{{ route('/') }}"><img src="{{ asset('frontend/employee/images/authentication images/Compnay logo.png') }}" alt="" class="signupLogo w-25"></a>
+                        <div class="card-header bg-transparent position-relative">
+                            <a href="{{ route('/') }}"><img src="{{ asset('frontend/employee/images/authentication images/Compnay logo.png') }}" alt="" class="signupLogo w-25"></a>
+                            <button type="button" class="btn position-absolute btn-close" style="right: 5px" data-bs-dismiss="modal"></button>
+                        </div>
 
 
                         <div class="userCard">

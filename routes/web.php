@@ -39,7 +39,10 @@ Route::prefix('auth')->name('auth.')->group(function (){
     Route::post('custom-registration', [CustomLoginController::class, 'customRegistration'])->name('custom-registration');
     Route::post('custom-login', [CustomLoginController::class, 'customLogin'])->name('custom-login');
 
-
+    Route::get('forgot-password-page', [CustomLoginController::class, 'forgotPasswordPage'])->name('forgot-password-page');
+    Route::post('send-forgot-password-otp', [CustomLoginController::class, 'sendForgotPasswordOtp'])->name('send-forgot-password-otp');
+    Route::post('verify-forgot-password-otp', [CustomLoginController::class, 'verifyForgotPasswordOtp'])->name('verify-forgot-password-otp');
+    Route::post('reset-password', [CustomLoginController::class, 'resetPassword'])->name('reset-password');
 });
 
 Route::post('sslcommerz/success',[SSLCommerzController::class, 'paymentSuccess'])->name('payment.success');

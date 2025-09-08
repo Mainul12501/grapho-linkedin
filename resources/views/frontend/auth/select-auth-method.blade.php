@@ -18,6 +18,30 @@
 
     <!-- Custom CSS (Login Style) -->
     <link rel="stylesheet" href="{{ asset('/') }}frontend/auth/loginStyle.css">
+
+    <!-- Geist Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Mulish:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
+    <style>
+        p span {
+            font-family: "Mulish", sans-serif;
+            font-optical-sizing: auto;
+            font-weight: 400;
+            font-style: normal;
+        }
+        h1 h2 h3 h4 h5 h6 {
+            font-family: "Mulish", sans-serif;
+            font-optical-sizing: auto;
+            font-weight: 600;
+            font-style: normal;
+        }
+        @media only screen and (max-width: 600px) {
+            .loginCard {
+                overflow-y: scroll;
+            }
+        }
+    </style>
 </head>
 
 <body class="bodyAuthentication">
@@ -25,7 +49,7 @@
 <!-- Card Container -->
 <div class="card loginCard">
     <!-- Company Logo -->
-    <img src="{{ asset('/') }}frontend/employee/images/authentication images/Compnay logo.png" alt="Company Logo">
+    <img src="{{ asset(isset($siteSetting->logo) ? $siteSetting->logo : '/frontend/employee/images/authentication images/Compnay logo.png') }}" alt="Company Logo" style="height: 41px; width: 166px">
 
     <!-- Call to Action -->
     <p>Hiring or looking for opportunities?</p>

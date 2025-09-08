@@ -170,27 +170,12 @@
 /* ................... */
 /*       signUp as employer   */
 /* ................... */
-/* Replace/extend your existing .signUpCard rules */
-.signUpCard , .signupCard{
-  width: 520px;
+
+.signUpCard{
+  width: 520px ;
   padding: 30px;
   border-radius: 20px;
-
-  /* NEW: fixed height + vertical scroll */
-  height: 600px;                 /* adjust as needed */
-  overflow-y: auto;
-
-  /* Hide scrollbar visually (keeps scrolling) */
-  -ms-overflow-style: none;      /* IE/Edge legacy */
-  scrollbar-width: none;         /* Firefox */
-  -webkit-overflow-scrolling: touch; /* smooth on iOS */
 }
-.signUpCard::-webkit-scrollbar{
-  width: 0;
-  height: 0;
-}
-
-
 .signupArrow span{
   font-weight: 600;
   font-size: 20px;

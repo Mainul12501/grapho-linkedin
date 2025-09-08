@@ -29,10 +29,10 @@ class SocialLoginController extends Controller
         // dd($user);
         if ($existingUser) {
             Auth::login($existingUser);
-            if ($existingUser->roles[0] == 3)
+            if ($existingUser->roles[0]->id == 3)
             {
                 return redirect()->route('employee.home')->with('success', 'Your registration completed successfully.');
-            } elseif ($existingUser->roles[0] == 4)
+            } elseif ($existingUser->roles[0]->id == 4)
             {
                 return redirect()->route('employer.home')->with('success', 'Your registration completed successfully.');
             }

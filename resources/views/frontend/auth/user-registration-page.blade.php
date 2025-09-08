@@ -36,24 +36,24 @@
     </a>
 
     <div class="p-2">
-        <a href="{{ route('auth.socialite.redirect', ['provider' => 'google', 'user' => $userType]) }}" class="signupBtn mb-3">
-            <img src="{{ asset('/') }}frontend/employee/images/authentication images/googleIcon.png" alt="" class="me-2">
+        <a href="{{ route('auth.socialite.redirect', ['provider' => 'google', 'user' => $userType]) }}" class="signupBtn mb-3 hide-during-form">
+            <img src="{{ asset('/') }}frontend/employee/images/authentication images/googleIcon.png" alt="google icon" class="me-2">
             <span>Sign up with Google</span>
         </a>
 
-{{--        <a href="javascript:void(0)" class="signupBtn" id="signUpWithMobileBtn">--}}
-{{--            <img src="{{ asset('/') }}frontend/employee/images/authentication images/smartphone 1.png" alt="" class="me-2">--}}
-{{--            <span>Use mobile number</span>--}}
-{{--        </a>--}}
+        <a href="javascript:void(0)" class="signupBtn hide-during-form" id="signUpWithMobileBtn">
+            <img src="{{ asset('/') }}frontend/employee/images/authentication images/smartphone 1.png" alt="phone" class="me-2">
+            <span>Use mobile number</span>
+        </a>
 
-        <div class="signUpOr text-center pt-2">
+        <div class="signUpOr text-center pt-2 hide-during-form">
             <span>OR</span>
         </div>
 
         <form action="{{ route('auth.custom-registration') }}" method="post">
             @csrf
             <input type="hidden" name="user_type" id="userType" value="{{ $userType ?? 'Employee' }}">
-            <input type="hidden" name="reg_method" value="email">
+            <input type="hidden" name="reg_method" value="email" id="reg_method">
             <div id="signUpEmailDiv1">
                 <label for="signUpMail">Email address</label>
                 <div>
@@ -63,19 +63,38 @@
 
                 <a href="javascript:void(0)"><button type="button" id="emailContinueBtn">Continue</button></a>
             </div>
-            <div id="signUpEmailDiv2" class="d-none">
+            <div id="signUpMobileDiv1" class="d-none">
+                <label for="signUpMail">Phone Number</label>
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control py-3 signUpMail" name="phone" placeholder="Recipient’s Phone Number" id="phoneNumber">
+                    <span class="input-group-text" id="sendOtpBtn" style="cursor: pointer">Send OTP</span>
+                </div>
+                <div id="otpDiv" class="d-none">
+                    <label for="signUpOtp">OTP</label>
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control py-3 signUpMail" name="otp" placeholder="OTP Number" id="otp">
+                        <span class="input-group-text" id="checkOtpBtn" style="cursor: pointer">Verify</span>
+                    </div>
+                </div>
+                <div id="phoneContinueBtnDiv" class="d-none">
+                    <a href="javascript:void(0)"><button type="button" id="phoneContinueBtn">Continue</button></a>
+                </div>
+            </div>
+            <div id="signUpEmailDiv2" class="d-none"  style="overflow-y: scroll; max-height: 400px">
                 <div class="p-2">
 
                     <label for="signUpMail">Email address</label>
                     <div>
-                        <input type="email" id="signUpMail" name="email" value="shetu@xyz.com" class="printSignUpMail w-100">
+                        <input type="email" id="signUpMail" name="email" value="" class="printSignUpMail w-100">
                     </div>
 
-                    <label for="fullname">{{ isset($_GET['user']) && $_GET['user'] == 'Employer' ? 'Company Name' : 'Full name' }}</label>
-                    <div>
-                        <input type="text" id="fullname" name="name" placeholder="Type here" class="w-100">
-                        @error('name') <span class="text-danger">{{ $errors->first('name') }}</span> @enderror
-                    </div>
+{{--                    @if(isset($_GET['user']) && $_GET['user'] == 'Employer')--}}
+{{--                        <label for="fullname">{{ isset($_GET['user']) && $_GET['user'] == 'Employer' ? 'Company Name' : 'User name' }}</label>--}}
+{{--                        <div>--}}
+{{--                            <input type="text" id="fullname" name="name" placeholder="Type here" class="w-100">--}}
+{{--                            @error('name') <span class="text-danger">{{ $errors->first('name') }}</span> @enderror--}}
+{{--                        </div>--}}
+{{--                    @endif--}}
 
 
                     <label for="phoneInput">Phone number</label>
@@ -96,7 +115,7 @@
                     @if($userType == 'Employer')
                         <label for="organizationName">Industry</label>
                         <div>
-                            <select name="industry_id" class="w-100 form-control select2" id="" data-placeholder="Select Industry">
+                            <select name="industry_id" class=" form-control select2" id="" data-placeholder="Select Industry">
 {{--                                <option selected disabled >Hi</option>--}}
                                 @foreach($industries as $industry)
                                     <option value="{{ $industry->id }}">{{ $industry->name ?? 'Industry Name' }}</option>
@@ -106,7 +125,7 @@
                         </div>
                         <label for="organizationName" class="mt-3">Organization Category</label>
                         <div>
-                            <select name="employer_company_category_id" class="w-100 form-control select2" id="" data-placeholder="Select Company Category">
+                            <select name="employer_company_category_id" class=" form-control select2" id="" data-placeholder="Select Company Category">
 {{--                                <option selected disabled >Hi</option>--}}
                                 @foreach($companyCategories as $companyCategory)
                                     <option value="{{ $companyCategory->id }}">{{ $companyCategory->category_name ?? 'Company Category Name' }}</option>
@@ -137,18 +156,18 @@
                         </div>
                     @endif
 
-                    @if(isset($_GET['user']) && $_GET['user'] != 'Employer')
-                        <label for="organizationName">Gender</label>
-                        <div>
-                            <select name="gender" class="w-100 form-control select2" id="" data-placeholder="Select Industry">
-                                {{--                                <option selected disabled >Hi</option>--}}
-                                <option value="male">Male</option>
-                                <option value="female">Female</option>
-                                <option value="other">Other</option>
-                            </select>
-                            @error('industry_id') <span class="text-danger">{{ $errors->first('industry_id') }}</span> @enderror
-                        </div>
-                    @endif
+{{--                    @if(isset($_GET['user']) && $_GET['user'] != 'Employer')--}}
+{{--                        <label for="organizationName">Gender</label>--}}
+{{--                        <div>--}}
+{{--                            <select name="gender" class="w-100 form-control select2" id="" data-placeholder="Select Industry">--}}
+{{--                                --}}{{--                                <option selected disabled >Hi</option>--}}
+{{--                                <option value="male">Male</option>--}}
+{{--                                <option value="female">Female</option>--}}
+{{--                                <option value="other">Other</option>--}}
+{{--                            </select>--}}
+{{--                            @error('industry_id') <span class="text-danger">{{ $errors->first('industry_id') }}</span> @enderror--}}
+{{--                        </div>--}}
+{{--                    @endif--}}
 
 
                     <label for="supPassword">Password</label>
@@ -171,7 +190,7 @@
     </div>
 
     <div class="mt-4">
-        <span class="">Already have an account? <a href="login.html" class="fw-bold text-dark text-decoration-none">Log in</a></span>
+        <span class="">Already have an account? <a href="{{ route('auth.set-login-role') }}" class="fw-bold text-dark text-decoration-none">Log in</a></span>
     </div>
 
 
@@ -199,7 +218,11 @@
 </style>
 <script>
     $(document).ready(function() {
-        $('.select2').select2();
+        $('.select2').select2({
+            width: "100%",
+            dropdownParent: $('.signUpCard') // Ensure the dropdown is within the card
+            // theme: "bootstrap-5",
+        });
     });
 </script>
 
@@ -214,14 +237,72 @@
         }
         $('.printSignUpMail').val(signUpMail);
         $('#signUpEmailDiv1').addClass('d-none');
+        $('.hide-during-form').addClass('d-none');
         $('#signUpEmailDiv2').removeClass('d-none');
     })
+    // $(document).on('click', '#signUpWithMobileBtn', function () {
+    //     $('#signUpEmailDiv1').addClass('d-none');
+    //     $('#signUpEmailDiv2').removeClass('d-none');
+    // })
+    var serverOtp = 0;
+    $(document).on('click', '#sendOtpBtn', function () {
+        $.ajax({
+            url: '{{ route('send-otp') }}',
+            type: 'POST',
+            data: {
+                _token: '{{ csrf_token() }}',
+                mobile: $('#phoneNumber').val()
+            },
+            success: function (response) {
+                if (response.status == 'success')
+                {
+                    serverOtp = response.otp;
+                    $('#otpDiv').removeClass('d-none');
+                    toastr.success(response.msg);
+                } else {
+                    toastr.error(response.msg);
+                }
+            },
+            error: function (xhr) {
+                toastr.error('An error occurred while sending the OTP.');
+            }
+        })
+    })
+    $(document).on('click', '#checkOtpBtn', function () {
+        var enteredOtp = $('#otp').val();
+        console.log( serverOtp);
+        if (enteredOtp == serverOtp) {
+            toastr.success('OTP verified successfully!');
+            $('#phoneContinueBtnDiv').removeClass('d-none');
+        } else {
+            toastr.error('Invalid OTP. Please try again.');
+        }
+    });
     $(document).on('click', '#signUpWithMobileBtn', function () {
         $('#signUpEmailDiv1').addClass('d-none');
+        $('.hide-during-form').addClass('d-none');
+        $('#signUpMobileDiv1').removeClass('d-none');
+        $('#reg_method').val('mobile');
+    })
+
+    $(document).on('click', '#phoneContinueBtn', function () {
+        var signUpMobile = $('#phoneNumber').val();
+        if (signUpMobile == '') {
+            $('#signUpMailError').text('Please input Phone Number before processing.');
+            return false;
+        }
+        $('#phoneInput').val(signUpMobile);
+        $('#signUpMobileDiv1').addClass('d-none');
+        $('.hide-during-form').addClass('d-none');
         $('#signUpEmailDiv2').removeClass('d-none');
     })
 </script>
 {!! $siteSetting->meta_footer ?? '' !!}
+<style>
+    .select2-container {
+        width: 100% !important;
+    }
+</style>
 </body>
 
 </html>

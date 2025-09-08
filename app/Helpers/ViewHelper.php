@@ -95,7 +95,7 @@ class ViewHelper
 
     public static function returEexceptionError ($message = null)
     {
-        if (str()->contains(url()->current(), '/api/'))
+        if (str()->contains(url()->current(), '/api/') || \request()->ajax())
         {
             return response()->json(['error' => $message, 'status' => 'error'], 400);
         } else {

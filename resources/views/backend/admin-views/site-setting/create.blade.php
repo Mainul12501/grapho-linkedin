@@ -67,11 +67,11 @@
 
                         <div class="mt-2">
                             <label for="">SEO Meta Header</label>
-                            <textarea name="meta_header" {{ isset($isShown) ? 'disabled' : '' }} class="form-control summernote" id="elm1" cols="30" rows="2">{!! isset($basicSetting) ? $basicSetting->meta_header : '' !!}</textarea>
+                            <textarea name="meta_header" {{ isset($isShown) ? 'disabled' : '' }} class="form-control" id="elm1" cols="30" rows="2">{!! isset($basicSetting) ? $basicSetting->meta_header : '' !!}</textarea>
                         </div>
                         <div class="mt-2">
                             <label for="">SEO Meta Footer</label>
-                            <textarea name="meta_footer" {{ isset($isShown) ? 'disabled' : '' }} class="form-control summernote" id="elm1" cols="30" rows="2">{!! isset($basicSetting) ? $basicSetting->meta_footer : '' !!}</textarea>
+                            <textarea name="meta_footer" {{ isset($isShown) ? 'disabled' : '' }} class="form-control" id="elm1" cols="30" rows="2">{!! isset($basicSetting) ? $basicSetting->meta_footer : '' !!}</textarea>
                         </div>
                         <div class="row mt-2">
                             <div class="col-md-6 mt-2">

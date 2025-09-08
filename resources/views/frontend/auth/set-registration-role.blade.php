@@ -25,7 +25,7 @@
 
 <!-- Card Container -->
 <div class="card shadow signupCard">
-    <a href="login.html"><img  src="{{ asset('/') }}frontend/employee/images/authentication images/Compnay logo.png" alt="" class="signupLogo w-25"></a>
+    <a href="{{ route('/') }}"><img  src="{{ asset(isset($siteSetting->logo) ? $siteSetting->logo : '/frontend/employee/images/authentication images/Compnay logo.png') }}" alt="site-logo" style="width: 115px; height: 28px" class="signupLogo w-25"></a>
     <h4>Sign up today</h4>
     <p>Hiring talents for your company? or Looking for opportunities?</p>
 
@@ -63,7 +63,7 @@
             </a>
         </div>
         <div class="mt-4">
-            <span class="">Already have an account? <a href="login.html" class="fw-bold text-dark text-decoration-none">Log in</a></span>
+            <span class="">Already have an account? <a href="{{ route('auth.set-registration-role') }}" class="fw-bold text-dark text-decoration-none">Log in</a></span>
         </div>
 
     </div>

@@ -10,7 +10,8 @@
     {!! $siteSetting->meta_header ?? '' !!}
 
     <!-- Favicon -->
-    <link rel="icon" href="images/Logo icon.png" type="image/x-icon">
+{{--    <link rel="icon" href="http://127.0.0.1:8000/frontend/employee/images/Logo icon.png" type="image/x-icon">--}}
+    <link rel="icon" href="{{ asset($siteSetting->favicon) }}" type="image/x-icon">
 
     <!-- Google Font: Geist -->
     <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -21,6 +22,26 @@
 
     <!-- Custom CSS (Login Style) -->
     <link rel="stylesheet" href="{{ asset('/') }}frontend/auth/loginStyle.css" />
+
+    <!-- Geist Font -->
+{{--    <link rel="preconnect" href="https://fonts.googleapis.com">--}}
+{{--    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>--}}
+{{--    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Mulish:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">--}}
+    <style>
+        p span {
+            font-family: "Geist", sans-serif;
+            font-optical-sizing: auto;
+            font-weight: 400;
+            font-style: normal;
+        }
+        h1 h2 h3 h4 h5 h6 {
+            font-family: "Geist", sans-serif;
+            font-optical-sizing: auto;
+            font-weight: 600;
+            font-style: normal;
+        }
+
+    </style>
 </head>
 
 <body class="bodyAuthentication">
@@ -29,7 +50,7 @@
 <div class="card shadow signUpCard loginMain">
 
     <a href="{{ route('/') }}" class="signupArrow text-decoration-none mb-4">
-        <img src="{{ asset('/') }}frontend/employee/images/authentication images/Compnay logo.png" alt="" class="w-25">
+        <img src="{{ asset(isset($siteSetting->logo) ? $siteSetting->logo : '/frontend/employee/images/authentication images/Compnay logo.png') }}" alt="site logo" class="w-25" style="width: 115px; height: 28px">
     </a>
 
     <h1>Log in to your account</h1>
@@ -73,9 +94,9 @@
                             <input type="checkbox" name="remember_me" class="me-2">
                             <span>Remember me</span>
                         </div>
-{{--                        <div class="col-6 d-flex align-items-center justify-content-end ">--}}
-{{--                            <a href="" class="text-decoration-none"><span>Remember me</span></a>--}}
-{{--                        </div>--}}
+                        <div class="col-6 d-flex align-items-center justify-content-end ">
+                            <a href="{{ route('auth.forgot-password-page') }}" class="text-decoration-none"><span>Forgot Password?</span></a>
+                        </div>
                     </div>
                 </div>
 
@@ -143,7 +164,7 @@
     </div>
 
     <div class="mt-4">
-        <span class="">Don't have an account? <a href="login.html" class="fw-bold text-dark text-decoration-none">Sign Up</a></span>
+        <span class="">Don't have an account? <a href="{{ route('auth.set-registration-role') }}" class="fw-bold text-dark text-decoration-none">Sign Up</a></span>
     </div>
 
 
@@ -163,6 +184,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 <script src="{{ asset('/') }}frontend/employee/script.js"></script>
+{!! Toastr::message() !!}
 <script>
     $.ajaxSetup({
         headers: {
