@@ -4,10 +4,16 @@ namespace App\Http\Controllers\Auth;
 
 use App\Helpers\ViewHelper;
 use App\Http\Controllers\Controller;
+use App\Models\Backend\EducationDegreeName;
+use App\Models\Backend\EmployeeDocument;
+use App\Models\Backend\EmployeeEducation;
+use App\Models\Backend\EmployeeWorkExperience;
 use App\Models\Backend\EmployerCompany;
 use App\Models\Backend\EmployerCompanyCategory;
+use App\Models\Backend\FieldOfStudy;
 use App\Models\Backend\Industry;
 use App\Models\Backend\SiteSetting;
+use App\Models\Backend\UniversityName;
 use App\Models\User;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Http\Request;
@@ -33,8 +39,8 @@ class CustomLoginController extends Controller
     {
         $data = [
             'userType' => $request->user,
-            'industries'    => Industry::where('status', 1)->get(['id', 'name']),
-            'companyCategories'    => EmployerCompanyCategory::where('status', 1)->get(['id', 'category_name']),
+//            'industries'    => Industry::where('status', 1)->get(['id', 'name']),
+//            'companyCategories'    => EmployerCompanyCategory::where('status', 1)->get(['id', 'category_name']),
         ];
         return ViewHelper::checkViewForApi($data, 'frontend.auth.user-registration-page');
         return view('frontend.auth.user-registration-page', [
@@ -172,16 +178,35 @@ class CustomLoginController extends Controller
         {
             return ViewHelper::returEexceptionError('Please select a role');
         }
-
         $validator = Validator::make($request->all(), [
-//            'name'  => 'required',
-            'mobile'    => 'unique:users,mobile',
-            'email'    => 'unique:users,email',
-            'password'    => 'required|min:6',
-            'industry_id'   => $request->user_type == 'employer' ? 'required' : '',
-            'employer_company_category_id'   => $request->user_type == 'employer' ? 'required' : '',
-            'organization_name'   => $request->user_type == 'employer' ? 'required' : '',
+            'mobile' => $request->reg_method === 'mobile'
+                ? 'required|unique:users,mobile'
+                : 'nullable|unique:users,mobile',
+
+            'email' => $request->reg_method === 'email'
+                ? 'required|unique:users,email'
+                : 'nullable|unique:users,email',
+
+            'password'  => 'required|min:6',
+
+            'organization_name'   => $request->user_type === 'Employer' ? 'required' : '',
+            'bin_number'          => $request->user_type === 'Employer' ? 'required' : '',
+            'trade_license_number'=> $request->user_type === 'Employer' ? 'required' : '',
+        ], [
+            'mobile.required' => 'Mobile number is required when registering with mobile.',
+            'mobile.unique'   => 'This mobile number is already registered.',
+
+            'email.required'  => 'Email is required when registering with email.',
+            'email.unique'    => 'This email address is already registered.',
+
+            'password.required' => 'Password is required.',
+            'password.min'      => 'Password must be at least 6 characters.',
+
+            'organization_name.required' => 'Organization name is required for employers.',
+            'bin_number.required'        => 'BIN number is required for employers.',
+            'trade_license_number.required' => 'Trade License Number is required for employers.',
         ]);
+
         if ($validator->fails()) {
             return ViewHelper::returEexceptionError($validator->errors());
         }
@@ -207,8 +232,8 @@ class CustomLoginController extends Controller
             {
                 $company = new EmployerCompany();
                 $company->user_id   = $user->id;
-                $company->industry_id   = $request->industry_id;
-                $company->employer_company_category_id   = $request->employer_company_category_id;
+//                $company->industry_id   = $request->industry_id;
+//                $company->employer_company_category_id   = $request->employer_company_category_id;
                 $company->name  = $request->organization_name;
                 $company->bin_number = $request->bin_number;
                 $company->trade_license_number = $request->trade_license_number;
@@ -220,6 +245,7 @@ class CustomLoginController extends Controller
             if (isset($user))
             {
                 Auth::login($user);
+                return $this->redirectsAfterLogin($user);
                 if (str()->contains(url()->current(), '/api/')) {
                     return response()->json(['user' => $user, 'auth_token' => $user->createToken('auth_token')->plainTextToken]);
                 } else {
@@ -250,7 +276,16 @@ class CustomLoginController extends Controller
 
     public function customLogin(Request $request)
     {
-
+        $validator = Validator::make($request->all(), [
+            'login_method'   => 'required',
+            'email'    => $request->login_method == 'email' ? 'required|email' : '',
+            'password'    => $request->login_method == 'email' ? 'required|min:6' : '',
+            'mobile'    => $request->login_method == 'mobile' ? 'required' : '',
+            'user_otp'  => $request->login_method == 'mobile' ? 'required' : '',
+        ]);
+        if ($validator->fails()) {
+            return ViewHelper::returEexceptionError($validator->errors());
+        }
         if ($request->login_method == 'email')
         {
             if (auth()->attempt($request->only(['email', 'password']), $request->remember_me))
@@ -291,6 +326,11 @@ class CustomLoginController extends Controller
                     'status'    => 200
                 ]);
             } else {
+                if ($user->is_profile_updated == 0)
+                {
+                    Toastr::success('You are successfully logged in. Please complete your profile.');
+                    return redirect()->route('auth.user-profile-update')->with('success', 'You are successfully logged in. Please complete your profile.');
+                }
                 if ($user->roles[0]->id == 3)
                 {
                     return redirect()->route('employee.home')->with('success', 'You are successfully logged in.');
@@ -306,10 +346,51 @@ class CustomLoginController extends Controller
         }
     }
 
+    public function userProfileUpdate(Request $request)
+    {
+        $loggedUser = ViewHelper::loggedUser();
+        if ($loggedUser->is_profile_updated == 1)
+        {
+            Toastr::error('you already updated your profile');
+            return  redirect('/');
+        }
+        $data = [];
+        if ($loggedUser->user_type == 'employee')
+        {
+            $data = [
+                'workExperiences'    => EmployeeWorkExperience::where(['user_id' => auth()->id(), 'status' => 1])->get(), // stringp tags for api
+                'employeeEducations'    => EmployeeEducation::where(['user_id' => auth()->id(), 'status' => 1])->get(),
+                'employeeDocuments'    => EmployeeDocument::where(['user_id' => auth()->id(), 'status' => 1])->get(),
+                'loggedUser'   => $loggedUser,
+                'educationDegreeNames'   => EducationDegreeName::where(['status' => 1])->get(['id', 'degree_name']),
+                'universityNames'   => UniversityName::where(['status' => 1])->get(['id', 'name']),
+                'fieldOfStudies'   => FieldOfStudy::where(['status' => 1])->get(['id', 'field_name']),
+            ];
+        } elseif ($loggedUser->user_type == 'employer')
+        {
+            $data = [
+                'loggedUser'    =>  $loggedUser,
+                'companyDetails'    => EmployerCompany::where(['user_id' => ViewHelper::loggedUser()->id])->first(),
+                'industries'    => Industry::where(['status' => 1])->get(['id', 'name']),
+                'employerCompanyCategories'    => EmployerCompanyCategory::where(['status' => 1])->get(['id', 'category_name']),
+            ];
+        }
+        return ViewHelper::checkViewForApi($data, 'frontend.auth.user-profile-update');
+        return view('frontend.auth.user-profile-update', $data);
+    }
+
     public function sendOtp(Request $request)
     {
         if (isset($request->mobile))
         {
+            if (isset($request->req_from) && $request->req_from == 'login')
+            {
+                $user = User::where(['mobile' => $request->mobile])->first();
+                if (!$user)
+                {
+                    return response()->json(['status' => 'error', 'msg' => 'User not found. Please try again.']);
+                }
+            }
             $otp = ViewHelper::generateOtp($request->mobile);
 //            ViewHelper::sendSms($request->mobile, "Your Grapho OTP is $otp.");
             return response()->json(['status'=> 'success', 'msg' => "An OTP has sent to your number.", ]);

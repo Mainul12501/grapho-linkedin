@@ -84,7 +84,10 @@
                 <label for="supPassword">Password</label>
                 <div class="input-wrapper">
                     <input type="password" name="password" id="supPassword" placeholder="Type here" class="w-100">
-{{--                    <span class="toggle-icon"><img src="{{ asset('/') }}frontend/employee/images/authentication images/eye.png" alt=""></span> <!-- 👁 (eye icon as Unicode for now) -->--}}
+                    <span class="toggle-icon">
+                        <img id="show" class="" src="{{ asset('/') }}frontend/employee/images/authentication images/eye.png" alt="">
+                        <span id="hide" class="d-none">👁</span>
+                    </span> <!-- 👁 (eye icon as Unicode for now) -->
                 </div>
 
 
@@ -117,7 +120,7 @@
             <div class="beforeContinue">
                 <div class="loginbyMobile text-center mb-4 mt-3">
                     <img src="{{ asset('/') }}frontend/employee/images/authentication images/loginwithmobile.png" alt="">
-                    <h3>Enter you mobile number</h3>
+                    <h3>Enter your mobile number</h3>
                     <p>We will send you a verification code in this number.</p>
                 </div>
 
@@ -145,7 +148,7 @@
                     <img src="{{ asset('/') }}frontend/employee/images/authentication images/loginwithmobile.png" alt="">
                     <h3>Enter verification code</h3>
                     <p class="mb-0">OTP has been sent to <span id="otpMobile">+8801653523779</span></p>
-                    <a href="" class="">Change number</a>
+                    <a href="" class="" id="changeNumber">Change number</a>
                 </div>
 
                 <div class="otp-container">
@@ -202,14 +205,23 @@
     $(document).on('click', '#continueBtn', function () {
         var mobile = $('#phoneInput').val();
         $('#otpMobile').text(mobile);
-        $('.signupArrow').addClass('signupArrowx').removeClass('signupArrow');
+        // $('.signupArrow').addClass('signupArrowx').removeClass('signupArrow');
         $.ajax({
             url: "{{ route('send-otp') }}",
             method: "POST",
-            data: {mobile: mobile},
+            data: {mobile: mobile, req_from: 'login'},
             success: function (response) {
+                if (response.status === 'error') {
+                    toastr.error(response.msg);
+                    return;
+                }
+                $('.signupArrow').addClass('signupArrowx').removeClass('signupArrow');
                 toastr.success(response.msg);
-                console.log(response.otp);
+
+                // ---- [BACKEND] Build payload here (no UI change) ----
+                // const payload = createSendOtpPayload();
+                $('.beforeContinue').css('display', 'none');
+                $('.afterContinue').css('display', 'block');
             }
         })
     })
@@ -217,6 +229,26 @@
         $('.signupArrowx').addClass('signupArrow').removeClass('signupArrowx');
         $('.afterContinue').addClass('d-none');
         $('.beforeContinue').css('display', 'block');
+    })
+    $(document).on('click', '#changeNumber', function () {
+        event.preventDefault();
+        $('.signupArrowx').addClass('signupArrow').removeClass('signupArrowx');
+        $('.email-div').addClass('d-none');
+        // $('.afterContinue').addClass('d-none');
+        $('.afterContinue').css('display', 'none');
+        $('.beforeContinue').css('display', 'block');
+    })
+    $(document).on('click', '#show', function () {
+        event.preventDefault();
+        $('#supPassword').attr('type', 'text');
+        $('#hide').removeClass('d-none');
+        $('#show').addClass('d-none');
+    })
+    $(document).on('click', '#hide', function () {
+        event.preventDefault();
+        $('#supPassword').attr('type', 'password');
+        $('#hide').addClass('d-none');
+        $('#show').removeClass('d-none');
     })
 </script>
 {!! $siteSetting->meta_footer ?? '' !!}

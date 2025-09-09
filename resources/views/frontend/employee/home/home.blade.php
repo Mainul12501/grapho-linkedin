@@ -17,16 +17,19 @@
                         {{ auth()->user()->profile_title ?? 'User Bio' }}
                     </p>
                     <div class="optionsInprofile">
-                        <div class="options">
+                        <div class="options  border rounded">
                             <a href="{{ route('employee.my-saved-jobs') }}" style="text-decoration: none">
                                 <div class="option-card">
-                                    <div class="icon bookmark">
-                                        <img src="{{ asset('/') }}frontend/employee/images/contentImages/bookmark-icon.png" alt="" />
+                                    <div class="d-flex align-items-center justify-content-center">
+                                        <div class="icon bookmark">
+                                            <img src="{{ asset('/') }}frontend/employee/images/contentImages/bookmark-icon.png" alt="" />
+                                        </div>
+                                        <div>
+                                            <div class="title">My saved jobs</div>
+                                            <div class="subtitle text-dark">{{ $totalSavedJobs }} saved</div>
+                                        </div>
                                     </div>
-                                    <div>
-                                        <div class="title">My saved jobs</div>
-                                        <div class="subtitle text-dark">{{ $totalSavedJobs }} saved</div>
-                                    </div>
+
                                     <div class="arrow">
                                         <img src="{{ asset('/') }}frontend/employee/images/contentImages/arrow-right 1.png" alt="" />
                                     </div>
@@ -35,13 +38,16 @@
 
                             <a href="{{ route('employee.my-applications') }}" style="text-decoration: none">
                                 <div class="option-card">
-                                    <div class="icon checkmark">
-                                        <img src="{{ asset('/') }}frontend/employee/images/contentImages/checkmark-icon.png" alt="" />
+                                    <div class="d-flex align-items-center justify-content-center">
+                                        <div class="icon checkmark">
+                                            <img src="{{ asset('/') }}frontend/employee/images/contentImages/checkmark-icon.png" alt="" />
+                                        </div>
+                                        <div>
+                                            <div class="title">My applications</div>
+                                            <div class="subtitle text-dark">{{ $totalAppliedApplications }} applications</div>
+                                        </div>
                                     </div>
-                                    <div>
-                                        <div class="title">My applications</div>
-                                        <div class="subtitle text-dark">{{ $totalAppliedApplications }} applications</div>
-                                    </div>
+
                                     <div class="arrow">
                                         <img src="{{ asset('/') }}frontend/employee/images/contentImages/arrow-right 1.png" alt="" />
                                     </div>
@@ -50,13 +56,16 @@
 
                             <a href="{{ route('employee.my-profile-viewers') }}" style="text-decoration: none">
                                 <div class="option-card">
-                                    <div class="icon eye">
-                                        <img src="{{ asset('/') }}frontend/employee/images/contentImages/eye-icon.png" alt="" />
+                                    <div class="d-flex align-items-center justify-content-center">
+                                        <div class="icon eye">
+                                            <img src="{{ asset('/') }}frontend/employee/images/contentImages/eye-icon.png" alt="" />
+                                        </div>
+                                        <div>
+                                            <div class="title">Profiler viewers</div>
+                                            <div class="subtitle text-dark">{{ $totalViewedEmployers }} viewers</div>
+                                        </div>
                                     </div>
-                                    <div>
-                                        <div class="title">Profiler viewers</div>
-                                        <div class="subtitle text-dark">{{ $totalViewedEmployers }} viewers</div>
-                                    </div>
+
                                     <div class="arrow">
                                         <img src="{{ asset('/') }}frontend/employee/images/contentImages/arrow-right 1.png" alt="" />
                                     </div>
@@ -423,6 +432,7 @@
             padding: 0px;
             margin: 0px 0px 0px 5px;
         }
+        .companyLogo {width: 65px}
     </style>
 @endpush
 

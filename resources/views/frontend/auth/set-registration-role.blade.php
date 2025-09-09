@@ -19,6 +19,14 @@
 
     <!-- Custom CSS (Login Style) -->
     <link rel="stylesheet" href="{{ asset('/') }}frontend/auth/loginStyle.css">
+    <style>
+        @media only screen and (max-width: 576px) {
+            .signupCard {
+                max-height: 550px;
+                overflow-y: scroll;
+            }
+        }
+    </style>
 </head>
 
 <body class="bodyAuthentication">
@@ -32,7 +40,7 @@
     <div class="userCard">
         <span class="">Sign up as-</span>
         <div>
-            <a href="{{ route('auth.user-registration-page', ['user' => 'Employer']) }}" class="userSelectOption mb-3">
+            <a href="{{ route('auth.user-registration-page', ['user' => 'Employer']) }}" class="userSelectOption mb-3 mt-3">
                 <div class="row d-flex align-items-center w-100">
                     <div class="col-2  iconWrapper">
                         <img src="{{ asset('/') }}frontend/employee/images/authentication images/employeeIcon.png" alt="" class="userSelectOptionIcon">
@@ -63,7 +71,7 @@
             </a>
         </div>
         <div class="mt-4">
-            <span class="">Already have an account? <a href="{{ route('auth.set-registration-role') }}" class="fw-bold text-dark text-decoration-none">Log in</a></span>
+            <span class="">Already have an account? <a href="{{ route('auth.set-login-role') }}" class="fw-bold text-dark text-decoration-none">Log in</a></span>
         </div>
 
     </div>

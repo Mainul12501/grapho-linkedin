@@ -27,8 +27,10 @@ class SocialLoginController extends Controller
 
         $existingUser = User::where('email', $user->email)->first();
         // dd($user);
+        $customLoginController = new CustomLoginController();
         if ($existingUser) {
             Auth::login($existingUser);
+            return $customLoginController->redirectsAfterLogin($existingUser);
             if ($existingUser->roles[0]->id == 3)
             {
                 return redirect()->route('employee.home')->with('success', 'Your registration completed successfully.');
@@ -49,7 +51,7 @@ class SocialLoginController extends Controller
                 'user_type'     => $userType,
                 'organization_name'     => $user->name.' company',
             ]);
-            if ($newUser)
+            if ($newUser && $userType == 'Employer')
             {
                 $company = new EmployerCompany();
                 $company->user_id   = $newUser->id;
@@ -57,7 +59,15 @@ class SocialLoginController extends Controller
                 $company->status    = 1;
                 $company->save();
             }
+            if ($userType == 'Employee')
+            {
+                $newUser->roles()->sync(3);
+            } elseif ($userType == 'Employer')
+            {
+                $newUser->roles()->sync(4);
+            }
             Auth::login($newUser);
+            return $customLoginController->redirectsAfterLogin($newUser);
             if ($userType == 'Employee')
             {
                 $newUser->roles()->sync(3);

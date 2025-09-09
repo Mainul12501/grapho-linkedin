@@ -122,6 +122,66 @@ class EmployerViewController extends Controller
         // Helper function to ensure array input
         $ensureArray = function ($value) {
             if (empty($value)) return [];
+            // In the new Blade, it seems values are sent as a single string of comma-separated values.
+            // Let's handle that case. If the value is a string, split it. Otherwise, assume it's an array.
+            if (is_string($value)) {
+                return explode(',', $value);
+            }
+            return is_array($value) ? $value : [$value];
+        };
+
+        // Get all filters from the request
+        $filters = $request->input('filters', []);
+
+        // Workplace Type (Job Type) filter
+        if (isset($filters['job_type']) && !empty($filters['job_type'])) {
+            $jobTypes = $ensureArray($filters['job_type']);
+            $employees = $employees->whereHas('jobTypes', function($query) use ($jobTypes) {
+                $query->whereIn('slug', $jobTypes);
+            });
+        }
+
+        // University filter
+        if (isset($filters['university_name']) && !empty($filters['university_name'])) {
+            $universities = $ensureArray($filters['university_name']);
+            $employees = $employees->whereHas('universityName', function($q) use ($universities) {
+                $q->whereIn('slug', $universities);
+            });
+        }
+
+        // District filter
+        if (isset($filters['location']) && !empty($filters['location'])) {
+            $districts = $ensureArray($filters['location']);
+            $employees = $employees->whereIn('district', $districts);
+        }
+
+        $employees = $employees->where(['user_type' => 'employee', 'is_open_for_hire' => 1])->select(['id', 'name', 'profile_title', 'address', 'profile_image'])->paginate(21);
+
+        $data = [
+            'employees' => $employees,
+            'jobTypes' => JobType::where(['status' => 1])->get(['id', 'name', 'slug']),
+            'universityNames' => UniversityName::where(['status' => 1])->get(['id', 'name', 'slug']),
+            'industries' => Industry::where(['status' => 1])->get(['id', 'name', 'slug']),
+            'jobLocations' => JobLocationType::where(['status' => 1])->get(['id', 'name', 'slug']),
+            'fieldOfStudies' => FieldOfStudy::where(['status' => 1])->get(['id', 'field_name', 'slug']),
+            'skillCategories' => SkillsCategory::where(['status' => 1])->with('skills')->get(['id', 'category_name', 'slug']),
+        ];
+
+        return ViewHelper::checkViewForApi($data, 'frontend.employer.jobs.head-hunt');
+    }
+    public function headHuntBackup(Request $request)
+    {
+        $employees = User::query()->with([
+            'universityName',
+            'industry',
+            'fieldOfStudy',
+            'jobTypes',
+            'jobLocationTypes'
+        ]);
+
+        // Helper function to ensure array input
+        $ensureArray = function ($value) {
+            if (empty($value)) return [];
             return is_array($value) ? $value : [$value];
         };
 

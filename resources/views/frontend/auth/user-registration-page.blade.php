@@ -23,6 +23,23 @@
 
     <!-- Custom CSS (Login Style) -->
     <link rel="stylesheet" href="{{ asset('/') }}frontend/auth/loginStyle.css">
+    <style>
+        .input-text-box {
+            border: 1.5px solid #DADADA;
+            padding: 16px;
+            border-radius: 16px;
+            /* margin-bottom: 15px; */
+            color: #141C25;
+            font-weight: 400;
+            font-size: 16px;
+            line-height: 160%;
+        }
+        .signUpCard, .signupCard {
+            max-height: 600px!important;
+            overflow-y: scroll;
+            height: auto!important;
+        }
+    </style>
 </head>
 
 <body class="bodyAuthentication">
@@ -54,6 +71,13 @@
             @csrf
             <input type="hidden" name="user_type" id="userType" value="{{ $userType ?? 'Employee' }}">
             <input type="hidden" name="reg_method" value="email" id="reg_method">
+{{--            @if ($errors->any())--}}
+{{--                <ul class="text-danger">--}}
+{{--                    @foreach ($errors->all() as $error)--}}
+{{--                        <li>{{ $error }}</li>--}}
+{{--                    @endforeach--}}
+{{--                </ul>--}}
+{{--            @endif--}}
             <div id="signUpEmailDiv1">
                 <label for="signUpMail">Email address</label>
                 <div>
@@ -113,26 +137,26 @@
                     </div>
 
                     @if($userType == 'Employer')
-                        <label for="organizationName">Industry</label>
-                        <div>
-                            <select name="industry_id" class=" form-control select2" id="" data-placeholder="Select Industry">
+{{--                        <label for="organizationName">Industry</label>--}}
+{{--                        <div>--}}
+{{--                            <select name="industry_id" class=" form-control select2" id="" data-placeholder="Select Industry">--}}
 {{--                                <option selected disabled >Hi</option>--}}
-                                @foreach($industries as $industry)
-                                    <option value="{{ $industry->id }}">{{ $industry->name ?? 'Industry Name' }}</option>
-                                @endforeach
-                            </select>
-                            @error('industry_id') <span class="text-danger">{{ $errors->first('industry_id') }}</span> @enderror
-                        </div>
-                        <label for="organizationName" class="mt-3">Organization Category</label>
-                        <div>
-                            <select name="employer_company_category_id" class=" form-control select2" id="" data-placeholder="Select Company Category">
+{{--                                @foreach($industries as $industry)--}}
+{{--                                    <option value="{{ $industry->id }}">{{ $industry->name ?? 'Industry Name' }}</option>--}}
+{{--                                @endforeach--}}
+{{--                            </select>--}}
+{{--                            @error('industry_id') <span class="text-danger">{{ $errors->first('industry_id') }}</span> @enderror--}}
+{{--                        </div>--}}
+{{--                        <label for="organizationName" class="mt-3">Organization Category</label>--}}
+{{--                        <div>--}}
+{{--                            <select name="employer_company_category_id" class=" form-control select2" id="" data-placeholder="Select Company Category">--}}
 {{--                                <option selected disabled >Hi</option>--}}
-                                @foreach($companyCategories as $companyCategory)
-                                    <option value="{{ $companyCategory->id }}">{{ $companyCategory->category_name ?? 'Company Category Name' }}</option>
-                                @endforeach
-                            </select>
-                            @error('employer_company_category_id') <span class="text-danger">{{ $errors->first('employer_company_category_id') }}</span> @enderror
-                        </div>
+{{--                                @foreach($companyCategories as $companyCategory)--}}
+{{--                                    <option value="{{ $companyCategory->id }}">{{ $companyCategory->category_name ?? 'Company Category Name' }}</option>--}}
+{{--                                @endforeach--}}
+{{--                            </select>--}}
+{{--                            @error('employer_company_category_id') <span class="text-danger">{{ $errors->first('employer_company_category_id') }}</span> @enderror--}}
+{{--                        </div>--}}
                         <label for="organizationName" class="mt-3">Organization name</label>
                         <div>
                             <input type="text" name="organization_name" id="organizationName" placeholder="Type here" class="w-100" style="margin-bottom: 0px!important;" />
@@ -143,14 +167,14 @@
                         <div class="">
                             <label for="binNumber" class="mt-3">Bin Number</label>
                             <div>
-                                <input type="text" name="bin_number" id="binNumber" placeholder="Enter Bin Number" class="w-100 form-control">
+                                <input type="text" name="bin_number" id="binNumber" placeholder="Enter Bin Number" class="w-100 form-control input-text-box">
                                 @error('bin_number') <span class="text-danger">{{ $errors->first('bin_number') }}</span> @enderror
                             </div>
                         </div>
-                        <div class="">
+                        <div class="mb-3">
                             <label for="tradeLicenseNumber" class="mt-3">Trade License number</label>
                             <div>
-                                <input type="text" name="trade_license_number" id="tradeLicenseNumber" placeholder="Enter Trade License number" class="w-100 form-control">
+                                <input type="text" name="trade_license_number" id="tradeLicenseNumber" placeholder="Enter Trade License number" class="w-100 form-control input-text-box">
                                 @error('trade_license_number') <span class="text-danger">{{ $errors->first('trade_license_number') }}</span> @enderror
                             </div>
                         </div>
@@ -173,7 +197,10 @@
                     <label for="supPassword">Password</label>
                     <div class="input-wrapper">
                         <input type="password" id="supPassword" name="password" placeholder="Type here" class="w-100">
-{{--                        <span class="toggle-icon"><img src="{{ asset('/') }}frontend/employee/images/authentication images/eye.png" alt=""></span> <!-- 👁 (eye icon as Unicode for now) -->--}}
+                        <span class="toggle-icon">
+                            <img id="show" class="" src="{{ asset('/') }}frontend/employee/images/authentication images/eye.png" alt="">
+                            <span id="hide" class="d-none">👁</span>
+                        </span> <!-- 👁 (eye icon as Unicode for now) -->
                     </div>
 
 
@@ -295,6 +322,18 @@
         $('#signUpMobileDiv1').addClass('d-none');
         $('.hide-during-form').addClass('d-none');
         $('#signUpEmailDiv2').removeClass('d-none');
+    })
+    $(document).on('click', '#show', function () {
+        event.preventDefault();
+        $('#supPassword').attr('type', 'text');
+        $('#hide').removeClass('d-none');
+        $('#show').addClass('d-none');
+    })
+    $(document).on('click', '#hide', function () {
+        event.preventDefault();
+        $('#supPassword').attr('type', 'password');
+        $('#hide').addClass('d-none');
+        $('#show').removeClass('d-none');
     })
 </script>
 {!! $siteSetting->meta_footer ?? '' !!}

@@ -172,9 +172,12 @@ body {
 
 /* Job badges */
 .employeHome .job-badges > span {
-  margin-right: 0.5rem;
-  font-size: 0.8rem;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 100px;
   cursor: pointer;
+  background-color:#EDEFF2 !important;
+  color: #484F5B !important;
 }
 
 /* Job Dates & Applicants section */
@@ -225,14 +228,20 @@ body {
 }
 
 .talent-meta {
-  font-size: 0.75rem;
-  color: #6c757d;
+  display: flex;
+  align-items: center;
 }
 
 .talent-meta span {
-  margin-right: 0.75rem;
+  margin-right: 8px;
   display: inline-flex;
   align-items: center;
+  background-color: #EDEFF2 !important;
+  border-radius: 100px;
+  font-size: 13px !important;
+  font-weight: 400 !important;
+  color:#484F5B !important;
+  padding: 3px 6px !important;
 }
 
 .talent-meta i {
@@ -326,9 +335,9 @@ body {
     overflow-x: unset;
     -webkit-overflow-scrolling: touch;
 }
+  
 
-
-
+   
 
 
 
@@ -429,7 +438,7 @@ color: #141C25;
 }
 
 
-
+ 
 .settings-content {
   background: #fff;
   border-radius: 8px;
@@ -459,6 +468,97 @@ color: #141C25;
 
 
 
+   /* content-sized chips that wrap */
+.pill-group{ display:flex; flex-wrap:wrap; gap:12px; }
+.btn-pill{
+  display:inline-flex; align-items:center; justify-content:center;
+  padding:10px 16px; min-height:40px;
+  border:1.5px solid #FFD866; border-radius:12px;
+  background:#fff; color:#141C25; font-weight:600; line-height:1; white-space:nowrap;
+  cursor:pointer; user-select:none; transition:background .15s,border-color .15s,box-shadow .15s;
+}
+.btn-check:checked + .btn-pill{ background:#FFCB11; border-color:#FFCB11; color:#141C25; }
+.btn-pill:hover{ background:#FFF4C4; border-color:#FFCB11; }
+.btn-pill:focus-visible{ outline:none; box-shadow:0 0 0 3px rgba(255,203,17,.35); }
+
+/* link-looking submit buttons */
+.link-btn{ background:transparent; border:none; padding:0; color:#141C25; }
+.link-btn:hover{ text-decoration:underline; }
+
+/* small badges used in step 2 lists */
+.chip-badge{ display:inline-block; background:#F7F8FA; color:#141C25; border:1px solid #E3E6EC; border-radius:12px; padding:8px 12px; font-weight:600; }
+
+/* skill tabs */
+.skill-cats .nav-link{ border-radius:999px; padding:8px 14px; font-weight:600; color:#141C25; }
+.skill-cats .nav-link.active{ background:#141C25; color:#fff; }
+
+/* (optional) snackbar placeholder style – keep if you use it */
+.snackbar{ display:none; align-items:center; gap:10px; padding:12px 16px; background:#fff; border:1px solid #E3E6EC; border-radius:12px; box-shadow:0 8px 24px rgba(20,28,37,.12); }
+.snackbar-icon{ width:20px; height:20px; }
+.snackbar-close{ border:none; background:transparent; }
+
+/* ---------- review header ---------- */
+.review-head{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:16px 20px;background:#fff;border-radius:16px;
+  border:1px solid #ECEFF3;
+}
+
+.head-back{
+  appearance:none;background:none;border:0;padding:0;
+  display:flex;align-items:center;gap:10px;cursor:pointer;
+  font-weight:600;font-size:16px;color:#0F172A;line-height:1;
+}
+.head-back .back-ic{width:24px;height:24px;display:block;}
+
+.head-actions{display:flex;align-items:center;gap:10px;}
+.btn-edit{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:8px 14px;border:1px solid #D3D8E0;border-radius:12px;
+  background:#fff;color:#111827;font-weight:600;
+  box-shadow:0 1px 2px rgba(16,24,40,.05);
+}
+.btn-edit .edit-ic{width:18px;height:18px;display:block;}
+.btn-edit:hover{border-color:#C6CCD6;}
+
+.btn-post{
+  padding:8px 16px;border-radius:12px;border:1px solid #E5B600;
+  background:#FFCB11;color:#111827;font-weight:700;
+}
+
+/* ---------- body ---------- */
+.review-body{padding:16px 6px 6px;}
+.co-line{display:flex;align-items:center;gap:8px;margin:12px 0 6px;color:#6B7280;font-weight:600;}
+.co-logo{height:24px;width:auto;display:block;}
+.co-name{color:#111827;}
+.dot{color:#9CA3AF;}
+
+.review-title{
+  font-weight:800;color:#0F172A;line-height:1.2;
+  font-size:clamp(22px,2.6vw,28px);margin:6px 0 10px;
+}
+
+.review-tags{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px;}
+.review-tags .tag{
+  font-size:12px;font-weight:600;color:#374151;
+  background:#F2F4F7;border:1px solid #E5E7EB;
+  border-radius:999px;padding:6px 10px;line-height:1;
+}
+
+.sec-title{font-weight:700;color:#111827;margin:18px 0 8px;}
+.sec-text{color:#4B5563;line-height:1.8;}
+.req-list{color:#4B5563;line-height:1.9;padding-left:1.2rem;}
+.req-list li{margin-bottom:8px;}
+
+/* same inner width as other steps */
+#step3 .review-head,
+#step3 .review-body{
+  max-width: 640px;   
+  margin-inline: auto;
+}
+
+
+#createJobModal .modal-dialog{ max-width: 720px; }
 
 
    /* usermanagement */
@@ -473,7 +573,7 @@ color: #141C25;
     border: none;
     outline: none;
     box-shadow: none;
-    color: #fff;
+    color: #fff !important;
   }
 
   .usermanagement-content td{
@@ -547,6 +647,121 @@ color: #141C25;
    /* company profile */
 
 
+   /* myTanents */
+   .myTanents{
+    padding: 30px 20px;
+    border-radius: 15px;
+   }
+
+   .myTanents h6{
+    color: #141C25 !important;
+    font-weight: 600 !important;
+    font-size: 18px !important;
+   }
+
+   .myTanents span{
+    color: #484F5B !important;
+   }
+   /* myTanents */
+
+
+
+
+
+   
+   /* heathunt */
+/* ============================
+   Pill Filters — look & layout
+   ============================ */
+.filter-pills-bar{
+  row-gap:8px;
+  align-items:flex-start; /* top labels align nicely */
+}
+
+.pill-filter .dropdown-toggle{
+  height:36px;
+  padding:8px 14px;
+  border-radius:999px;
+  font-size:14px;
+  line-height:1;
+  font-weight:600;
+  border-width:1.5px;
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  background:#fff;
+  color:#141C25;
+  border-color:#CFD2D9;
+  box-shadow:
+    0 1px 2px rgba(20,28,37,.06),
+    0 4px 8px rgba(20,28,37,.04);
+}
+.pill-filter .dropdown-toggle:hover{
+  border-color:#B9BFC9;
+  background:#fff;
+}
+.pill-filter .dropdown-toggle.active,
+.pill-filter .dropdown-toggle.btn-outline-warning{
+  border-color:#FFCB11 !important;
+  background:#fff;
+}
+
+/* dropdown menu panel */
+.pill-menu{
+  border-radius:12px;
+  min-width:220px;
+  border:1px solid #E6E8ED;
+  box-shadow:
+    0 6px 16px rgba(20,28,37,.12),
+    0 2px 4px rgba(20,28,37,.08);
+}
+
+/* Search input with icon (SAFE one-line data URI) */
+.pill-menu .pill-search{
+  background:#EDEFF2;
+  border:none;
+  border-radius:8px;
+  height:34px;
+  padding:6px 10px 6px 28px;      /* room for icon */
+  background-repeat:no-repeat;
+  background-position:8px 50%;
+  background-size:14px 14px;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23838EA3' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'/%3E%3C/svg%3E");
+}
+.pill-menu .pill-search:focus{
+  outline:none;
+  box-shadow:0 0 0 2px rgba(255,203,17,.3);
+}
+
+.pill-menu .dropdown-item{
+  border-radius:8px;
+  padding:8px 10px;
+  font-weight:500;
+  display:flex;
+  align-items:center;
+}
+.pill-menu .dropdown-item:hover{ background:#F5F7FB; }
+
+/* checkbox align */
+.pill-checkbox{ transform:translateY(1px); }
+
+/* Clear all link hover */
+#pillFiltersClearAll:hover{ text-decoration:underline; }
+
+/* Top label above each pill filter */
+.filter-pills-bar .pill-filter{
+  display:flex;           /* stack: label over button */
+  flex-direction:column;
+}
+.filter-pills-bar .pill-filter .pill-label{
+  font-size:12px;
+  font-weight:600;
+  color:#6B7280;          /* muted */
+  margin:0 0 2px 8px;     /* slight left align with pill */
+  line-height:1;
+}
+
+   
 
 
 
@@ -635,5 +850,5 @@ color: #141C25;
   .job-main{
   flex-direction: column;
 }
-
+  
 }

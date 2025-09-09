@@ -10,24 +10,35 @@ body {
 .forLarge{
   display: block;
 }
+
+.border{
+  border: 1px solid #e5e7ebaf !important;
+}
+
+.form-control{
+  box-shadow: none!important;
+  padding: 15px;
+}
+
+
 /* ........home......... */
-.left-panel {
+.left-panel{
   position: sticky;
   top: 75px;
-  height: fit-content;
+  flex: 0 0 350px;   /* fixed column width */
+  width: 320px;
+  max-width: 350px;
 }
 
 .left-panel .card {
   border: none;
 }
-
 .left-panel .card-body h5 {
   font-weight: 600;
   font-size: 20px;
   line-height: 160%;
   color: #141c25;
 }
-
 .left-panel .card-body .badge {
   font-weight: 500;
   font-size: 14px;
@@ -35,14 +46,12 @@ body {
   letter-spacing: -1%;
   color: #008a22;
 }
-
 .left-panel .card-body .badge {
   background-color: #eff7f3;
   border-radius: 100px;
   padding: 6px 12px;
   width: 128px;
 }
-
 .left-panel .card-body p {
   font-weight: 400;
   font-size: 15px;
@@ -50,8 +59,6 @@ body {
   letter-spacing: -1%;
   color: #141c25;
 }
-
-
 .left-panel.optionsInprofile .options {
   display: flex;
   flex-direction: column;
@@ -59,7 +66,6 @@ body {
   border: 1px solid #e5e7eb;
   border-radius: 9px;
 }
-
 .left-panel .optionsInprofile .option-card {
   padding: 15px;
   display: flex;
@@ -68,13 +74,9 @@ body {
   border-bottom: 1px solid #e5e7eb;
   cursor: pointer;
 }
-
 .left-panel .optionsInprofile .icon {
-  width: 24px;
-  height: 24px;
-  margin-right: 10px;
+  margin-right: 15px;
 }
-
 .left-panel .optionsInprofile .title {
   font-weight: 600;
   font-size: 16px;
@@ -82,7 +84,6 @@ body {
   letter-spacing: -1%;
   color: #141c25;
 }
-
 .left-panel .optionsInprofile.subtitle {
   font-weight: 400;
   font-size: 15px;
@@ -90,11 +91,20 @@ body {
   letter-spacing: -1%;
   color: #667080;
 }
-
 .left-panel .optionsInprofile .arrow {
   color: #ffffff;
   font-size: 20px;
 }
+.left-panel .card-body p,
+.left-panel .optionsInprofile .title,
+.left-panel .optionsInprofile .subtitle {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+
+
+/* right panel */
 
 .right-panel {
   background-color: #ffffff;
@@ -138,9 +148,9 @@ body {
   font-size: 14px;
 }
 
-.jobTypeBtn {
+/* .jobTypeBtn {
   margin-top: 10px;
-}
+} */
 
 .jobTypeBtn .btn {
   margin-right: 10px;
@@ -153,6 +163,7 @@ body {
   line-height: 120%;
   letter-spacing: -1%;
   color: #484f5b;
+  border-radius: 100px;
 }
 
 .jobDesc p {
@@ -177,7 +188,7 @@ body {
   font-weight: 600;
   font-size: 16px;
   line-height: 150%;
-  letter-spacing: -1%;
+  border-radius: 12px;
   text-align: center;
   color: #141c25;
 }
@@ -209,82 +220,79 @@ body {
 
 /* Job Listings Section */
 
+
+
 /* job filter */
 .customWrapper {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;      
+  gap: 10px;                 
   padding: 15px 0;
-  justify-content: center;
+  justify-content: flex-start;
 }
-
-.fielterIcon span {
-  font-weight: 600;
-  font-size: 16px;
-  color: #141c25;
-}
-
 .custom-select {
   position: relative;
-  margin-right: 10px;
-  display: inline-block;
-  width: auto;
-  min-width: 150px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 0 1 auto;     
+  min-width: 180px;      
+  max-width: 100%;
 }
-
+.custom-select-label {
+  font-size: 12px;
+  line-height: 1;
+  color: #667080;
+  margin-left: 8px;
+}
 .select-box {
   width: 100%;
-  padding: 8px 8px 8px 16px;
+  padding: 8px 32px 8px 16px; 
   border-radius: 200px;
   border: 1.5px solid #cfd2d9;
-  position: relative;
   cursor: pointer;
   background-image: url("./images/contentImages/Vector.png");
   background-position: right 10px center;
   background-repeat: no-repeat;
   background-size: 12px;
 }
-
 .select-boxCustom {
   background-color: #ffcb1126;
   border: 1.5px solid #ffcb11;
 }
-
-.select-box:focus {
-  border-color: #007bff;
-  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
-}
-
+/* Dropdown panel */
 .dropdown-menu {
   width: 100%;
   max-height: none;
   overflow-y: auto;
   position: absolute;
-  top: 45px;
+  top: 60px;             
   border: 1px solid #ccc;
-  background-color: white;
+  background-color: #fff;
   z-index: 1000;
-  border-radius: 5px;
+  border-radius: 8px;
   padding: 10px;
 }
-
+.search-box {
+  background: #EDEFF2 url("images/header images/searchIcon.png") no-repeat 10px center;
+  background-size: 14px;
+  padding: 6px 10px 6px 32px; 
+  width: 100%;
+  margin-bottom: 10px;
+  border: 1px solid #CFD2D9;
+  border-radius: 6px;
+}
 .checkbox-item {
   display: flex;
   align-items: center;
 }
-
-.search-box {
-  padding: 5px;
-  width: 100%;
-  margin-bottom: 10px;
-}
-
 .clear-all-btn {
   border: none;
   cursor: pointer;
   font-size: 14px;
   background-color: transparent;
 }
-
 .customWrapper input[type="checkbox"] {
   background-color: #ffcb11;
   accent-color: #ffcb11;
@@ -292,7 +300,6 @@ body {
   cursor: pointer;
   margin-right: 5px;
 }
-
 .customWrapper label {
   font-weight: 400;
   font-size: 16px;
@@ -300,8 +307,80 @@ body {
   letter-spacing: -1%;
   color: #141c25;
 }
-
 /* job filter */
+
+/* share profile button */
+/* =======================================
+   Normalize action chips — same height
+   ======================================= */
+.actions .apply-btn,
+.actions .share-btn,
+.actions .save-btn{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  height:44px;          /* match all three */
+  padding:0 16px;       /* balanced padding */
+  border-radius:12px;   /* consistent corners */
+  line-height:1;
+  box-sizing:border-box;
+}
+
+/* Share profile (uses the compact style but 44px tall) */
+.share-btn{
+  --btn-bg1:#ffffff;
+  --btn-bg2:#f7f8fa;
+  --btn-border:#CFD2D9;
+  --btn-text:#141C25;
+
+  border:1.5px solid var(--btn-border);
+  background:linear-gradient(180deg,var(--btn-bg1),var(--btn-bg2));
+  color:var(--btn-text);
+  font-weight:600;
+  font-size:14px;
+  cursor:pointer;
+  transition:transform .12s ease, box-shadow .2s ease, border-color .2s ease, background .2s ease, opacity .2s ease;
+  box-shadow:0 1px 2px rgba(20,28,37,.06), 0 4px 8px rgba(20,28,37,.04);
+}
+
+/* tiny share icon */
+.share-btn::before{
+  content:"";
+  width:16px;height:16px;
+  background-repeat:no-repeat;
+  background-size:16px 16px;
+  display:inline-block;
+  background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="%23141C25" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7"/><path d="M16 6l-4-4-4 4"/><path d="M12 2v14"/></svg>');
+}
+
+/* hover / active / focus */
+.share-btn:hover{
+  transform:translateY(-1px);
+  border-color:#B7BDC7;
+  background:linear-gradient(180deg,#fff,#F1F3F6);
+  box-shadow:0 6px 16px rgba(20,28,37,.12), 0 2px 4px rgba(20,28,37,.08);
+}
+.share-btn:active{
+  transform:none;
+  box-shadow:0 2px 6px rgba(20,28,37,.12), 0 1px 2px rgba(20,28,37,.08);
+  opacity:.95;
+}
+.share-btn:focus-visible{
+  outline:none;
+  border-color:#FFCB11;
+  box-shadow:0 0 0 3px rgba(255,203,17,.35);
+}
+
+.apply-form .actions {
+  align-items: center;
+}
+
+/* share profile button */
+
+
+
+
+
 
 /* job search result */
 .jobSearchResultText h5 {
@@ -323,7 +402,7 @@ body {
 
 .job-card {
   background-color: #fff;
-  padding: 20px;
+  padding:20px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   cursor: pointer;
 }
@@ -333,6 +412,7 @@ body {
   background-color: #f8f7f8;
   border-top: 1px solid #e5e7eb;
   border-bottom: 1px solid #e5e7eb;
+  border-left: 2px solid #141C25;
 }
 
 .job-card h5 {
@@ -347,8 +427,8 @@ body {
   font-weight: 400;
   font-size: 14px;
   line-height: 160%;
-  letter-spacing: -1%;
   color: #484f5b;
+  margin-bottom: 8px;
 }
 
 .job-location {
@@ -384,7 +464,6 @@ body {
 .company-info {
   display: flex;
   align-items: center;
-  margin-bottom: 20px;
 }
 
 .company-logo {
@@ -416,7 +495,6 @@ body {
 }
 
 .job-type {
-  margin-bottom: 20px;
   cursor: pointer;
 }
 
@@ -449,6 +527,7 @@ body {
 .apply-btn:hover,
 .save-btn:hover {
   background-color: #0056b3;
+  color: #ffffff;
 }
 
 .save-btn {
@@ -1439,13 +1518,12 @@ body {
 /* ....................... */
 /* ....Profile viewer..... */
 /* ....................... */
-
-
 .profileViewer {
   width: 100%;
   display: flex;
   flex-direction: column;
   gap: 16px;
+  border-radius: 12px;
 }
 
 .profileViewer .profileViewer-row {
@@ -1598,6 +1676,10 @@ body {
   font-weight: 600!important;
   color: #141C25!important;
 }
+
+.planOne .bg-dark {
+  background-color: #141C25;
+}
 /* ....................... */
 /* ....Subscription..... */
 /* ....................... */
@@ -1610,12 +1692,84 @@ body {
 /* ......settings......... */
 /* ....................... */
 
-.settings select{
-  border: 1px solid #CED2DA;
-  border-radius: 12px;
-  padding: 6px;
+
+/* ================================
+   Language select → pill style
+   ================================ */
+
+.settings-row .option { position: relative; }
+
+/* core look */
+.settings-row .option select,
+.settings select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;                 /* hide default arrow */
+  background-color: #fff;
+  border: 1.5px solid #CFD2D9;      /* subtle grey border */
+  border-radius: 14px;              /* pill corners */
+  padding: 15px 38px 10px 14px;     /* room for text + chevron */
+  line-height: 1.1;
   color: #141C25;
+  font-weight: 500;
+  box-shadow: 0 1px 2px rgba(20,28,37,.06), 0 4px 8px rgba(20,28,37,.04);
+  cursor: pointer;
+  min-width: 150px;                 /* similar visual width */
+  height: 42px;                     /* consistent height */
+
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 16px 16px;
+
+  /* custom chevron (SVG) — MUST be one line */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23141C25' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
 }
+
+/* hover + focus */
+.settings-row .option select:hover,
+.settings select:hover {
+  border-color: #B9BFC9;
+  box-shadow: 0 6px 16px rgba(20,28,37,.12), 0 2px 4px rgba(20,28,37,.08);
+}
+.settings-row .option select:focus,
+.settings select:focus {
+  outline: none;
+  border-color: #FFCB11;
+  box-shadow: 0 0 0 3px rgba(255,203,17,.28);
+}
+
+/* disabled */
+.settings-row .option select:disabled,
+.settings select:disabled {
+  opacity: .55;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* hide legacy arrow (IE/old Edge) */
+.settings-row .option select::-ms-expand,
+.settings select::-ms-expand { display: none; }
+
+
+/* Language select — taller, even padding */
+.settings-row .option select,
+.settings select {
+  /* remove fixed height so padding works */
+  height: auto;
+  min-height: 46px;                 /* consistent pill height */
+
+  /* equal vertical padding (T R B L) */
+  padding: 12px 40px 12px 16px;     
+
+  /* text vertical centering stays stable across browsers */
+  line-height: 1.25;
+  box-sizing: border-box;
+
+  /* keep the chevron where it was */
+  background-position: right 12px center;
+  background-size: 16px 16px;
+}
+
 
 
 /* ....................... */
@@ -1971,4 +2125,13 @@ body {
     display: none;
   }
 
+}
+
+@media (max-width: 320px){
+  .search-bar input {
+    width: 170px;
+}
+.jobTypeBtn .btn{
+  margin-bottom: 10px;
+}
 }

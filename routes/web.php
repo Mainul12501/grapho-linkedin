@@ -71,6 +71,8 @@ Route::middleware([
     'redirectToHomeOnSessionOut',
 ])->group(function () {
 
+    Route::get('auth/user-profile-update', [CustomLoginController::class, 'userProfileUpdate'])->name('auth.user-profile-update');
+
     Route::post('auth/user-password-update', [CustomLoginController::class, 'userPasswordUpdate'])->name('auth.user-password-update');
     Route::get('call-user/{type?}', [TwilioVideoController::class, 'viewPage'])->name('employer.call-user');
 

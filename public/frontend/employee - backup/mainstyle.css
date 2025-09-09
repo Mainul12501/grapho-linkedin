@@ -1,0 +1,1974 @@
+body {
+  font-family: "Geist", sans-serif;
+  background-color: #f2f2f4;
+}
+
+
+.forSmall{
+  display: none;
+}
+.forLarge{
+  display: block;
+}
+/* ........home......... */
+.left-panel {
+  position: sticky;
+  top: 75px;
+  height: fit-content;
+}
+
+.left-panel .card {
+  border: none;
+}
+
+.left-panel .card-body h5 {
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 160%;
+  color: #141c25;
+}
+
+.left-panel .card-body .badge {
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 120%;
+  letter-spacing: -1%;
+  color: #008a22;
+}
+
+.left-panel .card-body .badge {
+  background-color: #eff7f3;
+  border-radius: 100px;
+  padding: 6px 12px;
+  width: 128px;
+}
+
+.left-panel .card-body p {
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 160%;
+  letter-spacing: -1%;
+  color: #141c25;
+}
+
+
+.left-panel.optionsInprofile .options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border: 1px solid #e5e7eb;
+  border-radius: 9px;
+}
+
+.left-panel .optionsInprofile .option-card {
+  padding: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #e5e7eb;
+  cursor: pointer;
+}
+
+.left-panel .optionsInprofile .icon {
+  width: 24px;
+  height: 24px;
+  margin-right: 10px;
+}
+
+.left-panel .optionsInprofile .title {
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 150%;
+  letter-spacing: -1%;
+  color: #141c25;
+}
+
+.left-panel .optionsInprofile.subtitle {
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 160%;
+  letter-spacing: -1%;
+  color: #667080;
+}
+
+.left-panel .optionsInprofile .arrow {
+  color: #ffffff;
+  font-size: 20px;
+}
+
+.right-panel {
+  background-color: #ffffff;
+  border-radius: 5px;
+  margin-top: 20px;
+}
+
+.rightPanelHeadinfo {
+  padding: 20px;
+}
+
+.rightPanelHeadinfo h2 {
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 100%;
+  letter-spacing: -2%;
+  color: #141c25;
+}
+
+.rightPanelHeadinfo p {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 160%;
+  letter-spacing: -1%;
+  color: #484f5b;
+}
+
+.jobCard {
+  display: flex;
+  margin-bottom: 20px;
+  padding: 20px;
+}
+
+.jobPosition h3 {
+  font-size: 18px;
+  margin-bottom: 5px;
+}
+
+.jobPosition p {
+  color: #6c757d;
+  font-size: 14px;
+}
+
+.jobTypeBtn {
+  margin-top: 10px;
+}
+
+.jobTypeBtn .btn {
+  margin-right: 10px;
+  background-color: #edeff2;
+  border: none;
+  padding: 6px 12px;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 120%;
+  letter-spacing: -1%;
+  color: #484f5b;
+}
+
+.jobDesc p {
+  margin: 6px 0;
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 160%;
+  letter-spacing: -1%;
+  color: #667080;
+}
+
+.jobApply {
+  margin-top: 10px;
+  align-items: center;
+}
+
+.jobApply .btn {
+  background-color: #ffcb11;
+  border: none;
+  cursor: pointer;
+  padding: 8px 16px;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 150%;
+  letter-spacing: -1%;
+  text-align: center;
+  color: #141c25;
+}
+
+.threeDot,
+.closeIcon,
+.bookmarkIcon {
+  cursor: pointer;
+}
+
+.seeAll {
+  padding: 15px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.seeAll a {
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 150%;
+  letter-spacing: -1%;
+  text-align: center;
+  color: #141c25;
+}
+
+/* ........home......... */
+
+/* Job Listings Section */
+
+/* job filter */
+.customWrapper {
+  display: flex;
+  align-items: center;
+  padding: 15px 0;
+  justify-content: center;
+}
+
+.fielterIcon span {
+  font-weight: 600;
+  font-size: 16px;
+  color: #141c25;
+}
+
+.custom-select {
+  position: relative;
+  margin-right: 10px;
+  display: inline-block;
+  width: auto;
+  min-width: 150px;
+}
+
+.select-box {
+  width: 100%;
+  padding: 8px 8px 8px 16px;
+  border-radius: 200px;
+  border: 1.5px solid #cfd2d9;
+  position: relative;
+  cursor: pointer;
+  background-image: url("./images/contentImages/Vector.png");
+  background-position: right 10px center;
+  background-repeat: no-repeat;
+  background-size: 12px;
+}
+
+.select-boxCustom {
+  background-color: #ffcb1126;
+  border: 1.5px solid #ffcb11;
+}
+
+.select-box:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+.dropdown-menu {
+  width: 100%;
+  max-height: none;
+  overflow-y: auto;
+  position: absolute;
+  top: 45px;
+  border: 1px solid #ccc;
+  background-color: white;
+  z-index: 1000;
+  border-radius: 5px;
+  padding: 10px;
+}
+
+.checkbox-item {
+  display: flex;
+  align-items: center;
+}
+
+.search-box {
+  padding: 5px;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.clear-all-btn {
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  background-color: transparent;
+}
+
+.customWrapper input[type="checkbox"] {
+  background-color: #ffcb11;
+  accent-color: #ffcb11;
+  border: 1px solid #ffcb11;
+  cursor: pointer;
+  margin-right: 5px;
+}
+
+.customWrapper label {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 160%;
+  letter-spacing: -1%;
+  color: #141c25;
+}
+
+/* job filter */
+
+/* job search result */
+.jobSearchResultText h5 {
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 160%;
+  letter-spacing: -1%;
+  color: #667080;
+}
+
+.job-listings-container {
+  display: flex;
+}
+
+.job-options {
+  width: 30%;
+  margin-right: 20px;
+}
+
+.job-card {
+  background-color: #fff;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+}
+
+/* Highlight clicked job */
+.job-card.active {
+  background-color: #f8f7f8;
+  border-top: 1px solid #e5e7eb;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.job-card h5 {
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 160%;
+  letter-spacing: -1%;
+  color: #141c25;
+}
+
+.job-card p {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 160%;
+  letter-spacing: -1%;
+  color: #484f5b;
+}
+
+.job-location {
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 160%;
+  letter-spacing: -1%;
+  color: #667080;
+}
+
+.job-type .badge {
+  background-color: #edeff2;
+  border-radius: 100px;
+  padding: 6px 12px;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 120%;
+  letter-spacing: -1%;
+  color: #484f5b;
+}
+
+/* Job Details Section */
+.job-details {
+  width: 65%;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: block;
+  /* Show the job details by default */
+}
+
+.company-info {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.company-logo {
+  width: 45px;
+  height: 45px;
+  margin-right: 15px;
+  border-radius: 50%;
+}
+
+.company-details h3 {
+  font-weight: 600;
+  font-size: 15px;
+  line-height: 160%;
+  letter-spacing: -1%;
+  color: #484f5b;
+}
+
+.company-details p {
+  font-size: 16px;
+  color: #555;
+}
+
+.job-title {
+  font-weight: 600;
+  font-size: 28px;
+  line-height: 100%;
+  letter-spacing: -2%;
+  color: #141c25;
+}
+
+.job-type {
+  margin-bottom: 20px;
+  cursor: pointer;
+}
+
+.badge {
+  background-color: #f0f0f0;
+  color: #333;
+  padding: 5px 10px;
+  border-radius: 20px;
+  margin-right: 10px;
+  font-size: 14px;
+}
+
+.apply-btn,
+.save-btn {
+  padding: 12px 20px;
+  margin: 10px 0;
+  background-color: #ffcb11;
+  border: none;
+  border-radius: 16px;
+  cursor: pointer;
+  display: inline-block;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 150%;
+  letter-spacing: -1%;
+  text-align: center;
+  color: #141c25;
+}
+
+.apply-btn:hover,
+.save-btn:hover {
+  background-color: #0056b3;
+}
+
+.save-btn {
+  background-color: transparent;
+  border: 1px solid #dadada;
+}
+
+.save-icon {
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+  vertical-align: middle;
+}
+
+.company-description {
+  font-size: 16px;
+  color: #666;
+  margin-bottom: 20px;
+}
+
+.job-requirements {
+  list-style-type: disc;
+  margin-left: 20px;
+}
+
+.job-requirements li {
+  font-size: 14px;
+  color: #555;
+}
+
+/* Easy Apply Modal */
+.easy-apply-modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  align-items: center;
+  justify-content: center;
+  z-index: 9999999;
+}
+
+.easy-apply-modal .modal-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 80%;
+  max-width: 400px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.easy-apply-modal .modal-header {
+  text-align: center;
+  display: unset;
+}
+
+.easy-apply-modal .modal-header img {
+  margin-bottom: 10px;
+}
+
+.easy-apply-modal h2 {
+  margin-bottom: 15px;
+
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 160%;
+  letter-spacing: -1%;
+  text-align: center;
+  color: #141c25;
+}
+
+.easy-apply-modal .modal-description {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 160%;
+  letter-spacing: -1%;
+  text-align: center;
+  margin-bottom: 20px;
+  color: #484f5b;
+}
+
+.easy-apply-modal .modal-buttons {
+  border-radius: 16px;
+}
+
+.easy-apply-modal .modal-buttons button {
+  padding: 10px 20px;
+  background-color: #ffcb11;
+  color: #141c25;
+  border: none;
+  border-radius: 16px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 18px;
+}
+
+.easy-apply-modal .modal-buttons button:hover {
+  background-color: #0033a0;
+}
+
+.easy-apply-modal .cancel-btn {
+  background-color: transparent !important;
+  border: 1px solid #dadada !important;
+}
+
+.easy-apply-modal .cancel-btn:hover {
+  background-color: #666;
+}
+
+/* Success Notification */
+.notification {
+  position: fixed;
+  bottom: 20px;
+  /* Ensures it's always at the bottom */
+  left: 50%;
+  transform: translateX(-50%);
+  /* Centers the notification horizontally */
+  background-color: #141c25;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  display: none;
+  font-size: 16px;
+  min-width: 250px;
+  text-align: center;
+  z-index: 9999;
+  /* Make sure the notification appears on top */
+}
+
+.notification .checkmark {
+  font-size: 20px;
+  margin-right: 10px;
+}
+
+.notification .close-btn {
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+.notification .close-btn:hover {
+  color: #ff4d4d;
+}
+/* easy apply modal */
+/* inbox css */
+
+
+
+/* Main container for both panels */
+.inbox-container {
+  display: flex;
+  height: calc(100vh - 56px);
+  width: 100%;
+  justify-content: center;
+  overflow: hidden;
+  flex-wrap: wrap;
+}
+
+/* ======================================== */
+/* LEFT PANEL: Company Listing              */
+/* ======================================== */
+
+/* Left Panel: Company Listing */
+.leftPanelForInbox {
+  width: 100%;
+  max-width: 400px;
+  background-color: #fff;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  overflow-y: auto;
+}
+
+.leftPanelForInbox .inboxLeftHeader {
+  padding: 10px 20px 0 20px;
+}
+
+.leftPanelForInbox h1 {
+  font-weight: 600;
+  font-size: 28px;
+  line-height: 100%;
+  letter-spacing: -2%;
+  color: #141c25;
+}
+
+.leftPanelForInbox .form-check-label {
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 120%;
+  letter-spacing: -1%;
+  color: #484f5b;
+}
+
+/* Search Bar */
+.leftPanelForInbox .search-bar input {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+/* Switch Button for filtering unread messages */
+.leftPanelForInbox .switch-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+/* Company List */
+.leftPanelForInbox .company-list {
+  margin-top: 20px;
+  padding: 0;
+  list-style-type: none;
+}
+
+.leftPanelForInbox .company-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px;
+  cursor: pointer;
+}
+
+.leftPanelForInbox .company-item:hover {
+  background-color: #e9e9e9;
+}
+
+.leftPanelForInbox .company-item.selected {
+  background-color: #d3f8d3;
+}
+
+.leftPanelForInbox .company-logo img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+.leftPanelForInbox .company-details {
+  flex-grow: 1;
+  margin-left: 15px;
+}
+
+.leftPanelForInbox .company-name {
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.leftPanelForInbox .last-conversation {
+  font-size: 14px;
+  color: #777;
+}
+
+.leftPanelForInbox .date {
+  font-size: 12px;
+  color: #aaa;
+}
+
+.leftPanelForInbox .unread-count {
+  background-color: #ffcb11 !important;
+  padding: 5px;
+  border-radius: 12px;
+  display: inline-block;
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 100%;
+  letter-spacing: -1%;
+  text-align: center;
+  color: #141c25;
+}
+
+/* ======================================== */
+/* RIGHT PANEL: Conversation View          */
+/* ======================================== */
+
+/* Right Panel: Conversation View */
+.rightPanelForInbox {
+  width: 100%;
+  max-width: calc(100% - 400px);
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+  overflow-y: auto;
+}
+
+/* Header in Right Panel */
+.rightPanelForInbox .header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.rightPanelForInbox .company-info {
+  display: flex;
+  align-items: center;
+}
+
+.rightPanelForInbox .company-logo {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+  color: #141c25;
+}
+
+.rightPanelForInbox .company-name {
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 160%;
+  letter-spacing: -1%;
+}
+
+.rightPanelForInbox .header-icons i {
+  margin-left: 20px;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+/* Message Body */
+.rightPanelForInbox .message-body {
+  flex-grow: 1;
+  padding: 10px;
+  overflow-y: auto;
+}
+
+.rightPanelForInbox .conversation-date {
+  text-align: center;
+  font-size: 14px;
+  color: #aaa;
+  margin: 10px 0;
+}
+
+/* Company Message */
+.rightPanelForInbox .company-message,
+.rightPanelForInbox .user-message {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  max-width: 70%;
+}
+
+.company-messageBody {
+  background-color: #200124;
+  padding: 10px 15px;
+  border-top-right-radius: 16px;
+  border-top-left-radius: 16px;
+  border-bottom-right-radius: 16px;
+  border-bottom-left-radius: 2px;
+}
+
+.user-messageBody {
+  background-color: #edeff2;
+  padding: 10px 15px;
+  border-top-right-radius: 16px;
+  border-top-left-radius: 16px;
+  border-bottom-right-radius: 2px;
+  border-bottom-left-radius: 16px;
+}
+
+.rightPanelForInbox .user-message {
+  margin-left: auto;
+}
+
+.rightPanelForInbox .company-message .message-sender,
+.rightPanelForInbox .user-message .message-sender {
+  display: flex;
+  align-items: center;
+  margin-right: 10px;
+}
+
+.rightPanelForInbox .message-sender img {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+}
+
+.rightPanelForInbox .message-sender .sender-name {
+  font-weight: bold;
+  margin-right: 8px;
+}
+
+.rightPanelForInbox .message-text {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 160%;
+  letter-spacing: -1%;
+  color: #200124;
+}
+
+.rightPanelForInbox .message-time {
+  font-size: 12px;
+  color: #aaa;
+  margin-left: 10px;
+}
+
+/* Message Text Area */
+.rightPanelForInbox .message-textarea {
+  margin-top: 20px;
+}
+
+.rightPanelForInbox .message-textarea textarea {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 16px;
+  border: 1px solid #ccc;
+  resize: none;
+  min-height: 60px;
+  background-color: #f6f7f8;
+}
+
+/* Attachment & Send Options */
+.rightPanelForInbox .options {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.rightPanelForInbox .left-options i {
+  margin-right: 15px;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.rightPanelForInbox .right-options .send-button {
+  padding: 8px 16px;
+  font-size: 16px;
+  background-color: #ffcb11;
+  color: #200124;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+.rightPanelForInbox .right-options .send-button:hover {
+  background-color: #0056b3;
+}
+
+/* Back Button Styling for Mobile */
+.rightPanelForInbox .back-button {
+  position: absolute;
+  top: 45px;
+  left: 20px;
+  background-color: transparent;
+  border: none;
+  font-size: 24px;
+  color: #007bff;
+  cursor: pointer;
+  display: none;
+}
+
+/* Mobile & Tablet Design: Only Left Panel visible */
+@media (max-width: 768px) {
+
+  .forSmall{
+  display: block;
+}
+.forLarge{
+  display: none;
+}
+
+
+  .inbox-container {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .leftPanelForInbox {
+    width: 100%;
+    max-width: none;
+    height: auto;
+    overflow-y: auto;
+  }
+
+  .rightPanelForInbox {
+    display: none;
+    /* Initially hide right panel on mobile */
+  }
+
+  .rightPanelForInbox.active {
+    display: block;
+    /* Show right panel when a company is clicked */
+  }
+
+  .rightPanelForInbox .header-icons i {
+    font-size: 20px;
+  }
+
+  .rightPanelForInbox .message-textarea textarea {
+    min-height: 100px;
+  }
+
+  .leftPanelForInbox .company-item {
+    display: block;
+    padding: 10px 15px;
+  }
+
+  .leftPanelForInbox .search-bar input {
+    font-size: 14px;
+  }
+
+  .rightPanelForInbox {
+    width: 100%;
+    max-width: 100%;
+    /* Adjust for the left panel */
+  }
+}
+
+/* inbox css */
+
+/* ............. */
+/* ...profile.... */
+/* ............. */
+
+.left-panel .profile .badge {
+  background-color: #167ee61f;
+  width: 195px;
+  color: #167ee6;
+}
+
+.left-panel .profile .profileEdit h2 {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.left-panel .profile .editBio {
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 160%;
+  letter-spacing: -1%;
+  text-decoration: underline;
+  text-decoration-style: solid;
+  text-decoration-thickness: 0%;
+  text-decoration-skip-ink: auto;
+  color: #141c25;
+}
+
+.profileIngo {
+  cursor: pointer;
+}
+
+.profileIngo h4 {
+  font-weight: 600;
+  font-size: 15px;
+  line-height: 150%;
+  letter-spacing: -1%;
+  color: #141c25;
+}
+
+.profileIngo p {
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 160%;
+  letter-spacing: -1%;
+  color: #141c25;
+}
+
+.profileIngo a {
+  color: #141c25;
+}
+
+.jobdashboard h2 {
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 150%;
+  letter-spacing: -1%;
+  color: #141c25;
+}
+
+.jobdashboard h1 {
+  font-weight: 600;
+  font-size: 28px;
+  line-height: 100%;
+  letter-spacing: -2%;
+  color: #141c25;
+}
+
+.jobdashboard p {
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 160%;
+  letter-spacing: -1%;
+  color: #667080;
+}
+
+.jobdashboard .col-4 {
+  width: 32%;
+  padding: 15px;
+  border-radius: 4px;
+  background-color: #fff;
+}
+
+.profileOverview {
+  padding: 15px 10px;
+  border-bottom: 1px solid #edeff2;
+}
+
+.profileOverview h3 {
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 160%;
+  letter-spacing: -1%;
+  color: #141c25;
+}
+
+.profileOverview .btn {
+  border: 1px solid #dadada;
+  border-radius: 12px;
+}
+
+.profileCard h3 {
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 160%;
+  letter-spacing: -1%;
+  color: #141c25;
+}
+
+.profileCard h4 {
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 160%;
+  letter-spacing: -1%;
+  color: #141c25;
+}
+
+.profileSummery h4 {
+  font-weight: 600;
+  font-size: 15px;
+  line-height: 160%;
+  letter-spacing: -1%;
+  color: #141c25;
+}
+
+.profileSummery ul li {
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 160%;
+  color: #141c25;
+}
+.modal .modal-title{
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 160%;
+  color: #141C25;
+}
+.modal .form-label{
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 160%;
+  letter-spacing: -1%;
+  color: #141C25;
+}
+
+.modal .btn-primary{
+  background-color: #FFCB11;
+  color:#141C25 ;
+  border: none;
+}
+/* ............. */
+/* ...profile.... */
+/* ............. */
+
+
+
+/* ........... */
+/*..notification..*/
+/* .............. */
+.notificationContent h2{
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 100%;
+  letter-spacing: -2%;
+  color: #141C25;
+}
+
+.notificationContent h6{
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 160%;
+  letter-spacing: -1%;
+  color: #484f5b;
+  margin-bottom: 20px;
+}
+
+/* Scoped to notificationContent section */
+.notificationContent .container {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Notification list styling */
+.notificationContent .notification-list {
+  list-style: none;
+  padding: 0;
+}
+
+/* Notification item styling */
+.notificationContent .notification-item {
+  display: flex;
+  align-items: center;
+  padding: 15px;
+  background-color: #fff;
+  position: relative;
+  border-bottom: 1px solid #E5E7EB;
+}
+
+.notificationContent .notification-item:hover {
+  background-color: #f1f1f1;
+}
+
+/* Specific background color for different notification types */
+.notificationContent .notification-viewed {
+  background-color: #FFCB111A; 
+}
+
+.notificationContent .notification-accepted {
+  background-color: #fff; 
+}
+
+/* Notification icon styling */
+.notificationContent .notification-icon img {
+  margin-right: 15px;
+}
+
+/* Notification content styling */
+.notificationContent .notification-content {
+  flex-grow: 1;
+}
+
+.notificationContent .notification-content p {
+  font-size: 14px;
+  margin: 0;
+}
+
+.notificationContent .notification-content .time {
+  font-size: 12px;
+  color: #6c757d;
+}
+
+/* Three dots for more options */
+.notificationContent .more-options {
+  font-size: 20px;
+  color: #6c757d;
+  cursor: pointer;
+}
+
+/* Show more link styling */
+.notificationContent .show-more a {
+  display: block;
+  text-decoration: none;
+  padding: 10px 0;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 150%;
+  letter-spacing: -1%;
+  text-align: center;
+  color: #141C25;
+}
+
+.notificationContent .show-more a:hover {
+  text-decoration: underline;
+}
+/* ........... */
+/*..notification..*/
+/* .............. */
+
+
+
+.userOptionforMobile{
+  display: none
+}
+
+
+
+
+
+/* .................. */
+/* ..profile option..*/
+/* .................. */
+
+.profileOptionLeftside {
+  border-radius: 10px;
+}
+
+.userOptionforMobileOptions {
+  display: block;
+  padding: 15px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 0.3s;
+  border-radius: 5px;
+  white-space: nowrap; 
+}
+
+.userOptionforMobileOptions:hover {
+  background-color: #e9ecf1;
+}
+
+.userOptionforMobileOptions .d-flex {
+  display: flex;
+  align-items: center;
+  justify-content: start; 
+}
+
+.userOptionforMobileOptions .icon img {
+  width: 20px; 
+  margin-right: 15px;
+}
+
+.userOptionforMobileOptions .text {
+  font-size: 16px;
+  font-weight: 500;
+  color: #4a4a4a; 
+  white-space: nowrap;
+}
+
+.userOptionforMobileOptions:hover .text {
+  color: #1e2a47; 
+}
+
+.userOptionforMobileOptionsActive{
+  background-color: #fff;
+}
+.userOptionforMobileOptionsActive .text{
+  color: #141C25;
+  font-weight: 600;
+}
+
+.profileOptionRight h1{
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 100%;
+  letter-spacing: -2%;
+  color: #141C25;
+}
+.profileOptionRight p{
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 160%;
+  letter-spacing: -1%;
+  color: #484F5B;
+}
+
+/* .................. */
+/* ..profile option..*/
+/* .................. */
+
+
+
+
+/* ....................... */
+/* ....My Application..... */
+/* ....................... */
+.appliedJobs {
+  width: 100%;
+}
+
+.appliedJobs .appliedJobs-table {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.appliedJobs .appliedJobs-header {
+  display: grid;
+  grid-template-columns: 2fr 2fr 1.5fr 1fr 0.5fr;
+  font-weight: 600;
+  color: #6e6e6e;
+  padding: 12px 16px;
+  background: #f9f9f9;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.appliedJobs .appliedJobs-row {
+  display: grid;
+  grid-template-columns: 2fr 2fr 1.5fr 1fr 0.5fr;
+  align-items: center;
+  padding: 14px 16px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+  font-size: 14px;
+}
+
+.appliedJobs .company {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.appliedJobs .company img {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+  border-radius: 6px;
+}
+
+.appliedJobs .position,
+.appliedJobs .date,
+.appliedJobs .status,
+.appliedJobs .action {
+  color: #333;
+}
+
+.appliedJobs .status {
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-weight: 600;
+  text-align: center;
+  font-size: 13px;
+  width: fit-content;
+}
+
+.appliedJobs .status.accepted {
+  background-color: #008A22;
+  color: #fff;
+}
+
+.appliedJobs .status.pending {
+  background-color: #EDEFF2;
+  color: #555;
+}
+
+
+.appliedJobs-row span{
+  color: #141C25;
+  font-weight: 600;
+}
+
+.appliedJobs .action {
+  font-size: 18px;
+  text-align: center;
+  cursor: pointer;
+}
+
+
+.appliedJobs .action {
+  position: relative;
+}
+
+.appliedJobs .action-menu-trigger {
+  cursor: pointer;
+  font-size: 20px;
+}
+
+.appliedJobs .action-dropdown {
+  position: absolute;
+  top: 24px;
+  right: 0;
+  background-color: #ffffff;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+  border-radius: 8px;
+  display: none;
+  flex-direction: column;
+  min-width: 150px;
+  z-index: 100;
+}
+
+.appliedJobs .action-dropdown div {
+  padding: 10px 16px;
+  font-size: 14px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.appliedJobs .action-dropdown div:hover {
+  background-color: #f0f0f0;
+}
+
+/* ....................... */
+/* ....My Application..... */
+/* ....................... */
+
+
+
+
+
+/* ....................... */
+/* ....Profile viewer..... */
+/* ....................... */
+
+
+.profileViewer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.profileViewer .profileViewer-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #fff;
+  padding: 12px 16px;
+  border-radius: 10px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+  font-size: 14px;
+}
+
+.profileViewer .company {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 60%;
+}
+
+.profileViewer .company img {
+  object-fit: contain;
+  border-radius: 8px;
+}
+
+.profileViewer .company-info {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+}
+
+.profileViewer .company-info span {
+  font-size: 14px;
+  color: #141C25;
+}
+
+.profileViewer .company-info span:nth-child(1) {
+  font-weight: 600;
+}
+
+.profileViewer .company-info span:nth-child(2) {
+  color: #6e6e6e;
+}
+
+.profileViewer .time {
+  font-size: 12px;
+  color: #999;
+  width: 20%;
+  text-align: right;
+}
+
+.profileViewer .profileViewer-row:hover {
+  background-color: #f9f9f9;
+  cursor: pointer;
+}
+/* ....................... */
+/* ....Profile viewer..... */
+/* ....................... */
+
+
+
+
+
+/* ....................... */
+/* ....Subscription..... */
+/* ....................... */
+.subscription {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.subscription-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #fff;
+  padding: 16px;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  width: 100%;
+}
+
+.subscription-info {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.subscription-info h3 {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.subscription-info p {
+  font-size: 14px;
+  color: #6e6e6e;
+}
+
+.view-invoice {
+  padding: 8px 16px;
+  background-color: transparent;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  color: #141c25;
+}
+
+.view-invoice:hover {
+  background-color: #f0f0f0;
+}
+
+.planWrapper{
+  background-color: #f2f2f4;
+}
+.planOne{
+  width: 49%!important;
+  background-color: #fff;
+  padding: 40px;
+  border-radius: 12px;
+}
+.olanDuration{
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 160%;
+  letter-spacing: -1%;
+  color: #141C25;
+}
+.planPrive{
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 100%;
+  letter-spacing: -2%;
+  color: #141C25;
+}
+.plan-features {
+  list-style-type: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+.plan-features li{
+  margin-bottom: 15px;
+  color: #667080;
+}
+.includes-title{
+  font-weight: 600!important;
+  color: #141C25!important;
+}
+/* ....................... */
+/* ....Subscription..... */
+/* ....................... */
+
+
+
+
+
+/* ....................... */
+/* ......settings......... */
+/* ....................... */
+
+.settings select{
+  border: 1px solid #CED2DA;
+  border-radius: 12px;
+  padding: 6px;
+  color: #141C25;
+}
+
+
+/* ....................... */
+/* ......settings......... */
+/* ....................... */
+
+
+
+/* new css */
+.afterContinue {
+  display: none;
+}
+
+
+/* Responsive adjustments */
+/* for mobile */
+@media (max-width: 768px) {
+  .left-panel {
+    display: none;
+  }
+  .profileMain{
+    margin-top: 0!important;
+  }
+  .profileMain .left-panel{
+    display: block;
+    position: relative;
+    top: 0;
+    padding: 0!important;
+  }
+.jobdashboard h2{
+  display: none;
+}
+.jobdashboard .profileRightArrow{
+  display: none;
+}
+.jobdashboard .col-4 {
+    padding: 10px;
+}
+
+  .search-bar input {
+    width: 215px;
+  }
+
+  .rightPanelHeadinfo h2 {
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 100%;
+    letter-spacing: -2%;
+  }
+
+  .mobileLogo {
+    display: block;
+  }
+
+  .companyLogo {
+    display: none;
+  }
+
+  .paddingforMobile {
+    padding-left: 20px;
+  }
+
+  .customWrapper {
+    overflow-x: auto;
+    flex-wrap: wrap;
+    padding: 0 20px;
+  }
+
+  .custom-select {
+    flex: 1;
+    margin-right: 0;
+    margin-bottom: 10px;
+  }
+
+  .filters-container {
+    flex-direction: column;
+  }
+
+  .job-listings-container {
+    flex-direction: column;
+  }
+
+  .job-options {
+    width: 100%;
+    margin-right: 0;
+  }
+
+  .job-details {
+    width: 100%;
+    margin-top: 20px;
+  }
+
+  /* Hide the job details section on mobile */
+  .job-details {
+    display: none;
+  }
+
+
+
+  /* Modal styles */
+  .job-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+
+  .job-modal .modal-content {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    width: 90%;
+    max-width: 500px;
+    max-height: 80vh;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    overflow-y: auto;
+  }
+
+  .job-modal .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .job-modal .modal-title h3 {
+    font-size: 20px;
+  }
+
+  .close-btn {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+  }
+
+  .modal-body {
+    margin-top: 10px;
+  }
+
+  .modal-body h4 {
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+
+  .job-type {
+    margin: 10px 0;
+  }
+
+  .job-requirements li {
+    margin-bottom: 10px;
+  }
+
+  .apply-btn,
+  .save-btn {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    font-size: 16px;
+  }
+
+  .save-btn img {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+  }
+
+  .easy-apply-modal .modal-content {
+    width: 90%;
+  }
+
+  .notification {
+    bottom: 10px;
+    min-width: 200px;
+  }
+
+  .profileEdit{
+    display: none;
+  }
+  .profile{
+    text-align: center;
+    padding-top: 60px;
+  }
+  .viewoProfileforSmallDevice{
+    display: block;
+  }
+  .viewoProfileforSmallDevice a{
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 150%;
+  letter-spacing: -1%;
+  text-align: center;
+  color: #141C25;
+  text-decoration: none;
+  }
+
+
+
+.userOptionforMobile {
+  display: block;
+}
+
+.userOptionforMobileOptions {
+  display: block;
+  padding: 20px;
+  cursor: pointer;
+  border-bottom: 1px solid #EDEFF2;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 150%;
+  letter-spacing: -1%;
+  text-align: center;
+  color: #141C25;
+
+}
+
+.userOptionforMobileOptions:hover {
+  background-color: #EDEFF2;
+}
+
+.userOptionforMobileOptions img {
+  margin-right: 10px;
+}
+
+.userOptionforMobileOptions .d-flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.left-side {
+  display: flex;
+  align-items: center;
+}
+
+.right-side {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.smallTop a{
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 160%;
+  letter-spacing: -1%;
+  color:#141C25 ;
+  padding: 20px 10px;
+  display: block;
+}
+
+
+  .appliedJobs .appliedJobs-header {
+    display: none;
+  }
+
+  .appliedJobs .appliedJobs-row {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    background-color: #ffffff;
+    border-radius: 14px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    padding: 16px;
+    gap: 8px;
+    position: relative;
+  }
+
+  .appliedJobs .company {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+  }
+
+  .appliedJobs .company img {
+    width: 38px;
+    height: 38px;
+    border-radius: 8px;
+    object-fit: cover;
+  }
+
+  .appliedJobs .company span {
+    font-weight: 600;
+    font-size: 15px;
+    color: #141C25;
+  }
+
+.appliedJobs .position{
+      margin-left: 50px;
+}
+  .appliedJobs .date {
+    font-size: 13px;
+    color: #666;
+    margin-left: 50px;
+  }
+
+  .appliedJobs .status {
+    margin-left: auto;
+    font-size: 13px;
+    padding: 6px 16px;
+    border-radius: 20px;
+  }
+
+  .appliedJobs .action {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+  }
+
+  .appliedJobs .action-dropdown {
+    bottom: -90px;
+    top: auto;
+    right: 0;
+  }
+
+  .planOne{
+  width: 100%!important;
+  margin-bottom: 20px;
+}
+.planWrapper {
+    padding: 0 15px;
+}
+
+}
+
+/* for tablet */
+@media (min-width: 577px) and (max-width: 768px) {
+  .search-bar input {
+    width: 300px;
+  }
+}
+
+/* for desktop */
+@media (min-width: 769px) {
+  .container-main {
+    display: flex;
+    gap: 20px;
+  }
+  .mobileLogo {
+    display: none;
+  }
+  .companyLogo {
+    display: block;
+  }
+  .viewoProfileforSmallDevice{
+    display: none;
+  }
+
+}

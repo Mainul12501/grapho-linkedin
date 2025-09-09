@@ -71,6 +71,14 @@ return new class extends Migration
             $table->string('district')->nullable();
             $table->string('post_office')->nullable();
             $table->string('postal_code')->nullable();
+            $table
+                ->tinyInteger('is_profile_updated')
+                ->default(0)
+                ->nullable();
+            $table
+                ->text('device_token')
+                ->nullable()
+                ->unique();
             $table->timestamps();
         });
 

@@ -44,8 +44,130 @@ class EmployeeViewController extends Controller
         return ViewHelper::checkViewForApi($data, 'frontend.employee.home.home');
         return \view('frontend.employee.home.home');
     }
+
     public function showJobs(Request $request)
     {
+        $jobTasks = JobTask::query()->with(['employerCompany.employerCompanyCategory', 'jobLocationType', 'industry']);
+
+        // Get filters array
+        $filters = $request->input('filters', []);
+
+        // Search by text (job title, company name, or industry name)
+        if ($request->has('search_text') && !empty($request->search_text)) {
+            $searchText = $request->search_text;
+
+            $jobTasks = $jobTasks->where(function($query) use ($searchText) {
+                $query->where('job_title', 'like', '%'.$searchText.'%')
+                    ->orWhereHas('employerCompany', function($q) use ($searchText) {
+                        $q->where('name', 'like', '%'.$searchText.'%');
+                    })
+                    ->orWhereHas('industry', function($q) use ($searchText) {
+                        $q->where('name', 'like', '%'.$searchText.'%');
+                    });
+            });
+        }
+
+        // Filter by Date Posted (new filter)
+        if (isset($filters['date_posted']) && !empty($filters['date_posted'])) {
+            $datePostedFilter = json_decode($filters['date_posted'], true);
+
+            if (is_array($datePostedFilter) && !empty($datePostedFilter)) {
+                // Get the minimum days from the selected options (most restrictive)
+                $minDays = min(array_map('intval', $datePostedFilter));
+
+                $jobTasks = $jobTasks->where('created_at', '>=', now()->subDays($minDays));
+            }
+        }
+
+        // Filter by Company Type (via EmployerCompanyCategory slug)
+        if (isset($filters['company_type']) && !empty($filters['company_type'])) {
+            $companyTypes = json_decode($filters['company_type'], true);
+
+            if (is_array($companyTypes) && !empty($companyTypes)) {
+                $jobTasks = $jobTasks->whereHas('employerCompany.employerCompanyCategory', function ($q) use ($companyTypes) {
+                    $q->whereIn('slug', $companyTypes);
+                });
+            }
+        }
+
+        // Filter by District (search in employer company address)
+        if (isset($filters['district']) && !empty($filters['district'])) {
+            $districts = json_decode($filters['district'], true);
+
+            if (is_array($districts) && !empty($districts)) {
+                $jobTasks = $jobTasks->whereHas('employerCompany', function ($q) use ($districts) {
+                    $q->where(function($query) use ($districts) {
+                        foreach ($districts as $district) {
+                            $query->orWhere('address', 'like', '%'.$district.'%');
+                        }
+                    });
+                });
+            }
+        }
+
+        // Filter by Job Location Type
+        if (isset($filters['job_location_type']) && !empty($filters['job_location_type'])) {
+            $jobLocationTypes = json_decode($filters['job_location_type'], true);
+
+            if (is_array($jobLocationTypes) && !empty($jobLocationTypes)) {
+                $jobTasks = $jobTasks->whereHas('jobLocationType', function ($q) use ($jobLocationTypes) {
+                    $q->whereIn('slug', $jobLocationTypes);
+                });
+            }
+        }
+
+        // Filter by Industry
+        if (isset($filters['industry']) && !empty($filters['industry'])) {
+            $industries = json_decode($filters['industry'], true);
+
+            if (is_array($industries) && !empty($industries)) {
+                $jobTasks = $jobTasks->whereHas('industry', function ($q) use ($industries) {
+                    $q->whereIn('slug', $industries);
+                });
+            }
+        }
+
+        // Filter by Company
+        if (isset($filters['company']) && !empty($filters['company'])) {
+            $companies = json_decode($filters['company'], true);
+
+            if (is_array($companies) && !empty($companies)) {
+                $jobTasks = $jobTasks->whereHas('employerCompany', function ($q) use ($companies) {
+                    $q->whereIn('slug', $companies);
+                });
+            }
+        }
+
+        $jobTasks = $jobTasks->where(['status' => 1])->latest()->get();
+
+        if (isset($request->job_task)) {
+            $singleJobTask = JobTask::find($request->job_task);
+        } else {
+            $singleJobTask = $jobTasks->first() ?? null;
+        }
+
+        $getJobSaveApplyInfo = null;
+        if ($singleJobTask) {
+            $getJobSaveApplyInfo = ViewHelper::getJobSaveApplyInfo($singleJobTask->id);
+        }
+
+        $data = [
+            'jobTasks' => $jobTasks,
+            'singleJobTask' => $singleJobTask,
+            'isSaved' => $getJobSaveApplyInfo['isSaved'] ?? false,
+            'isApplied' => $getJobSaveApplyInfo['isApplied'] ?? false,
+            'jobLocationTypes' => JobLocationType::where(['status' => 1])->get(['id', 'name', 'slug']),
+            'industries' => Industry::where(['status' => 1])->get(['id', 'name', 'slug']),
+            'companies' => EmployerCompany::where(['status' => 1])->get(['id', 'name', 'slug']),
+            'companyTypes' => EmployerCompanyCategory::where(['status' => 1])->get(['id', 'category_name', 'slug']),
+        ];
+
+        return ViewHelper::checkViewForApi($data, 'frontend.employee.jobs.show-jobs');
+        return \view('frontend.employee.jobs.show-jobs', $data);
+    }
+    public function showJobsBackup(Request $request)
+    {
+        return $request->all();
         $jobTasks = JobTask::query()->with(['employerCompany.employerCompanyCategory', 'jobLocationType', 'industry']);
 
 
@@ -257,7 +379,8 @@ class EmployeeViewController extends Controller
         ]);
         if ($validator->fails())
         {
-            Toastr::error($validator->errors());
+//            Toastr::error($validator->errors());
+            return ViewHelper::returEexceptionError($validator->errors());
             return back();
         }
         if (isset($request->prev_password) && isset($request->new_password))
@@ -272,6 +395,7 @@ class EmployeeViewController extends Controller
             if ($user)
             {
                 $user->profile_title    = $request->profile_title ?? $user->profile_title;
+                $user->name    = $request->name ?? $user->name;
                 $user->email    = $request->email ?? $user->email;
                 $user->mobile    = $request->mobile ?? $user->mobile;
                 $user->website    = $request->website ?? $user->website;
@@ -279,6 +403,7 @@ class EmployeeViewController extends Controller
                 $user->district    = $request->district ?? $user->district;
                 $user->post_office    = $request->post_office ?? $user->post_office;
                 $user->postal_code    = $request->postal_code ?? $user->postal_code;
+                $user->is_open_for_hire    = $request->is_open_for_hire ?? $user->is_open_for_hire;
                 if ($request->hasFile('profile_image'))
                 {
                     $user->profile_image    = imageUpload($request->file('profile_image'), 'profile-image', 'profile_image', 200,200, $user->profile_image ?? null);
@@ -290,8 +415,8 @@ class EmployeeViewController extends Controller
             return ViewHelper::returnResponseFromPostRequest(true,'Profile Info updated successfully.');
         } catch (\Exception $exception)
         {
-            Toastr::error($exception->getMessage());
-            return ViewHelper::returnResponseFromPostRequest(true, $exception->getMessage());
+//            Toastr::error($exception->getMessage());
+            return ViewHelper::returnResponseFromPostRequest(false, $exception->getMessage());
         }
         return back();
     }

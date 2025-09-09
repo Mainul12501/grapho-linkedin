@@ -28,7 +28,7 @@ class ViewHelper
                     return response()->json(['status' => 'empty', 'msg' => 'No Data found.'], 200);
                 } elseif (isset($jsonErrorMessage))
                 {
-                    return response()->json($jsonErrorMessage , 400);
+                    return response()->json($jsonErrorMessage , 422);
                 }
                 return response()->json($data, 200);
 //            }
@@ -97,7 +97,7 @@ class ViewHelper
     {
         if (str()->contains(url()->current(), '/api/') || \request()->ajax())
         {
-            return response()->json(['error' => $message, 'status' => 'error'], 400);
+            return response()->json(['error' => $message, 'status' => 'error'], 422);
         } else {
             Toastr::error($message);
             return back()->with('error', $message);
@@ -105,12 +105,12 @@ class ViewHelper
     }
     public static function returnRedirectWithMessage ($route, $messageType = 'success', $message = null)
     {
-        if (str()->contains(url()->current(), '/api/'))
+        if (str()->contains(url()->current(), '/api/') || \request()->ajax())
         {
             if ($messageType == 'error')
-            return response()->json(['error' => $message, 'status' => 'error'], 400);
+            return response()->json(['error' => $message, 'status' => 'error'], 422);
                 else
-            return response()->json(['success' => $message, 'status' => 'success'], 400);
+            return response()->json(['success' => $message, 'status' => 'success'], 200);
         } else {
             $messageType == 'error' ? Toastr::error($message) : Toastr::success($message);
             return redirect($route);
@@ -121,9 +121,9 @@ class ViewHelper
     {
         if (str()->contains(url()->current(), '/api/') || \request()->ajax())
         {
-            return response()->json(['status' => 'success', 'msg' => $message]);
+            return response()->json(['status' => $status  ? 'success' : 'error', 'msg' => $message]);
         } else {
-            Toastr::success($message);
+            $status ? Toastr::success($message) : Toastr::error($message);
             return back();
         }
     }
