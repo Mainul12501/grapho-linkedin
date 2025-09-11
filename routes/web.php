@@ -29,7 +29,7 @@ Route::post('buy-subscription/{subscriptionPlan}', [FrontendViewController::clas
 
 Route::get('get-job-details/{id}', [JobTaskController::class, 'getJobDetails'])->name('get-job-details');
 
-Route::prefix('auth')->name('auth.')->group(function (){
+Route::prefix('auth')->name('auth.')->middleware('auth-page')->group(function (){
     Route::get('select-auth-method', [CustomLoginController::class, 'selectAuthMethod'])->name('select-auth-method');
     Route::get('set-registration-role', [CustomLoginController::class, 'setRegistrationRole'])->name('set-registration-role');
     Route::get('set-login-role', [CustomLoginController::class, 'setLoginRole'])->name('set-login-role');
@@ -115,6 +115,7 @@ Route::middleware([
         Route::get('my-notifications', [EmployeeViewController::class, 'myNotifications'])->name('my-notifications');
         Route::get('save-job/{jobTask}', [EmployeeViewController::class, 'saveJob'])->name('save-job');
         Route::get('delete-saved-job/{jobTask}', [EmployeeViewController::class, 'deleteSaveJob'])->name('delete-saved-job');
+        Route::get('change-job-active-status/{status}', [EmployeeViewController::class, 'changeJobActiveStatus'])->name('change-job-active-status');
 
         Route::post('apply-job/{jobTask}', [EmployeeViewController::class, 'applyJob'])->name('apply-job');
         Route::post('update-profile/{user}', [EmployeeViewController::class, 'updateProfile'])->name('update-profile');

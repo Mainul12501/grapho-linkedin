@@ -28,6 +28,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'isEmployee'    => \App\Http\Middleware\IsEmployeeMiddleware::class,
             'isEmployer'    => \App\Http\Middleware\IsEmployerMiddleware::class,
             'redirectToHomeOnSessionOut'    => \App\Http\Middleware\RedirectToHomeOnSessionOut::class,
+            'auth-page' => \App\Http\Middleware\AuthPageAuthenticationMiddleware::class,
         ]);
         $middleware->validateCsrfTokens(except: [
             'sslcommerz/*'

@@ -28,7 +28,7 @@
 
         <div class="mb-4">
             <label for="fieldOfStudyInput" class="form-label">Field of study</label>
-            <input type="text" class="form-control" id="fieldOfStudyInput" placeholder="Type here" />
+{{--            <input type="text" class="form-control" id="fieldOfStudyInput" placeholder="Type here" />--}}
             <select name="field_of_study_id" class="form-control select2" id="">
                 <option selected disabled>Select Field of Study</option>
                 @foreach($fieldOfStudies as $fieldOfStudy)

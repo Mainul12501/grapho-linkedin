@@ -19,23 +19,23 @@
         <section class="w-100 profileOptionRight">
 
             <h1 class="forLarge">Saved jobs</h1>
-            <p class="">You have 12 saved jobs</p>
+            <p class="">You have {{ count($savedJobs) ?? 0 }} saved jobs</p>
 
             <div class="right-panel w-100">
                 @forelse($savedJobs as $key => $savedJob)
                     <div class="row jobCard border-bottom">
                         <div class="col-md-1">
-                            <img src="{{ asset(isset($savedJob?->employerCompany?->logo) ? $savedJob?->employerCompany?->logo : '/frontend/employee/images/contentImages/companyLogoFor job.png') }}" alt="Company Logo" class="companyLogo" />
+                            <img src="{{ asset(isset($savedJob?->employerCompany?->logo) ? $savedJob?->employerCompany?->logo : '/frontend/company-vector.jpg') }}" style="height: 65px; border-radius: 50%;" alt="Company Logo" class="companyLogo" />
                         </div>
                         <div class="col-md-11">
                             <div class="jobPosition d-flex justify-content-between">
                                 <div class="d-flex">
-                                    <img style="width: 40px; height: 42px" src="{{ asset(isset($savedJob?->employerCompany?->logo) ? $savedJob?->employerCompany?->logo : '/frontend/employee/images/contentImages/companyLogoFor job.png') }}"
+                                    <img style="width: 40px; height: 42px" src="{{ asset(isset($savedJob?->employerCompany?->logo) ? $savedJob?->employerCompany?->logo : '/frontend/company-vector.jpg') }}"
                                          alt="Company Logo" class="mobileLogo" />
 
                                     <div class="paddingforMobile">
-                                        <h3>{{ $savedJob->job_title ?? 'Senior Officer, Corporate Banking' }}</h3>
-                                        <p>{{ $savedJob->employerCompany?->name ?? 'United Commercial Bank PLC' }}</p>
+                                        <h3>{{ $savedJob->job_title ?? 'Job Title' }}</h3>
+                                        <p>{{ $savedJob->employerCompany?->name ?? 'Company Name' }}</p>
                                     </div>
                                 </div>
                                 <div>
@@ -57,8 +57,8 @@
                                 </div>
                             </div>
                             <div class="jobTypeBtn">
-                                <button class="btn">{{ $savedJob?->jobType?->name ?? 'Full Time' }}</button>
-                                <button class="btn">{{ $savedJob?->jobLocationType?->name ?? 'On-Site' }}</button>
+                                <button class="btn">{{ $savedJob?->jobType?->name ?? 'Job Type' }}</button>
+                                <button class="btn">{{ $savedJob?->jobLocationType?->name ?? 'Job Location Type' }}</button>
 {{--                                <button class="btn">Day Shift</button>--}}
                             </div>
                             <div class="jobDesc">
@@ -71,7 +71,7 @@
                                 @endif
 
                             </div>
-                            <div class="jobApply d-flex justify-content-between">
+                            <div class="jobApply d-flex justify-content-between mt-2">
                                 <div>
                                     @if(!$savedJob->isApplied)
                                         <form action="{{ route('employee.apply-job', $savedJob->id) }}" method="post">

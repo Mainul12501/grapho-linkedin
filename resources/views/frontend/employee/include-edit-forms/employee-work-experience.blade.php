@@ -22,11 +22,18 @@
             <label for="ediCompanyInput" class="form-label">Company/Organization</label>
             <input type="text" class="form-control" name="company_name" value="{{ $data->company_name }}" id="ediCompanyInput" placeholder="Type here" />
 
-            <label for="editCompanyLogo" class="form-label">Company/Organization Logo</label>
-            <input type="file" class="form-control" name="company_logo" id="editCompanyLogo" accept="image/*" />
-            <span id="printCompanyLogo">
+            <div class="mt-3 row">
+                <div class="col-8">
+                    <label for="editCompanyLogo" class="form-label">Company/Organization Logo</label>
+                    <input type="file" class="form-control" name="company_logo" id="editCompanyLogo" accept="image/*" />
+
+                </div>
+                <div class="col-4 mt-2">
+                    <span id="printCompanyLogo">
                 <img src="{{ asset($data->company_logo) }}" alt="" style="width: 80px">
             </span>
+                </div>
+            </div>
         </div>
 
         <div class="mb-4">

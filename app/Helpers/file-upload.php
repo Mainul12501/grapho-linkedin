@@ -4,7 +4,7 @@ use Intervention\Image\Facades\Image as Image;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Carbon;
 
-function imageUpload ($image, $imageDirectory, $imageNameString = null, $width = null, $height = null, $modelFileUrl = null)
+function imageUpload ($image, $imageDirectory, $imageNameString = null, $width = null, $height = null, $modelFileUrl = null, $isDragCropString = false)
 {
     if ($image)
     {
@@ -20,14 +20,27 @@ function imageUpload ($image, $imageDirectory, $imageNameString = null, $width =
         {
             File::makeDirectory($folderPath, 0777, true, true);
         }
-        $imageName = (isset($imageNameString) ? $imageNameString : '').'-'.time().rand(10,1000).'.'.$image->getClientOriginalExtension();
-        $imageUrl = 'backend/assets/uploaded-files/'.$imageDirectory.'/'.$imageName;
-        if ($image->getClientOriginalExtension() == 'ico')
+        if ($isDragCropString)
         {
-            $image->move($imageDirectory, $imageName);
+            // Remove data:image/jpeg;base64, prefix
+            $imageData = substr($image, strpos($image, ',') + 1);
+            $imageData = base64_decode($imageData);
+            // Generate unique filename
+            $imageName = (isset($imageNameString) ? $imageNameString : '').'-'.time().rand(10,1000).'.jpg';
+            $imageUrl = 'backend/assets/uploaded-files/'.$imageDirectory.'/'.$imageName;
+            // Save the file
+            file_put_contents(public_path($imageUrl), $imageData);
         } else {
-            Image::make($image)->resize($width ?? '', $height ?? '')->encode('webp',65)->save($imageUrl, 65);
+            $imageName = (isset($imageNameString) ? $imageNameString : '').'-'.time().rand(10,1000).'.'.$image->getClientOriginalExtension();
+            $imageUrl = 'backend/assets/uploaded-files/'.$imageDirectory.'/'.$imageName;
+            if ($image->getClientOriginalExtension() == 'ico')
+            {
+                $image->move($imageDirectory, $imageName);
+            } else {
+                Image::make($image)->resize($width ?? '', $height ?? '')->encode('webp',65)->save($imageUrl, 65);
+            }
         }
+
     } else {
         $imageUrl = $modelFileUrl;
     }
@@ -103,6 +116,34 @@ function imageUploadOnBucket ($image, $imageDirectory, $imageNameString = null, 
     return $imageUrl;
 }
 
+function imageUploadDragDropCrop($base64String, $imageDirectory, $imageNameString = null, $modelFileUrl = null)
+{
+    if ($base64String)
+    {
+        if (isset($modelFileUrl))
+        {
+            if (file_exists($modelFileUrl))
+            {
+                unlink($modelFileUrl);
+            }
+        }
+        $folderPath = public_path('backend/assets/uploaded-files/'.rtrim($imageDirectory));
+        if (!File::isDirectory($folderPath))
+        {
+            File::makeDirectory($folderPath, 0777, true, true);
+        }
+    }
+    // Remove data:image/jpeg;base64, prefix
+    $imageData = substr($base64String, strpos($base64String, ',') + 1);
+    $imageData = base64_decode($imageData);
+
+    // Generate unique filename
+    $filename = 'profile_' . time() . '_' . uniqid() . '.jpg';
+    $path = '/frontend/auth/'.$filename;
+    // Save the file
+    file_put_contents(public_path($path), $imageData);
+    return $path;
+}
 
 function userCertificateUpload ($fileObject, $directory, $nameString = null)
 {

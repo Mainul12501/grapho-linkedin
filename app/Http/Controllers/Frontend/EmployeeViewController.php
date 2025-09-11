@@ -16,6 +16,7 @@ use App\Models\Backend\FieldOfStudy;
 use App\Models\Backend\Industry;
 use App\Models\Backend\JobLocationType;
 use App\Models\Backend\JobTask;
+use App\Models\Backend\JobType;
 use App\Models\Backend\SubscriptionPlan;
 use App\Models\Backend\UniversityName;
 use App\Models\Backend\UserProfileView;
@@ -33,13 +34,24 @@ class EmployeeViewController extends Controller
     protected $data = [];
     public function employeeHome()
     {
+        $topJobsForEmployee = JobTask::where(['status' => 1])->take(5)->latest()->get();
+        foreach ($topJobsForEmployee as $job)
+        {
+            $job->isSaved    = ViewHelper::getJobSaveApplyInfo($job->id)['isSaved'] ?? false;
+            $job->isApplied    = ViewHelper::getJobSaveApplyInfo($job->id)['isApplied'] ?? false;
+        }
+        $moreJobsForEmployee = JobTask::where(['status' => 1])->take(5)->inRandomOrder()->get();
+        foreach ($moreJobsForEmployee as $jobx)
+        {
+            $jobx->isSaved    = ViewHelper::getJobSaveApplyInfo($jobx->id)['isSaved'] ?? false;
+            $jobx->isApplied    = ViewHelper::getJobSaveApplyInfo($jobx->id)['isApplied'] ?? false;
+        }
         $data = [
             'totalSavedJobs'    => auth()->user()->employeeSavedJobs()->count() ?? 0,
             'totalAppliedApplications'    => auth()->user()->employeeAppliedJobs()->count() ?? 0,
             'totalViewedEmployers'    => auth()->user()->viewedEmployers()->count() ?? 0,
-            'topJobsForEmployee'    => JobTask::where([
-                'status' => 1
-            ])->take(5)->latest()->get(),
+            'topJobsForEmployee'    => $topJobsForEmployee,
+            'moreJobsForEmployee'    => $moreJobsForEmployee,
         ];
         return ViewHelper::checkViewForApi($data, 'frontend.employee.home.home');
         return \view('frontend.employee.home.home');
@@ -47,7 +59,7 @@ class EmployeeViewController extends Controller
 
     public function showJobs(Request $request)
     {
-        $jobTasks = JobTask::query()->with(['employerCompany.employerCompanyCategory', 'jobLocationType', 'industry']);
+        $jobTasks = JobTask::query()->with(['employerCompany.employerCompanyCategory', 'jobLocationType', 'industry', 'jobType']);
 
         // Get filters array
         $filters = $request->input('filters', []);
@@ -116,6 +128,19 @@ class EmployeeViewController extends Controller
             }
         }
 
+        // filter by job types
+        if (isset($filters['job_type']) && !empty($filters['job_type']))
+        {
+            $jobTypes = json_decode($filters['job_type'], true);
+
+            if (is_array($jobTypes) && !empty($jobTypes))
+            {
+                $jobTasks = $jobTasks->whereHas('job_type', function ($j) use ($jobTypes){
+                    $j->whereIn('slug', $jobTypes);
+                });
+            }
+        }
+
         // Filter by Industry
         if (isset($filters['industry']) && !empty($filters['industry'])) {
             $industries = json_decode($filters['industry'], true);
@@ -159,7 +184,7 @@ class EmployeeViewController extends Controller
             'jobLocationTypes' => JobLocationType::where(['status' => 1])->get(['id', 'name', 'slug']),
             'industries' => Industry::where(['status' => 1])->get(['id', 'name', 'slug']),
             'companies' => EmployerCompany::where(['status' => 1])->get(['id', 'name', 'slug']),
-            'companyTypes' => EmployerCompanyCategory::where(['status' => 1])->get(['id', 'category_name', 'slug']),
+            'JobTypes' => JobType::where(['status' => 1])->get(['id', 'name', 'slug']),
         ];
 
         return ViewHelper::checkViewForApi($data, 'frontend.employee.jobs.show-jobs');
@@ -247,6 +272,7 @@ class EmployeeViewController extends Controller
             'savedJobs' => $savedJobs ?? [],
         ] : [];
         return ViewHelper::checkViewForApi($data, 'frontend.employee.jobs.my-saved-jobs');
+        return \view('frontend.employee.jobs.my-saved-jobs');
     }
     public function myApplications()
     {
@@ -258,6 +284,7 @@ class EmployeeViewController extends Controller
             'myApplications'    => $user->appliedJobsWithJobDetails
         ];
         return ViewHelper::checkViewForApi($data, 'frontend.employee.jobs.my-applications');
+        return \view('frontend.employee.jobs.my-applications');
     }
     public function myProfileViewers()
     {
@@ -346,6 +373,14 @@ class EmployeeViewController extends Controller
         }
     }
 
+    public function changeJobActiveStatus($status = 0)
+    {
+        $loggedUser = ViewHelper::loggedUser();
+        $loggedUser->is_open_for_hire   = $status;
+        $loggedUser->save();
+        return ViewHelper::returnSuccessMessage('Your job active status changed successfully.');
+    }
+
     public function applyJob(Request $request, JobTask $jobTask)
     {
 //        return $jobTask;
@@ -372,7 +407,6 @@ class EmployeeViewController extends Controller
     public function updateProfile(Request $request, User $user)
     {
 //        return $request->all();
-//        return $user;
         $validator = Validator::make($request->all(), [
             'email' => $user->email != $request->email ? 'unique:users' : '',
             'mobile' => $user->mobile != $request->mobile ? 'unique:users' : '',
@@ -404,7 +438,11 @@ class EmployeeViewController extends Controller
                 $user->post_office    = $request->post_office ?? $user->post_office;
                 $user->postal_code    = $request->postal_code ?? $user->postal_code;
                 $user->is_open_for_hire    = $request->is_open_for_hire ?? $user->is_open_for_hire;
-                if ($request->hasFile('profile_image'))
+                $user->is_profile_updated    = $request->is_profile_updated ?? $user->is_profile_updated;
+                if (isset($request->cropped_image_data))
+                {
+                    $user->profile_image    = imageUpload($request->cropped_image_data, 'profile-image', 'profile_image', 200,200, $user->profile_image ?? null, true);
+                } elseif ($request->hasFile('profile_image'))
                 {
                     $user->profile_image    = imageUpload($request->file('profile_image'), 'profile-image', 'profile_image', 200,200, $user->profile_image ?? null);
                 }

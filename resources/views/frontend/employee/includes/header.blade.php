@@ -2,11 +2,15 @@
     <div class="container">
         <header class="py-2 px-3 d-flex align-items-center justify-content-between flex-wrap">
             <div class="d-flex">
-                <img src="{{ asset('/') }}frontend/employee/images/header images/Compnay logo.png" alt="Logo" class="logo" />
+                <img src="{{ asset($siteSetting->logo ?? '/frontend/employee/images/header images/Compnay logo.png') }}" alt="Logo" class="logo" style="height: 40px" />
                 <div class="search-bar flex-grow-1 mx-2 position-relative">
-                    <input type="text" class="form-control ps-5" placeholder="Search jobs" />
-                    <img src="{{ asset('/') }}frontend/employee/images/header images/searchIcon.png" alt="Search Icon"
-                         class="position-absolute top-50 start-0 translate-middle-y ps-3" />
+                    <form action="{{ route('employee.show-jobs') }}" method="get" id="headerSearchForm">
+                        <input type="text" class="form-control ps-5" placeholder="Search jobs" name="search_text" />
+                        <img src="{{ asset('/') }}frontend/employee/images/header images/searchIcon.png" onclick="document.getElementById('headerSearchForm').submit()" alt="Search Icon"
+                             class="position-absolute top-50 start-0 translate-middle-y ps-3" />
+                        <input type="submit" style="display: none">
+                    </form>
+
                 </div>
             </div>
             <div>
@@ -40,7 +44,7 @@
                     <div class="profile-container">
                         <a href="#" class="menu-item userProfile" onclick="toggleDropdown()">
                             <div class="d-flex align-items-center">
-                                <img src="{{ asset('/') }}frontend/employee/images/header images/pp.png" alt="" class="me-2" />
+                                <img src="{{ asset($loggedUser->profile_image ?? '/frontend/user-vector-img.jpg') }}" alt="" class="me-2" style="height: 35px; border-radius: 50%" />
                                 {{ auth()->user()->name ?? 'User' }}
                                 <img src="{{ asset('/') }}frontend/employee/images/header images/down arrow.png" alt="" class="ms-2" />
                             </div>

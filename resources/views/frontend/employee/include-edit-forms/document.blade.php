@@ -7,7 +7,12 @@
         <div class="mb-3">
             <label for="documentFileTitleInput" class="form-label">Document Title</label>
             <div class="d-flex align-items-center">
-                <input type="text" name="title" value="{{ $data->title ?? '' }}" class="form-control" id="documentFileTitleInput" />
+{{--                <input type="text" name="title" value="{{ $data->title ?? '' }}" class="form-control" id="documentFileTitleInput" />--}}
+                <select name="title" class="form-control select2" id="">
+                    <option value="CV" {{ $data->title == 'CV' ? 'selected' : '' }}>CV</option>
+                    <option value="NID" {{ $data->title == 'NID' ? 'selected' : '' }}>NID</option>
+                    <option value="Certificate" {{ $data->title == 'Certificate' ? 'selected' : '' }}>Certificate</option>
+                </select>
             </div>
         </div>
 

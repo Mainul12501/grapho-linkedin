@@ -9,20 +9,20 @@
         <aside class="left-panel p-3">
             <div class="card">
                 <div class="card-body profile">
-                    <img src="{{ asset(auth()->user()->profile_image ?? '/frontend/employee/images/header images/Thumbnail.png') }}" alt="Profile" class="rounded-circle mb-2" width="80" />
-                    <h5>{{ auth()->user()->name ?? 'Mohammed Pranto' }}</h5>
+                    <img src="{{ asset(auth()->user()->profile_image ?? '/frontend/user-vector-img.jpg') }}" alt="Profile" class="rounded-circle mb-2" width="80" />
+                    <h5>{{ auth()->user()->name ?? 'User Name' }}</h5>
 
                     <div class="d-flex justify-content-center justify-content-md-start">
                         <div class="dropdown d-flex align-items-center">
                             <span class="badge d-flex align-items-center">
                               <img src="{{ asset('/') }}frontend/employee/images/profile/Ellipse 1.png" alt="" class="me-2" />
-                              <span id="selectedRole">{{ auth()->user()->is_open_for_hire == 1 ? 'Open to Hire' : 'Offline' }}</span>
+                              <span id="selectedRole" >{{ auth()->user()->is_open_for_hire == 1 ? 'Open to Hire' : 'Offline' }}</span>
                             </span>
                             <img src="{{ asset('/') }}frontend/employee/images/profile/downArrow.png" alt="" data-bs-toggle="dropdown" aria-expanded="false" class="ms-2" style="cursor: pointer;" />
 
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="#" onclick="updateRole('Open to Full-time Roles')">Open to Hire</a></li>
-                                <li><a class="dropdown-item" href="#" onclick="updateRole('Open to Part-time Roles')">Offline</a></li>
+                                <li><a class="dropdown-item change-job-active-status" href="javascript:void(0)" data-value="1" data-msg="Open To Hire">Open to Hire</a></li>
+                                <li><a class="dropdown-item change-job-active-status" href="javascript:void(0)" data-value="0" data-msg="Offline">Offline</a></li>
 {{--                                <li><a class="dropdown-item" href="#" onclick="updateRole('Open to Internship')">Open to Internship</a></li>--}}
 {{--                                <li><a class="dropdown-item" href="#" onclick="updateRole('Open to Freelance Projects')">Open to Freelance Projects</a></li>--}}
                             </ul>
@@ -55,8 +55,8 @@
                                     <img src="{{ asset('/') }}frontend/employee/images/profile/location.png" alt="" />
                                 </div>
                                 <div class="col-10">
-                                    <h4 class="mb-0">Location</h4>
-                                    <p>{{ auth()->user()->address ?? 'User Location' }}</p>
+                                    <h4 class="mb-0">Address</h4>
+                                    <p>{{ auth()->user()->address ?? 'User Address' }}</p>
                                 </div>
                             </div>
                         </div>
@@ -105,7 +105,7 @@
                         <!-- Modal for Edit Contact -->
                         <div class="modal fade" id="editContactModal" tabindex="-1" aria-labelledby="editContactModalLabel"
                              aria-hidden="true">
-                            <div class="modal-dialog custom-modal1">
+                            <div class="modal-dialog custom-modal1 modal-lg">
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <h5 class="modal-title" id="editContactModalLabel">
@@ -118,9 +118,10 @@
                                         @csrf
                                         <div class="modal-body">
                                             <!-- Form for editing contact info -->
+
                                                 <div class="mb-3">
-                                                    <label for="locationInput" class="form-label">Location</label>
-                                                    <textarea name="address" class="form-control" id="locationInput" cols="30" rows="5">{!! auth()->user()->address ?? '' !!}</textarea>
+                                                    <label for="nameInput" class="form-label">Name</label>
+                                                    <input type="text" name="name" class="form-control" id="nameInput" value="{!! auth()->user()->name ?? '' !!}" placeholder="Employer Name" />
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="emailInput" class="form-label">Email</label>
@@ -131,14 +132,17 @@
                                                     <input type="tel" class="form-control" id="phoneInput" value="{!! auth()->user()->mobile ?? '' !!}" name="mobile" placeholder="+8801653523779" />
                                                 </div>
                                                 <div class="mb-3">
-                                                    <label for="profileImage" class="form-label">Profile Image</label>
-                                                    <input type="file" class="form-control" id="profileImage" name="profile_image" />
+                                                    <label for="phoneInput" class="form-label">Gender</label>
+                                                    <select name="gender" class="form-control select2" id="">
+                                                        <option value="male" {{ auth()->user()->gender == 'male' ? 'selected' : '' }}>Male</option>
+                                                        <option value="female" {{ auth()->user()->gender == 'female' ? 'selected' : '' }}>Female</option>
+                                                    </select>
                                                 </div>
+                                            <div class="mb-3">
+                                                <label for="locationInput" class="form-label">Address</label>
+                                                <textarea name="address" class="form-control" id="locationInput" cols="30" rows="5">{!! auth()->user()->address ?? '' !!}</textarea>
+                                            </div>
 
-                                                <div class="mb-3">
-                                                    <label for="phoneInput" class="form-label">Website</label>
-                                                    <input type="text" class="form-control" id="phoneInput" name="website" value="{!! auth()->user()->website ?? '' !!}" placeholder="www.devpranto.com" />
-                                                </div>
                                                 <div class="mb-3">
                                                     <label for="divisions" class="form-label">Division</label>
                                                     <select name="division" id="divisions" onchange="divisionsList()" class="form-control w-100" data-placeholder="Select Division">
@@ -168,6 +172,72 @@
                                                     <label for="polic_sta" class="form-label">Post Code</label>
                                                     <input type="text" name="postal_code" value="{{ auth()->user()->postal_code ?? '' }}" class="form-control" />
                                                 </div>
+                                            <div class="mb-3">
+                                                <label for="phoneInput" class="form-label">Website</label>
+                                                <input type="text" class="form-control" id="phoneInput" name="website" value="{!! auth()->user()->website ?? '' !!}" placeholder="www.devpranto.com" />
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="profileImage" class="form-label">Profile Image</label>
+{{--                                                <input type="file" class="form-control" id="profileImage" name="profile_image" />--}}
+
+{{--                                                drag drop crop start--}}
+                                                <!-- Drag & Drop Area -->
+                                                <!-- Drag & Drop Area -->
+                                                <div class="drag-drop-area" id="dragDropArea">
+                                                    <input type="file" class="file-input-hidden" id="profileImage" name="profile_image" accept="image/*">
+                                                    <div class="upload-content" id="uploadContent">
+                                                        <div class="upload-icon">📁</div>
+                                                        <h5>Drag & Drop your image here</h5>
+                                                        <p class="text-muted">or click to browse</p>
+                                                        <small class="text-muted">Supports: JPG, PNG, GIF (Max 5MB)</small>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Image Preview & Cropping Area -->
+                                                <div class="preview-container" id="previewContainer" style="display: none;">
+                                                    <img id="imagePreview" style="max-width: 100%;">
+                                                </div>
+
+                                                <!-- Crop Controls -->
+                                                <div class="crop-controls mt-3" id="cropControls" style="display: none;">
+                                                    <div class="d-flex gap-2 justify-content-center">
+                                                        <button type="button" class="btn btn-outline-secondary btn-sm" id="resetCrop">
+                                                            🔄 Reset
+                                                        </button>
+                                                        <button type="button" class="btn btn-outline-secondary btn-sm" id="rotateLeft">
+                                                            ↺ Rotate Left
+                                                        </button>
+                                                        <button type="button" class="btn btn-outline-secondary btn-sm" id="rotateRight">
+                                                            ↻ Rotate Right
+                                                        </button>
+                                                        <button type="button" class="btn btn-success btn-sm" id="cropImage">
+                                                            ✂️ Crop Image
+                                                        </button>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Final Preview -->
+                                                <div class="text-center mt-3" id="finalPreviewContainer" style="display: none;">
+                                                    <h6>Cropped Image:</h6>
+                                                    <img id="finalPreview" class="final-preview" alt="Cropped preview">
+                                                    <div class="mt-2">
+                                                        <button type="button" class="btn btn-outline-primary btn-sm" id="changeImage">
+                                                            Change Image
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                <!-- Hidden input for cropped image data -->
+                                                <input type="hidden" id="croppedImageData" name="cropped_image_data">
+
+                                                <!-- Add the preview container, crop controls, and final preview divs here -->
+                                                <!-- (Copy from the artifact above) -->
+{{--                                                drag drop crop end--}}
+
+
+
+
+
+                                            </div>
                                         </div>
                                         <div class="modal-footer justify-content-between">
                                         <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
@@ -190,53 +260,57 @@
 
         <!-- Right Scrollable Jobs -->
         <section class="w-100">
+
             <div class="row jobdashboard p-3 justify-content-between">
-                <!-- save jobs -->
+
+                <!-- Saved Jobs -->
                 <div class="col-4 saveJobs">
-                    <div class="row mb-3">
+                    <div class="row">
                         <div class="col-1 me-2">
-                            <img src="{{ asset('/') }}frontend/employee/images/profile/saveJobIcon.png" alt="" />
+                            <img src="{{ asset('/') }}frontend/employee/images/profile/saveJobIcon.png" alt="">
                         </div>
                         <div class="col-8">
                             <h2>My saved jobs</h2>
                         </div>
                         <div class="col-2 text-end">
-                            <img src="{{ asset('/') }}frontend/employee/images/profile/arrow-right 1.png" alt="" class="profileRightArrow" />
+                            <img src="{{ asset('/') }}frontend/employee/images/profile/arrow-right 1.png" alt="" class="profileRightArrow">
                         </div>
                     </div>
-                    <h1>{{ auth()->user()->employeeSavedJobs()->count() ?? 0 }}</h1>
+                    <h1 class="mt-2">{{ auth()->user()->employeeSavedJobs()->count() ?? 0 }}</h1>
                     <p class="mb-0">Jobs saved</p>
                 </div>
-                <!-- My applications -->
+
+                <!-- My Applications -->
                 <div class="col-4 myApplication">
-                    <div class="row mb-3">
+                    <div class="row">
                         <div class="col-1 me-2">
-                            <img src="{{ asset('/') }}frontend/employee/images/profile/myApplicationIcon.png" alt="" />
+                            <img src="{{ asset('/') }}frontend/employee/images/profile/myApplicationIcon.png" alt="">
                         </div>
                         <div class="col-8">
                             <h2>My applications</h2>
                         </div>
                         <div class="col-2 text-end">
-                            <img src="{{ asset('/') }}frontend/employee/images/profile/arrow-right 1.png" alt="" class="profileRightArrow" />
+                            <img src="{{ asset('/') }}frontend/employee/images/profile/arrow-right 1.png" alt="" class="profileRightArrow">
                         </div>
                     </div>
-                    <h1>{{ auth()->user()->employeeAppliedJobs()->count() ?? 0 }}</h1>
+                    <h1 class="mt-2">{{ auth()->user()->employeeAppliedJobs()->count() ?? 0 }}</h1>
                     <p class="mb-0">Applications</p>
                 </div>
-                <!-- Profiler viewers -->
-                <div class="col-4 profileViewer">
-                    <div class="row mb-3">
+
+                <!-- Profile Viewers -->
+                <div class="col-4">
+                    <div class="row">
                         <div class="col-1 me-2">
-                            <img src="{{ asset('/') }}frontend/employee/images/profile/ProfileViewer.png" alt="" />
+                            <img src="{{ asset('/') }}frontend/employee/images/profile/ProfileViewer.png" alt="">
                         </div>
                         <div class="col-8">
                             <h2>My Profile Viewers</h2>
                         </div>
                         <div class="col-2 text-end">
-                            <img src="{{ asset('/') }}frontend/employee/images/profile/arrow-right 1.png" alt="" class="profileRightArrow" />
+                            <img src="{{ asset('/') }}frontend/employee/images/profile/arrow-right 1.png" alt="" class="profileRightArrow">
                         </div>
                     </div>
-                    <h1>{{ auth()->user()->employeeAppliedJobs()->count() ?? 0 }}</h1>
+                    <h1 class="mt-2">{{ auth()->user()->viewEmployeeIds()->count() ?? 0 }}</h1>
                     <p class="mb-0">Viewers</p>
                 </div>
             </div>
@@ -245,7 +319,7 @@
             <div class="right-panel w-100 userOptionforMobile">
                 <div class="userOptionforMobileWraperMain">
 
-                    <a href="#" class="userOptionforMobileOptions">
+                    <a href="{{ route('employee.my-saved-jobs') }}" class="userOptionforMobileOptions">
                         <div class="d-flex align-items-center justify-content-between">
                             <div class="left-side">
                                 <img src="{{ asset('/') }}frontend/employee/images/header images/Saved jobs.png" alt="" /> Saved jobs
@@ -257,7 +331,7 @@
                     </a>
 
 
-                    <a href="#" class="userOptionforMobileOptions">
+                    <a href="{{ route('employee.my-applications') }}" class="userOptionforMobileOptions">
                         <div class="d-flex align-items-center justify-content-between">
                             <div class="left-side">
                                 <img src="{{ asset('/') }}frontend/employee/images/header images/Myapplications.png" alt="" /> My applications
@@ -268,7 +342,7 @@
                         </div>
                     </a>
 
-                    <a href="#" class="userOptionforMobileOptions">
+                    <a href="{{ route('employee.my-profile-viewers') }}" class="userOptionforMobileOptions">
                         <div class="d-flex align-items-center justify-content-between">
                             <div class="left-side">
                                 <img src="{{ asset('/') }}frontend/employee/images/header images/Profilerviewers.png" alt="" /> Profiler viewers
@@ -279,7 +353,7 @@
                         </div>
                     </a>
 
-                    <a href="#" class="userOptionforMobileOptions">
+                    <a href="{{ route('employee.my-subscriptions') }}" class="userOptionforMobileOptions">
                         <div class="d-flex align-items-center justify-content-between">
                             <div class="left-side">
                                 <img src="{{ asset('/') }}frontend/employee/images/header images/Subscription.png" alt="" /> Subscription
@@ -290,7 +364,7 @@
                         </div>
                     </a>
 
-                    <a href="#" class="userOptionforMobileOptions">
+                    <a href="{{ route('employee.settings') }}" class="userOptionforMobileOptions">
                         <div class="d-flex align-items-center justify-content-between">
                             <div class="left-side">
                                 <img src="{{ asset('/') }}frontend/employee/images/header images/Settings.png" alt="" /> Settings
@@ -306,7 +380,7 @@
 
 
             <!-- work experience -->
-            <div class="right-panel w-100">
+            <div class="right-panel w-100 ps-4 pt-3">
                 <div class="d-flex align-items-center justify-content-between profileOverview">
                     <h3>Work experiences</h3>
                     <button class="btn" data-bs-toggle="modal" data-bs-target="#addWorkExperienceModal">
@@ -318,8 +392,8 @@
                 @foreach($workExperiences as $workExperience)
                     <div class="row jobCard border-bottom">
                         <div class="col-2 col-md-1">
-                            <img src="{{ isset($workExperience->company_logo) ? asset($workExperience->company_logo) : asset('/frontend/employee/images/contentImages/companyLogoFor job.png') }}" alt="Company Logo" class="companyLogo" />
-                            <img style="width: 40px; height: 42px" src="{{ asset( $workExperience->company_logo ?? '/frontend/employee/images/contentImages/companyLogoFor job.png') }}" alt="Company Logo"
+                            <img  src="{{ isset($workExperience->company_logo) ? asset($workExperience->company_logo) : asset('/frontend/company-vector.jpg') }}" alt="Company Logo" class="companyLogo" style="height: 56px; border-radius: 50%" />
+                            <img style="width: 40px; height: 42px" src="{{ asset( $workExperience->company_logo ?? '/frontend/company-vector.jpg') }}" alt="Company Logo"
                                  class="mobileLogo" />
                         </div>
                         <div class="col-10 col-md-11">
@@ -328,9 +402,13 @@
                                     <div class="profileCard">
                                         <h3>{{ $workExperience->title ?? 'Executive Officer, Sales' }}</h3>
                                         <h4>
-                                            {{ $workExperience->company_name ?? 'United Commercial Bank PLC' }}
+                                            {{ $workExperience->company_name ?? 'Company Name' }}
                                             <img src="{{ asset('/') }}frontend/employee/images/profile/dotDevider.png" alt="" />
-                                            <span>{{ $workExperience->job_type ?? 'Full Time' }}</span>
+                                            <span>
+                                                {{ $workExperience->job_type == 'part_time' ? "Part Time" : '' }}
+                                                {{ $workExperience->job_type == 'full_time' ? "Full Time" : '' }}
+                                                {{ $workExperience->job_type == 'contractual' ? "Contractual" : '' }}
+                                            </span>
                                         </h4>
                                         <p class="mb-0">
                                             {{ \Illuminate\Support\Carbon::parse($workExperience->start_date)->format('M Y') }} - {{ $workExperience->is_working_currently == 1 ? 'Present' : \Illuminate\Support\Carbon::parse($workExperience->end_date)->format('M Y') }}
@@ -341,7 +419,7 @@
                                         <p>{{ $workExperience->office_address ?? 'Dhaka' }}</p>
                                         <div class="profileSummery mt-4">
                                             <h4>Job Summary:</h4>
-                                            <div>{!! $workExperience->job_responsibilities ?? 'job responsibilities' !!}</div>
+                                            <div>{!! str()->words($workExperience->job_responsibilities, 30, ' ......') ?? 'job responsibilities' !!}</div>
                                         </div>
                                     </div>
                                 </div>
@@ -355,7 +433,7 @@
                                              aria-expanded="false" />
 
                                         <ul class="dropdown-menu dropdown-menu-end">
-                                            <li><a class="dropdown-item edit-work-experience" data-work-experience-id="{{ $workExperience->id }}" href="#">Edit</a></li>
+                                            <li><a class="dropdown-item edit-work-experience" data-work-experience-id="{{ $workExperience->id }}" href="javascript:void(0)">Edit</a></li>
                                             <li>
                                                 <form action="{{ route('employee.employee-work-experiences.destroy', $workExperience->id) }}" method="post">
                                                     @csrf
@@ -374,7 +452,7 @@
             </div>
 
             <!-- education -->
-            <div class="right-panel w-100">
+            <div class="right-panel w-100  ps-4 pt-3">
                 <div class="d-flex align-items-center justify-content-between profileOverview">
                     <!-- Education Add Button (Existing Button) -->
                     <h3>Education</h3>
@@ -386,8 +464,8 @@
                 @forelse($employeeEducations as $employeeEducation)
                     <div class="row jobCard border-bottom">
                         <div class="col-2 col-md-1">
-                            <img src="{{ asset('/') }}frontend/employee/images/profile/norSouthUnivercity.png" alt="Company Logo" class="companyLogo" />
-                            <img style="width: 40px; height: 42px" src="{{ asset('/') }}frontend/employee/images/profile/norSouthUnivercity.png" alt="Company Logo"
+                            <img src="{{ asset('/') }}frontend/company-vector.jpg" alt="Company Logo" class="companyLogo" style="height: 56px; border-radius: 50%" />
+                            <img style="width: 40px; height: 42px" src="{{ asset('/') }}frontend/company-vector.jpg" alt="Company Logo"
                                  class="mobileLogo" />
                         </div>
                         <div class="col-10 col-md-11">
@@ -420,7 +498,7 @@
                                              aria-expanded="false" />
 
                                         <ul class="dropdown-menu dropdown-menu-end">
-                                            <li><a class="dropdown-item edit-education" data-education-id="{{ $employeeEducation->id }}" href="#">Edit</a></li>
+                                            <li><a class="dropdown-item edit-education" data-education-id="{{ $employeeEducation->id }}" href="javascript:void(0)">Edit</a></li>
                                             <li>
                                                 <form action="{{ route('employee.employee-educations.destroy', $employeeEducation->id) }}" method="post">
                                                     @csrf
@@ -446,7 +524,7 @@
             </div>
 
             <!-- documents -->
-            <div class="right-panel w-100">
+            <div class="right-panel w-100 ps-4 pt-3">
                 <div class="d-flex align-items-center justify-content-between profileOverview">
                     <!-- Document Add Button (Existing Button) -->
                     <h3>Documents</h3>
@@ -459,20 +537,22 @@
                 @forelse($employeeDocuments as $employeeDocument)
                     <div class="row jobCard border-bottom">
                         <div class="col-2">
-                            @if( explode('/', $employeeDocument->file_type)[1] == 'image' )
-                                <img style="max-width: 105px; max-height: 105px;" src="{{ isset($employeeDocument->file_thumb) ? asset($employeeDocument->file_thumb) : 'https://icons.iconarchive.com/icons/icons8/windows-8/512/Very-Basic-Image-File-icon.png' }}" alt="Company Logo" class="companyLogo" />
-                                <img style="width: 40px; height: 42px" src="{{ isset($employeeDocument->file_thumb) ? asset($employeeDocument->file_thumb) : 'https://icons.iconarchive.com/icons/icons8/windows-8/512/Very-Basic-Image-File-icon.png'}}" alt="Company Logo" class="mobileLogo" />
-                            @elseif( explode('/', $employeeDocument->file_type)[1] == 'pdf' )
-                                <img style="max-width: 105px; max-height: 105px;" src="https://www.iconpacks.net/icons/2/free-pdf-icon-3375-thumb.png" alt="Company Logo" class="companyLogo" />
-                                <img style="width: 40px; height: 42px" src="https://www.iconpacks.net/icons/2/free-pdf-icon-3375-thumb.png" alt="Company Logo" class="mobileLogo" />
-                             @elseif( explode('/', $employeeDocument->file_type)[1] == 'vnd.openxmlformats-officedocument.wordprocessingml.document' )
-                                <img style="max-width: 105px; max-height: 105px;" src="https://files.softicons.com/download/toolbar-icons/mono-general-icons-2-by-custom-icon-design/ico/document.ico" alt="Company Logo" class="companyLogo" />
-                                <img style="width: 40px; height: 42px" src="https://files.softicons.com/download/toolbar-icons/mono-general-icons-2-by-custom-icon-design/ico/document.ico" alt="Company Logo" class="mobileLogo" />
-                            @else
-                                <img style="max-width: 105px; max-height: 105px;" src="{{ asset('/') }}frontend/employee/images/profile/CV.png" alt="Company Logo" class="companyLogo" />
-                                <img style="width: 40px; height: 42px" src="{{ asset('/') }}frontend/employee/images/profile/CV.png" alt="Company Logo" class="mobileLogo" />
-                            @endif
+                            <a href="{{ file_exists($employeeDocument->file) ? asset($employeeDocument->file) : '' }}" download="">
 
+                                @if( explode('/', $employeeDocument->file_type)[1] == 'image' )
+                                    <img style="max-width: 105px; max-height: 105px;" src="{{ isset($employeeDocument->file_thumb) ? asset($employeeDocument->file_thumb) : 'https://icons.iconarchive.com/icons/icons8/windows-8/512/Very-Basic-Image-File-icon.png' }}" alt="Company Logo" class="companyLogo" />
+                                    <img style="width: 40px; height: 42px" src="{{ isset($employeeDocument->file_thumb) ? asset($employeeDocument->file_thumb) : 'https://icons.iconarchive.com/icons/icons8/windows-8/512/Very-Basic-Image-File-icon.png'}}" alt="Company Logo" class="mobileLogo" />
+                                @elseif( explode('/', $employeeDocument->file_type)[1] == 'pdf' )
+                                    <img style="max-width: 105px; max-height: 105px;" src="https://www.iconpacks.net/icons/2/free-pdf-icon-3375-thumb.png" alt="Company Logo" class="companyLogo" />
+                                    <img style="width: 40px; height: 42px" src="https://www.iconpacks.net/icons/2/free-pdf-icon-3375-thumb.png" alt="Company Logo" class="mobileLogo" />
+                                @elseif( explode('/', $employeeDocument->file_type)[1] == 'vnd.openxmlformats-officedocument.wordprocessingml.document' )
+                                    <img style="max-width: 105px; max-height: 105px;" src="https://files.softicons.com/download/toolbar-icons/mono-general-icons-2-by-custom-icon-design/ico/document.ico" alt="Company Logo" class="companyLogo" />
+                                    <img style="width: 40px; height: 42px" src="https://files.softicons.com/download/toolbar-icons/mono-general-icons-2-by-custom-icon-design/ico/document.ico" alt="Company Logo" class="mobileLogo" />
+                                @else
+                                    <img style="max-width: 105px; max-height: 105px;" src="{{ asset('/') }}frontend/employee/images/profile/CV.png" alt="Company Logo" class="companyLogo" />
+                                    <img style="width: 40px; height: 42px" src="{{ asset('/') }}frontend/employee/images/profile/CV.png" alt="Company Logo" class="mobileLogo" />
+                                @endif
+                            </a>
                         </div>
 
                         <div class="col-10">
@@ -499,7 +579,7 @@
                                              aria-expanded="false" />
 
                                         <ul class="dropdown-menu dropdown-menu-end">
-                                            <li><a class="dropdown-item edit-document" data-document-id="{{ $employeeDocument->id }}" href="#">Edit</a></li>
+                                            <li><a class="dropdown-item edit-document" data-document-id="{{ $employeeDocument->id }}" href="javascript:void(0)">Edit</a></li>
                                             <li>
                                                 <form action="{{ route('employee.employee-documents.destroy', $employeeDocument->id) }}" method="post">
                                                     @csrf
@@ -573,7 +653,7 @@
     <!-- Modal for Add Work Experience -->
     <div class="modal fade" id="addWorkExperienceModal" tabindex="-1"
          aria-labelledby="addWorkExperienceModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="addWorkExperienceModalLabel">
@@ -605,7 +685,7 @@
                                 <label for="companyInput" class="form-label">Company/Organization</label>
                                 <input type="text" class="form-control" name="company_name" id="companyInput" placeholder="Type here" />
 
-                                <label for="companyLogo" class="form-label">Company/Organization Logo</label>
+                                <label for="companyLogo" class="form-label mt-3">Company/Organization Logo</label>
                                 <input type="file" class="form-control" name="company_logo" id="companyLogo" accept="image/*" />
                             </div>
 
@@ -663,7 +743,7 @@
     <!-- Modal for Edit Work Experience -->
     <div class="modal fade" id="editWorkExperienceModal" tabindex="-1"
          aria-labelledby="addWorkExperienceModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="addWorkExperienceModalLabel">
@@ -719,7 +799,7 @@
 
                         <div class="mb-4">
                             <label for="fieldOfStudyInput" class="form-label">Field of study</label>
-                            <input type="text" class="form-control" id="fieldOfStudyInput" placeholder="Type here" />
+{{--                            <input type="text" class="form-control" id="fieldOfStudyInput" placeholder="Type here" />--}}
                             <select name="field_of_study_id" class="form-control select2" id="">
                                 <option selected disabled>Select Field of Study</option>
                                 @foreach($fieldOfStudies as $fieldOfStudy)
@@ -835,7 +915,12 @@
                             <div class="mb-3">
                                 <label for="documentFileTitleInput" class="form-label">Document Title</label>
                                 <div class="d-flex align-items-center">
-                                    <input type="text" name="title" class="form-control" id="documentFileTitleInput" />
+{{--                                    <input type="text" name="title" class="form-control" id="documentFileTitleInput" />--}}
+                                    <select name="title" class="form-control select2" id="">
+                                        <option value="CV">CV</option>
+                                        <option value="NID">NID</option>
+                                        <option value="Certificate">Certificate</option>
+                                    </select>
                                 </div>
                             </div>
 
@@ -914,6 +999,12 @@
     </div>
 
 @endsection
+@push('style')
+    <style>
+        .form-control {border-radius: 15px}
+
+    </style>
+@endpush
 @push('script')
 
     <!-- include summernote css/js -->
@@ -933,6 +1024,7 @@
                 $('#editWorkSummaryInput').summernote({
                     height: 300
                 });
+                // $('.select2').select2();
                 $('.select2').selectize();
                 $('#editWorkExperienceModal').modal('show');
             })
@@ -947,6 +1039,7 @@
                 // $('#editWorkSummaryInput').summernote({
                 //     height: 300
                 // });
+                // $('.select2').select2();
                 $('.select2').selectize();
                 $('#editEducationModal').modal('show');
             })
@@ -961,8 +1054,26 @@
                 // $('#editWorkSummaryInput').summernote({
                 //     height: 300
                 // });
-                // $('.select2').selectize();
+                // $('.select2').select2();
+                $('.select2').selectize();
                 $('#editDocumentModal').modal('show');
+            })
+        })
+        // change job active status
+        $(document).on('click', '.change-job-active-status', function () {
+            var val = $(this).attr('data-value');
+            var msg = $(this).attr('data-msg');
+            // var thisObject = $(this);
+            // console.log(thisObject);
+            sendAjaxRequest('employee/change-job-active-status/'+val, 'GET').then(function (response) {
+                // console.log(response);
+                if (response.status == 'success')
+                {
+                    $('#selectedRole').text(msg);
+                    toastr.success(response.success);
+                } else {
+                    toastr.error('Something went wrong. Please try again.');
+                }
             })
         })
     </script>
@@ -984,4 +1095,240 @@
     </script>
 
     <!-- edit contact with modal -->
+
+    <!-- drag drop crop -->
+    <style>
+        .drag-drop-area {
+            border: 2px dashed #007bff;
+            border-radius: 10px;
+            padding: 40px;
+            text-align: center;
+            background: #f8f9fa;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .drag-drop-area:hover {
+            border-color: #0056b3;
+            background: #e3f2fd;
+        }
+
+        .drag-drop-area.dragover {
+            border-color: #28a745;
+            background: #d4edda;
+        }
+
+        .preview-container {
+            max-width: 100%;
+            max-height: 400px;
+            overflow: hidden;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+
+        .cropper-container {
+            max-height: 400px;
+        }
+
+        .file-input-hidden {
+            position: absolute;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        .upload-icon {
+            font-size: 3rem;
+            color: #007bff;
+            margin-bottom: 15px;
+        }
+
+        .final-preview {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #007bff;
+        }
+    </style>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>
+    <script>
+        let cropper = null;
+        let originalFile = null;
+
+        // DOM Elements
+        const dragDropArea = document.getElementById('dragDropArea');
+        const fileInput = document.getElementById('profileImage');
+        const uploadContent = document.getElementById('uploadContent');
+        const previewContainer = document.getElementById('previewContainer');
+        const imagePreview = document.getElementById('imagePreview');
+        const cropControls = document.getElementById('cropControls');
+        const finalPreviewContainer = document.getElementById('finalPreviewContainer');
+        const finalPreview = document.getElementById('finalPreview');
+        const croppedImageData = document.getElementById('croppedImageData');
+
+        // Event Listeners
+        dragDropArea.addEventListener('click', () => fileInput.click());
+        dragDropArea.addEventListener('dragover', handleDragOver);
+        dragDropArea.addEventListener('drop', handleDrop);
+        dragDropArea.addEventListener('dragleave', handleDragLeave);
+        fileInput.addEventListener('change', handleFileSelect);
+
+        document.getElementById('resetCrop').addEventListener('click', () => cropper.reset());
+        document.getElementById('rotateLeft').addEventListener('click', () => cropper.rotate(-90));
+        document.getElementById('rotateRight').addEventListener('click', () => cropper.rotate(90));
+        document.getElementById('cropImage').addEventListener('click', handleCropImage);
+        document.getElementById('changeImage').addEventListener('click', resetUpload);
+        document.getElementById('saveImage').addEventListener('click', handleSaveImage);
+
+        // Drag and Drop Functions
+        function handleDragOver(e) {
+            e.preventDefault();
+            dragDropArea.classList.add('dragover');
+        }
+
+        function handleDragLeave(e) {
+            e.preventDefault();
+            dragDropArea.classList.remove('dragover');
+        }
+
+        function handleDrop(e) {
+            e.preventDefault();
+            dragDropArea.classList.remove('dragover');
+
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                handleFile(files[0]);
+            }
+        }
+
+        function handleFileSelect(e) {
+            const file = e.target.files[0];
+            if (file) {
+                handleFile(file);
+            }
+        }
+
+        function handleFile(file) {
+            // Validate file type
+            if (!file.type.startsWith('image/')) {
+                alert('Please select an image file.');
+                return;
+            }
+
+            // Validate file size (5MB max)
+            if (file.size > 5 * 1024 * 1024) {
+                alert('File size must be less than 5MB.');
+                return;
+            }
+
+            originalFile = file;
+
+            // Create FileReader to display image
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                displayImageForCropping(e.target.result);
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function displayImageForCropping(imageSrc) {
+            // Hide upload area and show preview
+            uploadContent.style.display = 'none';
+            previewContainer.style.display = 'block';
+            cropControls.style.display = 'block';
+            finalPreviewContainer.style.display = 'none';
+
+            // Set image source
+            imagePreview.src = imageSrc;
+
+            // Initialize cropper
+            if (cropper) {
+                cropper.destroy();
+            }
+
+            cropper = new Cropper(imagePreview, {
+                aspectRatio: 1, // Square crop for profile image
+                viewMode: 1,
+                dragMode: 'move',
+                autoCropArea: 0.8,
+                restore: false,
+                guides: true,
+                center: true,
+                highlight: false,
+                cropBoxMovable: true,
+                cropBoxResizable: true,
+                toggleDragModeOnDblclick: false,
+            });
+        }
+
+        function handleCropImage() {
+            if (!cropper) return;
+
+            // Get cropped canvas
+            const canvas = cropper.getCroppedCanvas({
+                width: 300,
+                height: 300,
+                imageSmoothingEnabled: true,
+                imageSmoothingQuality: 'high',
+            });
+
+            // Convert to blob and display final preview
+            canvas.toBlob((blob) => {
+                const url = URL.createObjectURL(blob);
+                finalPreview.src = url;
+
+                // Store cropped image data
+                croppedImageData.value = canvas.toDataURL('image/jpeg', 0.8);
+
+                // Show final preview and hide cropping interface
+                previewContainer.style.display = 'none';
+                cropControls.style.display = 'none';
+                finalPreviewContainer.style.display = 'block';
+
+            }, 'image/jpeg', 0.8);
+        }
+
+        function resetUpload() {
+            // Reset everything
+            if (cropper) {
+                cropper.destroy();
+                cropper = null;
+            }
+
+            fileInput.value = '';
+            croppedImageData.value = '';
+            originalFile = null;
+
+            // Show upload area
+            uploadContent.style.display = 'block';
+            previewContainer.style.display = 'none';
+            cropControls.style.display = 'none';
+            finalPreviewContainer.style.display = 'none';
+        }
+
+        function handleSaveImage() {
+            if (!croppedImageData.value) {
+                alert('Please select and crop an image first.');
+                return;
+            }
+
+            // Here you can submit the form or handle the cropped image data
+            // The cropped image data is available in croppedImageData.value as base64
+
+            console.log('Cropped image data:', croppedImageData.value);
+            alert('Image saved successfully! Check console for base64 data.');
+
+            // You can now submit this data to your server
+            // Example: Send via AJAX or submit the form
+        }
+
+        // Reset when modal is closed
+        document.getElementById('profileModal').addEventListener('hidden.bs.modal', function () {
+            resetUpload();
+        });
+    </script>
 @endpush

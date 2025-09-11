@@ -244,7 +244,7 @@ class CustomLoginController extends Controller
             $user->roles()->sync($request->role);
             if (isset($user))
             {
-                Auth::login($user);
+                Auth::login($user, true);
                 return $this->redirectsAfterLogin($user);
                 if (str()->contains(url()->current(), '/api/')) {
                     return response()->json(['user' => $user, 'auth_token' => $user->createToken('auth_token')->plainTextToken]);
@@ -303,7 +303,7 @@ class CustomLoginController extends Controller
                 $user = User::where('mobile', $request->mobile)->first();
                 if ($user)
                 {
-                    Auth::login($user);
+                    Auth::login($user, true);
                     return $this->redirectsAfterLogin($user);
                 } else {
                     return ViewHelper::returEexceptionError('User Not found.');

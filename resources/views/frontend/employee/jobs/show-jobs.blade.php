@@ -30,7 +30,7 @@
 
             <!-- ===== Filter #1: Date posted ===== -->
             <div class="custom-select" data-filter-key="date_posted" data-placeholder="Most Recent">
-                <label class="custom-select-label">Date posted</label>
+                <label class="custom-select-label">Date</label>
                 <input type="text" class="form-control select-box locationSearch" placeholder="Select..." readonly />
                 <div class="dropdown-menu locationDropdown">
                     <input type="text" class="form-control search-box searchBar" placeholder="Search..." />
@@ -50,20 +50,20 @@
                 <input type="hidden" class="filter-payload" name="filters[date_posted]" value="[]">
             </div>
 
-            <!-- ===== Filter #2: Company type ===== -->
-            <div class="custom-select" data-filter-key="company_type" data-placeholder="Select company type">
-                <label class="custom-select-label">Company type</label>
+            <!-- ===== Filter #2: Job type ===== -->
+            <div class="custom-select" data-filter-key="company_type" data-placeholder="Select Job type">
+                <label class="custom-select-label">Job type</label>
                 <input type="text" class="form-control select-box locationSearch" placeholder="Select..." readonly />
                 <div class="dropdown-menu locationDropdown">
                     <input type="text" class="form-control search-box searchBar" placeholder="Search..." />
-                    @foreach($companyTypes as $companyType)
+                    @foreach($JobTypes as $JobType)
                         <div class="checkbox-item">
-                            <input type="checkbox" class="locationCheckbox" id="ctype-{{ $companyType->slug }}" value="{{ $companyType->slug }}" />
-                            <label for="ctype-{{ $companyType->slug }}">{{ $companyType->category_name }}</label>
+                            <input type="checkbox" class="locationCheckbox" id="ctype-{{ $JobType->slug }}" value="{{ $JobType->slug }}" />
+                            <label for="ctype-{{ $JobType->slug }}">{{ $JobType->name }}</label>
                         </div>
                     @endforeach
                 </div>
-                <input type="hidden" class="filter-payload" name="filters[company_type]" value="[]">
+                <input type="hidden" class="filter-payload" name="filters[job_type]" value="[]">
             </div>
 
             <!-- ===== Filter #3: Location ===== -->
@@ -156,45 +156,13 @@
                         </div>
 
                     @endforeach
-{{--                    <div class="checkbox-item">--}}
-{{--                        <input type="checkbox" class="locationCheckbox" id="ind-it" />--}}
-{{--                        <label for="ind-it">Information Technology</label>--}}
-{{--                    </div>--}}
-{{--                    <div class="checkbox-item">--}}
-{{--                        <input type="checkbox" class="locationCheckbox" id="ind-fin" />--}}
-{{--                        <label for="ind-fin">Finance & Accounting</label>--}}
-{{--                    </div>--}}
                 </div>
                 <input type="hidden" class="filter-payload" name="filters[industry]" value="[]">
             </div>
 
-            <!-- ===== Filter #5: Company ===== -->
-            <div class="custom-select" data-filter-key="company" data-placeholder="Select company">
-                <label class="custom-select-label">Company</label>
-                <input type="text" class="form-control select-box locationSearch" placeholder="Select..." readonly />
-                <div class="dropdown-menu locationDropdown">
-                    <input type="text" class="form-control search-box searchBar" placeholder="Search..." />
-                    @foreach($companies as $company)
-                        <div class="checkbox-item">
-                            <input type="checkbox" class="locationCheckbox" id="co-{{ $company->slug }}" value="{{ $company->slug }}" />
-                            <label for="co-{{ $company->slug }}">{{ $company->name }}</label>
-                        </div>
-                    @endforeach
-{{--                    <div class="checkbox-item">--}}
-{{--                        <input type="checkbox" class="locationCheckbox" id="co-google" />--}}
-{{--                        <label for="co-google">Google</label>--}}
-{{--                    </div>--}}
-{{--                    <div class="checkbox-item">--}}
-{{--                        <input type="checkbox" class="locationCheckbox" id="co-ms" />--}}
-{{--                        <label for="co-ms">Microsoft</label>--}}
-{{--                    </div>--}}
-                </div>
-                <input type="hidden" class="filter-payload" name="filters[company]" value="[]">
-            </div>
-
             <!-- ===== Filter #6: Job Workplace type ===== -->
-            <div class="custom-select" data-filter-key="salary" data-placeholder="Select Workplace Type">
-                <label class="custom-select-label">Workplace Type</label>
+            <div class="custom-select" data-filter-key="salary" data-placeholder="Select Job Nature">
+                <label class="custom-select-label">Job Nature</label>
                 <input type="text" class="form-control select-box locationSearch" placeholder="Select..." readonly />
                 <div class="dropdown-menu locationDropdown">
                     <input type="text" class="form-control search-box searchBar" placeholder="Search..." />
@@ -263,18 +231,28 @@
                             <p>{{ $singleJobTask?->employerCompany?->address ?? 'company address' }}</p>
                         </div>
                     </div>
-                    <h4 class="job-title">{{ $singleJobTask->job_title }}</h4>
+                    <h4 class="job-title mb-2">{{ $singleJobTask->job_title }}</h4>
                     <div class="job-type"><span class="badge">{{ $singleJobTask?->jobType?->name ?? 'job type' }}</span> <span class="badge">{{ $singleJobTask?->jobLocationType?->name ?? 'job location' }}</span> </div>
-                    @if(!$isApplied)
-                        <a href="javascript:void(0)" onclick="document.getElementById('applyJob{{ $singleJobTask->id }}').submit()" class="apply-btn" style="text-decoration: none;">Easy Apply</a>
-                    @endif
-                    @if(!$isSaved)
-                        <button class="save-btn" data-job-id="{{ $singleJobTask->id }}"><img src="{{ asset('/') }}frontend/employee/images/contentImages/saveIcon.png" alt="Save Icon" class="save-icon"> Save</button>
-                    @endif
-                    <form action="{{ route('employee.apply-job', $singleJobTask->id) }}" method="post" id="applyJob{{ $singleJobTask->id }}">
-                        @csrf
-                    </form>
-
+                    <div class="d-flex gap-2 mt-3 mb-4">
+                        @if(!$isApplied)
+                            <form class="apply-form" action="{{ route('employee.apply-job', $singleJobTask->id) }}" method="POST">
+                                @csrf
+                                {{--                            <input type="hidden" name="jobId" value="">--}}
+                                {{--                            <input type="hidden" name="jobTitle" value="Relationship Manager">--}}
+                                <div class="actions  mt-2">
+                                    <button type="submit" class="apply-btn">Easy Apply</button>
+                                    {{--                                <button type="button" class="share-btn">Share profile</button>--}}
+                                    {{--                                <button type="button" class="save-btn">--}}
+                                    {{--                                    <img src="images/contentImages/saveIcon.png" alt="Save Icon" class="save-icon"> Save--}}
+                                    {{--                                </button>--}}
+                                </div>
+                            </form>
+                            {{--                        <a href="javascript:void(0)" onclick="document.getElementById('applyJob{{ $singleJobTask->id }}').submit()" class="apply-btn" style="text-decoration: none;">Easy Apply</a>--}}
+                        @endif
+                        @if(!$isSaved)
+                            <button class="save-btn" data-job-id="{{ $singleJobTask->id }}"><img src="{{ asset('/') }}frontend/employee/images/contentImages/saveIcon.png" alt="Save Icon" class="save-icon"> Save</button>
+                        @endif
+                    </div>
 
                     <h5 style="">About {{ $singleJobTask?->employerCompany?->name ?? 'company Name' }}</h5>
                     <p>{{ $singleJobTask?->employerCompany?->company_overview ?? 'company overview' }}</p>
@@ -331,8 +309,10 @@
 @push('style')
     <style>
         .custom-select {
-            max-width: 220px !important;
+            max-width: 200px !important;
         }
+        .job-options{margin-right: 0px}
+        .job-details{padding: 20px 40px}
     </style>
 @endpush
 @push('script')
@@ -352,17 +332,19 @@
                             <p>${job.employer_company.address ?? 'Dhaka'}</p>
                         </div>
                     </div>
-                    <h4 class="job-title">${job.job_title ?? 'Job Title'}</h4>
+                    <h4 class="job-title mb-2">${job.job_title ?? 'Job Title'}</h4>
                     <div class="job-type"><span class="badge">${job.job_type.name}</span> <span class="badge">${job.job_location_type.name}</span> </div>
-                    ${!response.isApplied ? `<a href="javascript:void(0)" onclick="document.getElementById('applyJob${ job.id }').submit()" class="apply-btn" style="text-decoration: none;">Easy Apply</a>` : ''}
+                    <div class="d-flex gap-2 mt-3 mb-4">
+                        ${!response.isApplied ? `
+                    <form class="apply-form " action="${base_url}employee/apply-job/${job.id}" method="POST">
+<input type="hidden" name="_token" value="<?php echo csrf_token() ?>">
+      <div class="actions  mt-2">
+        <button type="submit" class="apply-btn">Easy Apply</button>
+      </div>
+    </form>
+                    ` : ''}
                     ${!response.isSaved ? `<button class="save-btn" data-job-id="${job.id}"><img src="${base_url}frontend/employee/images/contentImages/saveIcon.png" alt="Save Icon" class="save-icon"> Save</button>` : ''}
-
-                    <form action="${base_url}employee/apply-job/${job.id}" method="post" id="applyJob${job.id}">
-                        <input type="hidden" name="_token" value="<?php echo csrf_token() ?>">
-
-                     </form>
-
-
+                    </div>
                     <h5>About ${job.employer_company.name}</h5>
                     <p>${job.employer_company.company_overview}</p>
                     <h5>Job Requirements</h5>

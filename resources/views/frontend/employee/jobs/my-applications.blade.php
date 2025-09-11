@@ -34,7 +34,7 @@
                     @forelse($myApplications as $myApplication)
                         <div class="appliedJobs-row">
                             <div class="company">
-                                <img src="{{ asset(isset($myApplication?->jobTask?->employerCompany?->logo) ? $myApplication?->jobTask?->employerCompany?->logo :'/frontend/employee/images/profile/appliedJobs1.png') }}" alt="{{ $myApplication?->jobTask?->employerCompany?->name ?? 'company Name' }}" />
+                                <img src="{{ asset(isset($myApplication?->jobTask?->employerCompany?->logo) ? $myApplication?->jobTask?->employerCompany?->logo :'/frontend/company-vector.jpg') }}" alt="{{ $myApplication?->jobTask?->employerCompany?->name ?? 'company Name' }}"  height="28" />
                                 <span>{{ $myApplication?->jobTask?->employerCompany?->name ?? 'United Commercial Bank' }}</span>
                             </div>
                             <div class="position">{{ $myApplication?->jobTask?->job_title ?? 'Job Title' }}</div>
@@ -43,7 +43,7 @@
                             <div class="action">
                                 <div class="action-menu-trigger" onclick="toggleActionMenu(this)">⋮</div>
                                 <div class="action-dropdown">
-                                    <div>Message</div>
+{{--                                    <div>Message</div>--}}
                                     <div><a href="{{ route('employee.show-jobs', ['job_task' => $myApplication?->jobTask?->id ]) }}" class="nav-link">View Job Post</a></div>
                                 </div>
                             </div>

@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="{{ asset('/') }}common-assets/css/helper.min.css" />
     <link rel="stylesheet" href="{{ asset('/') }}frontend/auth/loginStyle.css">
     <link rel="stylesheet" href="{{ asset('/') }}frontend/home-landing/style.css">
+    <link rel="stylesheet" href="{{ asset('/') }}common-assets/css/toastr-2.1.3.min.css" />
 
     <!-- Geist Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -422,5 +423,21 @@
 <!-- Bootstrap JS and Dependencies -->
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+<script src="{{ asset('/') }}common-assets/js/toastr-2.1.3.min.js"></script>
+{!! Toastr::message() !!}
+<script>
+    @if($errors->any())
+    @foreach($errors->all() as $error)
+    toastr.error('{{ $error }}', 'Error', {
+        closeButton: true,
+        progressBar: true,
+    });
+    @endforeach
+    @endif
+    @if(session()->has('error'))
+        toastr.error("{{ session('error') }}");
+    @endif
+    toastr.error('fuck');
+</script>
 </body>
 </html>

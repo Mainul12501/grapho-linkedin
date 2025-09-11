@@ -7,8 +7,8 @@
         <aside class="left-panel p-3 col-md-3">
             <div class="card">
                 <div class="card-body">
-                    <img src="{{ asset('/') }}frontend/employee/images/header images/Thumbnail.png" alt="Profile" class="rounded-circle mb-2" width="80" />
-                    <h5>{{ auth()->user()->name ?? 'Pranto' }}</h5>
+                    <img src="{{ asset(auth()->user()->profile_image ?? '/frontend/user-vector-img.jpg') }}" alt="Profile" class="rounded-circle mb-2" width="80" />
+                    <h5>{{ auth()->user()->name ?? 'User' }}</h5>
                     <span class="badge d-flex align-items-center">
                         <img src="{{ asset('/') }}frontend/employee/images/contentImages/Ellipse 1.png" alt="" class="me-2" />
                         {{ auth()->user()->is_open_for_hire == 1 ? 'Open to work' : 'Offline' }}
@@ -91,17 +91,17 @@
                     @foreach($topJobsForEmployee as $topJobForEmployee)
                         <div class="row jobCard border-bottom">
                             <div class="col-md-1">
-                                <img src="{{ asset($topJobForEmployee?->employerCompany?->logo ?? '/frontend/employee/images/contentImages/companyLogoFor job.png') }}" alt="Company Logo" class="companyLogo" />
+                                <img src="{{ asset($topJobForEmployee?->employerCompany?->logo ?? '/frontend/company-vector.jpg') }}" alt="Company Logo" class="companyLogo" style="height: 65px" />
                             </div>
                             <div class="col-md-11">
                                 <div class="jobPosition d-flex justify-content-between">
                                     <div class="d-flex">
-                                        <img style="width: 40px; height: 42px" src="{{ asset($topJobForEmployee?->employerCompany?->logo ?? '/frontend/employee/images/contentImages/companyLogoFor job.png') }}"
+                                        <img style="width: 40px; height: 42px" src="{{ asset($topJobForEmployee?->employerCompany?->logo ?? '/frontend/company-vector.jpg') }}"
                                              alt="Company Logo" class="mobileLogo" />
 
                                         <div class="paddingforMobile">
-                                            <h3>{{ $topJobForEmployee->job_title  ?? 'Senior Officer, Corporate Banking' }}</h3>
-                                            <p>{{ $topJobForEmployee?->employerCompany?->name ?? 'United Commercial Bank PLC' }}</p>
+                                            <h3>{{ $topJobForEmployee->job_title  ?? 'Job Title' }}</h3>
+                                            <p>{{ $topJobForEmployee?->employerCompany?->name ?? 'Company Name' }}</p>
                                         </div>
                                     </div>
 {{--                                    <div class="dropdown">--}}
@@ -119,18 +119,21 @@
 {{--                                    <button class="btn">Day Shift</button>--}}
                                 </div>
                                 <div class="jobDesc">
-                                    <p>{!! $topJobForEmployee->employerCompany?->address ?? 'Gulshan, Dhaka' !!}</p>
+                                    <p>{!! $topJobForEmployee->employerCompany?->address ?? 'Dhaka' !!}</p>
                                     <p>{{ $topJobForEmployee->required_experience ?? 0 }} years of experience</p>
                                     <p>Salary: Tk. {{ $topJobForEmployee->salary_amount ?? 0 }}/{{ $topJobForEmployee->job_pref_salary_payment_type }}</p>
                                 </div>
                                 <div class="jobApply d-flex justify-content-between">
                                     <div>
-                                        <form action="{{ route('employee.apply-job', $topJobForEmployee->id) }}" method="post" style="float: left">
-                                            @csrf
-                                            <button type="submit" class="btn flex-column">Easy Apply</button>
-                                        </form>
+                                        @if(!$topJobForEmployee['isApplied'])
+                                            <form action="{{ route('employee.apply-job', $topJobForEmployee->id) }}" method="post" style="float: left">
+                                                @csrf
+                                                <button type="submit" class="btn flex-column">Easy Apply</button>
+                                            </form>
+                                        @endif
+
                                         @if(!auth()->user()?->employeeSavedJobs->contains($topJobForEmployee->id))
-                                            <img src="{{ asset('/') }}frontend/employee/images/contentImages/bookmark.png" alt="Bookmark" data-job-id="{{ $topJobForEmployee->id }}" class="bookmarkIcon save-btn" />
+                                            <img src="{{ asset('/') }}frontend/employee/images/contentImages/bookmark.png" alt="Bookmark" data-job-id="{{ $topJobForEmployee->id }}" class="bookmarkIcon save-btnx" />
                                         @endif
                                     </div>
 {{--                                    <div>--}}
@@ -237,7 +240,7 @@
                     <p>Jobs that people in your network are hiring for</p>
                 </div>
 
-                @foreach($topJobsForEmployee as $topJobForEmployee)
+                @foreach($moreJobsForEmployee as $topJobForEmployee)
                     <div class="row jobCard border-bottom">
                         <div class="col-md-1">
                             <img src="{{ asset($topJobForEmployee?->employerCompany?->logo ?? '/frontend/employee/images/contentImages/companyLogoFor job.png') }}" alt="Company Logo" class="companyLogo" />
@@ -279,7 +282,7 @@
                                         <button type="submit" class="btn flex-column">Easy Apply</button>
                                     </form>
                                     @if(auth()->user()?->employeeSavedJobs->contains($topJobForEmployee->id))
-                                        <img src="{{ asset('/') }}frontend/employee/images/contentImages/bookmark.png" alt="Bookmark" data-job-id="{{ $topJobForEmployee->id }}" class="bookmarkIcon ms-2 save-btn" />
+                                        <img src="{{ asset('/') }}frontend/employee/images/contentImages/bookmark.png" alt="Bookmark" data-job-id="{{ $topJobForEmployee->id }}" class="bookmarkIcon ms-2 save-btnx" />
                                     @endif
                                 </div>
                                 {{--                                    <div>--}}
@@ -424,21 +427,22 @@
 
 @push('style')
     <style>
-        .save-btn {
+        .save-btnx {
             border: 0px!important;
 
         }
-        .apply-btn, .save-btn {
+        .apply-btn, .save-btnx {
             padding: 0px;
             margin: 0px 0px 0px 5px;
         }
         .companyLogo {width: 65px}
+        .border {border: 2px solid #e5e7ebaf !important;}
     </style>
 @endpush
 
 @push('script')
     <script>
-        $(document).on('click', '.save-btn', function () {
+        $(document).on('click', '.save-btnx', function () {
             var jobId = $(this).attr('data-job-id');
             var thisObject = $(this);
             console.log(thisObject);
