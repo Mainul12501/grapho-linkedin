@@ -67,7 +67,7 @@
                                     <div class="job-info">
                                         <div class="mb-2"><img src="{{ asset('/') }}frontend/employer/images/employersHome/postdOn.png" alt="" class="me-2">Posted on: {{ $jobTask->created_at->format('d M, Y') ?? '16 Feb, 2025' }}</div>
                                         <div class="mb-2"><img src="{{ asset('/') }}frontend/employer/images/employersHome/Dedline.png" alt="" class="me-2">Deadline: {{ \Illuminate\Support\Carbon::parse($jobTask->deadline)->format('d M, Y') ?? '16 Feb, 2025' }}</div>
-                                        <div><img src="{{ asset('/') }}frontend/employer/images/employersHome/24application.png" alt="" class="me-2"><a href="#" class="text-decoration-underline">{{ $jobTask->employeeAppliedJobs->count() ?? 0 }} Applicants</a></div>
+                                        <div><img src="{{ asset('/') }}frontend/employer/images/employersHome/24application.png" alt="" class="me-2"><a href="{{ route('employer.my-job-applicants', $jobTask->id) }}" class="text-decoration-underline">{{ $jobTask->employeeAppliedJobs->count() ?? 0 }} Applicants</a></div>
                                     </div>
 
 {{--                                    <div class="job-actions dropdown">--}}
@@ -93,6 +93,11 @@
                                 <p style="font-size: 36px;">No Published Job yet</p>
                             </div>
                         @endforelse
+                        <div class="col-12 text-center align-content-center">
+                            @if(count($jobTasks) > 10)
+                                {!! $jobTasks->links !!}
+                            @endif
+                        </div>
 
 
                         <!-- Repeat Job Cards (clone above block) -->
@@ -164,31 +169,41 @@
                     <!-- Top talent picks -->
                     <div class="d-flex justify-content-between align-items-center mt-5 mb-3 flex-wrap">
                         <h5 class="fw-bold mb-0">Top talent picks for you</h5>
-                        <a href="#" class="text-decoration-none small fw-semibold d-flex align-items-center showall">
-                            Explore <img src="{{ asset('/') }}frontend/employer/images/employersHome/arrow-right 1.png" alt="" class="ms-2">
-                        </a>
+{{--                        <a href="#" class="text-decoration-none small fw-semibold d-flex align-items-center showall">--}}
+{{--                            Explore <img src="{{ asset('/') }}frontend/employer/images/employersHome/arrow-right 1.png" alt="" class="ms-2">--}}
+{{--                        </a>--}}
                     </div>
 
                     <div class="row g-3">
                         <!-- Talent Card 1 -->
                         @foreach($employees as $employee)
                             <div class="col-md-4 col-sm-6">
-                                <a href="{{ route('employee-profile', $employee->id) }}">
+                                <a href="{{ route('employee-profile', $employee->id) }}" style="text-decoration: none">
                                     <article class="talent-card">
-                                        <img src="{{ asset($employee->profile_image ?? '/frontend/employer/images/employersHome/talent (1).png') }}"
+                                        <img src="{{ asset($employee->profile_image ?? '/frontend/user-vector-img.jpg') }}"
                                              alt="Mohammed Pranto" class="talent-img" />
-                                        <div class="talent-details">
+                                        <div class="talent-details mt-2">
                                             <h6>{{ $employee->name ?? 'Employee Name' }}</h6>
                                             <p>{{ $employee->profile_title ?? 'Employee Profile Title' }}</p>
-                                            <div class="talent-meta">
-                                                <span><i class="bi bi-geo-alt-fill"></i>{!! $employee->address ?? 'Employee Address' !!}</span>
-                                                {{--                                            <span class="badge bg-light text-secondary">{{ $employee->exp ?? '' }}+ yrs</span>--}}
-                                                {{--                                            <span class="badge bg-light text-secondary">3.50 CGPA</span>--}}
+                                            <span>
+                                                    <i class="bi bi-geo-alt"></i>
+{{--                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-geo-alt-fill" viewBox="0 0 16 16">--}}
+{{--                                                        <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10m0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6"/>--}}
+{{--                                                    </svg>--}}
+                                                    <span class="ms-1" style="text-decoration: none">{!! $employee->address ?? 'Employee Address' !!}</span>
+                                                </span>
+                                            <div class="talent-meta mt-2">
+
+                                                <span class="p-1">{{ $employee?->employeeWorkExperiences[0]?->duration ?? 0 }}+ yrs</span>
+                                                <span class="p-1">{{ $employee?->employeeEducations[$employee->employeeEducations()->count() - 1]?->cgpa ?? 0.0 }} CGPA</span>
                                             </div>
                                         </div>
                                     </article>
                                 </a>
                             </div>
+
+
+
                         @endforeach
 
 
@@ -232,4 +247,8 @@
 
     </main>
 @endsection
+
+@push('style')
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+@endpush
 

@@ -79,7 +79,7 @@
 @section('modal')
     <!-- Modal -->
     <div class="modal fade" id="settingModal">
-        <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
                     <h1 class="modal-title fs-5" id="exampleModalLabel">Edit Profile Setting</h1>
@@ -88,19 +88,19 @@
                 <form action="{{ route('employee.update-profile', auth()->id()) }}" method="post" enctype="multipart/form-data">
                     @csrf
                     <div class="modal-body">
-                        <div class="row">
+                        <div class="row mt-2">
                             <label for="name" class="col-md-3">Name</label>
                             <div class="col-md-9">
                                 <input type="text" id="name" name="name" class="form-control" value="{{ auth()->user()->name ?? '' }}" />
                             </div>
                         </div>
-                        <div class="row">
+                        <div class="row mt-2">
                             <label for="email" class="col-md-3">Email</label>
                             <div class="col-md-9">
                                 <input type="email" id="email" name="email" class="form-control" value="{{ auth()->user()->email ?? '' }}" />
                             </div>
                         </div>
-                        <div class="row">
+                        <div class="row mt-2">
                             <label for="mobile" class="col-md-3">Mobile</label>
                             <div class="col-md-9">
                                 <input type="email" id="mobile" name="mobile" class="form-control" value="{{ auth()->user()->mobile ?? '' }}" />
@@ -119,13 +119,10 @@
                             </div>
                         </div>
                         <div class="row mt-2">
-                            <div class="col-4 mx-auto">
-                                <img src="" alt="" class="" style="height: 80px" >
-                            </div>
-                        </div>
-                        <div class="row mt-2">
                             <label for="newPass" class="col-md-3">Profile Image</label>
-                            <input type="password" name="new_pass" class="col-md-9" id="newPass" />
+                            @include('common-resource-files.drag-drop-crop', ['modelId' => 'settingModal'])
+
+{{--                            @include('common-resource-files.drag-drop-crop')--}}
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -137,3 +134,4 @@
         </div>
     </div>
 @endsection
+

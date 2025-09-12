@@ -59,7 +59,7 @@ class EmployerViewController extends Controller
     public function dashboard()
     {
         $data = [
-            'jobTasks'  => JobTask::where(['user_id' => ViewHelper::loggedUser()->id, 'status' => 1])->get(),
+            'jobTasks'  => JobTask::where(['user_id' => ViewHelper::loggedUser()->id, 'status' => 1])->paginate(10),
             'employees' => User::where(['user_type' => 'employee', 'is_open_for_hire' => 1])->take(3)->get(['id', 'name', 'profile_title', 'address', 'profile_image']),
         ];
         return ViewHelper::checkViewForApi($data, 'frontend.employer.home.dashboard');

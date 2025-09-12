@@ -282,4 +282,23 @@ class ViewHelper
         }
         return false;
     }
+
+    public static function getDurationAmongTwoDates($startDate, $endDate, $durationUnit = 'years', $isEndDateIsCurrentDate = false)
+    {
+        $duration = 0;
+        $start = Carbon::parse($startDate);
+        if ($isEndDateIsCurrentDate)
+            $end = Carbon::parse(now());
+        else
+            $end = Carbon::parse($endDate);
+        if ($durationUnit == 'years')
+            $duration = $start->diffInYears($end);
+        elseif ($durationUnit == 'months')
+            $duration = $start->diffInMonths($end);
+        elseif ($durationUnit == 'days')
+            $duration = $start->diffInDays($end);
+
+        $duration = max(1, $duration);
+        return (int) round($duration);
+    }
 }

@@ -77,12 +77,12 @@
                                 <article class="job-card d-flex flex-wrap justify-content-between align-items-start gap-3">
 
                                     <!-- ✅ Modal Trigger Area -->
-                                    <div class="job-main clickable-area flex-grow-1" data-bs-toggle="modal" data-bs-target="#jobDetailsModal" style="cursor: pointer;">
+                                    <div class="job-main clickable-area flex-grow-1 show-job-details" data-job-id="{{ $publishedJob->id }}" {{--data-bs-toggle="modal" data-bs-target="#jobDetailsModal"--}} style="cursor: pointer;">
                                         <div class="job-details">
-                                            <h6 class="job-title fw-semibold mb-2">{{ $publishedJob->job_title ?? 'Senior Officer, Corporate Banking' }}</h6>
+                                            <h6 class="job-title fw-semibold mb-2">{{ $publishedJob->job_title ?? 'Job Title' }}</h6>
                                             <div class="job-badges d-flex flex-wrap gap-2 mb-2">
-                                                <span class="badge bg-light text-secondary">{{ $publishedJob?->jobType?->name ?? 'Full Time' }}</span>
-                                                <span class="badge bg-light text-secondary">{{ $publishedJob?->jobLocationType?->name ?? 'On-site' }}</span>
+                                                <span class="badge bg-light text-secondary">{{ $publishedJob?->jobType?->name ?? 'Job Type' }}</span>
+                                                <span class="badge bg-light text-secondary">{{ $publishedJob?->jobLocationType?->name ?? 'JobLocationType' }}</span>
 {{--                                                <span class="badge bg-light text-secondary">Day Shift</span>--}}
                                             </div>
                                         </div>
@@ -274,33 +274,33 @@
                         <img src="{{ asset('/') }}frontend/employer/images/employersHome/leftarrow.png" alt="" class="me-2"> Job details
                     </h6>
                     <div class="d-flex gap-2">
-                        <button class="btn btn-outline-secondary btn-sm">
-                            <img src="{{ asset('/') }}frontend/employer/images/employersHome/Edit pencil.png" alt=""> Edit
-                        </button>
-                        <button class="btn btn-light btn-sm">
-                            <img src="{{ asset('/') }}frontend/employer/images/employersHome/three dot.png" alt="">
+{{--                        <button class="btn btn-outline-secondary btn-sm">--}}
+{{--                            <img src="{{ asset('/') }}frontend/employer/images/employersHome/Edit pencil.png" alt=""> Edit--}}
+{{--                        </button>--}}
+                        <button class="btn btn-light btn-sm btn-close" data-bs-dismiss="modal">
+{{--                            <img src="{{ asset('/') }}frontend/employer/images/employersHome/three dot.png" alt="">--}}
                         </button>
                     </div>
                 </div>
 
                 <!-- Company Info -->
                 <div class="mb-2">
-                    <img src="{{ asset('/') }}frontend/employer/images/employersHome/UCB logo.png" alt=""> <span class="fw-semibold">United Commercial Bank PLC</span> · <span class="text-muted">Gulshan, Dhaka</span>
+                    <img id="detailsCompanyLogo" src="{{ asset('/') }}frontend/employer/images/employersHome/UCB logo.png" alt=""> <span class="fw-semibold" id="detailsCompanyName">United Commercial Bank PLC</span> · <span class="text-muted" id="detailsCompanyAddress">Gulshan, Dhaka</span>
                 </div>
 
                 <!-- Job Title -->
-                <h4 class="fw-bold mb-3">Senior Officer, Corporate Banking</h4>
+                <h4 class="fw-bold mb-3" id="detailsJobTitle">Senior Officer, Corporate Banking</h4>
 
                 <!-- Tags -->
                 <div class="d-flex flex-wrap gap-2 mb-4">
-                    <span class="badge bg-light text-dark fw-medium">Full Time</span>
-                    <span class="badge bg-light text-dark fw-medium">On-Site</span>
-                    <span class="badge bg-light text-dark fw-medium">Day Shift</span>
+                    <span class="badge bg-light text-dark fw-medium" id="detailsJobType">Full Time</span>
+                    <span class="badge bg-light text-dark fw-medium" id="detailsJobLocationType">On-Site</span>
+{{--                    <span class="badge bg-light text-dark fw-medium">Day Shift</span>--}}
                 </div>
 
                 <!-- About -->
                 <h6 class="fw-semibold mb-2">About UCB</h6>
-                <p class="text-muted" style="line-height: 1.6;">
+                <p class="text-muted" id="detailsCompanyOverview" style="line-height: 1.6;">
                     Be part of the world's most successful, purpose-led business. Work with brands that are well-loved around the world, that improve the lives of our consumers and the communities around us. We promote innovation, big and small, to make our business win and grow; and we believe in business as a force for good. Unleash your curiosity, challenge ideas and disrupt processes; use your energy to make this happen.
                     <br><br>
                     Our brilliant business leaders and colleagues provide mentorship and inspiration, so you can be at your best. Every day, nine out of ten Indian households use our products to feel good, look good and get more out of life – giving us a unique opportunity to build a brighter future.
@@ -308,16 +308,13 @@
 
                 <!-- Requirements -->
                 <h6 class="fw-semibold mt-4 mb-2">Job Requirements</h6>
-                <ul class="text-muted" style="line-height: 1.8;">
+                <ul class="text-muted" id="detailsJobDescription" style="line-height: 1.8;">
                     <li>Analyse internal and external data to identify geography-wise issues/opportunities and action upon them.</li>
                     <li>Work with media teams and other stakeholders to deploy effective communication for Surf across traditional and new-age media platforms.</li>
                 </ul>
             </div>
         </div>
     </div>
-
-
-
 
 
     <!-- Create Job Modal -->
@@ -638,7 +635,7 @@
     <!-- Create Job Modal End -->
 
     <!-- Detailed Job Review Modal -->
-    <div class="modal fade" id="jobDetailsModal" tabindex="-1" aria-labelledby="jobDetailsModalLabel" aria-hidden="true">
+    <div class="modal fade" id="jobDetailsModalReview" tabindex="-1" aria-labelledby="jobDetailsModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content rounded-4 p-4">
 
@@ -800,5 +797,27 @@
         //     document.querySelector('#createJobModal .stepOne').classList.remove('d-none');
         //     document.querySelector('#createJobModal .jobModalForPost').classList.add('d-none');
         // });
+        $(document).on('click', '.show-job-details', function () {
+            var jobId = $(this).attr('data-job-id');
+            sendAjaxRequest('get-job-details/'+jobId, 'GET', {job_task: jobId})
+                .then(function (response) {
+                    console.log(response);
+                    if (response.status == 'success')
+                    {
+                        var job = response.job;
+                        $('#detailsCompanyLogo').attr('src', base_url+job.employerCompany.logo);
+                        $('#detailsCompanyName').text(job.employerCompany.name);
+                        $('#detailsCompanyAddress').text(job.employerCompany.address);
+                        $('#detailsJobTitle').text(job.job_title);
+                        $('#detailsJobType').text(job.jobType.name);
+                        $('#detailsJobLocationType').text(job.jobLocationType.name);
+                        $('#detailsCompanyOverview').html(job.employerCompany.company_overview);
+                        $('#detailsJobDescription').html(job.description);
+                    } else {
+                        toastr.error('Something went wrong. Please try again.')
+                    }
+
+                })
+        })
     </script>
 @endpush

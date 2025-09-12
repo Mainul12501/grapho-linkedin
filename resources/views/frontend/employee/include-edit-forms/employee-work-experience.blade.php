@@ -37,7 +37,7 @@
         </div>
 
         <div class="mb-4">
-            <label for="startDateInput" class="form-label">Start date</label>
+{{--            <label for="startDateInput" class="form-label">Start date</label>--}}
             <div class="d-flex">
                 {{--                                <select class="form-control me-2" id="startMonthInput" name="">--}}
                 {{--                                    <option value="">Month</option>--}}
@@ -45,14 +45,22 @@
                 {{--                                    <option value="feb">February</option>--}}
                 {{--                                    <!-- Add other months -->--}}
                 {{--                                </select>--}}
-                <input type="date" id="editStartDate" value="{{ $data->start_date ?? '' }}" name="start_date" class="form-control m-1" />
+                <span style="width: 100%; margin-right: 5px;">
+                                        <label for="startDateInput" class="form-label">Start date</label>
+                                        <input type="date" name="start_date" value="{{ $data->start_date ?? '' }}" class="form-control m-1" />
+                                    </span>
+{{--                <input type="date" id="editStartDate" value="{{ $data->start_date ?? '' }}" name="start_date" class="form-control m-1" />--}}
                 {{--                                <select class="form-control" id="startYearInput" name="">--}}
                 {{--                                    <option value="">Year</option>--}}
                 {{--                                    <option value="2021">2021</option>--}}
                 {{--                                    <option value="2020">2020</option>--}}
                 {{--                                    <!-- Add more years -->--}}
                 {{--                                </select>--}}
-                <input type="date" id="editEndDate" value="{{ $data->end_date ?? '' }}" name="end_date" class="form-control m-1" />
+                <span style="width: 100%; margin-left: 5px;">
+                                        <label for="startDateInput" class="form-label">End date</label>
+                                        <input type="date" name="end_date" value="{{ $data->end_date ?? '' }}" class="form-control m-1" />
+                                    </span>
+{{--                <input type="date" id="editEndDate" value="{{ $data->end_date ?? '' }}" name="end_date" class="form-control m-1" />--}}
             </div>
         </div>
 

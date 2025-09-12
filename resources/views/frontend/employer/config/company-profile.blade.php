@@ -8,7 +8,7 @@
         <div class="container companyProfilecontainer mt-0 mt-md-3">
             <div class="row g-4">
                 <!-- Left part -->
-                <div class="col-md-4 col-12">
+                <div class="col-md-4 col-12 text-break">
                     <div class="card d-flex flex-column  p-4 border rounded-3">
                         <div class="mb-3">
                             <img src="{{ asset( $companyDetails->logo ??  '/frontend/employer/images/employersHome/gpLogo.png') }}" alt="{{ $companyDetails->name ?? 'company' }}-Logo" class="companyProfilecontainer__logo" />

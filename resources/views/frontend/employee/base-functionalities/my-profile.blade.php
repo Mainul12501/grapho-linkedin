@@ -213,6 +213,9 @@
                                                         <button type="button" class="btn btn-success btn-sm" id="cropImage">
                                                             ✂️ Crop Image
                                                         </button>
+                                                        <button type="button" class="btn btn-success btn-sm" id="saveImage" style="display: none">
+                                                            ✂️ Save Image
+                                                        </button>
                                                     </div>
                                                 </div>
 
@@ -690,7 +693,7 @@
                             </div>
 
                             <div class="mb-4">
-                                <label for="startDateInput" class="form-label">Start date</label>
+
                                 <div class="d-flex">
     {{--                                <select class="form-control me-2" id="startMonthInput" name="">--}}
     {{--                                    <option value="">Month</option>--}}
@@ -698,14 +701,22 @@
     {{--                                    <option value="feb">February</option>--}}
     {{--                                    <!-- Add other months -->--}}
     {{--                                </select>--}}
-                                    <input type="date" name="start_date" class="form-control m-1" />
+                                    <span style="width: 100%; margin-right: 5px;">
+                                        <label for="startDateInput" class="form-label">Start date</label>
+                                        <input type="date" name="start_date" class="form-control m-1" />
+                                    </span>
+
     {{--                                <select class="form-control" id="startYearInput" name="">--}}
     {{--                                    <option value="">Year</option>--}}
     {{--                                    <option value="2021">2021</option>--}}
     {{--                                    <option value="2020">2020</option>--}}
     {{--                                    <!-- Add more years -->--}}
     {{--                                </select>--}}
-                                    <input type="date" name="end_date" class="form-control m-1" />
+                                    <span style="width: 100%; margin-left: 5px;">
+                                        <label for="startDateInput" class="form-label">End date</label>
+                                        <input type="date" name="end_date" class="form-control m-1" />
+                                    </span>
+
                                 </div>
                             </div>
 

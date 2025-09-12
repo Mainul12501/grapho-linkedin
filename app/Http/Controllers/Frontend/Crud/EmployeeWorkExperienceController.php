@@ -47,7 +47,7 @@ class EmployeeWorkExperienceController extends Controller
             if ($request->is_working_currently != 'on')
                 $workExperience->end_date   = $request->end_date;
             $workExperience->office_address = $request->office_address;
-            $workExperience->duration   = $request->duration;
+            $workExperience->duration   = ViewHelper::getDurationAmongTwoDates($request->start_date, $request->end_date, 'years', $request->is_working_currently == 'on');
             $workExperience->is_working_currently   = $request->is_working_currently == 'on' ? 1 : 0;
             $workExperience->job_type   = $request->job_type;
             $workExperience->status   = 1;
@@ -102,7 +102,7 @@ class EmployeeWorkExperienceController extends Controller
             if ($request->is_working_currently != 'on')
                 $workExperience->end_date   = $request->end_date;
             $workExperience->office_address = $request->office_address;
-            $workExperience->duration   = $request->duration;
+            $workExperience->duration   = ViewHelper::getDurationAmongTwoDates($request->start_date, $request->end_date, 'years', $request->is_working_currently == 'on');
             $workExperience->is_working_currently   = $request->is_working_currently == 'on' ? 1 : 0;
             $workExperience->job_type   = $request->job_type;
             $workExperience->status   = 1;
