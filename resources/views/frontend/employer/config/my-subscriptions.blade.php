@@ -42,7 +42,7 @@
                                 @if($subscriptionPlan->id != $loggedUser->subscription_plan_id)
                                     <form id="subsForm{{$key}}" action="{{ route('buy-subscription', $subscriptionPlan->id) }}" method="post">
                                         @csrf
-                                        <button type="submit" onsubmit="return confirm('Are you sure to Purchase this plan. Your previous plan will be replaced if exists.')" class="btn w-100 bg-dark text-white my-3">Subscribe</button>
+                                        <button type="submit" onsubmit="return confirm('Are you sure to Purchase this plan. Your previous plan will be replaced if exists.')" class="btn w-100 text-white my-3" style="background-color: #FFCB11; color: black!important;">Subscribe</button>
                                     </form>
                                 @else
                                     <button type="button" disabled class="btn w-100 bg-dark text-white my-3">Already Purchased</button>

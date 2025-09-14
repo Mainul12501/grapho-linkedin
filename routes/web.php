@@ -119,6 +119,7 @@ Route::middleware([
 
         Route::post('apply-job/{jobTask}', [EmployeeViewController::class, 'applyJob'])->name('apply-job');
         Route::post('update-profile/{user}', [EmployeeViewController::class, 'updateProfile'])->name('update-profile');
+        Route::post('update-employee-info', [EmployeeViewController::class, 'updateEmployeeInfo'])->name('update-employee-info');
 //        crud routes
         Route::resources([
             'employee-work-experiences' => EmployeeWorkExperienceController::class,

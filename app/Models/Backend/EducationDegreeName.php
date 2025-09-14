@@ -11,7 +11,7 @@ class EducationDegreeName extends Model
     use HasFactory;
     use Searchable;
 
-    protected $fillable = ['degree_name', 'note', 'status', 'slug'];
+    protected $fillable = ['degree_name', 'note', 'status', 'slug', 'need_institute_field'];
 
     protected $searchableFields = ['*'];
 
@@ -25,6 +25,7 @@ class EducationDegreeName extends Model
         $educationDegreeName->degree_name = $request->degree_name;
         $educationDegreeName->note = $request->note;
         $educationDegreeName->status = $request->status == 'on' ? 1 : 0;
+        $educationDegreeName->need_institute_field = $request->need_institute_field == 'on' ? 1 : 0;
         $educationDegreeName->slug = str_replace(' ', '-', $request->degree_name);
         $educationDegreeName->save();
         return $educationDegreeName;

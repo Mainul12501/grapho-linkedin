@@ -55,14 +55,20 @@
 <!-- (Copy from the artifact above) -->
 {{--                                                drag drop crop end--}}
 
-
+@php
+    if (!isset($modelId))
+        $modelId    = 'modal';
+ @endphp
 
 @push('script')
     <link rel="stylesheet" href="{{ asset('common-assets/drag-drop-crop/style.css') }}">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>
+{{--    <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css" rel="stylesheet">--}}
+    <link href="{{ asset('/common-assets/cropper-js/cropper.min.css') }}" rel="stylesheet">
+{{--    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>--}}
+    <script src="{{ asset('/common-assets/cropper-js/cropper.min.js') }}"></script>
     <script src="{{ asset('common-assets/drag-drop-crop/script.js') }}"></script>
     <script>
+
         resetModalForDragDropCrop("{{ $modelId }}");
     </script>
 @endpush

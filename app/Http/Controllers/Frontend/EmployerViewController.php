@@ -93,12 +93,12 @@ class EmployerViewController extends Controller
 //        {
 //            return redirect(route('employer.my-job-applicants', ['jobTask' => $jobTask->id, 'status' => 'pending']));
 //        }
-        $applicants = $jobTask->employeeAppliedJobs()->with(['user']);
-        $pendingApplicants = $applicants->where(['status' => 'pending'])->get();
-        $approvedApplicants = $applicants->where(['status' => 'approved'])->get();
-        $rejectedApplicants = $applicants->where(['status' => 'rejected'])->get();
-        $shortListedApplicants = $applicants->where(['status' => 'shortlisted'])->get();
-        $this->data = [
+        $applicants = $jobTask->employeeAppliedJobs()->with(['user'])->get();
+        $pendingApplicants = $applicants->where('status', 'pending');
+        $approvedApplicants = $applicants->where('status', 'approved');
+        $rejectedApplicants = $applicants->where('status', 'rejected');
+        $shortListedApplicants = $applicants->where('status', 'shortlisted');
+         $this->data = [
             'jobTask'   => $jobTask,
 //            'applicants' => $jobTask->employeeAppliedJobs()->where(['status' => 'pending'])->with(['user'])->get(),
             'pendingApplicants' => $pendingApplicants,
@@ -385,7 +385,7 @@ class EmployerViewController extends Controller
         }
     }
 
-    public function changeEmployeeJobApplicationStatus(Request $request, User $user, JobTask $jobTask, $status = 'pending')
+    public function changeEmployeeJobApplicationStatus(Request $request, JobTask $jobTask, User $user,  $status = 'pending')
     {
         $loggedUser = ViewHelper::loggedUser();
         if ($loggedUser->id != $jobTask->user_id) {

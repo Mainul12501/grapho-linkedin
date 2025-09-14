@@ -50,7 +50,7 @@ class PostController extends Controller
             $post = Post::updateOrCreatePost($request);
             if ($post)
             {
-                return ViewHelper::returnSuccessMessage('Post created successfully');
+                return ViewHelper::returnRedirectWithMessage(route('employer.posts.index'), 'success','Post created successfully');
             } else {
                 return ViewHelper::returEexceptionError('Something went wrong. Please try again.');
             }

@@ -10,7 +10,8 @@
             <div class="d-flex justify-content-between align-items-center">
                 <div class="caller-info">
                     <div class="caller-avatar">
-                        <img src="{{ isset(auth()->user()->profile_image) ? asset(auth()->user()->profile_image) : 'https://randomuser.me/api/portraits/women/44.jpg' }}" alt="Sarah Johnson">
+                        <img src="{{ isset(auth()->user()->profile_image) ? asset(auth()->user()->profile_image) : asset('/frontend/user-vector-img.jpg') }}" alt="Sarah Johnson">
+{{--                        'https://randomuser.me/api/portraits/women/44.jpg'--}}
                     </div>
                     <div>
                         <div class="call-status text-white">{{ auth()->user()->name ?? 'Employer Name' }}</div>
@@ -36,6 +37,7 @@
 
             <div class="local-video" id="localArea">
                 <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80" alt="Local video">
+{{--                <img src="{{ asset('/frontend/user-vector-img.jpg') }}" alt="Local video">--}}
             </div>
 
             <!-- Participants list -->

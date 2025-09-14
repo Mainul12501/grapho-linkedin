@@ -100,35 +100,36 @@
                     @csrf
                     <div class="modal-body">
                         <div class="row">
-                            <div class="col-md-4">
+                            <div class="col-md-6">
                                 <label for="">Company Name</label>
                                 <input type="text" class="form-control" name="name" value="{{ $companyDetails->name ?? '' }}" placeholder="Enter Your Full Name" >
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-6">
                                 <label for="">Email</label>
                                 <input type="text" class="form-control" name="email" value="{{ $companyDetails->email ?? '' }}" placeholder="Enter Your Email" >
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-6">
                                 <label for="">Mobile</label>
                                 <input type="text" class="form-control" name="phone" value="{{ $companyDetails->phone ?? '' }}" placeholder="Enter Your Mobile Number" >
                             </div>
-                        </div>
-                        <div class="row mt-3">
-                            <div class="col-md-4">
+                            <div class="col-md-6">
                                 <label for="">Website</label>
                                 <input type="text" class="form-control" name="website" value="{{ $companyDetails->website ?? '' }}" placeholder="Enter Company website address" >
                             </div>
-                            <div class="col-md-4">
+                        </div>
+                        <div class="row mt-3">
+
+                            <div class="col-md-6">
                                 <label for="">Number of employees</label>
                                 <input type="text" class="form-control" name="total_employees" value="{{ $companyDetails->total_employees ?? '' }}" placeholder="Enter Number of employees" >
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-6">
                                 <label for="">Founded on</label>
                                 <input type="text" class="form-control" name="founded_on" value="{{ $companyDetails->founded_on ?? '' }}" placeholder="Enter Founded Year" >
                             </div>
                         </div>
                         <div class="row mt-3">
-                            <div class="col-md-4">
+                            <div class="col-md-6">
                                 <label for="selectCompanyCategory">Select Company Category</label>
                                 <select name="employer_company_category_id" id="selectCompanyCategory" class="form-control select2">
                                     <option value="">Select Industry</option>
@@ -137,7 +138,7 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-6">
                                 <label for="selectIndustry">Select Industry</label>
                                 <select name="industry_id" id="selectIndustry" class="form-control select2">
                                     <option value="">Select Industry</option>
@@ -146,14 +147,17 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-6 mt-2">
                                 <label for="setLogo">Set Logo</label>
                                 <div>
                                     <input type="file" name="logo" class="" accept="image/*" />
-                                    @if(isset($companyDetails->logo))
-                                        <img src="{{ asset($companyDetails->logo) }}" alt="Company Logo" placeholder="Enter Company Logo" class="img-fluid mt-2" style="max-height: 100px; max-width: 100px;">
-                                    @endif
+
                                 </div>
+                            </div>
+                            <div class="col-md-6 mt-2">
+                                @if(isset($companyDetails->logo))
+                                    <img src="{{ asset($companyDetails->logo) }}" alt="Company Logo" placeholder="Enter Company Logo" class="img-fluid mt-2" style="max-height: 80px; max-width: 100px;">
+                                @endif
                             </div>
                         </div>
                         <div class="row mt-3">

@@ -1,4 +1,4 @@
-<nav class="topbar d-flex justify-content-between align-items-center p-3">
+<nav class="topbar d-flex justify-content-between align-items-center p-3 sticky-lg-top bg-light">
 {{--    <input type="search" class="form-control searchInput w-50 me-3" placeholder="Search jobs or talents" />--}}
     <span class="search-input"></span>
 

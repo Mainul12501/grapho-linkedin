@@ -15,26 +15,45 @@
             </select>
         </div>
 
-        <div class="mb-4">
-            <label for="universityInput" class="form-label">University name</label>
-            {{--                            <input type="text" class="form-control" id="universityInput" placeholder="Type here" />--}}
-            <select name="university_name_id" class="form-control select2" id="">
-                <option selected disabled>Select University</option>
-                @foreach($universityNames as $universityName)
-                    <option value="{{ $universityName->id }}" {{ $data->university_name_id == $universityName->id ? 'selected' : '' }}>{{ $universityName->name }}</option>
-                @endforeach
-            </select>
+        <div id="universityDiv" class="{{ $data?->educationDegreeName?->need_institute_field == 1 ? 'd-none' : '' }}">
+            <div class="mb-4">
+                <label for="universityInput" class="form-label">University name</label>
+                {{--                            <input type="text" class="form-control" id="universityInput" placeholder="Type here" />--}}
+                <select name="university_name_id" class="form-control select2" id="">
+                    <option selected disabled>Select University</option>
+                    @foreach($universityNames as $universityName)
+                        <option value="{{ $universityName->id }}" {{ $data->university_name_id == $universityName->id ? 'selected' : '' }}>{{ $universityName->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+
+            <div class="mb-4">
+                <label for="fieldOfStudyInput" class="form-label">Field of study</label>
+                {{--            <input type="text" class="form-control" id="fieldOfStudyInput" placeholder="Type here" />--}}
+                <select name="field_of_study_id" class="form-control select2" id="">
+                    <option selected disabled>Select Field of Study</option>
+                    @foreach($fieldOfStudies as $fieldOfStudy)
+                        <option value="{{ $fieldOfStudy->id }}" {{ $data->field_of_study_id == $fieldOfStudy->id ? 'selected' : '' }}>{{ $fieldOfStudy->field_name }}</option>
+                    @endforeach
+                </select>
+            </div>
         </div>
 
-        <div class="mb-4">
-            <label for="fieldOfStudyInput" class="form-label">Field of study</label>
-{{--            <input type="text" class="form-control" id="fieldOfStudyInput" placeholder="Type here" />--}}
-            <select name="field_of_study_id" class="form-control select2" id="">
-                <option selected disabled>Select Field of Study</option>
-                @foreach($fieldOfStudies as $fieldOfStudy)
-                    <option value="{{ $fieldOfStudy->id }}" {{ $data->field_of_study_id == $fieldOfStudy->id ? 'selected' : '' }}>{{ $fieldOfStudy->field_name }}</option>
-                @endforeach
-            </select>
+        <div id="instituteNameDiv" class="{{ $data?->educationDegreeName?->need_institute_field == 0 ? 'd-none' : '' }}">
+            <div class="mb-4 " >
+                <label for="instituteName" class="form-label">Institute Name</label>
+                <input type="text" class="form-control" name="institute_name" id="instituteName" placeholder="Type here" />
+            </div>
+            <div class="mb-4 " >
+                <label for="groupName" class="form-label">Group Name</label>
+                <select name="group_name" class="form-control" id="">
+                    <option value="science">Science</option>
+                    <option value="commerce">Commerce</option>
+                    <option value="arts">Arts</option>
+                    <option value="technical">Technical</option>
+                    <option value="others">Others</option>
+                </select>
+            </div>
         </div>
 
         <div class="mb-4">

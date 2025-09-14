@@ -22,11 +22,11 @@
                                 </div>
                                 <!-- Post a job button -->
                                 <!-- Post a job button -->
-{{--                                <button class="btn btn-warning text-dark fw-semibold rounded-3 px-4 py-2"--}}
-{{--                                        data-bs-toggle="modal" data-bs-target="#createJobModal">--}}
-{{--                                    Post a job--}}
-{{--                                </button>--}}
-                                <a href="{{ route('employer.job-tasks.create') }}"  class="btn btn-warning text-dark fw-semibold rounded-3 px-4 py-2">Post a job</a>
+                                <button class="btn btn-warning text-dark fw-semibold rounded-3 px-4 py-2"
+                                        data-bs-toggle="modal" data-bs-target="#createJobModal">
+                                    Post a job
+                                </button>
+{{--                                <a href="{{ route('employer.job-tasks.create') }}"  class="btn btn-warning text-dark fw-semibold rounded-3 px-4 py-2">Post a job</a>--}}
 
                             </div>
 
@@ -285,7 +285,9 @@
 
                 <!-- Company Info -->
                 <div class="mb-2">
-                    <img id="detailsCompanyLogo" src="{{ asset('/') }}frontend/employer/images/employersHome/UCB logo.png" alt=""> <span class="fw-semibold" id="detailsCompanyName">United Commercial Bank PLC</span> · <span class="text-muted" id="detailsCompanyAddress">Gulshan, Dhaka</span>
+                    <img id="detailsCompanyLogo" src="{{ asset('/') }}frontend/employer/images/employersHome/UCB logo.png" alt="company logo" style="height: 30px; border-radius: 50%">
+                    <span class="fw-semibold" id="detailsCompanyName">United Commercial Bank PLC</span> ·
+                    <span class="text-muted" id="detailsCompanyAddress">Gulshan, Dhaka</span>
                 </div>
 
                 <!-- Job Title -->
@@ -299,7 +301,7 @@
                 </div>
 
                 <!-- About -->
-                <h6 class="fw-semibold mb-2">About UCB</h6>
+                <h6 class="fw-semibold mb-2" >About <span id="detailsAboutCompanyName">UCB</span></h6>
                 <p class="text-muted" id="detailsCompanyOverview" style="line-height: 1.6;">
                     Be part of the world's most successful, purpose-led business. Work with brands that are well-loved around the world, that improve the lives of our consumers and the communities around us. We promote innovation, big and small, to make our business win and grow; and we believe in business as a force for good. Unleash your curiosity, challenge ideas and disrupt processes; use your energy to make this happen.
                     <br><br>
@@ -318,14 +320,19 @@
 
 
     <!-- Create Job Modal -->
-    <div class="modal fade" id="createJobModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal fade" id="createJobModal" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered modal-md">
             <div class="modal-content p-4 rounded-4">
-
-                <form action="{{ route('employer.job-tasks.store') }}" method="post" enctype="multipart/form-data">
+                <div style="display: none">
+                    <input type="text" id="companyLogo" value="{{ asset(auth()->user()?->employerCompany?->logo ?? '/frontend/company-vector.jpg') }}">
+                    <input type="text" id="companyName" value="{{ auth()->user()?->employerCompany?->name ?? 'Company Name' }}">
+                    <input type="text" id="companyAddress" value="{{ auth()->user()?->employerCompany?->address ?? 'Company Address' }}">
+                    <input type="text" id="companyOverview" value="{{ auth()->user()?->employerCompany?->company_overview ?? 'Company Overview' }}">
+                </div>
+                <form action="{{ route('employer.job-tasks.store') }}" id="jobCreateForm" method="post" enctype="multipart/form-data">
                     @csrf
                     <!-- STEP 1 -->
-                    <div class="stepOne">
+                    <div class="wizard-step stepOne">
                         <!-- Modal Header -->
                         <div class="d-flex align-items-center gap-2 mb-4">
                             <img src="{{ asset('/') }}frontend/employer/images/employersHome/leftarrow.png" alt="" class="me-2" style="cursor: default;">
@@ -341,35 +348,34 @@
                         <!-- Job Type -->
                         <div class="mb-4">
                             <label class="form-label fw-semibold mb-2">Job type</label>
-                            <div class="btn-group d-flex flex-wrap gap-2" role="group" aria-label="Job type">
+                            <div class="pill-group" role="group" aria-label="Job type">
                                 @foreach($jobTypes as $jobTypesKey => $jobType)
-                                    <input type="radio" class="btn-check" name="job_type_id" id="jobType{{ $jobTypesKey }}" value="{{ $jobType->id }}" autocomplete="off" {{ $jobTypesKey == 0 ? 'checked' : '' }}>
-                                    <label class="btn btn-outline-warning" for="jobType{{ $jobTypesKey }}">{{ $jobType->name ?? 'jt' }}</label>
+                                    <input type="radio" class="btn-check" name="job_type_id" id="jobType{{ $jobTypesKey }}" value="{{ $jobType->id }}" {{ $jobTypesKey == 0 ? 'checked' : '' }}>
+                                    <label class="btn-pill" for="jobType{{ $jobTypesKey }}">{{ $jobType->name ?? 'jt' }}</label>
                                 @endforeach
-
                             </div>
                         </div>
 
                         <!-- Job Location -->
                         <div class="mb-4">
                             <label class="form-label fw-semibold mb-2">Job location</label>
-                            <div class="btn-group d-flex flex-wrap gap-2" role="group" aria-label="Job location">
+                            <div class="pill-group">
                                 @foreach($jobLocations as $jobLocationKey => $jobLocation)
                                     <input type="radio" class="btn-check" name="job_location_type_id" id="jobLocation{{ $jobLocationKey }}" value="{{ $jobLocation->id }}" {{ $jobLocationKey == 0 ? 'checked' : '' }} autocomplete="off">
-                                    <label class="btn btn-outline-warning" for="jobLocation{{ $jobLocationKey }}">{{ $jobLocation->name ?? 'jl' }}</label>
+                                    <label class="btn-pill" for="jobLocation{{ $jobLocationKey }}">{{ $jobLocation->name ?? 'jl' }}</label>
                                 @endforeach
-
+                            </div>
                         </div>
 
                         <!-- Footer Buttons -->
-                        <div class="d-flex justify-content-between align-items-center">
+                        <div class="d-flex justify-content-between align-items-center mt-4">
                             <button class="btn btn-outline-dark px-4 py-2 rounded-3" data-bs-dismiss="modal">Cancel</button>
                             <button id="continueToStep2" type="button" class="btn btn-warning text-dark fw-semibold px-4 py-2 rounded-3">Continue</button>
                         </div>
                     </div>
 
                     <!-- STEP 2 -->
-                    <div class="jobModalForPost d-none stepTwo" style="background-color: #f2f2f4;">
+                    <div class="jobModalForPost wizard-step d-none stepTwo" style="background-color: #f2f2f4;">
                         <!-- Container and header -->
                         <div class="container-fluid py-3 border-bottom mb-4 bg-white">
                             <div class="d-flex justify-content-between align-items-center">
@@ -378,12 +384,12 @@
                                     <h5 class="fw-bold mb-0">Create a job</h5>
                                 </div>
                                 <!-- Button triggers modal -->
-{{--                                <button type="button" class="btn btn-warning text-dark fw-semibold px-4 py-2 rounded-3" data-bs-toggle="modal" data-bs-target="#jobDetailsModal">--}}
-{{--                                    Review & Post--}}
-{{--                                </button>--}}
-                                <button type="submit" class="btn btn-warning text-dark fw-semibold px-4 py-2 rounded-3" {{--data-bs-toggle="modal" data-bs-target="#jobDetailsModal"--}}>
-                                    Post Job
+                                <button type="button" class="btn btn-warning text-dark fw-semibold px-4 py-2 rounded-3 show-review-btn" {{--data-bs-toggle="modal" data-bs-target="#jobDetailsModal"--}}>
+                                    Review & Post
                                 </button>
+{{--                                <button type="submit" class="btn btn-warning text-dark fw-semibold px-4 py-2 rounded-3" --}}{{--data-bs-toggle="modal" data-bs-target="#jobDetailsModal"--}}{{-->--}}
+{{--                                    Post Job--}}
+{{--                                </button>--}}
                             </div>
                         </div>
 
@@ -428,18 +434,9 @@
                                         <input type="radio" class="btn-check" name="required_experience" id="custom" value="custom" autocomplete="off">
                                         <label id="showCustomExperienceField" class="btn btn-outline-warning" for="custom">Custom</label>
                                         <span id="customExperienceField" style="display: none">
-                                                            <input type="text" style="width: 60px; background-color: darkgrey;" class="btn btn-outline-primary " name="exp_range_start"> to <input type="text" style="width: 60px; background-color: darkgrey;" class="btn btn-outline-primary " name="exp_range_end"> Years
+                                                            <input type="text" style="width: 60px; background-color: #f8ffbe;" class="btn btn-outline-primary " name="exp_range_start"> to <input type="text" style="width: 60px; background-color: darkgrey;" class="btn btn-outline-primary " name="exp_range_end"> Years
                                                         </span>
-{{--                                        <input type="radio" class="btn-check" name="required_experience" id="exp-3to5" value="3–5 yrs" autocomplete="off">--}}
-{{--                                        <label class="btn btn-outline-warning" for="exp-3to5">3–5 yrs</label>--}}
 
-{{--                                        <input type="radio" class="btn-check" name="required_experience" id="exp-5plus" value="5+ yrs" autocomplete="off">--}}
-{{--                                        <label class="btn btn-outline-warning" for="exp-5plus">5+ yrs</label>--}}
-{{--                                        <select name="required_experience" class="form-control" id="">--}}
-{{--                                            <option value="1">1 Years</option>--}}
-{{--                                            <option value="3">3 Years</option>--}}
-{{--                                            <option value="5">5 Years</option>--}}
-{{--                                        </select>--}}
                                     </div>
                                 </div>
                             </div>
@@ -450,7 +447,7 @@
                                 <div class="bg-white rounded-4 p-4 shadow-sm">
                                     <h6 class="fw-semibold mb-3">Industry</h6>
 {{--                                    <input type="text" class="form-control mb-3" name="" placeholder="Search universities">--}}
-                                    <select name="industry_id" id="select2-div" class=" select2"  >
+                                    <select name="industry_id" id="industryId" class="form-control select2"  >
 
                                         @foreach($industries as $industryKey => $industry)
                                             <option value="{{ $industry->id }}">{{ $industry->name ?? 'un' }}</option>
@@ -536,24 +533,12 @@
                                     </div>
                                 </div>
                             </div>
-
-
-
                             <!-- Skills Section -->
                             <div class="container mb-4">
                                 <div class="bg-white rounded-4 p-4 shadow-sm">
                                     <h6 class="fw-semibold mb-3">Skill requirements</h6>
                                     <div class="<!--d-flex flex-wrap gap-2-->">
 {{--                                        <span class="badge bg-light text-dark">Sales</span>--}}
-{{--                                        <span class="badge bg-dark text-white">Management</span>--}}
-{{--                                        <span class="badge bg-light text-dark">Banking</span>--}}
-{{--                                        <span class="badge bg-light text-dark">Marketing</span>--}}
-{{--                                        <span class="badge bg-light text-dark">Customer Service</span>--}}
-{{--                                        <span class="badge bg-light text-dark">Product Development</span>--}}
-{{--                                        <span class="badge bg-light text-dark">Human Resources</span>--}}
-{{--                                        <span class="badge bg-light text-dark">IT Support</span>--}}
-{{--                                        <span class="badge bg-light text-dark">Finance</span>--}}
-
                                         <nav>
                                             <div class="nav nav-pills" id="nav-tab" role="tablist">
                                                 @foreach($skillCategories as $skillCategoryKey =>$skillCategory)
@@ -567,8 +552,8 @@
                                             @foreach($skillCategories as $x => $singleSkillCategory)
                                                 <div class="tab-pane fade {{ $x == 0 ? 'show active' : '' }}" id="skillCategory{{$x}}" role="tabpanel" aria-labelledby="nav-home-tab" tabindex="0">
                                                     @foreach($singleSkillCategory->publishedSkills as $skillKey => $skill)
-                                                        <input type="radio" class="btn-check" name="required_skills[]" id="skill{{ $skillKey }}" value="{{ $skill->id }}" autocomplete="off">
-                                                        <label class="btn btn-outline-warning" for="skill{{ $skillKey }}">{{ $skill->skill_name ?? 'sn' }}</label>
+                                                        <input type="radio" class="btn-check" name="required_skills[]" id="{{ $singleSkillCategory->category_name }}-{{ $skillKey }}" value="{{ $skill->id }}" autocomplete="off">
+                                                        <label class="btn border select-skill" for="{{ $singleSkillCategory->category_name }}-{{ $skillKey }}">{{ $skill->skill_name ?? 'sn' }}</label>
                                                     @endforeach
 
 {{--                                                    <input type="radio" class="btn-check" name="required_experience" id="exp-3to5q" value="3–5 yrs" autocomplete="off">--}}
@@ -576,76 +561,30 @@
 
                                                 </div>
                                             @endforeach
-
-{{--                                            <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab" tabindex="0">--}}
-
-{{--                                                <input type="radio" class="btn-check" name="required_experience" id="exp-3to5" value="3–5 yrs" autocomplete="off">--}}
-{{--                                                <label class="btn btn-outline-warning" for="exp-3to5">3–5 yrs</label>--}}
-
-{{--                                                <input type="radio" class="btn-check" name="required_experience" id="exp-3to5x" value="3–5 yrs" autocomplete="off">--}}
-{{--                                                <label class="btn btn-outline-warning" for="exp-3to5x">3–5 yrs</label>--}}
-
-{{--                                            </div>--}}
                                         </div>
-
-
                                     </div>
                                 </div>
                             </div>
-
-                            <!-- Filter Tags -->
-{{--                            <div class="container mb-5">--}}
-{{--                                <div class="bg-white rounded-4 p-4 shadow-sm">--}}
-{{--                                    <h6 class="fw-semibold mb-3">What are you looking for? <span class="text-muted">(Select max 3)</span></h6>--}}
-{{--                                    <div class="form-check">--}}
-{{--                                        <input class="form-check-input" type="checkbox" id="school">--}}
-{{--                                        <label class="form-check-label" for="school">School/College</label>--}}
-{{--                                    </div>--}}
-{{--                                    <div class="form-check">--}}
-{{--                                        <input class="form-check-input" type="checkbox" id="university" checked>--}}
-{{--                                        <label class="form-check-label" for="university">University</label>--}}
-{{--                                    </div>--}}
-{{--                                    <div class="form-check">--}}
-{{--                                        <input class="form-check-input" type="checkbox" id="cgpa" checked>--}}
-{{--                                        <label class="form-check-label" for="cgpa">CGPA</label>--}}
-{{--                                    </div>--}}
-{{--                                    <div class="form-check">--}}
-{{--                                        <input class="form-check-input" type="checkbox" id="location">--}}
-{{--                                        <label class="form-check-label" for="location">Location</label>--}}
-{{--                                    </div>--}}
-{{--                                    <div class="form-check">--}}
-{{--                                        <input class="form-check-input" type="checkbox" id="experience">--}}
-{{--                                        <label class="form-check-label" for="experience">Job experience</label>--}}
-{{--                                    </div>--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
-
                         </div>
-
-                    </div>
-
-                        <!-- For brevity not repeating entire step 2 HTML, will render in browser from provided -->
-
                     </div>
                 </form>
-
             </div>
         </div>
     </div>
     <!-- Create Job Modal End -->
 
     <!-- Detailed Job Review Modal -->
-    <div class="modal fade" id="jobDetailsModalReview" tabindex="-1" aria-labelledby="jobDetailsModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal fade modal-over-modal" id="jobDetailsModalReview" style="">
+        <div class="modal-dialog modal-lg ">
             <div class="modal-content rounded-4 p-4">
 
                 <!-- Header with back arrow and buttons -->
                 <div class="d-flex justify-content-between align-items-center mb-4" style="padding: 16px 24px; background: #fff; border-radius: 16px;">
-                    <h6 class="mb-0 fw-semibold d-flex align-items-center gap-2" style="font-weight: 600; font-size: 1rem; cursor: pointer;">
+                    <h6 class="mb-0 fw-semibold d-flex align-items-center gap-2 hide-review-modal" style="font-weight: 600; font-size: 1rem; cursor: pointer;">
                         <img src="{{ asset('/') }}frontend/employer/images/employersHome/leftarrow.png" alt="Back" style="width: 24px; height: 24px;">
                         Review job details
                     </h6>
-                    <button id="modalPostJobBtn" class="btn btn-warning fw-bold" style="padding: 8px 20px; border-radius: 12px; font-weight: 700; font-size: 1rem;">
+                    <button id="modalPostJobBtn" req-for="create" class="btn btn-warning fw-bold" style="padding: 8px 20px; border-radius: 12px; font-weight: 700; font-size: 1rem;">
                         Post job
                     </button>
 
@@ -654,8 +593,8 @@
                 <!-- Snackbar / Toast -->
                 <div id="snackbar" class="snackbar">
                     <img src="{{ asset('/') }}frontend/employer/images/employersHome/toasterTik.png" alt="Success" class="snackbar-icon">
-                    <span class="snackbar-text">You posted the job: <b>Senior Officer, Corporate Banking</b></span>
-                    <button id="snackbar-close" class="snackbar-close"><img src="{{ asset('/') }}frontend/employer/images/employersHome/ToasterCross.png" alt=""></button>
+                    <span class="snackbar-text">You posted the job: <b id="" class="reviewJobTitle">Senior Officer, Corporate Banking</b></span>
+{{--                    <button id="snackbar-close" class="snackbar-close"><img src="{{ asset('/') }}frontend/employer/images/employersHome/ToasterCross.png" alt=""></button>--}}
                 </div>
 
                 <!-- Snackbar / Toast -->
@@ -663,24 +602,38 @@
 
                 <!-- Company Info -->
                 <div class="mb-2 d-flex align-items-center gap-2">
-                    <img src="{{ asset('/') }}frontend/employer/images/employersHome/UCB logo.png" alt="UCB Logo" style="height:24px;">
-                    <span class="fw-semibold">United Commercial Bank PLC</span>
-                    <span class="text-muted">&middot; Gulshan, Dhaka</span>
+                    <img id="companyLogo" src="{{ asset('/') }}frontend/employer/images/employersHome/UCB logo.png" alt="UCB Logo" style="height:24px;">
+                    <span class="fw-semibold companyName">United Commercial Bank PLC</span>
+                    <span class="text-muted" id="companyAddress">&middot; Gulshan, Dhaka</span>
                 </div>
 
                 <!-- Job Title -->
-                <h4 class="fw-bold mb-3">Senior Officer, Corporate Banking</h4>
+                <h4 class="fw-bold mb-3 reviewJobTitle" id="reviewJobTitle" >Senior Officer, Corporate Banking</h4>
 
                 <!-- Tags -->
                 <div class="d-flex flex-wrap gap-2 mb-4">
-                    <span class="badge bg-light text-dark fw-medium">Full Time</span>
-                    <span class="badge bg-light text-dark fw-medium">On-Site</span>
-                    <span class="badge bg-light text-dark fw-medium">Day Shift</span>
+                    <span class="badge bg-light text-dark fw-medium" id="reviewJobType">Full Time</span>
+                    <span class="badge bg-light text-dark fw-medium" id="reviewJobLocationType">On-Site</span>
+                </div>
+
+                <div class="row mt-3">
+                    <div class="col-md-4">
+                        <p><b>Required Experience</b></p>
+                        <p id="reviewExperience">1-3 Years</p>
+                    </div>
+                    <div class="col-md-4">
+                        <p><b>Application Deadline</b></p>
+                        <p id="reviewDeadline">20-5-25</p>
+                    </div>
+                    <div class="col-md-4">
+                        <p><b>Salary</b></p>
+                        <p id="reviewSalary">BDT 10000</p>
+                    </div>
                 </div>
 
                 <!-- About Section -->
-                <h6 class="fw-semibold mb-2">About UCB</h6>
-                <p class="text-muted" style="line-height: 1.6;">
+                <h6 class="fw-semibold mb-2">About <b class="companyName">UCB</b></h6>
+                <p class="text-muted companyOverview" id="" style="line-height: 1.6;">
                     Be part of the world's most successful, purpose-led business. Work with brands that are well-loved around the world, that improve the lives of our consumers and the communities around us. We promote innovation, big and small, to make our business win and grow; and we believe in business as a force for good. Unleash your curiosity, challenge ideas and disrupt processes; use your energy to make this happen.
                     <br><br>
                     Our brilliant business leaders and colleagues provide mentorship and inspiration, so you can be at your best. Every day, nine out of ten Indian households use our products to feel good, look good and get more out of life – giving us a unique opportunity to build a brighter future.
@@ -688,10 +641,32 @@
 
                 <!-- Job Requirements -->
                 <h6 class="fw-semibold mt-4 mb-2">Job Requirements</h6>
-                <ul class="text-muted" style="line-height: 1.8;">
-                    <li>Analyse internal and external data to identify geography-wise issues/opportunities and action upon them.</li>
-                    <li>Work with media teams and other stakeholders to deploy effective communication for Surf across traditional and new-age media platforms.</li>
-                </ul>
+                <p class="text-justify" id="reviewJobRequirements">
+                    <ul class="text-muted" style="line-height: 1.8;">
+                        <li>Analyse internal and external data to identify geography-wise issues/opportunities and action upon them.</li>
+                        <li>Work with media teams and other stakeholders to deploy effective communication for Surf across traditional and new-age media platforms.</li>
+                    </ul>
+                </p>
+
+                <!-- field of study -->
+                <h6 class="fw-semibold mt-4 mb-2">Field Of Study Preference</h6>
+                <p>
+                    <ul id="printFieldOfStudy">
+                        <li>Business</li>
+                    </ul>
+                </p>
+                <!-- University -->
+                <h6 class="fw-semibold mt-4 mb-2">University Preference</h6>
+                <p>
+                    <ul id="printUniversity">
+                        <li>JU</li>
+                    </ul>
+                </p>
+                <!-- University -->
+                <h6 class="fw-semibold mt-4 mb-2">Required CGPA</h6>
+                <p id="printCgpa">
+
+                </p>
             </div>
         </div>
     </div>
@@ -714,18 +689,36 @@
 
 @push('style')
     <style>
-        .select2-container {width: 100%!important;}
+        /* Fix Select2 dropdown positioning in modals */
+        .select2-container {
+            width: 100%!important;
+            z-index: 2000 !important;
+        }
+        .select2-container--default .select2-selection--multiple .select2-selection__choice {
+            background-color: #FFCB11!important;
+        }
+        .select2-search__field {display: none!important;}
+        .selected-skill {
+            color: black!important;
+            background-color: #FFCB11!important;
+        }
+        /*modal over modal show*/
+        /* Ensure second modal appears over first modal */
+        #jobDetailsModalReview {
+            z-index: 1060 !important;
+        }
+
+        #jobDetailsModalReview + .modal-backdrop {
+            z-index: 1059 !important;
+        }
     </style>
 @endpush
 
 @push('script')
 
-    @include('common-resource-files.selectize')
+{{--    @include('common-resource-files.selectize') --}}
+    @include('common-resource-files.select2')
     @include('common-resource-files.summernote')
-
-    <!-- include summernote css/js -->
-{{--    <link href="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote.min.css" rel="stylesheet">--}}
-{{--    <script src="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote.min.js"></script>--}}
 
     <script>
         $(document).on('click', '.edit-job', function () {
@@ -801,23 +794,122 @@
             var jobId = $(this).attr('data-job-id');
             sendAjaxRequest('get-job-details/'+jobId, 'GET', {job_task: jobId})
                 .then(function (response) {
-                    console.log(response);
+                    console.log(response.job);
                     if (response.status == 'success')
                     {
                         var job = response.job;
-                        $('#detailsCompanyLogo').attr('src', base_url+job.employerCompany.logo);
-                        $('#detailsCompanyName').text(job.employerCompany.name);
-                        $('#detailsCompanyAddress').text(job.employerCompany.address);
+                        $('#detailsCompanyLogo').attr('src', base_url+job.employer_company.logo);
+                        $('#detailsCompanyName').text(job.employer_company.name);
+                        $('#detailsAboutCompanyName').text(job.employer_company.name);
+                        $('#detailsCompanyAddress').text(job.employer_company.address);
                         $('#detailsJobTitle').text(job.job_title);
-                        $('#detailsJobType').text(job.jobType.name);
-                        $('#detailsJobLocationType').text(job.jobLocationType.name);
-                        $('#detailsCompanyOverview').html(job.employerCompany.company_overview);
+                        $('#detailsJobType').text(job.job_type.name);
+                        $('#detailsJobLocationType').text(job.job_location_type.name);
+                        $('#detailsCompanyOverview').html(job.employer_company.company_overview);
                         $('#detailsJobDescription').html(job.description);
+                        $('#jobDetailsModal').modal('show');
                     } else {
                         toastr.error('Something went wrong. Please try again.')
                     }
 
                 })
         })
+        $(document).on('click', '.select-skill', function () {
+            let inputId = $(this).attr('for');
+            let input = $("#" + inputId);
+            if (!$(this).hasClass('selected-skill'))
+            {
+                // Check and add style
+                input.prop('checked', true);
+                $(this).addClass('selected-skill');
+            } else {
+                // Uncheck and remove style
+                input.prop('checked', false);
+                $(this).removeClass('selected-skill');
+            }
+        });
+        $(document).on('click', '.show-review-btn', function () {
+            $(this).blur();
+            showReviewModalWithData();
+            $('#modalPostJobBtn').attr('req-for', 'create');
+            // $('#createJobModal').modal('hide');
+            setTimeout(function () {
+                $('#jobDetailsModalReview').modal('show');
+            }, 50)
+
+        });
+        $(document).on('click', '.hide-review-modal', function () {
+            // $(this).blur();
+            // showReviewModalWithData();
+            // $('#modalPostJobBtn').attr('req-for', 'create');
+            $('#jobDetailsModalReview').modal('hide');
+            // setTimeout(function () {
+            //     $('#jobDetailsModalReview').modal('show');
+            // }, 50)
+
+        });
+        function showReviewModalWithData() {
+            // collect values
+            var companyLogo = $('#companyLogo').val();
+            var companyName = $('#companyName').val();
+            var companyAddress = $('#companyAddress').val();
+            var companyOverview = $('#companyOverview').val();
+
+            var jobTitle = $('input[name="job_title"]').val();
+            var jobType = $('label[for="'+$('input[name="job_type_id"]').attr('id')+'"]').text();
+            var jobLocationType = $('label[for="'+$('input[name="job_location_type_id"]').attr('id')+'"]').text();
+            var requiredExperience = $('input[name="required_experience"]').val();
+            var description = $('input[name="description"]').val();
+            var finalExperience = '';
+            if (requiredExperience == 'custom')
+            {
+                finalExperience = $('input[name="exp_range_start"]').val()+' - '+$('input[name="exp_range_end"]').val();
+            } else {
+                finalExperience = requiredExperience;
+            }
+            var deadline = $('input[name="deadline"]').val();
+            var salary = $('input[name="salary_amount"]').val();
+            var cgpa = $('input[name="cgpa"]').val();
+            var cgpa = $('input[name="cgpa"]').val();
+            // var field_of_study_preference = $('select[name="field_of_study_preference[]"]').val();
+            // var university_preference = $('select[name="university_preference[]"]').val();
+            // console.log('fos: '+field_of_study_preference);
+            // console.log('uni: '+university_preference);
+
+            var selectedFOSTexts = [];
+            $('select[name="field_of_study_preference[]"] option:selected').each(function() {
+                selectedFOSTexts.push($(this).text());
+            });
+
+            var selectedVersityTexts = [];
+            $('select[name="university_preference[]"] option:selected').each(function() {
+                selectedVersityTexts.push($(this).text());
+            });
+
+            // print values
+            $('.reviewJobTitle').text(jobTitle);
+            $('#companyLogo').text(companyLogo);
+            $('.companyName').text(companyName);
+            $('#companyAddress').text(companyAddress);
+            $('.companyOverview').html(companyOverview);
+
+            $('#reviewJobType').text(jobType);
+            $('#reviewJobLocationType').text(jobLocationType);
+            $('#reviewExperience').text(finalExperience);
+            $('#reviewDeadline').text(deadline);
+            $('#reviewSalary').text(salary);
+            $('#printCgpa').text(cgpa);
+            $('#reviewJobRequirements').html(description);
+
+            $('#printFieldOfStudy').empty();
+            $.each(selectedFOSTexts, function(index, text) {
+                $('#printFieldOfStudy').append('<li>' + text + '</li>');
+            });
+            $('#printUniversity').empty();
+            $.each(selectedVersityTexts, function(index, text) {
+                $('#printUniversity').append('<li>' + text + '</li>');
+            });
+
+        }
     </script>
 @endpush

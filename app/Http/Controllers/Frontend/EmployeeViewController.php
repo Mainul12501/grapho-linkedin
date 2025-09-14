@@ -320,7 +320,7 @@ class EmployeeViewController extends Controller
             'employeeEducations'    => EmployeeEducation::where(['user_id' => auth()->id(), 'status' => 1])->get(),
             'employeeDocuments'    => EmployeeDocument::where(['user_id' => auth()->id(), 'status' => 1])->get(),
             'employeeProfileDate'   => ViewHelper::loggedUser(),
-            'educationDegreeNames'   => EducationDegreeName::where(['status' => 1])->get(['id', 'degree_name']),
+            'educationDegreeNames'   => EducationDegreeName::where(['status' => 1])->get(['id', 'degree_name', 'need_institute_field']),
             'universityNames'   => UniversityName::where(['status' => 1])->get(['id', 'name']),
             'fieldOfStudies'   => FieldOfStudy::where(['status' => 1])->get(['id', 'field_name']),
         ];
@@ -459,4 +459,29 @@ class EmployeeViewController extends Controller
         return back();
     }
 
+    public function updateEmployeeInfo(Request $request)
+    {
+        $loggedUser = ViewHelper::loggedUser();
+        if ($loggedUser)
+        {
+            $loggedUser->jobTypes()->syncWithoutDetaching($request->job_type_id);
+            $loggedUser->jobLocationTypes()->syncWithoutDetaching($request->job_location_type_id);
+            if ($request->has('cropped_image_data'))
+            {
+                if ($loggedUser->user_type == 'employee')
+                {
+                    $loggedUser->profile_image  = imageUpload($request->cropped_image_data, 'profile-image', 'profile_image', 200,200, $user->profile_image ?? null, true);
+                } else {
+                    $company = EmployerCompany::find($loggedUser->employerCompany->id);
+                    $loggedUser->profile_image  = imageUpload($request->cropped_image_data, 'profile-image', 'profile_image', 200,200, $user->profile_image ?? null, true);
+                    $company->logo = $loggedUser->profile_image  = imageUpload($request->cropped_image_data, 'employer_company_logos', 'employer_company_logos', 200,200, $user->profile_image ?? null, true);
+                    $company->save();
+                }
+                $loggedUser->save();
+            }
+            return ViewHelper::returnSuccessMessage('Data Updated successfully.');
+        } else {
+            return ViewHelper::returEexceptionError('Employee Not Found');
+        }
+    }
 }

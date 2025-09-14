@@ -206,7 +206,7 @@
 {{--                    </div>--}}
 
                     <div class="mb-3">
-                        <button class="add-user-btn btn flex-start" data-bs-toggle="modal" data-bs-target="#addUserModal">
+                        <button class="add-user-btn btn flex-start" data-bs-toggle="modal" data-bs-target="#addUserModal" style="background-color: #FFCB11">
                             <img src="{{ asset('/') }}frontend/employer/images/employersHome/addUser.png" alt="">
                             <span class="d-none d-md-block">Add User</span>
                         </button>
@@ -260,7 +260,7 @@
 
     <!-- Add User Modal -->
     <div class="modal fade" id="addUserModal" tabindex="-1" aria-labelledby="addUserModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" style="max-width: 400px;">
+        <div class="modal-dialog modal-dialog-centered" style="max-width: 450px;">
             <div class="modal-content rounded-4 p-4">
                 <div class="modal-header border-0 pb-2">
                     <button type="button" class="btn p-0 me-2" data-bs-dismiss="modal" aria-label="Close">

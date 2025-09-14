@@ -12,7 +12,7 @@
                 <div class="row g-4">
                     <!-- Left profile card -->
                     <div class="col-lg-3">
-                        <div class="card rounded-3 p-4 sticky-lg-top profileLeftCard" style="top: 80px;">
+                        <div class="card rounded-3 p-4  profileLeftCard" style="">
                             <div class="mb-4 profile-left-card-info">
                                 <div class="">
                                     <img
@@ -36,7 +36,7 @@
                             </div>
 
                             <div class="d-flex gap-2 mb-4">
-                                <a href="javascript:void(0)" class="btn btn-dark flex-grow-1 d-flex align-items-center justify-content-center gap-2">
+                                <a href="{{ route('twilio.view') }}" class="btn btn-dark flex-grow-1 d-flex align-items-center justify-content-center gap-2">
                                     <img src="{{ asset('/') }}frontend/employer/images/employersHome/messengerIcon.png" alt=""> Message
                                 </a>
                                 <a href="tel:{{ $employeeDetails->mobile }}" class="btn btn-outline-dark flex-grow-1 d-flex align-items-center justify-content-center gap-2">
@@ -81,20 +81,20 @@
                     <div class="col-lg-9">
                         <!-- Work Experiences -->
                         <section class="mb-5">
-                            <h5 class="fw-semibold mb-4">Work experiences</h5>
+                            <h5 class="card mb-0 p-4 fw-semibold ">Work experiences</h5>
                             @forelse($employeeDetails->employeeWorkExperiences as $workExperience)
                                 <div class="card p-4 mb-4 shadow-sm rounded-3">
                                     <div class="d-flex align-items-center mb-3 gap-3">
-                                        <img src="{{ asset($workExperience->company_logo ?? '/frontend/employer/images/employersHome/profileCompany-1.png') }}" alt="UCB Logo" style=" object-fit: contain;" />
+                                        <img src="{{ asset($workExperience->company_logo ?? '/frontend/company-vector.jpg') }}" alt="UCB Logo" style=" object-fit: contain; height: 60px; border-radius: 50%" />
                                         <div>
                                             <h6 class="mb-0 fw-bold">{{ $workExperience->position ?? 'Officer' }}</h6>
                                             <small class="text-muted">{{ $workExperience->company_name }} &bull; {{ $workExperience->job_type ?? 'Full Time' }}</small><br />
-                                            <small class="text-muted">{{ $workExperience->is_working_currently == 1 ? (\Illuminate\Support\Carbon::parse($workExperience->start_date)->format('M Y') ?? 'Jan 2025').' - Present' : (\Illuminate\Support\Carbon::parse($workExperience->start_date)->format('M Y') ?? 'Jan 2025').' - '.(\Illuminate\Support\Carbon::parse($workExperience->end_date)->format('M Y') ?? 'Jan 2025') }} &bull; {{ $workExperience->duration ?? '0 Years' }}</small><br />
+                                            <small class="text-muted">{{ $workExperience->is_working_currently == 1 ? (\Illuminate\Support\Carbon::parse($workExperience->start_date)->format('M Y') ?? 'Jan 1971').' - Present' : (\Illuminate\Support\Carbon::parse($workExperience->start_date)->format('M Y') ?? 'Jan 2025').' - '.(\Illuminate\Support\Carbon::parse($workExperience->end_date)->format('M Y') ?? 'Jan 2025') }} &bull; {{ $workExperience->duration ?? '0 Years' }}</small><br />
                                             <small class="text-muted">{{ $workExperience->office_address ?? 'Dhaka, Bangladesh' }}</small>
                                         </div>
                                     </div>
                                     <p class="mb-1 fw-semibold">Job Summary:</p>
-                                    <p>{!! $workExperience->job_responsibilities ?? 'Job responsibilities' !!}</p>
+                                    <p>{!! str()->words($workExperience->job_responsibilities, 30, ' ....') ?? 'Job responsibilities' !!}</p>
                                 </div>
                             @empty
                                 <div class="card  p-4 mb-4 shadow-sm rounded-3">
@@ -129,7 +129,7 @@
                             @forelse($employeeDetails->employeeEducations as $education)
                                 <div class="card p-4 mb-4 shadow-sm rounded-3">
                                     <div class="d-flex align-items-center mb-3 gap-3">
-                                        <img src="{{ asset( $education?->universityName?->logo ?? '/frontend/employer/images/employersHome/profile-education-1.png') }}" alt="UCB Logo" style=" object-fit: contain;" />
+                                        <img src="{{ asset( $education?->universityName?->logo ?? '/frontend/company-vector.jpg') }}" alt="UCB Logo" style=" object-fit: contain; border-radius: 50%" height="60"  />
                                         <div>
                                             <h6 class="mb-0 fw-bold">{{ $education?->universityName?->name ?? 'University Name' }}</h6>
                                             <small class="text-muted">{{ $education?->educationDegreeName?->degree_name ?? 'Degree Name' }} - {{ $education?->mainSubject?->subject_name ?? '' }} &bull; CGPA {{ $education->cgpa ?? 0 }}</small><br />                                            <small class="text-muted">Jan 2017 - Jul 2024</small><br />
@@ -165,19 +165,21 @@
                             @forelse($employeeDetails->employeeDocuments as $document)
                                 <div class="card p-4 mb-4 shadow-sm rounded-3">
                                     <div class="d-flex align-items-center mb-3 gap-3">
-                                        @if( explode('/', $document->file_type)[1] == 'image' )
-                                            <img style="max-width: 105px; max-height: 105px;" src="{{ isset($document->file_thumb) ? asset($document->file_thumb) : 'https://icons.iconarchive.com/icons/icons8/windows-8/512/Very-Basic-Image-File-icon.png' }}" alt="Company Logo" class="companyLogo" />
-{{--                                            <img style="width: 40px; height: 42px" src="{{ isset($document->file_thumb) ? asset($document->file_thumb) : 'https://icons.iconarchive.com/icons/icons8/windows-8/512/Very-Basic-Image-File-icon.png'}}" alt="Company Logo" class="mobileLogo" />--}}
-                                        @elseif( explode('/', $document->file_type)[1] == 'pdf' )
-                                            <img style="max-width: 105px; max-height: 105px;" src="https://www.iconpacks.net/icons/2/free-pdf-icon-3375-thumb.png" alt="Company Logo" class="companyLogo" />
-{{--                                            <img style="width: 40px; height: 42px" src="https://www.iconpacks.net/icons/2/free-pdf-icon-3375-thumb.png" alt="Company Logo" class="mobileLogo" />--}}
-                                        @elseif( explode('/', $document->file_type)[1] == 'vnd.openxmlformats-officedocument.wordprocessingml.document' )
-                                            <img style="max-width: 105px; max-height: 105px;" src="https://files.softicons.com/download/toolbar-icons/mono-general-icons-2-by-custom-icon-design/ico/document.ico" alt="Company Logo" class="companyLogo" />
-{{--                                            <img style="width: 40px; height: 42px" src="https://files.softicons.com/download/toolbar-icons/mono-general-icons-2-by-custom-icon-design/ico/document.ico" alt="Company Logo" class="mobileLogo" />--}}
-                                        @else
-{{--                                            <img style="max-width: 105px; max-height: 105px;" src="{{ asset('/') }}frontend/employee/images/profile/CV.png" alt="Company Logo" class="companyLogo" />--}}
-                                            <img style="width: 40px; height: 42px" src="{{ asset('/') }}frontend/employee/images/profile/CV.png" alt="Company Logo" class="mobileLogo" />
-                                        @endif
+                                        <a href="{{ asset($document->file) }}" download="">
+                                            @if( explode('/', $document->file_type)[1] == 'image' )
+                                                <img style="max-width: 105px; max-height: 105px;" src="{{ isset($document->file_thumb) ? asset($document->file_thumb) : 'https://icons.iconarchive.com/icons/icons8/windows-8/512/Very-Basic-Image-File-icon.png' }}" alt="Company Logo" class="companyLogo" />
+    {{--                                            <img style="width: 40px; height: 42px" src="{{ isset($document->file_thumb) ? asset($document->file_thumb) : 'https://icons.iconarchive.com/icons/icons8/windows-8/512/Very-Basic-Image-File-icon.png'}}" alt="Company Logo" class="mobileLogo" />--}}
+                                            @elseif( explode('/', $document->file_type)[1] == 'pdf' )
+                                                <img style="max-width: 105px; max-height: 105px;" src="https://www.iconpacks.net/icons/2/free-pdf-icon-3375-thumb.png" alt="Company Logo" class="companyLogo" />
+    {{--                                            <img style="width: 40px; height: 42px" src="https://www.iconpacks.net/icons/2/free-pdf-icon-3375-thumb.png" alt="Company Logo" class="mobileLogo" />--}}
+                                            @elseif( explode('/', $document->file_type)[1] == 'vnd.openxmlformats-officedocument.wordprocessingml.document' )
+                                                <img style="max-width: 105px; max-height: 105px;" src="https://files.softicons.com/download/toolbar-icons/mono-general-icons-2-by-custom-icon-design/ico/document.ico" alt="Company Logo" class="companyLogo" />
+    {{--                                            <img style="width: 40px; height: 42px" src="https://files.softicons.com/download/toolbar-icons/mono-general-icons-2-by-custom-icon-design/ico/document.ico" alt="Company Logo" class="mobileLogo" />--}}
+                                            @else
+    {{--                                            <img style="max-width: 105px; max-height: 105px;" src="{{ asset('/') }}frontend/employee/images/profile/CV.png" alt="Company Logo" class="companyLogo" />--}}
+                                                <img style="width: 105px; height: 105px" src="https://files.softicons.com/download/toolbar-icons/mono-general-icons-2-by-custom-icon-design/ico/document.ico" alt="Company Logo" class="mobileLogo" />
+                                            @endif
+                                        </a>
 {{--                                        <img src="{{ asset('/') }}frontend/employer/images/employersHome/curriculam-dita.png" alt="UCB Logo" style=" object-fit: contain;" />--}}
                                         <div>
                                             <h6 class="mb-0 fw-bold">{{ $document->title ?? 'File Title' }}</h6>

@@ -262,6 +262,11 @@ class User extends Authenticatable
         return $this->hasManyThrough(JobTask::class, EmployeeAppliedJob::class, 'user_id', 'id', 'id', 'job_task_id');
     }
 
+    public function employeeVersity()
+    {
+        return $this->belongsTo(UniversityName::class);
+    }
+
     public function viewedEmployees()
     {
         return $this->hasManyThrough(

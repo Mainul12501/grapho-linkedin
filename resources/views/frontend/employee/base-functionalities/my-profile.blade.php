@@ -688,8 +688,8 @@
                                 <label for="companyInput" class="form-label">Company/Organization</label>
                                 <input type="text" class="form-control" name="company_name" id="companyInput" placeholder="Type here" />
 
-                                <label for="companyLogo" class="form-label mt-3">Company/Organization Logo</label>
-                                <input type="file" class="form-control" name="company_logo" id="companyLogo" accept="image/*" />
+{{--                                <label for="companyLogo" class="form-label mt-3">Company/Organization Logo</label>--}}
+{{--                                <input type="file" class="form-control" name="company_logo" id="companyLogo" accept="image/*" />--}}
                             </div>
 
                             <div class="mb-4">
@@ -789,40 +789,61 @@
                         <div class="mb-4">
                             <label for="degreeInput" class="form-label">Education Program</label>
 {{--                            <input type="text" class="form-control" id="degreeInput" placeholder="Type here" />--}}
-                            <select name="education_degree_name_id" class="form-control select2" id="">
+                            <select name="education_degree_name_id" class="form-control " id="">
                                 <option selected disabled>Select Education Program</option>
                                 @foreach($educationDegreeNames as $educationDegreeName)
-                                    <option value="{{ $educationDegreeName->id }}">{{ $educationDegreeName->degree_name }}</option>
+                                    <option value="{{ $educationDegreeName->id }}" has-institute-name="{{ $educationDegreeName->need_institute_field }}">{{ $educationDegreeName->degree_name }}</option>
                                 @endforeach
                             </select>
                         </div>
 
-                        <div class="mb-4">
-                            <label for="universityInput" class="form-label">University name</label>
-{{--                            <input type="text" class="form-control" id="universityInput" placeholder="Type here" />--}}
-                            <select name="university_name_id" class="form-control select2" id="">
-                                <option selected disabled>Select University</option>
-                                @foreach($universityNames as $universityName)
-                                    <option value="{{ $universityName->id }}">{{ $universityName->name }}</option>
-                                @endforeach
-                            </select>
+                        <div id="universityDiv">
+                            <div class="mb-4">
+                                <label for="universityInput" class="form-label">University name</label>
+                                {{--                            <input type="text" class="form-control" id="universityInput" placeholder="Type here" />--}}
+                                <select name="university_name_id" class="form-control select2" id="">
+                                    <option selected disabled>Select University</option>
+                                    @foreach($universityNames as $universityName)
+                                        <option value="{{ $universityName->id }}">{{ $universityName->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <div class="mb-4">
+                                <label for="fieldOfStudyInput" class="form-label">Field of study</label>
+                                {{--                            <input type="text" class="form-control" id="fieldOfStudyInput" placeholder="Type here" />--}}
+                                <select name="field_of_study_id" class="form-control select2" id="">
+                                    <option selected disabled>Select Field of Study</option>
+                                    @foreach($fieldOfStudies as $fieldOfStudy)
+                                        <option value="{{ $fieldOfStudy->id }}">{{ $fieldOfStudy->field_name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                         </div>
 
-                        <div class="mb-4">
-                            <label for="fieldOfStudyInput" class="form-label">Field of study</label>
-{{--                            <input type="text" class="form-control" id="fieldOfStudyInput" placeholder="Type here" />--}}
-                            <select name="field_of_study_id" class="form-control select2" id="">
-                                <option selected disabled>Select Field of Study</option>
-                                @foreach($fieldOfStudies as $fieldOfStudy)
-                                    <option value="{{ $fieldOfStudy->id }}">{{ $fieldOfStudy->field_name }}</option>
-                                @endforeach
-                            </select>
+                        <div id="instituteNameDiv" class="d-none">
+                            <div class="mb-4 " >
+                                <label for="instituteName" class="form-label">Institute Name</label>
+                                <input type="text" class="form-control" name="institute_name" id="instituteName" placeholder="Type here" />
+                            </div>
+                            <div class="mb-4 " >
+                                <label for="groupName" class="form-label">Group Name</label>
+                                <select name="group_name" class="form-control" id="">
+                                    <option value="science">Science</option>
+                                    <option value="commerce">Commerce</option>
+                                    <option value="arts">Arts</option>
+                                    <option value="technical">Technical</option>
+                                    <option value="others">Others</option>
+                                </select>
+                            </div>
                         </div>
 
                         <div class="mb-4">
                             <label for="passingYear" class="form-label">Passing Year</label>
                             <input type="text" class="form-control" name="passing_year" id="passingYear" placeholder="Type here" />
                         </div>
+
+
 {{--                        <div class="mb-4">--}}
 {{--                            <label for="majorSubjectInput" class="form-label">Major subject</label>--}}
 {{--                            <input type="text" class="form-control" id="majorSubjectInput" placeholder="Type here" />--}}
@@ -1338,8 +1359,46 @@
         }
 
         // Reset when modal is closed
-        document.getElementById('profileModal').addEventListener('hidden.bs.modal', function () {
+        document.getElementById('editContactModal').addEventListener('hidden.bs.modal', function () {
             resetUpload();
         });
+        // toggle institute name on education degree change
+        $(document).on('change', 'select[name="education_degree_name_id"]', function () {
+            var selectedOption = $(this).find('option:selected');
+            var selectedOptionAttrValue = selectedOption.attr('has-institute-name');
+            toggleInstituteNameOnEducationDegreeChange(selectedOptionAttrValue);
+        })
+        function toggleInstituteNameOnEducationDegreeChange(hasInstituteNameValue = 0)
+        {
+            if (hasInstituteNameValue == 1)
+            {
+                $('#instituteNameDiv').removeClass('d-none');
+                $('#universityDiv').addClass('d-none');
+                $('label[for="cgpaInput"]').text('Grade');
+            } else {
+                $('#universityDiv').removeClass('d-none');
+                $('#instituteNameDiv').addClass('d-none');
+                $('input[name="institute_name"]').val('');
+                $('input[name="group_name"]').val('');
+                $('label[for="cgpaInput"]').text('GPA');
+            }
+        }
+        // disable end date on current job check
+        $(document).on('change', '#currentJobCheck', function () {
+            if ($(this).is(':checked')) {
+                $('input[name="end_date"]').prop('disabled', true).val(''); // disable and clear end date
+            } else {
+                $('input[name="end_date"]').prop('disabled', false); // enable back
+            }
+        });
+        // disable end date on current job check during edit
+        $(document).on('change', '#editCurrentJobCheck', function () {
+            if ($(this).is(':checked')) {
+                $('input[name="end_date"]').prop('disabled', true).val(''); // disable and clear end date
+            } else {
+                $('input[name="end_date"]').prop('disabled', false); // enable back
+            }
+        });
+
     </script>
 @endpush

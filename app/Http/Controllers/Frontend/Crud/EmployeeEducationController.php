@@ -62,6 +62,8 @@ class EmployeeEducationController extends Controller
             $employeeEducation->passing_year    = $request->passing_year;
             $employeeEducation->cgpa    = $request->cgpa;
             $employeeEducation->address = $request->address;
+            $employeeEducation->institute_name = $request->institute_name;
+            $employeeEducation->group_name = $request->group_name;
 //        $employeeEducation->status  = $request->status;
             $employeeEducation->save();
             return ViewHelper::returnSuccessMessage('Employee Education Info saved successfully.');
@@ -126,6 +128,8 @@ class EmployeeEducationController extends Controller
             $employeeEducation->passing_year    = $request->passing_year;
             $employeeEducation->cgpa    = $request->cgpa;
             $employeeEducation->address = $request->address;
+            $employeeEducation->institute_name = $request->institute_name;
+            $employeeEducation->group_name = $request->group_name;
 //        $employeeEducation->status  = $request->status;
             $employeeEducation->save();
             return ViewHelper::returnSuccessMessage('Employee Education Info updated successfully.');

@@ -29,9 +29,7 @@
 
     <link rel="stylesheet" href="{{ asset('/') }}frontend/employee/headerStyle.css" />
     <link rel="stylesheet" href="{{ asset('/') }}frontend/employee/mainstyle.css" />
-    <style>
-        .select2 {width: 100%!important;}
-    </style>
+
     @yield('style')
     @stack('style')
 </head>

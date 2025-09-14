@@ -15,7 +15,7 @@
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table class="table">
+                            <table class="table" id="responsive-datatable">
                                 <thead>
                                     <tr>
                                         <th>#</th>
@@ -33,8 +33,8 @@
                                             <td>
                                                 @if(isset($post->images))
                                                     @foreach(json_decode($post->images) as $image)
-                                                        <span class="mx-1">
-                                                            <img src="{{ asset($image) }}" alt="" style="height: 60px" />
+                                                        <span class="">
+                                                            <img src="{{ asset($image) }}" alt="" class="m-1" style="height: 60px" />
                                                         </span>
                                                     @endforeach
                                                 @endif
@@ -42,18 +42,18 @@
                                             <td>{{ $post->title ?? '' }}</td>
                                             <td>{!! str()->words($post->description, 30) ?? '' !!}</td>
                                             <td>{{ $post->status == 1 ? 'Published' : 'Unpublished' }}</td>
-                                            <td>
+                                            <td class="">
                                                 <a href="{{ route('employer.posts.show', $post->id) }}" class="btn btn-sm btn-primary">
-                                                    <i class="fa-solid fa-hand-paper"></i>
-                                                </a>
-                                                <a href="{{ route('employer.posts.edit', $post->id) }}" class="btn btn-sm btn-warning">
-                                                    <i class="fa-solid fa-edit"></i>
-                                                </a>
-                                                <form class="d-inline" action="{{ route('employer.posts.destroy', $post->id) }}" method="post">
+                                                    <i class="fa-solid fa-eye text-white"></i>
+                                                </a> <br>
+                                                <a href="{{ route('employer.posts.edit', $post->id) }}" class="btn btn-sm btn-warning my-1">
+                                                    <i class="fa-solid fa-edit text-white"></i>
+                                                </a> <br>
+                                                <form class="d-inline" action="{{ route('employer.posts.destroy', $post->id) }}" onsubmit="deletePost($(this))" method="post">
                                                     @csrf
                                                     @method('delete')
                                                     <button type="submit" class="btn btn-sm btn-danger data-delete-form">
-                                                        <i class="fa-solid fa-trash"></i>
+                                                        <i class="fa-solid fa-trash text-white"></i>
                                                     </button>
                                                 </form>
                                             </td>
@@ -71,9 +71,36 @@
 
 @push('style')
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha512-DxV+EoADOkOygM4IR9yXP8Sb2qwgidEmeqAEmDKIOfPRQZOWbXCzLC6vjbZyy0vPisbH2SyW27+ddLVCN+OMzQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
+    <style>
+        .dataTables_filter {float: right}
+        #responsive-datatable_paginate {float: right}
+    </style>
 @endpush
 @push('script')
 
     @include('backend.includes.assets.plugin-files.datatable')
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        function deletePost(formElement) {
+            event.preventDefault();
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, delete it!"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Swal.fire({
+                    //     title: "Deleted!",
+                    //     text: "Your file has been deleted.",
+                    //     icon: "success"
+                    // });
+                    formElement.submit();
+                }
+            });
+        }
+    </script>
 @endpush

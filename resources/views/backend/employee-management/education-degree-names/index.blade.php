@@ -20,6 +20,7 @@
                             <tr>
                                 <th>#</th>
                                 <th>Name</th>
+                                <th>Need Institute Name</th>
                                 <th>Slug</th>
                                 <th>Note</th>
                                 <th>Status</th>
@@ -31,6 +32,7 @@
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $educationDegreeName->degree_name ?? '' }}</td>
+                                <td>{{ $educationDegreeName->need_institute_field == 1 ? 'Yes' : 'No' }}</td>
                                 <td>{{ $educationDegreeName->slug ?? '' }}</td>
                                 <td>{!! $educationDegreeName->note ?? '' !!}</td>
                                 <td>{{ $educationDegreeName->status == 1 ? 'Published' : 'Unpublished' }}</td>

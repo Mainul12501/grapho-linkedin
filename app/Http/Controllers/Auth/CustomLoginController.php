@@ -12,6 +12,8 @@ use App\Models\Backend\EmployerCompany;
 use App\Models\Backend\EmployerCompanyCategory;
 use App\Models\Backend\FieldOfStudy;
 use App\Models\Backend\Industry;
+use App\Models\Backend\JobLocationType;
+use App\Models\Backend\JobType;
 use App\Models\Backend\SiteSetting;
 use App\Models\Backend\UniversityName;
 use App\Models\User;
@@ -349,11 +351,11 @@ class CustomLoginController extends Controller
     public function userProfileUpdate(Request $request)
     {
         $loggedUser = ViewHelper::loggedUser();
-        if ($loggedUser->is_profile_updated == 1)
-        {
-            Toastr::error('you already updated your profile');
-            return  redirect('/');
-        }
+//        if ($loggedUser->is_profile_updated == 1)
+//        {
+//            Toastr::error('you already updated your profile');
+//            return  redirect('/');
+//        }
         $data = [];
         if ($loggedUser->user_type == 'employee')
         {
@@ -362,9 +364,11 @@ class CustomLoginController extends Controller
                 'employeeEducations'    => EmployeeEducation::where(['user_id' => auth()->id(), 'status' => 1])->get(),
                 'employeeDocuments'    => EmployeeDocument::where(['user_id' => auth()->id(), 'status' => 1])->get(),
                 'loggedUser'   => $loggedUser,
-                'educationDegreeNames'   => EducationDegreeName::where(['status' => 1])->get(['id', 'degree_name']),
+                'educationDegreeNames'   => EducationDegreeName::where(['status' => 1])->get(['id', 'degree_name', 'need_institute_field']),
                 'universityNames'   => UniversityName::where(['status' => 1])->get(['id', 'name']),
                 'fieldOfStudies'   => FieldOfStudy::where(['status' => 1])->get(['id', 'field_name']),
+                'jobTypes'  => JobType::where(['status' => 1])->get(['id', 'name']),
+                'jobLocationTypes'   => JobLocationType::where(['status' => 1])->get(['id', 'name']),
             ];
         } elseif ($loggedUser->user_type == 'employer')
         {
