@@ -42,14 +42,14 @@ class EmployeeEducationController extends Controller
 //        ]);
         $validator = Validator::make($request->all(), [
             'passing_year'  => 'required',
-            'university_name_id'  => 'required',
+            'education_degree_name_id'  => 'required',
+//            'university_name_id'  => 'required',
         ]);
 
         if ($validator->fails())
         {
             return ViewHelper::returEexceptionError($validator->errors());
         }
-
         try {
             $employeeEducation = new EmployeeEducation();
             $employeeEducation->user_id = ViewHelper::loggedUser()->id;
@@ -64,6 +64,7 @@ class EmployeeEducationController extends Controller
             $employeeEducation->address = $request->address;
             $employeeEducation->institute_name = $request->institute_name;
             $employeeEducation->group_name = $request->group_name;
+            $employeeEducation->field_of_study = $request->field_of_study;
 //        $employeeEducation->status  = $request->status;
             $employeeEducation->save();
             return ViewHelper::returnSuccessMessage('Employee Education Info saved successfully.');
@@ -108,7 +109,7 @@ class EmployeeEducationController extends Controller
         }
         $validator = Validator::make($request->all(), [
             'passing_year'  => 'required',
-            'university_name_id'  => 'required',
+            'education_degree_name_id'  => 'required',
         ]);
 
         if ($validator->fails())
@@ -130,6 +131,7 @@ class EmployeeEducationController extends Controller
             $employeeEducation->address = $request->address;
             $employeeEducation->institute_name = $request->institute_name;
             $employeeEducation->group_name = $request->group_name;
+            $employeeEducation->field_of_study = $request->field_of_study;
 //        $employeeEducation->status  = $request->status;
             $employeeEducation->save();
             return ViewHelper::returnSuccessMessage('Employee Education Info updated successfully.');

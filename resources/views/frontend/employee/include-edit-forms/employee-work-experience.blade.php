@@ -20,7 +20,7 @@
 
         <div class="mb-4">
             <label for="ediCompanyInput" class="form-label">Company/Organization</label>
-            <input type="text" class="form-control" name="company_name" value="{{ $data->company_name }}" id="ediCompanyInput" placeholder="Type here" />
+            <input type="text" class="form-control" list="companyDatalist" name="company_name" value="{{ $data->company_name }}" id="ediCompanyInput" placeholder="Type here" />
 
 {{--            <div class="mt-3 row">--}}
 {{--                <div class="col-8">--}}
@@ -46,7 +46,7 @@
                 {{--                                    <!-- Add other months -->--}}
                 {{--                                </select>--}}
                 <span style="width: 100%; margin-right: 5px;">
-                                        <label for="startDateInput" class="form-label">Start date</label>
+                                        <label for="startDateInput" class="form-label">From</label>
                                         <input type="date" name="start_date" value="{{ $data->start_date ?? '' }}" class="form-control m-1" />
                                     </span>
 {{--                <input type="date" id="editStartDate" value="{{ $data->start_date ?? '' }}" name="start_date" class="form-control m-1" />--}}
@@ -57,7 +57,7 @@
                 {{--                                    <!-- Add more years -->--}}
                 {{--                                </select>--}}
                 <span style="width: 100%; margin-left: 5px;">
-                                        <label for="startDateInput" class="form-label">End date</label>
+                                        <label for="startDateInput" class="form-label">To</label>
                                         <input type="date" name="end_date" value="{{ $data->end_date ?? '' }}" class="form-control m-1" />
                                     </span>
 {{--                <input type="date" id="editEndDate" value="{{ $data->end_date ?? '' }}" name="end_date" class="form-control m-1" />--}}

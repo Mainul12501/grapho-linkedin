@@ -369,6 +369,7 @@ class CustomLoginController extends Controller
                 'fieldOfStudies'   => FieldOfStudy::where(['status' => 1])->get(['id', 'field_name']),
                 'jobTypes'  => JobType::where(['status' => 1])->get(['id', 'name']),
                 'jobLocationTypes'   => JobLocationType::where(['status' => 1])->get(['id', 'name']),
+                'companyList'   => EmployerCompany::where(['status' => 1])->get(['id', 'name']),
             ];
         } elseif ($loggedUser->user_type == 'employer')
         {

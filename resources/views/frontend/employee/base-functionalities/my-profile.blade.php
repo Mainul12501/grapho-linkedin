@@ -686,7 +686,7 @@
 
                             <div class="mb-4">
                                 <label for="companyInput" class="form-label">Company/Organization</label>
-                                <input type="text" class="form-control" name="company_name" id="companyInput" placeholder="Type here" />
+                                <input type="text" class="form-control" list="companyDatalist" name="company_name" id="companyInput" placeholder="Type here" />
 
 {{--                                <label for="companyLogo" class="form-label mt-3">Company/Organization Logo</label>--}}
 {{--                                <input type="file" class="form-control" name="company_logo" id="companyLogo" accept="image/*" />--}}
@@ -702,7 +702,7 @@
     {{--                                    <!-- Add other months -->--}}
     {{--                                </select>--}}
                                     <span style="width: 100%; margin-right: 5px;">
-                                        <label for="startDateInput" class="form-label">Start date</label>
+                                        <label for="startDateInput" class="form-label">From</label>
                                         <input type="date" name="start_date" class="form-control m-1" />
                                     </span>
 
@@ -713,7 +713,7 @@
     {{--                                    <!-- Add more years -->--}}
     {{--                                </select>--}}
                                     <span style="width: 100%; margin-left: 5px;">
-                                        <label for="startDateInput" class="form-label">End date</label>
+                                        <label for="startDateInput" class="form-label">To</label>
                                         <input type="date" name="end_date" class="form-control m-1" />
                                     </span>
 
@@ -787,10 +787,10 @@
                         <!-- Form for adding education -->
 
                         <div class="mb-4">
-                            <label for="degreeInput" class="form-label">Education Program</label>
+                            <label for="degreeInput" class="form-label">Program Name</label>
 {{--                            <input type="text" class="form-control" id="degreeInput" placeholder="Type here" />--}}
                             <select name="education_degree_name_id" class="form-control " id="">
-                                <option selected disabled>Select Education Program</option>
+{{--                                <option  disabled>Select Education Program</option>--}}
                                 @foreach($educationDegreeNames as $educationDegreeName)
                                     <option value="{{ $educationDegreeName->id }}" has-institute-name="{{ $educationDegreeName->need_institute_field }}">{{ $educationDegreeName->degree_name }}</option>
                                 @endforeach
@@ -799,44 +799,44 @@
 
                         <div id="universityDiv">
                             <div class="mb-4">
-                                <label for="universityInput" class="form-label">University name</label>
-                                {{--                            <input type="text" class="form-control" id="universityInput" placeholder="Type here" />--}}
-                                <select name="university_name_id" class="form-control select2" id="">
-                                    <option selected disabled>Select University</option>
-                                    @foreach($universityNames as $universityName)
-                                        <option value="{{ $universityName->id }}">{{ $universityName->name }}</option>
-                                    @endforeach
-                                </select>
+                                <label for="universityInput" class="form-label">Name of Institution</label>
+                                                            <input type="text" class="form-control" name="institute_name" id="universityInput" placeholder="Type here" />
+{{--                                <select name="university_name_id" class="form-control select2" id="">--}}
+{{--                                    <option  disabled>Select University</option>--}}
+{{--                                    @foreach($universityNames as $universityName)--}}
+{{--                                        <option value="{{ $universityName->id }}">{{ $universityName->name }}</option>--}}
+{{--                                    @endforeach--}}
+{{--                                </select>--}}
                             </div>
 
                             <div class="mb-4">
-                                <label for="fieldOfStudyInput" class="form-label">Field of study</label>
-                                {{--                            <input type="text" class="form-control" id="fieldOfStudyInput" placeholder="Type here" />--}}
-                                <select name="field_of_study_id" class="form-control select2" id="">
-                                    <option selected disabled>Select Field of Study</option>
-                                    @foreach($fieldOfStudies as $fieldOfStudy)
-                                        <option value="{{ $fieldOfStudy->id }}">{{ $fieldOfStudy->field_name }}</option>
-                                    @endforeach
-                                </select>
+                                <label for="fieldOfStudyInput" class="form-label">Background / Field of study</label>
+                                                            <input type="text" class="form-control" name="field_of_study" id="fieldOfStudyInput" placeholder="Type here" />
+{{--                                <select name="field_of_study_id" class="form-control select2" id="">--}}
+{{--                                    <option selected disabled>Select Field of Study</option>--}}
+{{--                                    @foreach($fieldOfStudies as $fieldOfStudy)--}}
+{{--                                        <option value="{{ $fieldOfStudy->id }}">{{ $fieldOfStudy->field_name }}</option>--}}
+{{--                                    @endforeach--}}
+{{--                                </select>--}}
                             </div>
                         </div>
 
-                        <div id="instituteNameDiv" class="d-none">
-                            <div class="mb-4 " >
-                                <label for="instituteName" class="form-label">Institute Name</label>
-                                <input type="text" class="form-control" name="institute_name" id="instituteName" placeholder="Type here" />
-                            </div>
-                            <div class="mb-4 " >
-                                <label for="groupName" class="form-label">Group Name</label>
-                                <select name="group_name" class="form-control" id="">
-                                    <option value="science">Science</option>
-                                    <option value="commerce">Commerce</option>
-                                    <option value="arts">Arts</option>
-                                    <option value="technical">Technical</option>
-                                    <option value="others">Others</option>
-                                </select>
-                            </div>
-                        </div>
+{{--                        <div id="instituteNameDiv" class="d-none">--}}
+{{--                            <div class="mb-4 " >--}}
+{{--                                <label for="instituteName" class="form-label">Institute Name</label>--}}
+{{--                                <input type="text" class="form-control" name="institute_name" id="instituteName" placeholder="Type here" />--}}
+{{--                            </div>--}}
+{{--                            <div class="mb-4 " >--}}
+{{--                                <label for="groupName" class="form-label">Group Name</label>--}}
+{{--                                <select name="group_name" class="form-control" id="">--}}
+{{--                                    <option value="science">Science</option>--}}
+{{--                                    <option value="commerce">Commerce</option>--}}
+{{--                                    <option value="arts">Arts</option>--}}
+{{--                                    <option value="technical">Technical</option>--}}
+{{--                                    <option value="others">Others</option>--}}
+{{--                                </select>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
 
                         <div class="mb-4">
                             <label for="passingYear" class="form-label">Passing Year</label>
@@ -890,10 +890,10 @@
                             <input type="text" name="cgpa" class="form-control" id="cgpaInput" placeholder="Type here" />
                         </div>
 
-                        <div class="mb-4">
-                            <label for="locationInput" class="form-label">Location</label>
-                            <input type="text" name="address" class="form-control" id="locationInput" placeholder="Type here" />
-                        </div>
+{{--                        <div class="mb-4">--}}
+{{--                            <label for="locationInput" class="form-label">Location</label>--}}
+{{--                            <input type="text" name="address" class="form-control" id="locationInput" placeholder="Type here" />--}}
+{{--                        </div>--}}
                     </div>
                     <div class="modal-footer justify-content-between">
                         <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
@@ -907,6 +907,12 @@
             </div>
         </div>
     </div>
+
+    <datalist id="companyDatalist">
+        @foreach($companyList as $company)
+            <option value="{{ $company->name }}"></option>
+        @endforeach
+    </datalist>
 
     <!-- Modal for Add Education -->
     <div class="modal fade" id="editEducationModal" tabindex="-1" aria-labelledby="addEducationModalLabel"
@@ -1363,11 +1369,11 @@
             resetUpload();
         });
         // toggle institute name on education degree change
-        $(document).on('change', 'select[name="education_degree_name_id"]', function () {
-            var selectedOption = $(this).find('option:selected');
-            var selectedOptionAttrValue = selectedOption.attr('has-institute-name');
-            toggleInstituteNameOnEducationDegreeChange(selectedOptionAttrValue);
-        })
+        // $(document).on('change', 'select[name="education_degree_name_id"]', function () {
+        //     var selectedOption = $(this).find('option:selected');
+        //     var selectedOptionAttrValue = selectedOption.attr('has-institute-name');
+        //     toggleInstituteNameOnEducationDegreeChange(selectedOptionAttrValue);
+        // })
         function toggleInstituteNameOnEducationDegreeChange(hasInstituteNameValue = 0)
         {
             if (hasInstituteNameValue == 1)

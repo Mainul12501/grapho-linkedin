@@ -30,7 +30,7 @@
 
             <!-- ===== Filter #1: Date posted ===== -->
             <div class="custom-select" data-filter-key="date_posted" data-placeholder="Most Recent">
-                <label class="custom-select-label">Date</label>
+{{--                <label class="custom-select-label">Date</label>--}}
                 <input type="text" class="form-control select-box locationSearch" placeholder="Select..." readonly />
                 <div class="dropdown-menu locationDropdown">
                     <input type="text" class="form-control search-box searchBar" placeholder="Search..." />
@@ -52,7 +52,7 @@
 
             <!-- ===== Filter #2: Job type ===== -->
             <div class="custom-select" data-filter-key="company_type" data-placeholder="Select Job type">
-                <label class="custom-select-label">Job type</label>
+{{--                <label class="custom-select-label">Job type</label>--}}
                 <input type="text" class="form-control select-box locationSearch" placeholder="Select..." readonly />
                 <div class="dropdown-menu locationDropdown">
                     <input type="text" class="form-control search-box searchBar" placeholder="Search..." />
@@ -67,8 +67,8 @@
             </div>
 
             <!-- ===== Filter #3: Location ===== -->
-            <div class="custom-select" data-filter-key="location" data-placeholder="Select Address">
-                <label class="custom-select-label">Location</label>
+            <div class="custom-select" data-filter-key="location" data-placeholder="Select Location">
+{{--                <label class="custom-select-label">Location</label>--}}
                 <input type="text" class="form-control select-box locationSearch" placeholder="Select..." readonly />
                 <div class="dropdown-menu locationDropdown">
                     <input type="text" class="form-control search-box searchBar" placeholder="Search..." />
@@ -145,7 +145,7 @@
 
             <!-- ===== Filter #4: Industry ===== -->
             <div class="custom-select" data-filter-key="industry" data-placeholder="Select industry">
-                <label class="custom-select-label">Industry</label>
+{{--                <label class="custom-select-label">Industry</label>--}}
                 <input type="text" class="form-control select-box locationSearch" placeholder="Select..." readonly />
                 <div class="dropdown-menu locationDropdown">
                     <input type="text" class="form-control search-box searchBar" placeholder="Search..." />
@@ -162,7 +162,7 @@
 
             <!-- ===== Filter #6: Job Workplace type ===== -->
             <div class="custom-select" data-filter-key="salary" data-placeholder="Select Job Nature">
-                <label class="custom-select-label">Job Nature</label>
+{{--                <label class="custom-select-label">Job Nature</label>--}}
                 <input type="text" class="form-control select-box locationSearch" placeholder="Select..." readonly />
                 <div class="dropdown-menu locationDropdown">
                     <input type="text" class="form-control search-box searchBar" placeholder="Search..." />

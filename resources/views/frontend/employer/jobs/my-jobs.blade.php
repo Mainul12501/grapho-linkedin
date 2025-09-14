@@ -384,12 +384,12 @@
                                     <h5 class="fw-bold mb-0">Create a job</h5>
                                 </div>
                                 <!-- Button triggers modal -->
-                                <button type="button" class="btn btn-warning text-dark fw-semibold px-4 py-2 rounded-3 show-review-btn" {{--data-bs-toggle="modal" data-bs-target="#jobDetailsModal"--}}>
-                                    Review & Post
-                                </button>
-{{--                                <button type="submit" class="btn btn-warning text-dark fw-semibold px-4 py-2 rounded-3" --}}{{--data-bs-toggle="modal" data-bs-target="#jobDetailsModal"--}}{{-->--}}
-{{--                                    Post Job--}}
+{{--                                <button type="button" class="btn btn-warning text-dark fw-semibold px-4 py-2 rounded-3 show-review-btn" --}}{{--data-bs-toggle="modal" data-bs-target="#jobDetailsModal"--}}{{-->--}}
+{{--                                    Review & Post--}}
 {{--                                </button>--}}
+                                <button type="submit" class="btn btn-warning text-dark fw-semibold px-4 py-2 rounded-3" data-bs-toggle="modal" data-bs-target="#jobDetailsModal">
+                                    Post Job
+                                </button>
                             </div>
                         </div>
 

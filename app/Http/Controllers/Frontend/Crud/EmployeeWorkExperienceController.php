@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Frontend\Crud;
 use App\Helpers\ViewHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Backend\EmployeeWorkExperience;
+use App\Models\Backend\EmployerCompany;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Http\Request;
 
@@ -36,11 +37,23 @@ class EmployeeWorkExperienceController extends Controller
             'company_name' => 'required',
         ]);
         try {
+
             $workExperience = new EmployeeWorkExperience();
             $workExperience->user_id    = auth()->id();
             $workExperience->title  = $request->title;
             $workExperience->company_name   = $request->company_name;
-            $workExperience->company_logo   = imageUpload($request->file('company_logo'), 'work-exp', 'work-exp', 60, 60, $workExperience->company_logo ?? null);
+            if ($request->hasFile('company_logo'))
+            {
+                $workExperience->company_logo   = imageUpload($request->file('company_logo'), 'work-exp', 'work-exp', 60, 60, $workExperience->company_logo ?? null);
+            } else {
+                $existCompnay = EmployerCompany::where('name', $request->company_name)->first();
+                if ($existCompnay)
+                {
+                    $workExperience->company_logo = $existCompnay->logo ?? null;
+                } else {
+                    $workExperience->company_logo = null;
+                }
+            }
             $workExperience->position   = $request->position;
             $workExperience->job_responsibilities   = $request->job_responsibilities;
             $workExperience->start_date = $request->start_date;
@@ -95,7 +108,18 @@ class EmployeeWorkExperienceController extends Controller
             $workExperience->user_id    = auth()->id();
             $workExperience->title  = $request->title;
             $workExperience->company_name   = $request->company_name;
-            $workExperience->company_logo   = imageUpload($request->file('company_logo'), 'work-exp', 'work-exp', 60, 60, $workExperience->company_logo ?? null);
+            if ($request->hasFile('company_logo'))
+            {
+                $workExperience->company_logo   = imageUpload($request->file('company_logo'), 'work-exp', 'work-exp', 60, 60, $workExperience->company_logo ?? null);
+            } else {
+                $existCompnay = EmployerCompany::where('name', $request->company_name)->first();
+                if ($existCompnay)
+                {
+                    $workExperience->company_logo = $existCompnay->logo ?? null;
+                } else {
+                    $workExperience->company_logo = null;
+                }
+            }
             $workExperience->position   = $request->position;
             $workExperience->job_responsibilities   = $request->job_responsibilities;
             $workExperience->start_date = $request->start_date;

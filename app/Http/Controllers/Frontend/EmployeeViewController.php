@@ -323,6 +323,7 @@ class EmployeeViewController extends Controller
             'educationDegreeNames'   => EducationDegreeName::where(['status' => 1])->get(['id', 'degree_name', 'need_institute_field']),
             'universityNames'   => UniversityName::where(['status' => 1])->get(['id', 'name']),
             'fieldOfStudies'   => FieldOfStudy::where(['status' => 1])->get(['id', 'field_name']),
+            'companyList'   => EmployerCompany::where(['status' => 1])->get(['id', 'name']),
         ];
         return ViewHelper::checkViewForApi($data, 'frontend.employee.base-functionalities.my-profile');
         return \view('frontend.employee.base-functionalities.my-profile');

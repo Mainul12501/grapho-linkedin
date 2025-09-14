@@ -88,6 +88,54 @@
 
             <!-- STEP 1 -->
             <template id="step-1">
+                <form id="form-education" autocomplete="on" novalidate>
+                    @csrf
+                    <div class="grid grid-1">
+                        <div class="">
+                            <div class="grid-gap-y">
+                                <label>Program Name</label>
+                                <select name="education_degree_name_id" id="">
+                                    <option value="" disabled>Select Degree</option>
+                                    @foreach($educationDegreeNames as $degreeName)
+                                        <option value="{{ $degreeName->id }}" has-institute-name="{{ $degreeName->need_institute_field }}">{{ $degreeName->degree_name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div id="universityDiv">
+                                <div class="grid-gap-y"><label>Name of Institution</label>
+                                    <input type="text" class="form-control" name="institute_name" id="instituteName" placeholder="Type here" />
+{{--                                    <select name="university_name_id" class="form-control select2" id="">--}}
+{{--                                        <option selected disabled>Select University</option>--}}
+{{--                                        @foreach($universityNames as $universityName)--}}
+{{--                                            <option value="{{ $universityName->id }}">{{ $universityName->name }}</option>--}}
+{{--                                        @endforeach--}}
+{{--                                    </select>--}}
+                                </div>
+                                <div class="grid-gap-y"><label>Background / Field of study</label>
+                                    <input type="text" class="form-control" name="field_of_study" id="fieldOfStudyInput" placeholder="Type here" />
+{{--                                    <select name="field_of_study_id" class="form-control select2" id="">--}}
+{{--                                        <option selected disabled>Select Field of Study</option>--}}
+{{--                                        @foreach($fieldOfStudies as $fieldOfStudy)--}}
+{{--                                            <option value="{{ $fieldOfStudy->id }}">{{ $fieldOfStudy->field_name }}</option>--}}
+{{--                                        @endforeach--}}
+{{--                                    </select>--}}
+                                </div>
+                            </div>
+
+                            <div class="grid-gap-y"><label>Passing Year</label><input name="passing_year" type="text" /></div>
+                            <div class="grid-gap-y"><label for="cgpaInput">CGPA</label><input name="cgpa" type="text" id="cgpaInput" /></div>
+
+                        </div>
+
+                    </div>
+                    <div style="margin-top:14px;text-align:right">
+                        <button class="btn btn-primary" id="employeeEducationBtn" type="button">Add Education</button>
+                    </div>
+                </form>
+            </template>
+
+            <!-- STEP 2 -->
+            <template id="step-2">
                 <form id="form-work" autocomplete="on" novalidate method="post" action="">
                     @csrf
                     <div class="grid grid-1">
@@ -102,7 +150,7 @@
                                     <option value="contractual">Contractual</option>
                                 </select>
                             </div>
-                            <div class="grid-gap-y"><label>Company/Organization Name</label><input type="text" name="company_name"></div>
+                            <div class="grid-gap-y"><label>Company/Organization Name</label><input list="companyDatalist" type="text" name="company_name"></div>
 
 
                         </div>
@@ -131,68 +179,6 @@
                     </div>
                     <div style="margin-top:14px;text-align:right">
                         <button class="btn btn-primary" id="employeeWorkExpBtn" type="button">Add Experience</button>
-                    </div>
-                </form>
-            </template>
-
-            <!-- STEP 2 -->
-            <template id="step-2">
-                <form id="form-education" autocomplete="on" novalidate>
-                    @csrf
-                    <div class="grid grid-1">
-                        <div class="">
-                            <div class="grid-gap-y">
-                                <label>Education Program</label>
-                                <select name="education_degree_name_id" id="">
-                                    <option value="" disabled>Select Degree</option>
-                                    @foreach($educationDegreeNames as $degreeName)
-                                        <option value="{{ $degreeName->id }}" has-institute-name="{{ $degreeName->need_institute_field }}">{{ $degreeName->degree_name }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div id="universityDiv">
-                                <div class="grid-gap-y"><label>University name</label>
-                                    <select name="university_name_id" class="form-control select2" id="">
-                                        <option selected disabled>Select University</option>
-                                        @foreach($universityNames as $universityName)
-                                            <option value="{{ $universityName->id }}">{{ $universityName->name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="grid-gap-y"><label>Field of study</label>
-                                    <select name="field_of_study_id" class="form-control select2" id="">
-                                        <option selected disabled>Select Field of Study</option>
-                                        @foreach($fieldOfStudies as $fieldOfStudy)
-                                            <option value="{{ $fieldOfStudy->id }}">{{ $fieldOfStudy->field_name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                            <div id="instituteNameDiv" class="d-none">
-                                <div class="grid-gap-y" >
-                                    <label for="instituteName" class="form-label">Institute Name</label>
-                                    <input type="text" class="form-control" name="institute_name" id="instituteName" placeholder="Type here" />
-                                </div>
-                                <div class="grid-gap-y" >
-                                    <label for="groupName" class="form-label">Group Name</label>
-                                    <select name="group_name" class="form-control" id="">
-                                        <option value="science">Science</option>
-                                        <option value="commerce">Commerce</option>
-                                        <option value="arts">Arts</option>
-                                        <option value="technical">Technical</option>
-                                        <option value="others">Others</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="grid-gap-y"><label>Passing Year</label><input name="passing_year" type="text" /></div>
-                            <div class="grid-gap-y"><label for="cgpaInput">CGPA</label><input name="cgpa" type="text" id="cgpaInput" /></div>
-                            <div class="grid-gap-y"><label>Address</label><input name="address" type="text" /></div>
-
-                        </div>
-
-                    </div>
-                    <div style="margin-top:14px;text-align:right">
-                        <button class="btn btn-primary" id="employeeEducationBtn" type="button">Add Education</button>
                     </div>
                 </form>
             </template>
@@ -318,6 +304,12 @@
 
 
         <div class="toast" id="toast"></div>
+
+        <datalist id="companyDatalist">
+            @foreach($companyList as $company)
+                <option value="{{ $company->name }}"></option>
+            @endforeach
+        </datalist>
     @endsection
 @section('modal')
     <!-- Job Preference Modal -->
@@ -396,7 +388,7 @@
                         <!-- Step 3: You are looking for -->
                         <div class="form-step " data-step="3">
                             <div class="text-center mb-4">
-                                <h4>How you look like?</h4>
+                                <h4>How do you look like?</h4>
                                 <p class="text-muted">Set Your Profile Image</p>
                             </div>
 
@@ -1184,11 +1176,11 @@
         });
 
         {{--    employee education--}}
-        $(document).on('change', 'select[name="education_degree_name_id"]', function () {
-            var selectedOption = $(this).find('option:selected');
-            var selectedOptionAttrValue = selectedOption.attr('has-institute-name');
-            toggleInstituteNameOnEducationDegreeChange(selectedOptionAttrValue);
-        })
+        // $(document).on('change', 'select[name="education_degree_name_id"]', function () {
+        //     var selectedOption = $(this).find('option:selected');
+        //     var selectedOptionAttrValue = selectedOption.attr('has-institute-name');
+        //     toggleInstituteNameOnEducationDegreeChange(selectedOptionAttrValue);
+        // })
         function toggleInstituteNameOnEducationDegreeChange(hasInstituteNameValue = 0)
         {
             if (hasInstituteNameValue == 1)
