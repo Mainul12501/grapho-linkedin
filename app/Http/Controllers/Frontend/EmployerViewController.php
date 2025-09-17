@@ -65,15 +65,26 @@ class EmployerViewController extends Controller
         return ViewHelper::checkViewForApi($data, 'frontend.employer.home.dashboard');
         return view('frontend.employer.home.dashboard', $data);
     }
-    public function myJobs()
+    public function myJobs(Request $request)
     {
+        if ($request->has('job_status'))
+        {
+            if ($request->job_status == 'closed')
+            {
+                $jobs = JobTask::where(['user_id' => ViewHelper::loggedUser()->id, 'status' => 0])->get();
+            } else {
+                $jobs = JobTask::where(['user_id' => ViewHelper::loggedUser()->id, 'status' => 1])->get();
+            }
+        } else {
+            $jobs = JobTask::where(['user_id' => ViewHelper::loggedUser()->id, 'status' => 1])->get();
+        }
         $data = [
             'jobTypes'  => JobType::where(['status' => 1])->get(['id', 'name']),
             'jobLocations'  => JobLocationType::where(['status' => 1])->get(['id', 'name']),
             'universityNames'   => UniversityName::where(['status' => 1])->get(['id', 'name']),
             'fieldOfStudies'   => FieldOfStudy::where(['status' => 1])->get(['id', 'field_name']),
             'skillCategories'   => SkillsCategory::where(['status' => 1])->get(['id', 'category_name']),
-            'publishedJobs' => JobTask::where(['user_id' => ViewHelper::loggedUser()->id, 'status' => 1])->get(),
+            'publishedJobs' => $jobs,
             'industries'    => Industry::where(['status' => 1])->get(['id', 'name', 'slug']),
         ];
         return ViewHelper::checkViewForApi($data, 'frontend.employer.jobs.my-jobs');

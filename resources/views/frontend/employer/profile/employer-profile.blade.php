@@ -131,9 +131,9 @@
                                     <div class="d-flex align-items-center mb-3 gap-3">
                                         <img src="{{ asset( $education?->universityName?->logo ?? '/frontend/company-vector.jpg') }}" alt="UCB Logo" style=" object-fit: contain; border-radius: 50%" height="60"  />
                                         <div>
-                                            <h6 class="mb-0 fw-bold">{{ $education?->universityName?->name ?? 'University Name' }}</h6>
-                                            <small class="text-muted">{{ $education?->educationDegreeName?->degree_name ?? 'Degree Name' }} - {{ $education?->mainSubject?->subject_name ?? '' }} &bull; CGPA {{ $education->cgpa ?? 0 }}</small><br />                                            <small class="text-muted">Jan 2017 - Jul 2024</small><br />
-                                            <small class="text-muted">{{ $education->address ?? 'Address' }}</small>
+                                            <h6 class="mb-0 fw-bold">{{ $education?->institute_name ?? 'Institute Name' }}</h6>
+                                            <small class="text-muted">{{ $education?->educationDegreeName?->degree_name ?? 'Degree Name' }} - {{ $education?->field_of_study ?? '' }} &bull; CGPA {{ $education->cgpa ?? 0 }}</small><br />                                            <small class="text-muted">Jan 2017 - Jul 2024</small><br />
+{{--                                            <small class="text-muted">{{ $education->address ?? 'Address' }}</small>--}}
                                         </div>
                                     </div>
                                 </div>

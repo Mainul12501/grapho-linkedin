@@ -26,7 +26,7 @@
             data: data
         })
             .done(function (data) { // .done() for success
-                // console.log('print from dno');
+                // console.log(data);
                 // No need to assign to 'response' here, it's passed to .then()
             })
             .fail(function (error) { // .fail() for error

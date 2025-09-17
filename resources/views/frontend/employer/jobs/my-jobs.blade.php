@@ -107,8 +107,8 @@
                                             <img src="{{ asset('/') }}frontend/employer/images/employersHome/three dot.png" alt="">
                                         </button>
                                         <ul class="dropdown-menu dropdown-menu-end">
-{{--                                            <li><a class="dropdown-item edit-job" href="javascript:void(0)" data-job-id="{{ $publishedJob->id }}">Edit</a></li>--}}
-                                            <li><a class="dropdown-item " href="{{ route('employer.job-tasks.edit', $publishedJob->id) }}" data-job-id="{{ $publishedJob->id }}">Edit</a></li>
+                                            <li><a class="dropdown-item edit-job" href="javascript:void(0)" data-job-id="{{ $publishedJob->id }}">Edit</a></li>
+{{--                                            <li><a class="dropdown-item " href="{{ route('employer.job-tasks.edit', $publishedJob->id) }}" data-job-id="{{ $publishedJob->id }}">Edit</a></li>--}}
                                             <li>
                                                 <form action="{{ route('employer.job-tasks.destroy', $publishedJob->id) }}" method="post">
                                                     @csrf
@@ -336,7 +336,8 @@
                         <!-- Modal Header -->
                         <div class="d-flex align-items-center gap-2 mb-4">
                             <img src="{{ asset('/') }}frontend/employer/images/employersHome/leftarrow.png" alt="" class="me-2" style="cursor: default;">
-                            <h5 class="mb-0 fw-semibold">Create a job</h5>
+                            <h5 class="mb-0 fw-semibold">Post a job</h5>
+                            <button type="button" class="btn-close position-absolute" style="right: 4%;" data-bs-dismiss="modal"></button>
                         </div>
 
                         <!-- Job Title -->
@@ -381,15 +382,15 @@
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="d-flex align-items-center gap-2 backToStepOne" id="backToStepOne" style="cursor:pointer">
                                     <img src="{{ asset('/') }}frontend/employee/images/authentication images/leftArrow.png" alt="Back" style="width:20px; height:20px;">
-                                    <h5 class="fw-bold mb-0">Create a job</h5>
+                                    <h5 class="fw-bold mb-0">Post a job</h5>
                                 </div>
                                 <!-- Button triggers modal -->
-{{--                                <button type="button" class="btn btn-warning text-dark fw-semibold px-4 py-2 rounded-3 show-review-btn" --}}{{--data-bs-toggle="modal" data-bs-target="#jobDetailsModal"--}}{{-->--}}
-{{--                                    Review & Post--}}
-{{--                                </button>--}}
-                                <button type="submit" class="btn btn-warning text-dark fw-semibold px-4 py-2 rounded-3" data-bs-toggle="modal" data-bs-target="#jobDetailsModal">
-                                    Post Job
+                                <button type="button" class="btn btn-warning text-dark fw-semibold px-4 py-2 rounded-3 show-review-btn" data-modal-id="createJobModal" {{--data-bs-toggle="modal" data-bs-target="#jobDetailsModal"--}}>
+                                    Review & Post
                                 </button>
+{{--                                <button type="submit" class="btn btn-warning text-dark fw-semibold px-4 py-2 rounded-3" data-bs-toggle="modal" data-bs-target="#jobDetailsModal">--}}
+{{--                                    Post Job--}}
+{{--                                </button>--}}
                             </div>
                         </div>
 
@@ -447,7 +448,7 @@
                                 <div class="bg-white rounded-4 p-4 shadow-sm">
                                     <h6 class="fw-semibold mb-3">Industry</h6>
 {{--                                    <input type="text" class="form-control mb-3" name="" placeholder="Search universities">--}}
-                                    <select name="industry_id" id="industryId" class="form-control select2"  >
+                                    <select name="industry_id" id="industryId" class="form-control select2 industryId"  >
 
                                         @foreach($industries as $industryKey => $industry)
                                             <option value="{{ $industry->id }}">{{ $industry->name ?? 'un' }}</option>
@@ -487,6 +488,19 @@
                                 <div class="bg-white rounded-4 p-4 shadow-sm">
                                     <h6 class="fw-semibold mb-3">CGPA preference</h6>
                                     <input type="text" name="cgpa" class="form-control" placeholder="e.g. 3.50 to 3.90">
+                                </div>
+                            </div>
+
+                            <!-- Gender Preference -->
+                            <div class="container mb-4">
+                                <div class="bg-white rounded-4 p-4 shadow-sm">
+                                    <h6 class="fw-semibold mb-3">Gender preference</h6>
+                                    <select name="gender" id="" class="form-control select2">
+                                        <option value="" disabled selected>Select a gender</option>
+                                        <option value="male" >Male</option>
+                                        <option value="female" >Female</option>
+                                        <option value="all" >All</option>
+                                    </select>
                                 </div>
                             </div>
 
@@ -550,15 +564,11 @@
                                         </nav>
                                         <div class="tab-content mt-3" id="nav-tabContent">
                                             @foreach($skillCategories as $x => $singleSkillCategory)
-                                                <div class="tab-pane fade {{ $x == 0 ? 'show active' : '' }}" id="skillCategory{{$x}}" role="tabpanel" aria-labelledby="nav-home-tab" tabindex="0">
+                                                <div class="tab-pane fade {{ $x == 0 ? 'show active' : '' }}" id="skillCategory{{$x}}" >
                                                     @foreach($singleSkillCategory->publishedSkills as $skillKey => $skill)
-                                                        <input type="radio" class="btn-check" name="required_skills[]" id="{{ $singleSkillCategory->category_name }}-{{ $skillKey }}" value="{{ $skill->id }}" autocomplete="off">
-                                                        <label class="btn border select-skill" for="{{ $singleSkillCategory->category_name }}-{{ $skillKey }}">{{ $skill->skill_name ?? 'sn' }}</label>
+                                                        <input type="checkbox" class="btn-check" name="required_skills[]" id="{{ $singleSkillCategory->category_name }}-{{ $skillKey }}" value="{{ $skill->id }}" >
+                                                        <label class="btn border select-skill" data-input-id="{{ $singleSkillCategory->category_name }}-{{ $skillKey }}" for="{{ $singleSkillCategory->category_name }}-{{ $skillKey }}">{{ $skill->skill_name ?? 'sn' }}</label>
                                                     @endforeach
-
-{{--                                                    <input type="radio" class="btn-check" name="required_experience" id="exp-3to5q" value="3–5 yrs" autocomplete="off">--}}
-{{--                                                    <label class="btn btn-outline-warning" for="exp-3to5q">3–5 yrs</label>--}}
-
                                                 </div>
                                             @endforeach
                                         </div>
@@ -611,12 +621,12 @@
                 <h4 class="fw-bold mb-3 reviewJobTitle" id="reviewJobTitle" >Senior Officer, Corporate Banking</h4>
 
                 <!-- Tags -->
-                <div class="d-flex flex-wrap gap-2 mb-4">
+                <div class="d-flex flex-wrap gap-2">
                     <span class="badge bg-light text-dark fw-medium" id="reviewJobType">Full Time</span>
                     <span class="badge bg-light text-dark fw-medium" id="reviewJobLocationType">On-Site</span>
                 </div>
 
-                <div class="row mt-3">
+                <div class="row mt-2">
                     <div class="col-md-4">
                         <p><b>Required Experience</b></p>
                         <p id="reviewExperience">1-3 Years</p>
@@ -632,7 +642,7 @@
                 </div>
 
                 <!-- About Section -->
-                <h6 class="fw-semibold mb-2">About <b class="companyName">UCB</b></h6>
+                <h6 class="fw-semibold mt-1 mb-2">About <b class="companyName">UCB</b></h6>
                 <p class="text-muted companyOverview" id="" style="line-height: 1.6;">
                     Be part of the world's most successful, purpose-led business. Work with brands that are well-loved around the world, that improve the lives of our consumers and the communities around us. We promote innovation, big and small, to make our business win and grow; and we believe in business as a force for good. Unleash your curiosity, challenge ideas and disrupt processes; use your energy to make this happen.
                     <br><br>
@@ -640,31 +650,31 @@
                 </p>
 
                 <!-- Job Requirements -->
-                <h6 class="fw-semibold mt-4 mb-2">Job Requirements</h6>
-                <p class="text-justify" id="reviewJobRequirements">
+                <h6 class="fw-semibold mt-2 mb-2">Job Requirements</h6>
+                <span class="text-justify" id="reviewJobRequirements">
                     <ul class="text-muted" style="line-height: 1.8;">
                         <li>Analyse internal and external data to identify geography-wise issues/opportunities and action upon them.</li>
                         <li>Work with media teams and other stakeholders to deploy effective communication for Surf across traditional and new-age media platforms.</li>
                     </ul>
-                </p>
+                </span>
 
                 <!-- field of study -->
                 <h6 class="fw-semibold mt-4 mb-2">Field Of Study Preference</h6>
-                <p>
-                    <ul id="printFieldOfStudy">
+                <span>
+                    <ul id="printFieldOfStudy" class="mb-0">
                         <li>Business</li>
                     </ul>
-                </p>
+                </span>
                 <!-- University -->
                 <h6 class="fw-semibold mt-4 mb-2">University Preference</h6>
-                <p>
-                    <ul id="printUniversity">
+                <span>
+                    <ul id="printUniversity" class="mb-0">
                         <li>JU</li>
                     </ul>
-                </p>
+                </span>
                 <!-- University -->
                 <h6 class="fw-semibold mt-4 mb-2">Required CGPA</h6>
-                <p id="printCgpa">
+                <p id="printCgpa" class="mb-0">
 
                 </p>
             </div>
@@ -672,14 +682,12 @@
     </div>
 
     <!-- Edit Job Modal -->
-    <div class="modal fade" id="editJobModal" tabindex="-1" aria-hidden="true">
+    <div class="modal fade" id="editJobModal" >
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content p-4 rounded-4">
-
                 <div class="" id="editJobForm">
 
                 </div>
-
             </div>
         </div>
     </div>
@@ -716,22 +724,33 @@
 
 @push('script')
 
-{{--    @include('common-resource-files.selectize') --}}
-    @include('common-resource-files.select2')
+    @include('common-resource-files.sim-select')
     @include('common-resource-files.summernote')
 
     <script>
         $(document).on('click', '.edit-job', function () {
+
             var jobId = $(this).attr('data-job-id');
             // var thisObject = $(this);
-            // console.log(thisObject);
+            // // console.log(thisObject);
+
             sendAjaxRequest('employer/job-tasks/'+jobId+'/edit', 'GET').then(function (response) {
                 // console.log(response);
                 $('#editJobForm').empty().append(response);
                 $('.summernote').summernote({
                     height: 300
                 });
-                $('.select2').selectize();
+                // $('.select2').selectize();
+                document.querySelectorAll('.select2').forEach(function (el) {
+                    new SlimSelect({
+                        select: el,
+                        events: {
+                            searchFilter: (option, search) => {
+                                return option.text.toLowerCase().indexOf(search.toLowerCase()) !== -1;
+                            }
+                        }
+                    });
+                });
                 $('#editJobModal').modal('show');
             })
         })
@@ -775,6 +794,9 @@
         $(document).on('click', '#showCustomExperienceField', function () {
             $('#customExperienceField').toggle();
         })
+        $(document).on('click', '#editshowCustomExperienceField', function () {
+            $('#editcustomExperienceField').toggle();
+        })
     </script>
     <script>
         // document.getElementById('continueToStep2')?.addEventListener('click', function () {
@@ -815,7 +837,7 @@
                 })
         })
         $(document).on('click', '.select-skill', function () {
-            let inputId = $(this).attr('for');
+            let inputId = $(this).attr('data-input-id');
             let input = $("#" + inputId);
             if (!$(this).hasClass('selected-skill'))
             {
@@ -829,9 +851,10 @@
             }
         });
         $(document).on('click', '.show-review-btn', function () {
+            var getModalId = $(this).attr('data-modal-id');
             $(this).blur();
-            showReviewModalWithData();
-            $('#modalPostJobBtn').attr('req-for', 'create');
+            showReviewModalWithData(`#${getModalId} `);
+            $('#modalPostJobBtn').attr('req-for', 'create').attr('data-modal-id', getModalId).addClass('submit-form-after-review');
             // $('#createJobModal').modal('hide');
             setTimeout(function () {
                 $('#jobDetailsModalReview').modal('show');
@@ -848,41 +871,47 @@
             // }, 50)
 
         });
-        function showReviewModalWithData() {
+        $(document).on('click', '.submit-form-after-review', function () {
+            var modalId = $(this).attr('data-modal-id');
+            $(`#${modalId} form`).submit();
+        });
+        function showReviewModalWithData(parentModalId = '#createJobModal ') {
             // collect values
             var companyLogo = $('#companyLogo').val();
             var companyName = $('#companyName').val();
             var companyAddress = $('#companyAddress').val();
             var companyOverview = $('#companyOverview').val();
 
-            var jobTitle = $('input[name="job_title"]').val();
-            var jobType = $('label[for="'+$('input[name="job_type_id"]').attr('id')+'"]').text();
-            var jobLocationType = $('label[for="'+$('input[name="job_location_type_id"]').attr('id')+'"]').text();
-            var requiredExperience = $('input[name="required_experience"]').val();
-            var description = $('input[name="description"]').val();
+            var jobTitle = $(parentModalId+'input[name="job_title"]').val();
+
+            var jobType = $(parentModalId+'label[for="'+$(parentModalId+'input[name="job_type_id"]').attr('id')+'"]').text();
+            var jobLocationType = $(parentModalId+'label[for="'+$('input[name="job_location_type_id"]').attr('id')+'"]').text();
+            var requiredExperience = $(parentModalId+'input[name="required_experience"]').val();
+            var description = $(parentModalId+'textarea[name="description"]').val();
+
             var finalExperience = '';
             if (requiredExperience == 'custom')
             {
-                finalExperience = $('input[name="exp_range_start"]').val()+' - '+$('input[name="exp_range_end"]').val();
+                finalExperience = $(parentModalId+'input[name="exp_range_start"]').val()+' - '+$('input[name="exp_range_end"]').val();
             } else {
                 finalExperience = requiredExperience;
             }
-            var deadline = $('input[name="deadline"]').val();
-            var salary = $('input[name="salary_amount"]').val();
-            var cgpa = $('input[name="cgpa"]').val();
-            var cgpa = $('input[name="cgpa"]').val();
+            var deadline = $(parentModalId+'input[name="deadline"]').val();
+            var salary = $(parentModalId+'input[name="salary_amount"]').val();
+            var cgpa = $(parentModalId+'input[name="cgpa"]').val();
+            var cgpa = $(parentModalId+'input[name="cgpa"]').val();
             // var field_of_study_preference = $('select[name="field_of_study_preference[]"]').val();
             // var university_preference = $('select[name="university_preference[]"]').val();
             // console.log('fos: '+field_of_study_preference);
             // console.log('uni: '+university_preference);
 
             var selectedFOSTexts = [];
-            $('select[name="field_of_study_preference[]"] option:selected').each(function() {
+            $(parentModalId+'select[name="field_of_study_preference[]"] option:selected').each(function() {
                 selectedFOSTexts.push($(this).text());
             });
 
             var selectedVersityTexts = [];
-            $('select[name="university_preference[]"] option:selected').each(function() {
+            $(parentModalId+'select[name="university_preference[]"] option:selected').each(function() {
                 selectedVersityTexts.push($(this).text());
             });
 
@@ -899,6 +928,7 @@
             $('#reviewDeadline').text(deadline);
             $('#reviewSalary').text(salary);
             $('#printCgpa').text(cgpa);
+            $('#reviewJobRequirements').empty();
             $('#reviewJobRequirements').html(description);
 
             $('#printFieldOfStudy').empty();

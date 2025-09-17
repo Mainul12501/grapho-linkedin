@@ -378,6 +378,8 @@ class CustomLoginController extends Controller
                 'companyDetails'    => EmployerCompany::where(['user_id' => ViewHelper::loggedUser()->id])->first(),
                 'industries'    => Industry::where(['status' => 1])->get(['id', 'name']),
                 'employerCompanyCategories'    => EmployerCompanyCategory::where(['status' => 1])->get(['id', 'category_name']),
+                'companyList'   => EmployerCompany::where(['status' => 1])->get(['id', 'name']),
+                'jobTypes'  => JobType::where(['status' => 1])->get(['id', 'name']),
             ];
         }
         return ViewHelper::checkViewForApi($data, 'frontend.auth.user-profile-update');

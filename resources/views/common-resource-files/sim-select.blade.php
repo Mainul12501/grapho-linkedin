@@ -27,3 +27,7 @@
     });
 
 </script>
+
+<style>
+    .ss-search {display: none!important;}
+</style>

@@ -109,7 +109,7 @@ class JobTaskController extends Controller
      */
     public function edit(JobTask  $jobTask/*string $id*/)
     {
-        return \view('frontend.employer.jobs.edit-jobs', [
+        $data = [
             'jobTask' => $jobTask,
             'jobTypes'  => JobType::where(['status' => 1])->get(['id', 'name']),
             'industries'  => Industry::where(['status' => 1])->get(['id', 'name']),
@@ -117,8 +117,18 @@ class JobTaskController extends Controller
             'universityNames'   => UniversityName::where(['status' => 1])->get(['id', 'name']),
             'fieldOfStudies'   => FieldOfStudy::where(['status' => 1])->get(['id', 'field_name']),
             'skillCategories'   => SkillsCategory::where(['status' => 1])->get(['id', 'category_name']),
-        ]);
-//        return \view('frontend.employer.include-edit-forms.job-edit', [
+        ];
+        if (\request()->ajax())
+        {
+            return \view('frontend.employer.include-edit-forms.job-edit', $data)->render();
+        } elseif (str()->contains(url()->current(), '/api/'))
+        {
+            return response()->json($data, 200);
+        } else {
+            return \view('frontend.employer.jobs.edit-jobs', $data);
+        }
+
+//        return \view('frontend.employer.jobs.edit-jobs', [
 //            'jobTask' => $jobTask,
 //            'jobTypes'  => JobType::where(['status' => 1])->get(['id', 'name']),
 //            'industries'  => Industry::where(['status' => 1])->get(['id', 'name']),
@@ -126,7 +136,8 @@ class JobTaskController extends Controller
 //            'universityNames'   => UniversityName::where(['status' => 1])->get(['id', 'name']),
 //            'fieldOfStudies'   => FieldOfStudy::where(['status' => 1])->get(['id', 'field_name']),
 //            'skillCategories'   => SkillsCategory::where(['status' => 1])->get(['id', 'category_name']),
-//        ])->render();
+//        ]);
+
     }
 
     /**
@@ -134,6 +145,7 @@ class JobTaskController extends Controller
      */
     public function update(Request $request, JobTask $jobTask/*string $id*/)
     {
+//        return $request->all();
         $validator = Validator::make($request->all(),[
             'job_title' => 'required'
         ]);
@@ -141,6 +153,7 @@ class JobTaskController extends Controller
         {
             return ViewHelper::returEexceptionError($validator->errors());
         }
+
         try {
             //        $jobTask = JobTask::createOrUpdateJobTask($request);
 //            $jobTask = new JobTask();

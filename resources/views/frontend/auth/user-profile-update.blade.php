@@ -18,8 +18,8 @@
         </form>
         @if($loggedUser->user_type == 'employee')
             <div class="overlay" id="overlay" role="dialog" aria-modal="true" aria-labelledby="wizTitle">
-                <div class="custom-modal" id="modal">
-                    <div class="custom-modal-header">
+                <div class="modal custom-modal" id="modal">
+                    <div class="modal-header custom-modal-header">
                         <div class="title-wrap">
                             <span class="step-badge" id="stepBadge">Step 1 of 4</span>
                             <h2 id="wizTitle" style="margin:0;font-size:18px">Edit Contact Information</h2>
@@ -29,8 +29,8 @@
 
                     </div>
                     <div class="progress"><i id="bar"></i></div>
-                    <div class="custom-modal-body" id="modalBody"></div>
-                    <div class="custom-modal-footer">
+                    <div class="modal-body custom-modal-body" id="modalBody"></div>
+                    <div class="modal-footer custom-modal-footer">
                         <div class="left-actions">
                             <button class="btn" id="closeBtn" style="display: none">Close</button>
                             <span class="saved" id="savedMsg" style="display: none">Saved</span>
@@ -215,8 +215,8 @@
 
         @elseif($loggedUser->user_type == 'employer')
             <div class="overlay" id="overlay" role="dialog" aria-modal="true" aria-labelledby="wizTitle">
-                <div class="modal " id="modal">
-                    <div class="modal-header">
+                <div class="modal custom-modal " id="modal">
+                    <div class="modal-header custom-modal-header">
                         <div class="title-wrap">
                             <span class="step-badge" style="display: none" id="stepBadge">Step 1 of 4</span>
                             <h2 id="wizTitle" style="margin:0;font-size:18px">Edit Company Information</h2>
@@ -226,8 +226,8 @@
 
                     </div>
                     <div class="progress"><i id="bar"></i></div>
-                    <div class="modal-body" id="modalBody"></div>
-                    <div class="modal-footer">
+                    <div class="modal-body custom-modal-body" id="modalBody"></div>
+                    <div class="modal-footer custom-modal-footer">
                         <div class="left-actions">
                             <button class="btn" id="closeBtn" style="display: none">Close</button>
                             <span class="saved" id="savedMsg" style="display: none">Saved</span>
@@ -312,146 +312,149 @@
         </datalist>
     @endsection
 @section('modal')
-    <!-- Job Preference Modal -->
-    <div class="modal fade " id="jobPreferenceModal" tabindex="-1" aria-labelledby="jobPreferenceModalLabel" aria-hidden="true" data-bs-backdrop="static">
-        <div class="modal-dialog modal-dialog-centered modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="jobPreferenceModalLabel">Job Preferences</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-
-                <div class="modal-body">
-                    <!-- Progress Bar -->
-                    <div class="mb-4">
-                        <div class="progress mb-3" style="height: 6px;">
-                            <div class="progress-bar" role="progressbar" style="width: 0%"></div>
-                        </div>
-                        <div id="stepIndicator" class="step-indicator">
-                            <!-- Step indicators will be generated dynamically -->
-                        </div>
+    @if($loggedUser->user_type == 'employee')
+        <!-- Job Preference Modal -->
+        <div class="modal fade " id="jobPreferenceModal" style="background-color: transparent!important; border: 0px!important;" data-bs-backdrop="static">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="jobPreferenceModalLabel">Job Preferences</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
 
-                    <!-- Form -->
-                    <form id="jobPreferenceForm">
-
-
-                        <!-- Step 1: You are looking for -->
-                        <div class="form-step active" data-step="1">
-                            <div class="text-center mb-4">
-                                <h4>What are you looking for?</h4>
-                                <p class="text-muted">Select your preferred work schedule</p>
+                    <div class="modal-body">
+                        <!-- Progress Bar -->
+                        <div class="mb-4">
+                            <div class="progress mb-3" style="height: 6px;">
+                                <div class="progress-bar" role="progressbar" style="width: 0%"></div>
                             </div>
-
-                            <div class="row justify-content-center">
-                                <div class="col-md-6">
-                                    <label for="workType" class="form-label">You are looking for</label>
-                                    <select class="form-select-lg select2" name="job_type_id[]" multiple id="workType" required>
-                                        <option value="" disabled>Choose your preference</option>
-                                        @foreach($jobTypes as $jobType)
-                                            <option value="{{ $jobType->id }}">{{ $jobType->name ?? '' }}</option>
-                                        @endforeach
-                                        {{--                                        <option value="parttime">Part-time</option>--}}
-                                    </select>
-                                    <div class="invalid-feedback">
-                                        Please select your work preference.
-                                    </div>
-                                </div>
+                            <div id="stepIndicator" class="step-indicator">
+                                <!-- Step indicators will be generated dynamically -->
                             </div>
                         </div>
 
-                        <!-- Step 2: Interested in -->
-                        <div class="form-step" data-step="2">
-                            <div class="text-center mb-4">
-                                <h4>Where do you prefer to work?</h4>
-                                <p class="text-muted">Select your work location preference</p>
-                            </div>
+                        <!-- Form -->
+                        <form id="jobPreferenceForm">
 
-                            <div class="row justify-content-center">
-                                <div class="col-md-6">
-                                    <label for="workLocation" class="form-label">Interested in</label>
-                                    <select class="form-select-lg select2" name="job_location_type_id[]" multiple id="workLocation" required>
-                                        <option value="" disabled>Choose your preference</option>
-                                        @foreach($jobLocationTypes as $jobLocationType)
-                                            <option value="{{ $jobLocationType->id }}">{{ $jobLocationType->name ?? '' }}</option>
-                                        @endforeach
-                                        {{--                                        <option value="onsite">On-site</option>--}}
-                                    </select>
-                                    <div class="invalid-feedback">
-                                        Please select your work location preference.
-                                    </div>
+
+                            <!-- Step 1: You are looking for -->
+                            <div class="form-step active" data-step="1">
+                                <div class="text-center mb-4">
+                                    <h4>What are you looking for?</h4>
+                                    <p class="text-muted">Select your preferred work schedule</p>
                                 </div>
 
-                            </div>
-                        </div>
-
-                        <!-- Step 3: You are looking for -->
-                        <div class="form-step " data-step="3">
-                            <div class="text-center mb-4">
-                                <h4>How do you look like?</h4>
-                                <p class="text-muted">Set Your Profile Image</p>
-                            </div>
-
-                            <div class="row justify-content-center">
-                                <div class="col-md-12">
-                                    <label for="workType" class="form-label">You are looking for</label>
-                                    @include('common-resource-files.drag-drop-crop', ['modalId' => 'jobPreferenceModal'])
-                                    <div class="invalid-feedback">
-                                        Please select your work preference.
+                                <div class="row justify-content-center">
+                                    <div class="col-md-6">
+                                        <label for="workType" class="form-label">You are looking for</label>
+                                        <select class="form-select-lg select2" name="job_type_id[]" multiple id="workType" required>
+                                            <option value="" disabled>Choose your preference</option>
+                                            @foreach($jobTypes as $jobType)
+                                                <option value="{{ $jobType->id }}">{{ $jobType->name ?? '' }}</option>
+                                            @endforeach
+                                            {{--                                        <option value="parttime">Part-time</option>--}}
+                                        </select>
+                                        <div class="invalid-feedback">
+                                            Please select your work preference.
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <!--
-                        EXAMPLE: How to add a new step - Just copy this structure:
+                            <!-- Step 2: Interested in -->
+                            <div class="form-step" data-step="2">
+                                <div class="text-center mb-4">
+                                    <h4>Where do you prefer to work?</h4>
+                                    <p class="text-muted">Select your work location preference</p>
+                                </div>
 
-                        <div class="form-step" data-step="3">
-                            <div class="text-center mb-4">
-                                <h4>Your Question Title</h4>
-                                <p class="text-muted">Your question description</p>
+                                <div class="row justify-content-center">
+                                    <div class="col-md-6">
+                                        <label for="workLocation" class="form-label">Interested in</label>
+                                        <select class="form-select-lg select2" name="job_location_type_id[]" multiple id="workLocation" required>
+                                            <option value="" disabled>Choose your preference</option>
+                                            @foreach($jobLocationTypes as $jobLocationType)
+                                                <option value="{{ $jobLocationType->id }}">{{ $jobLocationType->name ?? '' }}</option>
+                                            @endforeach
+                                            {{--                                        <option value="onsite">On-site</option>--}}
+                                        </select>
+                                        <div class="invalid-feedback">
+                                            Please select your work location preference.
+                                        </div>
+                                    </div>
+
+                                </div>
                             </div>
 
-                            <div class="row justify-content-center">
-                                <div class="col-md-6">
-                                    <label for="yourField" class="form-label">Your Label</label>
-                                    <select class="form-select form-select-lg" name="your_field" id="yourField" required>
-                                        <option value="">Choose option</option>
-                                        <option value="option1">Option 1</option>
-                                        <option value="option2">Option 2</option>
-                                    </select>
-                                    <div class="invalid-feedback">
-                                        Please select an option.
+                            <!-- Step 3: You are looking for -->
+                            <div class="form-step " data-step="3">
+                                <div class="text-center mb-4">
+                                    <h4>How do you look like?</h4>
+                                    <p class="text-muted">Set Your Profile Image</p>
+                                </div>
+
+                                <div class="row justify-content-center">
+                                    <div class="col-md-12">
+                                        <label for="workType" class="form-label">You are looking for</label>
+                                        @include('common-resource-files.drag-drop-crop', ['modalId' => 'jobPreferenceModal'])
+                                        <div class="invalid-feedback">
+                                            Please select your work preference.
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        -->
 
-                    </form>
-                </div>
+                            <!--
+                            EXAMPLE: How to add a new step - Just copy this structure:
 
-                <div class="modal-footer">
-                    <div>
-                        <!-- Previous button on the left -->
-                        <button type="button" class="btn btn-outline-primary" id="jobPreferencePrevBtn">
-                            Previous
-                        </button>
+                            <div class="form-step" data-step="3">
+                                <div class="text-center mb-4">
+                                    <h4>Your Question Title</h4>
+                                    <p class="text-muted">Your question description</p>
+                                </div>
+
+                                <div class="row justify-content-center">
+                                    <div class="col-md-6">
+                                        <label for="yourField" class="form-label">Your Label</label>
+                                        <select class="form-select form-select-lg" name="your_field" id="yourField" required>
+                                            <option value="">Choose option</option>
+                                            <option value="option1">Option 1</option>
+                                            <option value="option2">Option 2</option>
+                                        </select>
+                                        <div class="invalid-feedback">
+                                            Please select an option.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            -->
+
+                        </form>
                     </div>
-                    <div>
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="button" class="btn btn-primary" id="jobPreferenceNextBtn">Next</button>
-                        <button type="button" class="btn btn-success" id="jobPreferenceSubmitBtn" style="display: none;">Submit</button>
+
+                    <div class="modal-footer">
+                        <div>
+                            <!-- Previous button on the left -->
+                            <button type="button" class="btn btn-outline-primary" id="jobPreferencePrevBtn">
+                                Previous
+                            </button>
+                        </div>
+                        <div>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="button" class="btn btn-primary" id="jobPreferenceNextBtn">Next</button>
+                            <button type="button" class="btn btn-success" id="jobPreferenceSubmitBtn" style="display: none;">Submit</button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    @endif
+
 @endsection
 @push('style')
     <link rel="stylesheet" href="{{ asset('/common-assets/jquery-ui/jquery-ui.min.css') }}">
     <link rel="stylesheet" href="{{ asset('frontend/auth/user-profile-update.css') }}">
-
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
 {{--    job preference modal css--}}
     <style>
@@ -530,6 +533,50 @@
         }
         /*grid gap*/
         .grid-gap-y {margin-bottom: 8px; margin-top: 8px;}
+
+
+        /* mazhar vai modal customization*/
+        .custom-modal {
+            width: min(860px, 96vw);
+            max-height: 90vh;
+            overflow: hidden;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            display: flex;
+            flex-direction: column;
+            animation: fadeIn .25s ease;
+            position: relative;
+        }
+        /* Changed from .modal-header to .custom-modal-header */
+        .custom-modal-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+            background: #fff;
+            flex-shrink: 0; /* Prevent header from shrinking */
+        }
+        /* Changed from .modal-body to .custom-modal-body */
+        .custom-modal-body {
+            padding: 20px;
+            overflow-y: auto; /* Enable vertical scrolling */
+            flex: 1; /* Take remaining space */
+            max-height: calc(90vh - 140px); /* Account for header and footer */
+        }
+        /* Changed from .modal-footer to .custom-modal-footer */
+        .custom-modal-footer {
+            padding: 14px 20px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #fafafa;
+            flex-shrink: 0; /* Prevent footer from shrinking */
+        }
     </style>
 @endpush
 

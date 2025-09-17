@@ -475,9 +475,10 @@
                             <div class="jobPosition d-flex justify-content-between">
                                 <div class="d-flex">
                                     <div class="profileCard">
-                                        <h3>{{ $employeeEducation?->universityName?->name ?? 'North South University' }}</h3>
+{{--                                        <h3>{{ $employeeEducation?->universityName?->name ?? 'North South University' }}</h3>--}}
+                                        <h3>{{ $employeeEducation?->institute_name ?? 'Institute Name' }}</h3>
                                         <h4>
-                                            {{ $employeeEducation?->educationDegreeName?->degree_name ?? 'BBA' }} - {{ $employeeEducation?->fieldOfStudy?->field_name ?? 'Marketing' }}
+                                            {{ $employeeEducation?->educationDegreeName?->degree_name ?? 'BBA' }} - {{ $employeeEducation?->field_of_study ?? 'Field Of Study' }}
                                             <img src="{{ asset('/') }}frontend/employee/images/profile/dotDevider.png" alt="" />
                                             <span>CGPA {{ $employeeEducation->cgpa ?? 0.00 }}</span>
                                         </h4>
@@ -486,9 +487,9 @@
 {{--                                            <img src="{{ asset('/') }}frontend/employee/images/profile/2ndDotDevider.png" alt="" />--}}
 {{--                                            <span>2 yrs 5 mos</span>--}}
                                         </p>
-                                        <p>
-                                            {!! $employeeEducation->address ?? '' !!}
-                                        </p>
+{{--                                        <p>--}}
+{{--                                            {!! $employeeEducation->address ?? '' !!}--}}
+{{--                                        </p>--}}
                                     </div>
                                 </div>
                                 <div>
