@@ -32,6 +32,7 @@
                     <div class="modal-body custom-modal-body" id="modalBody"></div>
                     <div class="modal-footer custom-modal-footer">
                         <div class="left-actions">
+                            <span class="text-success print-success-msg"></span>
                             <button class="btn" id="closeBtn" style="display: none">Close</button>
                             <span class="saved" id="savedMsg" style="display: none">Saved</span>
                             <span class="error" id="errorMsg" style="display: none"></span>
@@ -51,7 +52,7 @@
                     <input type="hidden" name="is_profile_updated" value="1" >
                     <div class="grid grid-1">
                         <div class="">
-                            <div class="grid-gap-y"><label>Title <span style="color: red">*</span></label><input name="profile_title" type="text" placeholder="Mobile App Developer" value="{{ $loggedUser->profile_title ?? '' }}" required /></div>
+                            <div class="grid-gap-y"><label>Title </label><input name="profile_title" type="text" placeholder="Mobile App Developer" value="{{ $loggedUser->profile_title ?? '' }}"  /></div>
                             <div class="grid-gap-y"><label>Name <span style="color: red">*</span></label><input name="name" type="email" value="{{ $loggedUser->name ?? '' }}" placeholder="Jhon Doe" required /></div>
                             <div class="grid-gap-y"><label>Email <span style="color: red">*</span></label><input name="email" type="email" value="{{ $loggedUser->email ?? '' }}" required /></div>
                             <div class="grid-gap-y"><label>Phone <span style="color: red">*</span></label><input name="mobile" type="tel" value="{{ $loggedUser->mobile }}" /></div>
@@ -75,7 +76,7 @@
                             <div class="grid-gap-y"><label>District</label><select name="district" id="distr" onchange="thanaList();"></select><!--/ Districts Section--></div>
                             <div class="grid-gap-y"><label>Post Office</label><select name="post_office" id="polic_sta"></select><!--/ Police Station Section--></div>
                             <div class="grid-gap-y"><label>Post Code</label><input name="postal_code" type="text" min="0" value="" placeholder="1200" /></div>
-                            <div class="grid-gap-y"><label>Currently available to work?</label><select name="is_open_for_hire" id="">
+                            <div class="grid-gap-y"><label>Currently available to work? <span style="color: red">*</span></label><select required name="is_open_for_hire" id="">
                                     <option value="1">Yes</option><option value="0">No</option></select></div>
 
                         </div>
@@ -93,8 +94,8 @@
                     <div class="grid grid-1">
                         <div class="">
                             <div class="grid-gap-y">
-                                <label>Program Name</label>
-                                <select name="education_degree_name_id" id="">
+                                <label>Program Name <span style="color: red">*</span></label>
+                                <select name="education_degree_name_id" id="" required>
                                     <option value="" disabled>Select Degree</option>
                                     @foreach($educationDegreeNames as $degreeName)
                                         <option value="{{ $degreeName->id }}" has-institute-name="{{ $degreeName->need_institute_field }}">{{ $degreeName->degree_name }}</option>
@@ -102,8 +103,8 @@
                                 </select>
                             </div>
                             <div id="universityDiv">
-                                <div class="grid-gap-y"><label>Name of Institution</label>
-                                    <input type="text" class="form-control" name="institute_name" id="instituteName" placeholder="Type here" />
+                                <div class="grid-gap-y"><label>Name of the Institution <span style="color: red">*</span></label>
+                                    <input type="text" class="form-control" required name="institute_name" id="instituteName" placeholder="Type here" />
 {{--                                    <select name="university_name_id" class="form-control select2" id="">--}}
 {{--                                        <option selected disabled>Select University</option>--}}
 {{--                                        @foreach($universityNames as $universityName)--}}
@@ -111,8 +112,8 @@
 {{--                                        @endforeach--}}
 {{--                                    </select>--}}
                                 </div>
-                                <div class="grid-gap-y"><label>Background / Field of study</label>
-                                    <input type="text" class="form-control" name="field_of_study" id="fieldOfStudyInput" placeholder="Type here" />
+                                <div class="grid-gap-y"><label>Background / Field of study <span style="color: red">*</span></label>
+                                    <input type="text" class="form-control" name="field_of_study" required id="fieldOfStudyInput" placeholder="Type here" />
 {{--                                    <select name="field_of_study_id" class="form-control select2" id="">--}}
 {{--                                        <option selected disabled>Select Field of Study</option>--}}
 {{--                                        @foreach($fieldOfStudies as $fieldOfStudy)--}}
@@ -122,8 +123,8 @@
                                 </div>
                             </div>
 
-                            <div class="grid-gap-y"><label>Passing Year</label><input name="passing_year" type="text" /></div>
-                            <div class="grid-gap-y"><label for="cgpaInput">CGPA</label><input name="cgpa" type="text" id="cgpaInput" /></div>
+                            <div class="grid-gap-y"><label>Passing Year <span style="color: red">*</span></label><input required name="passing_year" type="text" /></div>
+                            <div class="grid-gap-y"><label for="cgpaInput">CGPA <span style="color: red">*</span></label><input name="cgpa" type="text" required id="cgpaInput" /></div>
 
                         </div>
 
@@ -140,24 +141,27 @@
                     @csrf
                     <div class="grid grid-1">
                         <div class="">
-                            <div class="grid-gap-y"><label>Resignation</label><input name="title" type="text" required /></div>
+                            <div class="grid-gap-y"><label>Resignation <span style="color: red">*</span></label><input name="title" type="text" required /></div>
                             <div class="grid-gap-y">
                                 <label>Job type</label>
                                 <select name="job_type" required>
-                                    <option value="">Select</option>
-                                    <option value="full_time">Full-time</option>
-                                    <option value="part_time">Part-time</option>
-                                    <option value="contractual">Contractual</option>
+                                    @foreach($jobTypes as $jobType)
+                                        <option value="{{ $jobType->slug }}">{{ $jobType->name }}</option>
+                                    @endforeach
+
+{{--                                    <option value="full_time">Full-time</option>--}}
+{{--                                    <option value="part_time">Part-time</option>--}}
+{{--                                    <option value="contractual">Contractual</option>--}}
                                 </select>
                             </div>
-                            <div class="grid-gap-y"><label>Company/Organization Name</label><input list="companyDatalist" type="text" name="company_name"></div>
+                            <div class="grid-gap-y"><label>Company/Organization Name <span style="color: red">*</span></label><input required list="companyDatalist" type="text" name="company_name"></div>
 
 
                         </div>
                         {{--            <div><label>Company/Organization</label><input name="company" type="text" required /></div>--}}
                         <div class="grid">
                             <div>
-                                <label>From</label>
+                                <label>From <span style="color: red">*</span></label>
                                 {{--                    <select name="start_month" required>--}}
                                 {{--                        <option value="">Month</option>--}}
                                 {{--                        <option>January</option><option>February</option><option>March</option>--}}
@@ -165,16 +169,16 @@
                                 {{--                        <option>July</option><option>August</option><option>September</option>--}}
                                 {{--                        <option>October</option><option>November</option><option>December</option>--}}
                                 {{--                    </select>--}}
-                                <input type="text" class="datepicker" id="datepicker1" name="start_date" >
+                                <input type="text" class="datepicker" id="datepicker1" name="start_date" required>
                             </div>
                             {{--                <div><label>Start year</label><select name="start_year" required><option value="">Year</option></select></div>--}}
-                            <div><label>To</label><input name="end_date" id="datepicker2" type="text" class="datepicker" ></div>
+                            <div><label>To <span style="color: red">*</span></label><input name="end_date" required id="datepicker2" type="text" class="datepicker" ></div>
                         </div>
                         <div class="grid-gap-y"><label for="currentJobCheck"><input type="checkbox" id="currentJobCheck" name="is_working_currently" /> I currently work here</label></div>
 
                     </div>
                     <div>
-                        <div class="grid-gap-y"><label>Location</label><input name="office_address" type="text" /></div>
+                        <div class="grid-gap-y"><label>Location <span style="color: red">*</span></label><input required name="office_address" type="text" /></div>
                         <div class="grid-gap-y"><label>Job Responsibilities</label><textarea name="job_responsibilities"></textarea></div>
                     </div>
                     <div style="margin-top:14px;text-align:right">
@@ -189,16 +193,16 @@
                     @csrf
                     <div class="grid grid-1">
                         <div>
-                            <label>Document Title</label>
+                            <label>Document Title <span style="color: red">*</span></label>
 {{--                            <input name="title" type="text"  required />--}}
-                            <select name="title" class="form-control select2" id="">
+                            <select name="title" required class="form-control select2" id="">
                                 <option value="CV">CV</option>
                                 <option value="NID">NID</option>
                                 <option value="Certificate">Certificate</option>
                             </select>
                         </div>
                         <div>
-                            <label>Document</label>
+                            <label>Document <span style="color: red">*</span></label>
                             <input name="file" type="file" accept=".pdf,.doc,.docx,image/*" required />
                             <p class="muted">preferred (≤ 2MB)</p>
                         </div>
@@ -229,6 +233,7 @@
                     <div class="modal-body custom-modal-body" id="modalBody"></div>
                     <div class="modal-footer custom-modal-footer">
                         <div class="left-actions">
+                            <span class="text-success print-success-msg"></span>
                             <button class="btn" id="closeBtn" style="display: none">Close</button>
                             <span class="saved" id="savedMsg" style="display: none">Saved</span>
                             <span class="error" id="errorMsg" style="display: none"></span>
@@ -264,7 +269,7 @@
                         <div class="grid">
                             <div>
                                 <label>Company Category</label>
-                                <select name="employer_company_category_id" id="">
+                                <select name="employer_company_category_id" required id="">
                                     <option disabled selected>Select Company Category</option>
                                     @foreach($employerCompanyCategories as $employerCompanyCategory)
                                         <option value="{{ $employerCompanyCategory->id }}">{{ $employerCompanyCategory->category_name }}</option>
@@ -274,7 +279,7 @@
                             </div>
                             <div>
                                 <label>Industry</label>
-                                <select name="industry_id" id="">
+                                <select name="industry_id" required id="">
                                     <option disabled selected>Select Industry</option>
                                     @foreach($industries as $industry)
                                         <option value="{{ $industry->id }}">{{ $industry->name }}</option>
@@ -283,12 +288,12 @@
                             </div>
                         </div>
                         <div class="grid">
-                            <div><label>Bin Number</label><input type="text" name="bin_number" value="{{ $loggedUser?->employerCompany?->bin_number ?? '' }}" placeholder="Bin Number"></div>
-                            <div><label>Trade License Number</label><input type="text" name="trade_license_number" value="{{ $loggedUser?->employerCompany?->trade_license_number ?? '' }}" placeholder="Trade License Number"></div>
+                            <div><label>Bin Number <span style="color: red">*</span></label><input type="text" required name="bin_number" value="{{ $loggedUser?->employerCompany?->bin_number ?? '' }}" placeholder="Bin Number"></div>
+                            <div><label>Trade License Number <span style="color: red">*</span></label><input required type="text" name="trade_license_number" value="{{ $loggedUser?->employerCompany?->trade_license_number ?? '' }}" placeholder="Trade License Number"></div>
                         </div>
                         <div class="grid">
                             <div><label>Website</label><input name="website" type="text" value="" placeholder="www.website.com" /></div>
-                            <div><label>Logo</label><input name="logo" type="file" accept="image/*" /></div>
+                            <div><label>Logo <span style="color: red">*</span></label><input name="logo" required type="file" accept="image/*" /></div>
                         </div>
                         <div class="">
                             <div><label>OverView</label><textarea name="company_overview" id="" style="width: 100%" rows="10"></textarea></div>
@@ -319,7 +324,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="jobPreferenceModalLabel">Job Preferences</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+{{--                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>--}}
                     </div>
 
                     <div class="modal-body">
@@ -389,7 +394,7 @@
                             <!-- Step 3: You are looking for -->
                             <div class="form-step " data-step="3">
                                 <div class="text-center mb-4">
-                                    <h4>How do you look like?</h4>
+                                    <h4>Update your profile image.</h4>
                                     <p class="text-muted">Set Your Profile Image</p>
                                 </div>
 
@@ -440,7 +445,7 @@
                             </button>
                         </div>
                         <div>
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+{{--                            <button type="button" class="btn btn-secondary" id="skipAndSubmit">Skip</button>--}}
                             <button type="button" class="btn btn-primary" id="jobPreferenceNextBtn">Next</button>
                             <button type="button" class="btn btn-success" id="jobPreferenceSubmitBtn" style="display: none;">Submit</button>
                         </div>
@@ -577,6 +582,7 @@
             background: #fafafa;
             flex-shrink: 0; /* Prevent footer from shrinking */
         }
+        .toast  { background-color: lightgreen!important;}
     </style>
 @endpush
 
@@ -590,6 +596,9 @@
     <!-- select which modal will show first -->
     <script>
         $(function () {
+            $('.datepicker').datepicker({
+                dateFormat: 'yy-mm-dd'
+            });
             @if($loggedUser->user_type == 'employee')
                 $('#jobPreferenceModalBtn').click();
             @else
@@ -714,17 +723,17 @@
 
             const labels = [
                 { title: 'Edit Contact Information' },
-                { title: 'Add Work Experience' },
                 { title: 'Add Education' },
+                { title: 'Add Work Experience' },
                 { title: 'Add Document' }
             ];
 
             function showToast(text, isSuccess = true) {
-                toastEl.textContent = text;
-                toastEl.style.backgroundColor = isSuccess ? '#d4edda' : '#f8d7da';
-                toastEl.style.color = isSuccess ? '#155724' : '#721c24';
-                toastEl.classList.add('show');
-                setTimeout(() => toastEl.classList.remove('show'), 3000);
+                // toastEl.textContent = text;
+                // toastEl.style.backgroundColor = isSuccess ? '#d4edda' : '#f8d7da';
+                // toastEl.style.color = isSuccess ? '#155724' : '#721c24';
+                // toastEl.classList.add('show');
+                // setTimeout(() => toastEl.classList.remove('show'), 3000);
             }
 
             function updateButtons() {
@@ -770,6 +779,7 @@
                 bar.style.width = Math.round((wizardState.step / wizardState.maxStep) * 100) + '%';
                 mountTemplate(wizardState.step);
                 updateButtons();
+                $('.print-success-msg').text('');
             }
 
             function openWizard() {
@@ -783,6 +793,7 @@
 
             // Event Listeners
             nextBtn.addEventListener('click', () => {
+                $('.print-success-msg').text('');
                 if (wizardState.step < wizardState.maxStep) {
                     showStep(wizardState.step + 1);
                 } else {
@@ -832,7 +843,8 @@
                             // setTimeout(function() { $('#savedMsg').removeClass('show').text('Saved'); }, 2000);
                             wizardState.saved[0] = true;
                             window.updateWizardButtons();
-                            window.showWizardSaved('Profile updated successfully!');
+                            // window.showWizardSaved('Profile updated successfully!');
+                            $('.print-success-msg').text('Profile updated successfully!');
                             toastr.success(data.msg);
                         } else {
                             toastr.error(data.msg);
@@ -857,9 +869,11 @@
                         // toastr.success('Work experience added successfully!');
                         if (data.status == 'success')
                         {
-                            wizardState.saved[1] = true;
+                            wizardState.saved[2] = true;
                             window.updateWizardButtons();
                             window.showWizardSaved('Work experience added successfully!');
+                             $('.print-success-msg').text('Work experience added successfully!');
+                            resetFormById('form-work');
                             toastr.success(data.success);
                         } else {
                             toastr.error(data.error);
@@ -884,9 +898,11 @@
                         if (data.status == 'success')
                         {
                             console.log('Success:', data);
-                            wizardState.saved[2] = true;
+                            wizardState.saved[1] = true;
                             window.updateWizardButtons();
                             window.showWizardSaved('Education added successfully!');
+                             $('.print-success-msg').text('Education added successfully!');
+                            resetFormById('form-education');
                             toastr.success(data.success);
                         } else {
                             toastr.error(data.error);
@@ -914,6 +930,8 @@
                             wizardState.saved[3] = true;
                             window.updateWizardButtons();
                             window.showWizardSaved('Document uploaded successfully!');
+                             $('.print-success-msg').text('Document uploaded successfully!');
+                            resetFormById('form-document');
                             toastr.success(data.msg);
                         } else {
                             toastr.error(data.msg);
@@ -1241,6 +1259,21 @@
                 $('input[name="institute_name"]').val('');
                 $('input[name="group_name"]').val('');
                 $('label[for="cgpaInput"]').text('GPA');
+            }
+        }
+        // $(document).on('click', '#skipAndSubmit', function () {
+        //     $('#jobPreferenceForm').submit();
+        // })
+        function resetFormById(formId = null) {
+            if (formId)
+            {
+                $('#'+formId).find("input, textarea, select").not("[name='csrf_token']").each(function () {
+                    if ($(this).is(":checkbox") || $(this).is(":radio")) {
+                        $(this).prop("checked", false);
+                    } else {
+                        $(this).val("");
+                    }
+                });
             }
         }
     </script>

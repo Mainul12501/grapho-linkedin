@@ -226,14 +226,14 @@ input:focus,select:focus,textarea:focus {
 }
 @keyframes sp { to { transform: rotate(360deg); } }
 
-.toast {
-    position: fixed; right: 18px; bottom: 18px;
-    padding: 10px 12px;
-    border: 1px solid var(--border);
-    background: #fff;
-    border-radius: 6px;
-    box-shadow: var(--shadow);
-    font-size: 14px;
-    display: none;
-}
-.toast.show { display: block; }
+/*.toast {*/
+/*    position: fixed; right: 18px; bottom: 18px;*/
+/*    padding: 10px 12px;*/
+/*    border: 1px solid var(--border);*/
+/*    background: #fff;*/
+/*    border-radius: 6px;*/
+/*    box-shadow: var(--shadow);*/
+/*    font-size: 14px;*/
+/*    display: none;*/
+/*}*/
+/*.toast.show { display: block; }*/
