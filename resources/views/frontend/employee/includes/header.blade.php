@@ -27,7 +27,7 @@
                             Jobs
                         </div>
                     </a>
-                    <a href="" class="menu-item">
+                    <a href="{{ url('/chat') }}" class="menu-item" target="_blank">
                         <div class="d-flex align-items-center">
                             <img src="{{ asset('/') }}frontend/employee/images/header images/inbox.png" alt="" class="me-2" />
                             Inbox

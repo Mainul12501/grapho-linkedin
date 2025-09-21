@@ -25,7 +25,7 @@
                             <h2 id="wizTitle" style="margin:0;font-size:18px">Edit Contact Information</h2>
                         </div>
                         <button class="btn-ghost" id="closeX" style="display: none" aria-label="Close">✕</button>
-                        <button class="btn-ghost" id="" type="button" style="cursor: pointer" aria-label="Close" onclick="document.getElementById('logoutForm').submit()">Logout</button>
+                        <button class="btn-ghost btn btn-success" id="" type="button" style="cursor: pointer" aria-label="Close" onclick="document.getElementById('logoutForm').submit()">Logout</button>
 
                     </div>
                     <div class="progress"><i id="bar"></i></div>
@@ -39,6 +39,7 @@
                         </div>
                         <div class="right-actions">
                             <button class="btn" id="prevBtn">Previous</button>
+                            <button class="btn btn-secondary" id="skipBtn">Skip</button>
                             <button class="btn btn-primary" id="nextBtn">Next</button>
                         </div>
                     </div>
@@ -54,8 +55,8 @@
                         <div class="">
                             <div class="grid-gap-y"><label>Title </label><input name="profile_title" type="text" placeholder="Mobile App Developer" value="{{ $loggedUser->profile_title ?? '' }}"  /></div>
                             <div class="grid-gap-y"><label>Name <span style="color: red">*</span></label><input name="name" type="email" value="{{ $loggedUser->name ?? '' }}" placeholder="Jhon Doe" required /></div>
-                            <div class="grid-gap-y"><label>Email <span style="color: red">*</span></label><input name="email" type="email" value="{{ $loggedUser->email ?? '' }}" required /></div>
-                            <div class="grid-gap-y"><label>Phone <span style="color: red">*</span></label><input name="mobile" type="tel" value="{{ $loggedUser->mobile }}" /></div>
+                            <div class="grid-gap-y"><label>Email <span style="color: red">*</span></label><input readonly name="email" type="email" value="{{ $loggedUser->email ?? '' }}" required /></div>
+                            <div class="grid-gap-y"><label>Phone <span style="color: red">*</span></label><input readonly name="mobile" type="tel" value="{{ $loggedUser->mobile }}" /></div>
                             <div class="grid-gap-y"><label>Gender</label><select name="gender" id="">
                                     <option value="male">Male</option><option value="female">Female</option></select></div>
                             <div class="grid-gap-y"><label>Address</label><input name="address" type="text" value="{{ $loggedUser->address ?? '' }}" /></div>
@@ -169,10 +170,10 @@
                                 {{--                        <option>July</option><option>August</option><option>September</option>--}}
                                 {{--                        <option>October</option><option>November</option><option>December</option>--}}
                                 {{--                    </select>--}}
-                                <input type="text" class="datepicker" id="datepicker1" name="start_date" required>
+                                <input type="date" class="datepicker form-control" id="datepicker1" name="start_date" required>
                             </div>
                             {{--                <div><label>Start year</label><select name="start_year" required><option value="">Year</option></select></div>--}}
-                            <div><label>To <span style="color: red">*</span></label><input name="end_date" required id="datepicker2" type="text" class="datepicker" ></div>
+                            <div><label>To <span style="color: red">*</span></label><input name="end_date" required id="datepicker2" type="date" class="datepicker form-control" ></div>
                         </div>
                         <div class="grid-gap-y"><label for="currentJobCheck"><input type="checkbox" id="currentJobCheck" name="is_working_currently" /> I currently work here</label></div>
 
@@ -226,7 +227,7 @@
                             <h2 id="wizTitle" style="margin:0;font-size:18px">Edit Company Information</h2>
                         </div>
                         <button class="btn-ghost" id="closeX" style="display: none" aria-label="Close">✕</button>
-                        <button class="btn-ghost" id="" type="button" style="cursor: pointer" aria-label="Close" onclick="document.getElementById('logoutForm').submit()">Logout</button>
+                        <button class="btn-ghost btn btn-success" id="" type="button" style="cursor: pointer" aria-label="Close" onclick="document.getElementById('logoutForm').submit()">Logout</button>
 
                     </div>
                     <div class="progress"><i id="bar"></i></div>
@@ -457,8 +458,10 @@
 
 @endsection
 @push('style')
-    <link rel="stylesheet" href="{{ asset('/common-assets/jquery-ui/jquery-ui.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('frontend/auth/user-profile-update.css') }}">
+{{--    <link rel="stylesheet" href="{{ asset('/common-assets/jquery-ui/jquery-ui.min.css') }}">--}}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.14.1/themes/base/jquery-ui.min.css" integrity="sha512-TFee0335YRJoyiqz8hA8KV3P0tXa5CpRBSoM0Wnkn7JoJx1kaq1yXL/rb8YFpWXkMOjRcv5txv+C6UluttluCQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.14.1/themes/base/theme.min.css" integrity="sha512-lfR3NT1DltR5o7HyoeYWngQbo6Ec4ITaZuIw6oAxIiCNYu22U5kpwHy9wAaN0vvBj3U6Uy2NNtAfiaKcDxfhTg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="{{ asset('frontend/auth/user-profile-update.css') }}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
 {{--    job preference modal css--}}
@@ -582,7 +585,8 @@
             background: #fafafa;
             flex-shrink: 0; /* Prevent footer from shrinking */
         }
-        .toast  { background-color: lightgreen!important;}
+        .toast-success { background-color: lightgreen!important;}
+        .toast-error { background-color: #ff2f31!important;}
     </style>
 @endpush
 
@@ -590,13 +594,16 @@
 
 
     <script src="{{ asset('/frontend/employee/division-Districts-post-station/javascript.js') }}"></script>
-{{--    <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>--}}
-    <script src="{{ asset('/common-assets/jquery-ui/jquery-ui.min.js') }}"></script>
+    <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
+{{--    <script src="{{ asset('/common-assets/jquery-ui/jquery-ui.min.js') }}"></script>--}}
 
     <!-- select which modal will show first -->
     <script>
         $(function () {
-            $('.datepicker').datepicker({
+            $('#datepicker1').datepicker({
+                dateFormat: 'yy-mm-dd'
+            });
+            $('#datepicker2').datepicker({
                 dateFormat: 'yy-mm-dd'
             });
             @if($loggedUser->user_type == 'employee')
@@ -713,6 +720,7 @@
             const badge = document.getElementById('stepBadge');
             const bar = document.getElementById('bar');
             const nextBtn = document.getElementById('nextBtn');
+            const skipBtn = document.getElementById('skipBtn');
             const prevBtn = document.getElementById('prevBtn');
             const closeBtn = document.getElementById('closeBtn');
             const closeX = document.getElementById('closeX');
@@ -793,6 +801,17 @@
 
             // Event Listeners
             nextBtn.addEventListener('click', () => {
+                showNextSlide();
+            });
+            skipBtn.addEventListener('click', () => {
+                showNextSlide();
+            });
+            if (wizardState.step == 0)
+            {
+                $('#skipBtn').css('visibility', 'hidden');
+            }
+
+            function showNextSlide() {
                 $('.print-success-msg').text('');
                 if (wizardState.step < wizardState.maxStep) {
                     showStep(wizardState.step + 1);
@@ -806,7 +825,11 @@
 
                     setTimeout(() => closeWizard(), 1500);
                 }
-            });
+                if (wizardState.step > 0)
+                {
+                    $('#skipBtn').css('visibility', 'visible');
+                }
+            }
 
             prevBtn.addEventListener('click', () => showStep(wizardState.step - 1));
             closeBtn.addEventListener('click', closeWizard);

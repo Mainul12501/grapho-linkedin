@@ -52,7 +52,7 @@
                         <span>Change Email</span>
                     </div>
                     <div class="option">
-                        <span>md.pranto@gmail.com</span>
+                        <span>{{ auth()->user()->email ?? 'demo@email.com' }}</span>
                         <span data-bs-toggle="modal" data-bs-target="#settingModal" style="cursor: pointer">
                             <img src="{{ asset('/') }}frontend/employee/images/profile/arrowRightLight.png" alt="Right Arrow" />
                         </span>

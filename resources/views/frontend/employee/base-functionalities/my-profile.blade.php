@@ -16,12 +16,12 @@
                         <div class="dropdown d-flex align-items-center">
                             <span class="badge d-flex align-items-center">
                               <img src="{{ asset('/') }}frontend/employee/images/profile/Ellipse 1.png" alt="" class="me-2" />
-                              <span id="selectedRole" >{{ auth()->user()->is_open_for_hire == 1 ? 'Open to Hire' : 'Offline' }}</span>
+                              <span id="selectedRole" >{{ auth()->user()->is_open_for_hire == 1 ? 'Open to Work' : 'Offline' }}</span>
                             </span>
                             <img src="{{ asset('/') }}frontend/employee/images/profile/downArrow.png" alt="" data-bs-toggle="dropdown" aria-expanded="false" class="ms-2" style="cursor: pointer;" />
 
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item change-job-active-status" href="javascript:void(0)" data-value="1" data-msg="Open To Hire">Open to Hire</a></li>
+                                <li><a class="dropdown-item change-job-active-status" href="javascript:void(0)" data-value="1" data-msg="Open To Hire">Open to Work</a></li>
                                 <li><a class="dropdown-item change-job-active-status" href="javascript:void(0)" data-value="0" data-msg="Offline">Offline</a></li>
 {{--                                <li><a class="dropdown-item" href="#" onclick="updateRole('Open to Internship')">Open to Internship</a></li>--}}
 {{--                                <li><a class="dropdown-item" href="#" onclick="updateRole('Open to Freelance Projects')">Open to Freelance Projects</a></li>--}}
@@ -82,17 +82,17 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="profileIngo website">
-                            <div class="row">
-                                <div class="col-2">
-                                    <img src="{{ asset('/') }}frontend/employee/images/profile/website.png" alt="" />
-                                </div>
-                                <div class="col-10">
-                                    <h4 class="mb-0">Website</h4>
-                                    <p><a href="">{{ auth()->user()->website ?? 'domain.com' }}</a></p>
-                                </div>
-                            </div>
-                        </div>
+{{--                        <div class="profileIngo website">--}}
+{{--                            <div class="row">--}}
+{{--                                <div class="col-2">--}}
+{{--                                    <img src="{{ asset('/') }}frontend/employee/images/profile/website.png" alt="" />--}}
+{{--                                </div>--}}
+{{--                                <div class="col-10">--}}
+{{--                                    <h4 class="mb-0">Website</h4>--}}
+{{--                                    <p><a href="">{{ auth()->user()->website ?? 'domain.com' }}</a></p>--}}
+{{--                                </div>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
 
                         <!-- edit contact with modal -->
 

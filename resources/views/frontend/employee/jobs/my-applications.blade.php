@@ -18,7 +18,7 @@
         <section class="w-100 profileOptionRight">
 
             <h1 class="forLarge">My applications</h1>
-            <p class="">You have applied to 6 jobs</p>
+            <p class="">You have applied to {{ count($myApplications) ?? 0  }} jobs</p>
 
             <div class="right-panel w-100 appliedJobs">
                 <div class="appliedJobs-table">
@@ -50,8 +50,11 @@
                         </div>
                     @empty
                         <div class="appliedJobs-row">
-                            <p class="f-s-35">You haven't applied any job yet.</p>
+                            <p class="f-s-20 text-center">You haven't applied any job yet.</p>
                         </div>
+                        <style>
+                            .appliedJobs .appliedJobs-row {display: block};
+                        </style>
                     @endforelse
 
 

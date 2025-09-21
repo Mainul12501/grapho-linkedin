@@ -16,6 +16,9 @@
                     <p class="mt-2">
                         {{ auth()->user()->profile_title ?? 'User Bio' }}
                     </p>
+                    <p class="mt-1">
+                        {{ auth()->user()->address ?? 'User Address' }}
+                    </p>
                     <div class="optionsInprofile">
                         <div class="options  border rounded">
                             <a href="{{ route('employee.my-saved-jobs') }}" style="text-decoration: none">
@@ -26,7 +29,7 @@
                                         </div>
                                         <div>
                                             <div class="title">My saved jobs</div>
-                                            <div class="subtitle text-dark">{{ $totalSavedJobs }} saved</div>
+                                            <div class="subtitle text-dark"><span id="savedJobsNumber">{{ $totalSavedJobs }}</span> saved</div>
                                         </div>
                                     </div>
 
@@ -80,20 +83,20 @@
         <!-- Right Scrollable Jobs -->
         <section class="w-100">
             @if(count($topJobsForEmployee) > 0)
-                <div class="right-panel w-100">
-                    <div class="rightPanelHeadinfo">
+                <div class="right-panel w-100" style="margin-top: 16px!important;">
+                    <div class="rightPanelHeadinfo border-bottom">
                         <h2>Top job picks for you, {{ auth()->user()->name ?? 'User Name' }}!</h2>
                         <p>
-                            Based on your profile, preferences, and activities
+                            Based on your profile, preferences, and activities like applies, searches, and saves
                         </p>
                     </div>
 
                     @foreach($topJobsForEmployee as $topJobForEmployee)
                         <div class="row jobCard border-bottom">
-                            <div class="col-md-1">
-                                <img src="{{ asset($topJobForEmployee?->employerCompany?->logo ?? '/frontend/company-vector.jpg') }}" alt="Company Logo" class="companyLogo" style="height: 65px" />
+                            <div class="col-md-2 col-lg-1 pe-0">
+                                <img src="{{ asset($topJobForEmployee?->employerCompany?->logo ?? '/frontend/company-vector.jpg') }}" alt="Company Logo" class="companyLogo img-fluid" style="height: 65px; border-radius: 50%;" />
                             </div>
-                            <div class="col-md-11">
+                            <div class="col-md-10 col-lg-11">
                                 <div class="jobPosition d-flex justify-content-between">
                                     <div class="d-flex">
                                         <img style="width: 40px; height: 42px" src="{{ asset($topJobForEmployee?->employerCompany?->logo ?? '/frontend/company-vector.jpg') }}"
@@ -128,13 +131,16 @@
                                         @if(!$topJobForEmployee['isApplied'])
                                             <form action="{{ route('employee.apply-job', $topJobForEmployee->id) }}" method="post" style="float: left">
                                                 @csrf
-                                                <button type="submit" class="btn flex-column">Easy Apply</button>
+                                                <button title="Apply Job" type="submit" class="btn flex-column show-apply-model" data-job-id="{{ $topJobForEmployee->id }}" data-job-company-logo="{{ asset($topJobForEmployee?->employerCompany?->logo) ?? '' }}">Easy Apply</button>
                                             </form>
                                         @endif
 
-                                        @if(!auth()->user()?->employeeSavedJobs->contains($topJobForEmployee->id))
-                                            <img src="{{ asset('/') }}frontend/employee/images/contentImages/bookmark.png" alt="Bookmark" data-job-id="{{ $topJobForEmployee->id }}" class="bookmarkIcon save-btnx" />
-                                        @endif
+{{--                                        @if(!auth()->user()?->employeeSavedJobs->contains($topJobForEmployee->id))--}}
+{{--                                            <img src="{{ asset('/') }}frontend/employee/images/contentImages/bookmark.png" alt="Bookmark" data-job-id="{{ $topJobForEmployee->id }}" class="bookmarkIcon save-btnx" />--}}
+{{--                                        @endif--}}
+{{--                                        @if(!auth()->user()?->employeeSavedJobs->contains($topJobForEmployee->id))--}}
+                                            <img title="Save Job" src="{{ !auth()->user()?->employeeSavedJobs->contains($topJobForEmployee->id) ? asset('/frontend/employee/images/contentImages/bookmark.png') : 'https://cdn-icons-png.flaticon.com/512/3817/3817226.png' }}" alt="Bookmark" data-job-id="{{ $topJobForEmployee->id }}" style="max-height: 40px" class="bookmarkIcon {{ !auth()->user()?->employeeSavedJobs->contains($topJobForEmployee->id) ? 'save-btnx' : '' }}" />
+{{--                                        @endif--}}
                                     </div>
 {{--                                    <div>--}}
 {{--                                        <img src="{{ asset('/') }}frontend/employee/images/contentImages/closeIcon.png" alt="Close" class="closeIcon" />--}}
@@ -144,88 +150,6 @@
                         </div>
                     @endforeach
 
-
-{{--                    <div class="row jobCard border-bottom">--}}
-{{--                        <div class="col-md-1">--}}
-{{--                            <img src="{{ asset('/') }}frontend/employee/images/contentImages/companyLogoFor job.png" alt="Company Logo" class="companyLogo" />--}}
-{{--                        </div>--}}
-{{--                        <div class="col-md-11">--}}
-{{--                            <div class="jobPosition d-flex justify-content-between">--}}
-{{--                                <div class="d-flex">--}}
-{{--                                    <img style="width: 40px; height: 42px" src="{{ asset('/') }}frontend/employee/images/contentImages/companyLogoFor job.png"--}}
-{{--                                         alt="Company Logo" class="mobileLogo" />--}}
-{{--    --}}
-{{--                                    <div class="paddingforMobile">--}}
-{{--                                        <h3>Senior Officer, Corporate Banking</h3>--}}
-{{--                                        <p>United Commercial Bank PLC</p>--}}
-{{--                                    </div>--}}
-{{--                                </div>--}}
-{{--                                <div>--}}
-{{--                                    <img src="{{ asset('/') }}frontend/employee/images/contentImages/threedot.png" alt="Options" class="threeDot" />--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
-{{--                            <div class="jobTypeBtn">--}}
-{{--                                <button class="btn">Full Time</button>--}}
-{{--                                <button class="btn">On-Site</button>--}}
-{{--                                <button class="btn">Day Shift</button>--}}
-{{--                            </div>--}}
-{{--                            <div class="jobDesc">--}}
-{{--                                <p>Gulshan, Dhaka</p>--}}
-{{--                                <p>3+ years of experience</p>--}}
-{{--                                <p>Salary: Tk. 3,00,000+</p>--}}
-{{--                            </div>--}}
-{{--                            <div class="jobApply d-flex justify-content-between">--}}
-{{--                                <div>--}}
-{{--                                    <button class="btn">Easy Apply</button>--}}
-{{--                                    <img src="{{ asset('/') }}frontend/employee/images/contentImages/bookmark.png" alt="Bookmark" class="bookmarkIcon" />--}}
-{{--                                </div>--}}
-{{--                                <div>--}}
-{{--                                    <img src="{{ asset('/') }}frontend/employee/images/contentImages/closeIcon.png" alt="Close" class="closeIcon" />--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
-{{--                    </div>--}}
-{{--    --}}
-{{--                    <div class="row jobCard border-bottom">--}}
-{{--                        <div class="col-md-1">--}}
-{{--                            <img src="{{ asset('/') }}frontend/employee/images/contentImages/companyLogoFor job.png" alt="Company Logo" class="companyLogo" />--}}
-{{--                        </div>--}}
-{{--                        <div class="col-md-11">--}}
-{{--                            <div class="jobPosition d-flex justify-content-between">--}}
-{{--                                <div class="d-flex">--}}
-{{--                                    <img style="width: 40px; height: 42px" src="{{ asset('/') }}frontend/employee/images/contentImages/companyLogoFor job.png"--}}
-{{--                                         alt="Company Logo" class="mobileLogo" />--}}
-{{--    --}}
-{{--                                    <div class="paddingforMobile">--}}
-{{--                                        <h3>Senior Officer, Corporate Banking</h3>--}}
-{{--                                        <p>United Commercial Bank PLC</p>--}}
-{{--                                    </div>--}}
-{{--                                </div>--}}
-{{--                                <div>--}}
-{{--                                    <img src="{{ asset('/') }}frontend/employee/images/contentImages/threedot.png" alt="Options" class="threeDot" />--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
-{{--                            <div class="jobTypeBtn">--}}
-{{--                                <button class="btn">Full Time</button>--}}
-{{--                                <button class="btn">On-Site</button>--}}
-{{--                                <button class="btn">Day Shift</button>--}}
-{{--                            </div>--}}
-{{--                            <div class="jobDesc">--}}
-{{--                                <p>Gulshan, Dhaka</p>--}}
-{{--                                <p>3+ years of experience</p>--}}
-{{--                                <p>Salary: Tk. 3,00,000+</p>--}}
-{{--                            </div>--}}
-{{--                            <div class="jobApply d-flex justify-content-between">--}}
-{{--                                <div>--}}
-{{--                                    <button class="btn">Easy Apply</button>--}}
-{{--                                    <img src="{{ asset('/') }}frontend/employee/images/contentImages/bookmark.png" alt="Bookmark" class="bookmarkIcon" />--}}
-{{--                                </div>--}}
-{{--                                <div>--}}
-{{--                                    <img src="{{ asset('/') }}frontend/employee/images/contentImages/closeIcon.png" alt="Close" class="closeIcon" />--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
-{{--                    </div>--}}
 
                     <div class="seeAll">
                         <a href="{{ route('employee.show-jobs') }}">Show All
@@ -242,10 +166,10 @@
 
                 @foreach($moreJobsForEmployee as $topJobForEmployee)
                     <div class="row jobCard border-bottom">
-                        <div class="col-md-1">
+                        <div class="col-md-2 col-lg-1 pe-0" style="border-radius: 50%">
                             <img src="{{ asset($topJobForEmployee?->employerCompany?->logo ?? '/frontend/employee/images/contentImages/companyLogoFor job.png') }}" alt="Company Logo" class="companyLogo" />
                         </div>
-                        <div class="col-md-11">
+                        <div class="col-md-10 col-lg-11">
                             <div class="jobPosition d-flex justify-content-between">
                                 <div class="d-flex">
                                     <img style="width: 40px; height: 42px" src="{{ asset($topJobForEmployee?->employerCompany?->logo ?? '/frontend/employee/images/contentImages/companyLogoFor job.png') }}"
@@ -277,13 +201,15 @@
                             </div>
                             <div class="jobApply d-flex justify-content-between">
                                 <div>
-                                    <form action="{{ route('employee.apply-job', $topJobForEmployee->id) }}" method="post" style="float: left">
-                                        @csrf
-                                        <button type="submit" class="btn flex-column">Easy Apply</button>
-                                    </form>
-                                    @if(auth()->user()?->employeeSavedJobs->contains($topJobForEmployee->id))
-                                        <img src="{{ asset('/') }}frontend/employee/images/contentImages/bookmark.png" alt="Bookmark" data-job-id="{{ $topJobForEmployee->id }}" class="bookmarkIcon ms-2 save-btnx" />
+                                    @if(!$topJobForEmployee['isApplied'])
+                                        <form action="{{ route('employee.apply-job', $topJobForEmployee->id) }}" method="post" style="float: left">
+                                            @csrf
+                                            <button type="submit" title="Apply Job" class="btn flex-column show-apply-model" data-job-id="{{ $topJobForEmployee->id }}" data-job-company-logo="{{ asset($topJobForEmployee?->employerCompany?->logo) ?? '' }}">Easy Apply</button>
+                                        </form>
                                     @endif
+{{--                                    @if(!auth()->user()?->employeeSavedJobs->contains($topJobForEmployee->id))--}}
+                                        <img title="Save Job" src="{{ auth()->user()?->employeeSavedJobs->contains($topJobForEmployee->id) ? 'https://cdn-icons-png.flaticon.com/512/3817/3817226.png' : asset('/frontend/employee/images/contentImages/bookmark.png') }}" alt="Bookmark" data-job-id="{{ $topJobForEmployee->id }}" style="max-height: 40px" class="bookmarkIcon ms-2 {{ !auth()->user()?->employeeSavedJobs->contains($topJobForEmployee->id) ? 'save-btnx' : '' }}" />
+{{--                                    @endif--}}
                                 </div>
                                 {{--                                    <div>--}}
                                 {{--                                        <img src="{{ asset('/') }}frontend/employee/images/contentImages/closeIcon.png" alt="Close" class="closeIcon" />--}}
@@ -293,128 +219,7 @@
                     </div>
                 @endforeach
 
-{{--                <div class="row jobCard border-bottom">--}}
-{{--                    <div class="col-md-1">--}}
-{{--                        <img src="{{ asset('/') }}frontend/employee/images/contentImages/companyLogoFor job.png" alt="Company Logo" class="companyLogo" />--}}
-{{--                    </div>--}}
-{{--                    <div class="col-md-11">--}}
-{{--                        <div class="jobPosition d-flex justify-content-between">--}}
-{{--                            <div class="d-flex">--}}
-{{--                                <img style="width: 40px; height: 42px" src="{{ asset('/') }}frontend/employee/images/contentImages/companyLogoFor job.png"--}}
-{{--                                     alt="Company Logo" class="mobileLogo" />--}}
 
-{{--                                <div class="paddingforMobile">--}}
-{{--                                    <h3>Senior Officer, Corporate Banking</h3>--}}
-{{--                                    <p>United Commercial Bank PLC</p>--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
-{{--                            <div>--}}
-{{--                                <img src="{{ asset('/') }}frontend/employee/images/contentImages/threedot.png" alt="Options" class="threeDot" />--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
-{{--                        <div class="jobTypeBtn">--}}
-{{--                            <button class="btn">Full Time</button>--}}
-{{--                            <button class="btn">On-Site</button>--}}
-{{--                            <button class="btn">Day Shift</button>--}}
-{{--                        </div>--}}
-{{--                        <div class="jobDesc">--}}
-{{--                            <p>Gulshan, Dhaka</p>--}}
-{{--                            <p>3+ years of experience</p>--}}
-{{--                            <p>Salary: Tk. 3,00,000+</p>--}}
-{{--                        </div>--}}
-{{--                        <div class="jobApply d-flex justify-content-between">--}}
-{{--                            <div>--}}
-{{--                                <button class="btn">Easy Apply</button>--}}
-{{--                                <img src="{{ asset('/') }}frontend/employee/images/contentImages/bookmark.png" alt="Bookmark" class="bookmarkIcon" />--}}
-{{--                            </div>--}}
-{{--                            <div>--}}
-{{--                                <img src="{{ asset('/') }}frontend/employee/images/contentImages/closeIcon.png" alt="Close" class="closeIcon" />--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
-
-{{--                <div class="row jobCard border-bottom">--}}
-{{--                    <div class="col-md-1">--}}
-{{--                        <img src="{{ asset('/') }}frontend/employee/images/contentImages/companyLogoFor job.png" alt="Company Logo" class="companyLogo" />--}}
-{{--                    </div>--}}
-{{--                    <div class="col-md-11">--}}
-{{--                        <div class="jobPosition d-flex justify-content-between">--}}
-{{--                            <div class="d-flex">--}}
-{{--                                <img style="width: 40px; height: 42px" src="{{ asset('/') }}frontend/employee/images/contentImages/companyLogoFor job.png"--}}
-{{--                                     alt="Company Logo" class="mobileLogo" />--}}
-
-{{--                                <div class="paddingforMobile">--}}
-{{--                                    <h3>Senior Officer, Corporate Banking</h3>--}}
-{{--                                    <p>United Commercial Bank PLC</p>--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
-{{--                            <div>--}}
-{{--                                <img src="{{ asset('/') }}frontend/employee/images/contentImages/threedot.png" alt="Options" class="threeDot" />--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
-{{--                        <div class="jobTypeBtn">--}}
-{{--                            <button class="btn">Full Time</button>--}}
-{{--                            <button class="btn">On-Site</button>--}}
-{{--                            <button class="btn">Day Shift</button>--}}
-{{--                        </div>--}}
-{{--                        <div class="jobDesc">--}}
-{{--                            <p>Gulshan, Dhaka</p>--}}
-{{--                            <p>3+ years of experience</p>--}}
-{{--                            <p>Salary: Tk. 3,00,000+</p>--}}
-{{--                        </div>--}}
-{{--                        <div class="jobApply d-flex justify-content-between">--}}
-{{--                            <div>--}}
-{{--                                <button class="btn">Easy Apply</button>--}}
-{{--                                <img src="{{ asset('/') }}frontend/employee/images/contentImages/bookmark.png" alt="Bookmark" class="bookmarkIcon" />--}}
-{{--                            </div>--}}
-{{--                            <div>--}}
-{{--                                <img src="{{ asset('/') }}frontend/employee/images/contentImages/closeIcon.png" alt="Close" class="closeIcon" />--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
-
-{{--                <div class="row jobCard border-bottom">--}}
-{{--                    <div class="col-md-1">--}}
-{{--                        <img src="{{ asset('/') }}frontend/employee/images/contentImages/companyLogoFor job.png" alt="Company Logo" class="companyLogo" />--}}
-{{--                    </div>--}}
-{{--                    <div class="col-md-11">--}}
-{{--                        <div class="jobPosition d-flex justify-content-between">--}}
-{{--                            <div class="d-flex">--}}
-{{--                                <img style="width: 40px; height: 42px" src="{{ asset('/') }}frontend/employee/images/contentImages/companyLogoFor job.png"--}}
-{{--                                     alt="Company Logo" class="mobileLogo" />--}}
-
-{{--                                <div class="paddingforMobile">--}}
-{{--                                    <h3>Senior Officer, Corporate Banking</h3>--}}
-{{--                                    <p>United Commercial Bank PLC</p>--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
-{{--                            <div>--}}
-{{--                                <img src="{{ asset('/') }}frontend/employee/images/contentImages/threedot.png" alt="Options" class="threeDot" />--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
-{{--                        <div class="jobTypeBtn">--}}
-{{--                            <button class="btn">Full Time</button>--}}
-{{--                            <button class="btn">On-Site</button>--}}
-{{--                            <button class="btn">Day Shift</button>--}}
-{{--                        </div>--}}
-{{--                        <div class="jobDesc">--}}
-{{--                            <p>Gulshan, Dhaka</p>--}}
-{{--                            <p>3+ years of experience</p>--}}
-{{--                            <p>Salary: Tk. 3,00,000+</p>--}}
-{{--                        </div>--}}
-{{--                        <div class="jobApply d-flex justify-content-between">--}}
-{{--                            <div>--}}
-{{--                                <button class="btn">Easy Apply</button>--}}
-{{--                                <img src="{{ asset('/') }}frontend/employee/images/contentImages/bookmark.png" alt="Bookmark" class="bookmarkIcon" />--}}
-{{--                            </div>--}}
-{{--                            <div>--}}
-{{--                                <img src="{{ asset('/') }}frontend/employee/images/contentImages/closeIcon.png" alt="Close" class="closeIcon" />--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
                 <div class="seeAll">
                     <a href="{{ route('employee.show-jobs') }}">Show All
                         <img src="{{ asset('/') }}frontend/employee/images/contentImages/arrow-righttwo.png" alt="" class="ms-2" /></a>
@@ -422,6 +227,36 @@
             </div>
             <!-- Repeat job-card as needed -->
         </section>
+    </div>
+    <div class="easy-apply-modal" id="easyApplyModal">
+        <div class="modal-content">
+            <div class="modal-header">
+{{--                <img src="images/contentImages/notificationImage.png" alt="Company Logo" class="modal-image" />--}}
+                <div>
+                    <div class="images-container">
+                        <!-- User Profile Image -->
+                        <img src="{{ asset( auth()->user()->profile_image ?? '/frontend/user-vector-img.jpg') }}" alt="Your Profile" class="user-image" />
+
+                        <!-- Arrow Icon -->
+                        <div class="arrow-icon">
+                            <i class="fas fa-arrow-right"></i>
+                        </div>
+
+                        <!-- Company Logo -->
+                        <img src="https://img.freepik.com/free-photo/horizontal-shot-handsome-young-guy-with-blue-eyes-bristle-has-positive-expression_273609-2960.jpg" alt="Company Logo" class="company-image" />
+                    </div>
+                </div>
+                <h2>Share your profile?</h2>
+            </div>
+            <p class="modal-description">To apply, you need to share your profile with the company.</p>
+            <div class="modal-buttons">
+                <form action="" method="post" id="applyShareForm">
+                    @csrf
+                    <button class="share-profile-btn w-100 mb-2" {{-- onclick="shareProfile()"--}} type="submit">Share My Profile</button>
+                </form>
+                <button class="cancel-btn w-100" onclick="closeEasyApplyModal()">Cancel</button>
+            </div>
+        </div>
     </div>
 @endsection
 
@@ -438,6 +273,121 @@
         .companyLogo {width: 65px}
         .border {border: 2px solid #e5e7ebaf !important;}
     </style>
+{{--    apply modal two image set--}}
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .images-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            margin-bottom: 1.5rem;
+            height: 100px;
+        }
+
+        .user-image {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid white;
+            background-color: white;
+            position: relative;
+            z-index: 3;
+        }
+
+        .company-image {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 4px solid white;
+            background-color: white;
+            position: relative;
+            z-index: 1;
+            margin-left: -25px;
+        }
+
+        .pill-shape {
+            width: 60px;
+            height: 30px;
+            background: linear-gradient(135deg, #ff4757 0%, #ff3742 100%);
+            border-radius: 15px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .pill-shape::before {
+            content: '';
+            position: absolute;
+            top: 6px;
+            left: 6px;
+            width: 48px;
+            height: 18px;
+            background: linear-gradient(135deg, #ff6b7d 0%, #ff4757 100%);
+            border-radius: 12px;
+        }
+
+        .arrow-icon {
+            background-color: #ffd32a;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            color: #000;
+            position: absolute;
+            z-index: 4;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            border: 2px solid white;
+        }
+
+        .modal-description {
+            text-align: center;
+            color: #6c757d;
+            margin-bottom: 2rem;
+            font-size: 0.95rem;
+        }
+
+        .share-profile-btn {
+            background-color: #0d6efd;
+            border: none;
+            color: white;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: background-color 0.2s;
+        }
+
+        .share-profile-btn:hover {
+            background-color: #0b5ed7;
+        }
+
+        .cancel-btn {
+            background-color: transparent;
+            border: 2px solid #dee2e6;
+            color: #6c757d;
+            padding: 10px;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .cancel-btn:hover {
+            border-color: #adb5bd;
+            color: #495057;
+        }
+        .easy-apply-modal .modal-buttons button:hover {
+            /*background-color: #0033a0;*/
+            color: white;
+        }
+    </style>
 @endpush
 
 @push('script')
@@ -450,7 +400,11 @@
 
                 if (response.status == 'success')
                 {
-                    thisObject.addClass('d-none');
+                    // thisObject.addClass('d-none');
+                    thisObject.attr('src', 'https://cdn-icons-png.flaticon.com/512/3817/3817226.png');
+                    sendAjaxRequest('employee/get-total-saved-jobs', 'GET').then(function (res) {
+                        $('#savedJobsNumber').text(res);
+                    })
                     toastr.success(response.msg);
                 }
                 else if (response.status == 'error')
@@ -458,6 +412,21 @@
                     toastr.error(response.msg);
                 }
             })
+        })
+    </script>
+{{--    show and apply job modal--}}
+    <script>
+        $(document).on('click', '.show-apply-model', function (){
+            event.preventDefault();
+           var applyModal = $('#easyApplyModal');
+            var jobId = $(this).attr('data-job-id');
+            var companyLogo = $(this).attr('data-job-company-logo');
+            var applyFormUrl = base_url+'employee/apply-job/'+jobId;
+            $('.company-image').attr('src', companyLogo);
+            $('#applyShareForm').attr('action', applyFormUrl);
+            applyModal.css({
+                display: "flex"
+            });
         })
     </script>
 @endpush

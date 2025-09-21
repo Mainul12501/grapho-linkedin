@@ -29,7 +29,20 @@
 
     <link rel="stylesheet" href="{{ asset('/') }}frontend/employee/headerStyle.css" />
     <link rel="stylesheet" href="{{ asset('/') }}frontend/employee/mainstyle.css" />
-
+{{--    font--}}
+    <style>
+        h1 h2 h3 h4 h5 h6 {
+            font-family: "Geist", sans-serif;
+            font-optical-sizing: auto;
+            font-weight: 600;
+        }
+        p span {
+            font-family: "Geist", sans-serif;
+            font-optical-sizing: auto;
+            font-weight: 400;
+            font-size: 17px;
+        }
+    </style>
     @yield('style')
     @stack('style')
 </head>

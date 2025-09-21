@@ -57,6 +57,12 @@ class EmployeeViewController extends Controller
         return \view('frontend.employee.home.home');
     }
 
+    public function getTotalSavedJobs(Request $request)
+    {
+        $loggedUser = ViewHelper::loggedUser();
+        return response()->json($loggedUser->employeeSavedJobs()->count() ?? 0);
+    }
+
     public function showJobs(Request $request)
     {
         $jobTasks = JobTask::query()->with(['employerCompany.employerCompanyCategory', 'jobLocationType', 'industry', 'jobType']);
@@ -135,7 +141,7 @@ class EmployeeViewController extends Controller
 
             if (is_array($jobTypes) && !empty($jobTypes))
             {
-                $jobTasks = $jobTasks->whereHas('job_type', function ($j) use ($jobTypes){
+                $jobTasks = $jobTasks->whereHas('jobType', function ($j) use ($jobTypes){
                     $j->whereIn('slug', $jobTypes);
                 });
             }
@@ -163,7 +169,7 @@ class EmployeeViewController extends Controller
             }
         }
 
-        $jobTasks = $jobTasks->where(['status' => 1])->latest()->get();
+        $jobTasks = $jobTasks->where(['status' => 1])->latest()->paginate(20);
 
         if (isset($request->job_task)) {
             $singleJobTask = JobTask::find($request->job_task);
@@ -175,8 +181,11 @@ class EmployeeViewController extends Controller
         if ($singleJobTask) {
             $getJobSaveApplyInfo = ViewHelper::getJobSaveApplyInfo($singleJobTask->id);
         }
-
+        $foundData = true;
+        if (count($jobTasks) == 0)
+            $foundData = false;
         $data = [
+            'foundData' => $foundData,
             'jobTasks' => $jobTasks,
             'singleJobTask' => $singleJobTask,
             'isSaved' => $getJobSaveApplyInfo['isSaved'] ?? false,
@@ -331,7 +340,7 @@ class EmployeeViewController extends Controller
     public function myNotifications()
     {
         $loggedUser = ViewHelper::loggedUser();
-        $webNotifications = WebNotification::where(['status' => 1])->where('viewed_user_id', $loggedUser->id)->get();
+        $webNotifications = WebNotification::where(['status' => 1])->where('viewed_user_id', $loggedUser->id)->paginate(20);
         $newNotifications = $webNotifications->where('is_seen', 0)->count();
         $data = [
             'notifications' => $webNotifications,
