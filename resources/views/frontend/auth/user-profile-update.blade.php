@@ -142,7 +142,7 @@
                     @csrf
                     <div class="grid grid-1">
                         <div class="">
-                            <div class="grid-gap-y"><label>Resignation <span style="color: red">*</span></label><input name="title" type="text" required /></div>
+                            <div class="grid-gap-y"><label>Position <span style="color: red">*</span></label><input name="title" type="text" required /></div>
                             <div class="grid-gap-y">
                                 <label>Job type</label>
                                 <select name="job_type" required>
@@ -401,7 +401,7 @@
 
                                 <div class="row justify-content-center">
                                     <div class="col-md-12">
-                                        <label for="workType" class="form-label">You are looking for</label>
+{{--                                        <label for="workType" class="form-label">You are looking for</label>--}}
                                         @include('common-resource-files.drag-drop-crop', ['modalId' => 'jobPreferenceModal'])
                                         <div class="invalid-feedback">
                                             Please select your work preference.
@@ -588,6 +588,14 @@
         .toast-success { background-color: lightgreen!important;}
         .toast-error { background-color: #ff2f31!important;}
     </style>
+<style>
+    p,span,label {
+        font-family: "Geist", sans-serif;
+        font-optical-sizing: auto;
+        font-weight: 400;
+        font-size: 15px!important;
+    }
+</style>
 @endpush
 
 @push('script')

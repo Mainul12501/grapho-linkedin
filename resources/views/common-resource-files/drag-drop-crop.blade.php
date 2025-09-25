@@ -2,7 +2,7 @@
 {{--                                                drag drop crop start--}}
 <!-- Drag & Drop Area -->
 <!-- Drag & Drop Area -->
-<div class="drag-drop-area" id="dragDropArea">
+<div class="drag-drop-area" id="dragDropArea" style="padding: 10px 40px">
     <input type="file" class="file-input-hidden" id="profileImage" name="profile_image" accept="image/*">
     <div class="upload-content" id="uploadContent">
         <div class="upload-icon">📁</div>

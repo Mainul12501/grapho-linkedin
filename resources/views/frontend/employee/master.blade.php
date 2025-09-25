@@ -31,16 +31,17 @@
     <link rel="stylesheet" href="{{ asset('/') }}frontend/employee/mainstyle.css" />
 {{--    font--}}
     <style>
-        h1 h2 h3 h4 h5 h6 {
+        h1,h2,h3,h4,h5,h6 {
             font-family: "Geist", sans-serif;
             font-optical-sizing: auto;
             font-weight: 600;
+            font-size: 17px;
         }
-        p span {
+        p,span,label {
             font-family: "Geist", sans-serif;
             font-optical-sizing: auto;
             font-weight: 400;
-            font-size: 17px;
+            font-size: 13px;
         }
     </style>
     @yield('style')
@@ -97,7 +98,7 @@
     {{--var base_url = "{{ url('/') }}"+'/';--}}
     var base_url = "{{ url('/') }}"+'/frontend/employee/';
 </script>
-<script src="{{ asset('/') }}frontend/employee/script.js"></script>
+<script src="{{ asset('/frontend/employee/script.js') }}"></script>
 
 <!-- Toastr JS -->
 {{--<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>--}}
