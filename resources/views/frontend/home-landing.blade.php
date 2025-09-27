@@ -67,6 +67,10 @@
         <!-- Notification Icon & Sign In in offcanvas -->
         <div class="d-flex align-items-center gap-3 mb-3">
             @if(auth()->check())
+                <a href="{{ auth()->user()->user_type == 'employee' ? route('employee.home') : (auth()->user()->user_type == 'employer' ? route('employer.home') : route('dashboard')) }}" class="btn btn-primary d-flex align-items-center gap-2 px-3 py-2 rounded-3">
+{{--                    <img src="{{ asset('/') }}frontend/home-landing/images/signin.png" alt="Login" width="20px">--}}
+                    <span>Dashboard</span>
+                </a>
                 <a href="#" onclick="event.preventDefault(); document.getElementsByClassName('logoutForm')[0].submit()" class="btn btn-dark d-flex align-items-center gap-2 px-3 py-2 rounded-3">
 {{--                    <img src="{{ asset('/') }}frontend/home-landing/images/signin.png" alt="Login" width="20px">--}}
                     <span>Logout</span>
@@ -128,6 +132,10 @@
 {{--                <img src="{{ asset('/') }}frontend/home-landing/images/notificationbell.png" alt="Notifications" width="30px">--}}
 {{--            </button>--}}
             @if(auth()->check())
+                <a href="{{ auth()->user()->user_type == 'employee' ? route('employee.home') : (auth()->user()->user_type == 'employer' ? route('employer.home') : route('dashboard')) }}" class="btn btn-primary d-flex align-items-center gap-2 px-3 py-2 rounded-3">
+                    {{--                    <img src="{{ asset('/') }}frontend/home-landing/images/signin.png" alt="Login" width="20px">--}}
+                    <span>Dashboard</span>
+                </a>
                 <a href="#" onclick="event.preventDefault(); document.getElementsByClassName('logoutForm')[0].submit()" class="btn btn-dark d-flex align-items-center gap-2 px-3 py-2 rounded-3">
                     {{--                    <img src="{{ asset('/') }}frontend/home-landing/images/signin.png" alt="Login" width="20px">--}}
                     <span>Logout</span>
@@ -174,30 +182,39 @@
                 </div>
 
                 <!-- Login Buttons -->
-                <div class="d-flex flex-column mb-4">
-                    <button class="btn btn-outline-dark mb-2" type="button" data-bs-toggle="modal" data-bs-target="#googleUserTypeSelect">
-                        <img src="{{ asset('/') }}frontend/home-landing/images/gooleIcon.png" alt="Google Icon" style="width: 30px;"> Continue with Google
-                    </button>
-{{--                    <button class="btn btn-outline-dark mb-2">--}}
-{{--                        <img src="{{ asset('/') }}frontend/home-landing/images/appleIcon.png" alt="Apple Icon" style="width: 30px;"> Continue with Apple--}}
-{{--                    </button>--}}
+                @if(auth()->check())
+                    <div class="d-flex flex-column mb-4">
 
-                    <!-- Divider with "or" -->
-                    <div class="d-flex align-items-center my-3">
-                        <hr class="flex-grow-1">
-                        <span class="px-2 text-muted">or</span>
-                        <hr class="flex-grow-1">
+                        <a href="{{ auth()->user()->user_type == 'employee' ? route('employee.home') : (auth()->user()->user_type == 'employer' ? route('employer.home') : route('dashboard')) }}" class="btn btn-outline-dark mb-2">Visit Dashboard</a>
                     </div>
+                @else
+                    <div class="d-flex flex-column mb-4">
+                        <button class="btn btn-outline-dark mb-2" type="button" data-bs-toggle="modal" data-bs-target="#googleUserTypeSelect">
+                            <img src="{{ asset('/') }}frontend/home-landing/images/gooleIcon.png" alt="Google Icon" style="width: 30px;"> Continue with Google
+                        </button>
+                        {{--                    <button class="btn btn-outline-dark mb-2">--}}
+                        {{--                        <img src="{{ asset('/') }}frontend/home-landing/images/appleIcon.png" alt="Apple Icon" style="width: 30px;"> Continue with Apple--}}
+                        {{--                    </button>--}}
 
-                    <!-- Email Input Label + Field -->
-                    <div class="mb-3 text-start">
-{{--                        <label for="email" class="form-label fw-semibold">Enter email</label>--}}
-{{--                        <input type="email" id="email" class="form-control rounded-3" placeholder="" required>--}}
+                        <!-- Divider with "or" -->
+                        <div class="d-flex align-items-center my-3">
+                            <hr class="flex-grow-1">
+                            <span class="px-2 text-muted">or</span>
+                            <hr class="flex-grow-1">
+                        </div>
+
+                        <!-- Email Input Label + Field -->
+                        <div class="mb-3 text-start">
+                            {{--                        <label for="email" class="form-label fw-semibold">Enter email</label>--}}
+                            {{--                        <input type="email" id="email" class="form-control rounded-3" placeholder="" required>--}}
+                        </div>
+
+
+                        <a href="{{ route('auth.select-auth-method') }}" class="btn btn-outline-dark mb-2">Continue with Email</a>
                     </div>
+                @endif
 
 
-                    <a href="{{ route('auth.select-auth-method') }}" class="btn btn-outline-dark mb-2">Continue with Email</a>
-                </div>
             </div>
 
             <!-- Right Illustration (Hidden on mobile) -->

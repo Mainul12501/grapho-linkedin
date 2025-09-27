@@ -94,17 +94,21 @@
                     @foreach($topJobsForEmployee as $topJobForEmployee)
                         <div class="row jobCard border-bottom">
                             <div class="col-md-2 col-lg-1 pe-0">
-                                <img src="{{ asset($topJobForEmployee?->employerCompany?->logo ?? '/frontend/company-vector.jpg') }}" alt="Company Logo" class="companyLogo img-fluid" style="height: 65px; border-radius: 50%;" />
+                                <a href="{{ route('employee.view-company-profile', $topJobForEmployee->id) }}">
+                                    <img src="{{ asset($topJobForEmployee?->employerCompany?->logo ?? '/frontend/company-vector.jpg') }}" alt="Company Logo" class="companyLogo img-fluid" style="height: 65px; border-radius: 50%;" />
+                                </a>
                             </div>
                             <div class="col-md-10 col-lg-11">
                                 <div class="jobPosition d-flex justify-content-between">
                                     <div class="d-flex">
-                                        <img style="width: 40px; height: 42px" src="{{ asset($topJobForEmployee?->employerCompany?->logo ?? '/frontend/company-vector.jpg') }}"
-                                             alt="Company Logo" class="mobileLogo" />
+                                        <a href="{{ route('employee.view-company-profile', ['employerCompany' => $topJobForEmployee->employer_company_id]) }}">
+                                            <img style="width: 40px; height: 42px" src="{{ asset($topJobForEmployee?->employerCompany?->logo ?? '/frontend/company-vector.jpg') }}"
+                                                 alt="Company Logo" class="mobileLogo" />
+                                        </a>
 
                                         <div class="paddingforMobile">
                                             <h3>{{ $topJobForEmployee->job_title  ?? 'Job Title' }}</h3>
-                                            <p>{{ $topJobForEmployee?->employerCompany?->name ?? 'Company Name' }}</p>
+                                            <p class="text-muted"><a class="text-muted nav-link" href="{{ route('employee.view-company-profile', ['employerCompany' => $topJobForEmployee->employer_company_id]) }}">{{ $topJobForEmployee?->employerCompany?->name ?? 'Company Name' }}</a></p>
                                         </div>
                                     </div>
 {{--                                    <div class="dropdown">--}}
@@ -133,14 +137,21 @@
                                                 @csrf
                                                 <button title="Apply Job" type="submit" class="btn flex-column show-apply-model" data-job-id="{{ $topJobForEmployee->id }}" data-job-company-logo="{{ asset($topJobForEmployee?->employerCompany?->logo) ?? '' }}">Easy Apply</button>
                                             </form>
+                                        @else
+                                            <form action="" method="post" style="float: left">
+                                                <button title="Job Applied" type="submit" class="btn flex-column " disabled data-job-id="{{ $topJobForEmployee->id }}" data-job-company-logo="{{ asset($topJobForEmployee?->employerCompany?->logo) ?? '' }}">Applied</button>
+                                            </form>
                                         @endif
 
-{{--                                        @if(!auth()->user()?->employeeSavedJobs->contains($topJobForEmployee->id))--}}
-{{--                                            <img src="{{ asset('/') }}frontend/employee/images/contentImages/bookmark.png" alt="Bookmark" data-job-id="{{ $topJobForEmployee->id }}" class="bookmarkIcon save-btnx" />--}}
-{{--                                        @endif--}}
-{{--                                        @if(!auth()->user()?->employeeSavedJobs->contains($topJobForEmployee->id))--}}
-                                            <img title="Save Job" src="{{ !auth()->user()?->employeeSavedJobs->contains($topJobForEmployee->id) ? asset('/frontend/employee/images/contentImages/bookmark.png') : 'https://cdn-icons-png.flaticon.com/512/3817/3817226.png' }}" alt="Bookmark" data-job-id="{{ $topJobForEmployee->id }}" style="max-height: 40px" class="bookmarkIcon {{ !auth()->user()?->employeeSavedJobs->contains($topJobForEmployee->id) ? 'save-btnx' : '' }}" />
-{{--                                        @endif--}}
+
+{{--                                            <img title="Save Job" src="{{ !auth()->user()?->employeeSavedJobs->contains($topJobForEmployee->id) ? asset('/frontend/employee/images/contentImages/bookmark.png') : asset('/frontend/bookmark-circle.png') }}" alt="Bookmark" data-job-id="{{ $topJobForEmployee->id }}" style="max-height: 40px" class="bookmarkIcon  ms-2 {{ !auth()->user()?->employeeSavedJobs->contains($topJobForEmployee->id) ? 'save-btnx' : '' }}" />--}}
+
+                                            @if(!auth()->user()?->employeeSavedJobs->contains($topJobForEmployee->id))
+                                                <button style="padding: 6px 20px; margin: 0px 8px!important;" is-saved="no" class="save-btn" data-job-id="{{ $topJobForEmployee->id }}"><img id="saveBtnImg{{ $topJobForEmployee->id }}" src="{{ asset('/') }}frontend/employee/images/contentImages/saveIcon.png" alt="Save Icon" class="save-icon"> <span id="saveBtnTxt{{ $topJobForEmployee->id }}">Save</span></button>
+                                            @else
+                                                <button disabled style="padding: 6px 20px; margin: 0px 8px!important;" is-saved="yes" class="save-btn" data-job-id="{{ $topJobForEmployee->id }}"><img id="saveBtnImg{{ $topJobForEmployee->id }}" src="{{ asset('/frontend/bookmark-circle.png') }}" style="height: 20px; width: 20px" alt="Save Icon" class=""> <span id="saveBtnTxt{{ $topJobForEmployee->id }}">Saved</span></button>
+                                            @endif
+
                                     </div>
 {{--                                    <div>--}}
 {{--                                        <img src="{{ asset('/') }}frontend/employee/images/contentImages/closeIcon.png" alt="Close" class="closeIcon" />--}}
@@ -167,17 +178,19 @@
                 @foreach($moreJobsForEmployee as $topJobForEmployee)
                     <div class="row jobCard border-bottom">
                         <div class="col-md-2 col-lg-1 pe-0" style="border-radius: 50%">
-                            <img src="{{ asset($topJobForEmployee?->employerCompany?->logo ?? '/frontend/employee/images/contentImages/companyLogoFor job.png') }}" alt="Company Logo" class="companyLogo" />
+                            <a href="{{ route('employee.view-company-profile', $topJobForEmployee->employer_company_id) }}"><img style="cursor: pointer" src="{{ asset($topJobForEmployee?->employerCompany?->logo ?? '/frontend/employee/images/contentImages/companyLogoFor job.png') }}" alt="Company Logo" class="companyLogo" /></a>
                         </div>
                         <div class="col-md-10 col-lg-11">
                             <div class="jobPosition d-flex justify-content-between">
                                 <div class="d-flex">
-                                    <img style="width: 40px; height: 42px" src="{{ asset($topJobForEmployee?->employerCompany?->logo ?? '/frontend/employee/images/contentImages/companyLogoFor job.png') }}"
-                                         alt="Company Logo" class="mobileLogo" />
+                                    <a href="{{ route('employee.view-company-profile', $topJobForEmployee->employer_company_id) }}">
+                                        <img style="width: 40px; height: 42px" src="{{ asset($topJobForEmployee?->employerCompany?->logo ?? '/frontend/employee/images/contentImages/companyLogoFor job.png') }}"
+                                             alt="Company Logo" class="mobileLogo" />
+                                    </a>
 
                                     <div class="paddingforMobile">
                                         <h3>{{ $topJobForEmployee->job_title  ?? 'Senior Officer, Corporate Banking' }}</h3>
-                                        <p>{{ $topJobForEmployee?->employerCompany?->name ?? 'United Commercial Bank PLC' }}</p>
+                                        <p class="text-muted"><a class="nav-link text-muted" href="{{ route('employee.view-company-profile', $topJobForEmployee->employer_company_id) }}">{{ $topJobForEmployee?->employerCompany?->name ?? 'Company Name' }}</a></p>
                                     </div>
                                 </div>
                                 <div class="dropdown">
@@ -208,8 +221,13 @@
                                         </form>
                                     @endif
 {{--                                    @if(!auth()->user()?->employeeSavedJobs->contains($topJobForEmployee->id))--}}
-                                        <img title="Save Job" src="{{ auth()->user()?->employeeSavedJobs->contains($topJobForEmployee->id) ? 'https://cdn-icons-png.flaticon.com/512/3817/3817226.png' : asset('/frontend/employee/images/contentImages/bookmark.png') }}" alt="Bookmark" data-job-id="{{ $topJobForEmployee->id }}" style="max-height: 40px" class="bookmarkIcon ms-2 {{ !auth()->user()?->employeeSavedJobs->contains($topJobForEmployee->id) ? 'save-btnx' : '' }}" />
+{{--                                        <img title="Save Job" src="{{ auth()->user()?->employeeSavedJobs->contains($topJobForEmployee->id) ? asset('/frontend/bookmark-circle.png') : asset('/frontend/employee/images/contentImages/bookmark.png') }}" alt="Bookmark" data-job-id="{{ $topJobForEmployee->id }}" style="max-height: 40px" class="bookmarkIcon ms-2 {{ !auth()->user()?->employeeSavedJobs->contains($topJobForEmployee->id) ? 'save-btnx' : '' }}" />--}}
 {{--                                    @endif--}}
+                                        @if(!auth()->user()?->employeeSavedJobs->contains($topJobForEmployee->id))
+                                            <button style="padding: 6px 20px; margin: 0px 8px!important;" is-saved="no" class="save-btn" data-job-id="{{ $topJobForEmployee->id }}"><img id="saveBtnImg{{ $topJobForEmployee->id }}" src="{{ asset('/') }}frontend/employee/images/contentImages/saveIcon.png" alt="Save Icon" class="save-icon"> <span id="saveBtnTxt{{ $topJobForEmployee->id }}">Save</span></button>
+                                        @else
+                                            <button disabled style="padding: 6px 20px; margin: 0px 8px!important;" is-saved="yes" class="save-btn" data-job-id="{{ $topJobForEmployee->id }}"><img id="saveBtnImg{{ $topJobForEmployee->id }}" src="{{ asset('/frontend/bookmark-circle.png') }}" style="height: 20px; width: 20px" alt="Save Icon" class=""> <span id="saveBtnTxt{{ $topJobForEmployee->id }}">Saved</span></button>
+                                        @endif
                                 </div>
                                 {{--                                    <div>--}}
                                 {{--                                        <img src="{{ asset('/') }}frontend/employee/images/contentImages/closeIcon.png" alt="Close" class="closeIcon" />--}}
@@ -392,6 +410,33 @@
 
 @push('script')
     <script>
+        $(document).on('click', '.save-btn', function () {
+            var jobId = $(this).attr('data-job-id');
+            var isSaved = $(this).attr('is-saved');
+            if (isSaved == 'yes')
+            {
+                toastr.info('You have already saved this job.');
+                return;
+            }
+            sendAjaxRequest('employee/save-job/'+jobId, 'GET').then(function (response) {
+                // console.log(response);
+                if (response.status == 'success')
+                {
+                    $(this).attr('disabled', true);
+                    sendAjaxRequest('employee/get-total-saved-jobs', 'GET').then(function (res) {
+                        $('#savedJobsNumber').text(res);
+                    })
+                    $('#saveBtnImg'+jobId).attr('src', "{{ asset('/frontend/bookmark-circle.png') }}");
+                    $('#saveBtnTxt'+jobId).text('Saved');
+                    toastr.success(response.msg);
+                }
+                else if (response.status == 'error')
+                {
+                    toastr.error(response.msg);
+                }
+            })
+        })
+
         $(document).on('click', '.save-btnx', function () {
             var jobId = $(this).attr('data-job-id');
             var thisObject = $(this);
@@ -401,7 +446,7 @@
                 if (response.status == 'success')
                 {
                     // thisObject.addClass('d-none');
-                    thisObject.attr('src', 'https://cdn-icons-png.flaticon.com/512/3817/3817226.png');
+                    thisObject.attr('src', "{{ asset('/frontend/bookmark-circle.png') }}");
                     sendAjaxRequest('employee/get-total-saved-jobs', 'GET').then(function (res) {
                         $('#savedJobsNumber').text(res);
                     })

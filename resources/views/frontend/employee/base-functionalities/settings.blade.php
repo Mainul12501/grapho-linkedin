@@ -53,7 +53,7 @@
                     </div>
                     <div class="option">
                         <span>{{ auth()->user()->email ?? 'demo@email.com' }}</span>
-                        <span data-bs-toggle="modal" data-bs-target="#settingModal" style="cursor: pointer">
+                        <span data-bs-toggle="modal" data-bs-target="#emailModal" style="cursor: pointer">
                             <img src="{{ asset('/') }}frontend/employee/images/profile/arrowRightLight.png" alt="Right Arrow" />
                         </span>
                     </div>
@@ -82,30 +82,13 @@
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">Edit Profile Setting</h1>
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Change Password</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form action="{{ route('employee.update-profile', auth()->id()) }}" method="post" enctype="multipart/form-data">
                     @csrf
                     <div class="modal-body">
-                        <div class="row mt-2">
-                            <label for="name" class="col-md-3">Name</label>
-                            <div class="col-md-9">
-                                <input type="text" id="name" name="name" class="form-control" value="{{ auth()->user()->name ?? '' }}" />
-                            </div>
-                        </div>
-                        <div class="row mt-2">
-                            <label for="email" class="col-md-3">Email</label>
-                            <div class="col-md-9">
-                                <input type="email" id="email" name="email" class="form-control" value="{{ auth()->user()->email ?? '' }}" />
-                            </div>
-                        </div>
-                        <div class="row mt-2">
-                            <label for="mobile" class="col-md-3">Mobile</label>
-                            <div class="col-md-9">
-                                <input type="email" id="mobile" name="mobile" class="form-control" value="{{ auth()->user()->mobile ?? '' }}" />
-                            </div>
-                        </div>
+
                         <div class="row mt-2">
                             <label for="prevPass" class="col-md-3">Previous Password</label>
                             <div class="col-md-9">
@@ -118,12 +101,35 @@
                                 <input type="password" name="new_password" id="newPass" class="form-control" />
                             </div>
                         </div>
-                        <div class="row mt-2">
-                            <label for="newPass" class="col-md-3">Profile Image</label>
-                            @include('common-resource-files.drag-drop-crop', ['modelId' => 'settingModal'])
 
-{{--                            @include('common-resource-files.drag-drop-crop')--}}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- Email Modal -->
+    <div class="modal fade" id="emailModal">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Change Email</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="{{ route('employee.update-profile', auth()->id()) }}" method="post" enctype="multipart/form-data">
+                    @csrf
+                    <div class="modal-body">
+
+                        <div class="row mt-2">
+                            <label for="email" class="col-md-3">Email</label>
+                            <div class="col-md-9">
+                                <input type="email" id="email" name="email" class="form-control" value="{{ auth()->user()->email ?? '' }}" />
+                            </div>
                         </div>
+
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

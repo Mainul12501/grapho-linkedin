@@ -117,6 +117,7 @@ Route::middleware([
         Route::get('delete-saved-job/{jobTask}', [EmployeeViewController::class, 'deleteSaveJob'])->name('delete-saved-job');
         Route::get('change-job-active-status/{status}', [EmployeeViewController::class, 'changeJobActiveStatus'])->name('change-job-active-status');
         Route::get('get-total-saved-jobs', [EmployeeViewController::class, 'getTotalSavedJobs'])->name('get-total-saved-jobs');
+        Route::get('view-company-profile/{employerCompany}', [EmployeeViewController::class, 'viewCompanyProfile'])->name('view-company-profile');
 
         Route::post('apply-job/{jobTask}', [EmployeeViewController::class, 'applyJob'])->name('apply-job');
         Route::post('update-profile/{user}', [EmployeeViewController::class, 'updateProfile'])->name('update-profile');

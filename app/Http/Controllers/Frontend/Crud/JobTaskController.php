@@ -223,6 +223,10 @@ class JobTaskController extends Controller
                     $isApplied = true;
             }
         }
+        if (isset($request->render) && $request->render == 1)
+        {
+            return \view('frontend.employee.include-edit-forms.job-details', ['singleJobTask' => $jobTask, 'isSaved' => $isSaved, 'isApplied' => $isApplied])->render();
+        }
         if ($jobTask)
             return response()->json(['status' => 'success', 'job' => $jobTask, 'isSaved' => $isSaved, 'isApplied' => $isApplied]);
         else

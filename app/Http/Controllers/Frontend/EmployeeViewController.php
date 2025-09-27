@@ -63,6 +63,15 @@ class EmployeeViewController extends Controller
         return response()->json($loggedUser->employeeSavedJobs()->count() ?? 0);
     }
 
+    public function viewCompanyProfile(EmployerCompany $employerCompany,Request $request)
+    {
+        $data = [
+            'employerCompany'   => $employerCompany,
+        ];
+        return ViewHelper::checkViewForApi($data, 'frontend.employee.jobs.company-profile');
+        return \view('frontend.employee.jobs.company-profile');
+    }
+
     public function showJobs(Request $request)
     {
         $jobTasks = JobTask::query()->with(['employerCompany.employerCompanyCategory', 'jobLocationType', 'industry', 'jobType']);

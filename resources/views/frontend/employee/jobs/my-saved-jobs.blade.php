@@ -32,9 +32,8 @@
                                 <div class="d-flex">
                                     <img style="width: 40px; height: 42px" src="{{ asset(isset($savedJob?->employerCompany?->logo) ? $savedJob?->employerCompany?->logo : '/frontend/company-vector.jpg') }}"
                                          alt="Company Logo" class="mobileLogo" />
-
                                     <div class="paddingforMobile">
-                                        <h3>{{ $savedJob->job_title ?? 'Job Title' }}</h3>
+                                        <h3><a href="{{ route('employee.show-jobs', ['job_task' => $savedJob->id]) }}" style="text-decoration: none; color: black">{{ $savedJob->job_title ?? 'Job Title' }}</a></h3>
                                         <p>{{ $savedJob->employerCompany?->name ?? 'Company Name' }}</p>
                                     </div>
                                 </div>
@@ -53,7 +52,9 @@
 {{--                                            <li><a class="dropdown-item" href="#">Report</a></li>--}}
 {{--                                        </ul>--}}
 {{--                                    </div>--}}
-
+                                    <div>
+                                        <img src="{{ asset('/') }}frontend/employee/images/contentImages/closeIcon.png" data-job-id="{{ $savedJob->id }}" alt="Close" class="closeIcon" />
+                                    </div>
                                 </div>
                             </div>
                             <div class="jobTypeBtn">
@@ -81,9 +82,9 @@
                                     @endif
                                     <img src="{{ asset('/') }}frontend/employee/images/profile/savedMarkIcon.png" alt="Bookmark" class="bookmarkIcon" />
                                 </div>
-                                <div>
-                                    <img src="{{ asset('/') }}frontend/employee/images/contentImages/closeIcon.png" data-job-id="{{ $savedJob->id }}" alt="Close" class="closeIcon" />
-                                </div>
+{{--                                <div>--}}
+{{--                                    <img src="{{ asset('/') }}frontend/employee/images/contentImages/closeIcon.png" data-job-id="{{ $savedJob->id }}" alt="Close" class="closeIcon" />--}}
+{{--                                </div>--}}
                             </div>
                         </div>
                     </div>

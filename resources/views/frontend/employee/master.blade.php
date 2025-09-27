@@ -35,9 +35,9 @@
             font-family: "Geist", sans-serif;
             font-optical-sizing: auto;
             font-weight: 600;
-            font-size: 17px;
+            font-size: 16px;
         }
-        p,span,label {
+        p,span,label,span,button {
             font-family: "Geist", sans-serif;
             font-optical-sizing: auto;
             font-weight: 400;

@@ -47,7 +47,7 @@
             </div>
 
             <!-- ===== Filter #1: Date posted ===== -->
-            <div class="custom-select" data-filter-key="date_posted" data-placeholder="Most Recent">
+            <div class="custom-select" data-filter-key="date_posted" style="max-width: 145px!important;" data-placeholder="Most Recent">
 {{--                <label class="custom-select-label">Date</label>--}}
                 <input type="text" class="form-control select-box locationSearch" placeholder="Select..." readonly />
                 <div class="dropdown-menu locationDropdown">
@@ -69,7 +69,7 @@
             </div>
 
             <!-- ===== Filter #2: Job type ===== -->
-            <div class="custom-select" data-filter-key="company_type" data-placeholder="Job type">
+            <div class="custom-select" data-filter-key="company_type" style="max-width: 115px!important;" data-placeholder="Job type">
 {{--                <label class="custom-select-label">Job type</label>--}}
                 <input type="text" class="form-control select-box locationSearch" placeholder="Select..." readonly />
                 <div class="dropdown-menu locationDropdown">
@@ -85,7 +85,7 @@
             </div>
 
             <!-- ===== Filter #3: Location ===== -->
-            <div class="custom-select" data-filter-key="location" data-placeholder="Location">
+            <div class="custom-select" data-filter-key="location" style="max-width: 112px!important;" data-placeholder="Location">
 {{--                <label class="custom-select-label">Location</label>--}}
                 <input type="text" class="form-control select-box locationSearch" placeholder="Select..." readonly />
                 <div class="dropdown-menu locationDropdown">
@@ -161,7 +161,7 @@
             </div>
 
             <!-- ===== Filter #4: Industry ===== -->
-            <div class="custom-select" data-filter-key="industry" data-placeholder="industry">
+            <div class="custom-select" data-filter-key="industry" style="max-width: 110px!important;" data-placeholder="industry">
 {{--                <label class="custom-select-label">Industry</label>--}}
                 <input type="text" class="form-control select-box locationSearch" placeholder="Select..." readonly />
                 <div class="dropdown-menu locationDropdown">
@@ -178,7 +178,7 @@
             </div>
 
             <!-- ===== Filter #6: Job Workplace type ===== -->
-            <div class="custom-select" data-filter-key="salary" data-placeholder="Job Nature">
+            <div class="custom-select" data-filter-key="salary" style="max-width: 132px!important;" data-placeholder="Job Nature">
 {{--                <label class="custom-select-label">Job Nature</label>--}}
                 <input type="text" class="form-control select-box locationSearch" placeholder="Select..." readonly />
                 <div class="dropdown-menu locationDropdown">
@@ -196,8 +196,8 @@
 
             <!-- Clear All button (resets the filter selections) -->
                 <div>
-                    <button type="button" class="clear-all-btn btn px-0" id="clearAllBtn">Clear All</button>
-                    <button type="submit" class="clear-all-btn btn ps-2 " id="clearAllBtn">Filter</button>
+                    <button type="submit" class="clear-all-btn btn btn-sm border px-2 " style="border: 1px solid lightgrey!important;" id="clearAllBtn">Search</button>
+                    <button type="button" class="clear-all-btn btn btn-sm border px-2" style="border: 1px solid lightgrey!important;" id="clearAllBtn">Clear All</button>
                 </div>
 
             </form>
@@ -222,28 +222,40 @@
                     </div>
                     <!-- Job card #1 -->
                     @forelse($jobTasks as $key => $jobTask)
-                        <div class="job-card job-card-ajax {{ $singleJobTask->id == $jobTask->id ? 'active' : '' }}" onclick="setLetSideActiveJob({{ $key }})" data-job-id="{{ $jobTask->id }}" id="job-{{ $key }}">
+                        <div class="job-card job-card-ajax border-bottom {{ $singleJobTask->id == $jobTask->id ? 'active' : '' }}" onclick="setLetSideActiveJob({{ $key }})" data-job-id="{{ $jobTask->id }}" id="job-{{ $key }}">
                             <div class="row">
                                 <div class="col-2">
-                                    <img src="{{ isset($jobTask?->employerCompany?->logo) ? asset($jobTask?->employerCompany?->logo) : asset('/frontend/employee/images/contentImages/jobCardLogo.png') }}" alt="{{ $jobTask->job_title }}" class="img-fluid" />
+                                    <a href="{{ route('employee.view-company-profile', $jobTask->employer_company_id) }}">
+                                        <img style="cursor: pointer" src="{{ isset($jobTask?->employerCompany?->logo) ? asset($jobTask?->employerCompany?->logo) : asset('/frontend/employee/images/contentImages/jobCardLogo.png') }}" alt="{{ $jobTask->job_title }}" class="img-fluid" />
+                                    </a>
                                 </div>
                                 <div class="col-10">
-                                    <h5 class="mb-0">{{ $jobTask->job_title ?? 'Senior Officer, Corporate Banking' }}</h5>
-                                    <p>{{ $jobTask?->employerCompany?->name ?? 'United Commercial Bank PLC' }}</p>
-                                    <div class="job-type d-flex ">
-                                        <span class="badge" style="background-color: lightgrey">{{ $jobTask?->jobType?->name ?? 'Full x Time' }}</span>
-                                        <span class="badge" style="background-color: lightgrey">{{ $jobTask?->jobLocationType?->name ?? 'On-Site' }}</span>
+                                    <h5 class="mb-0 ">{{ $jobTask->job_title ?? 'Job Title' }}</h5>
+                                    <p class="text-muted">
+                                        <a href="{{ route('employee.view-company-profile', $jobTask->employer_company_id) }}" class="text-muted nav-link">{{ $jobTask?->employerCompany?->name ?? 'Company Name' }}</a>
+                                    </p>
+                                    <div class="job-type d-flex text-muted">
+                                        <span class="badge" style="background-color: #EDEFF2">{{ $jobTask?->jobType?->name ?? 'Full x Time' }}</span>
+                                        <span class="badge" style="background-color: #EDEFF2">{{ $jobTask?->jobLocationType?->name ?? 'On-Site' }}</span>
                                         {{--                                        <span class="badge">Day Shift</span>--}}
                                     </div>
-                                    <p class="job-location mt-2 mb-0">{{ $jobTask?->employerCompany?->address ?? 'Dhaka' }}</p>
+                                    <p class="job-location mt-2 mb-0 text-muted">{{ $jobTask?->employerCompany?->address ?? 'Dhaka' }}</p>
                                 </div>
                             </div>
                         </div>
                     @empty
                         <div class="job-card"  style="min-height: 570px">
                             <div class="row">
-                                <div class="col-md-12 ">
-                                    <p class="text-danger text-center">Sorry!! No Job Found.</p>
+                                <div class="col-md-12 mx-auto">
+                                    <div class="card card-body border-0">
+                                        <div class="d-flex text-center">
+                                            <p>
+                                                <img src="https://dev.mixmrt.com/assets/admin/svg/illustrations/think.svg" alt="empty-img" class="" style="max-height: 300px; min-width: 300px">
+                                            </p>
+                                        </div>
+                                        <p class="text-danger text-center f-s-20 fw-bold p-5" style="margin-top: 10px">Sorry!! No job found.</p>
+
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -255,49 +267,64 @@
                 @if($foundData)
                     <div class="job-details" id="" style="display: block;">
                         <div class="company-info mb-2">
-                            <img style="height: 40px; margin-right: 10px;" src="{{ isset($singleJobTask?->employerCompany?->logo) ? asset($singleJobTask?->employerCompany?->logo) : asset('/frontend/employee/images/contentImages/jobCardLogo.png') }}" alt="{{ $singleJobTask?->employerCompany?->name ?? 'job-0' }}" class="company-logo">
+                            <a href="{{ route('employee.view-company-profile', $singleJobTask->employer_company_id) }}">
+                                <img style="height: 40px; margin-right: 10px; cursor: pointer" src="{{ isset($singleJobTask?->employerCompany?->logo) ? asset($singleJobTask?->employerCompany?->logo) : asset('/frontend/employee/images/contentImages/jobCardLogo.png') }}" alt="{{ $singleJobTask?->employerCompany?->name ?? 'job-0' }}" class="company-logo">
+                            </a>
                             <div class="company-details d-flex pt-2" style="padding-top: 14px;">
-                                <h3 class="p-t-5">{{ $singleJobTask?->employerCompany?->name ?? 'company name' }}</h3>
+                                <h3 class="p-t-5">
+                                    <a href="{{ route('employee.view-company-profile', $singleJobTask->employer_company_id) }}" class="text-muted nav-link">{{ $singleJobTask?->employerCompany?->name ?? 'company name' }}</a>
+                                </h3>
                                 <span class="mx-1 p-t-5">,</span>
                                 <p class="p-t-5">{{ $singleJobTask?->employerCompany?->address ?? 'company address' }}</p>
                             </div>
                         </div>
-                        <h4 class="job-title mb-2">{{ $singleJobTask->job_title }}</h4>
+                        <h4 class="job-title mb-2 f-s-19">{{ $singleJobTask->job_title }}</h4>
                         <div class="job-type"><span class="badge">{{ $singleJobTask?->jobType?->name ?? 'job type' }}</span> <span class="badge">{{ $singleJobTask?->jobLocationType?->name ?? 'job location' }}</span> </div>
-                        <div class="d-flex gap-2 mt-3 mb-4">
+                        <div class="d-flex gap-2 mt-1 mb-2">
                             @if(!$isApplied)
-                                <form class="apply-form" action="{{ route('employee.apply-job', $singleJobTask->id) }}" method="POST">
+                                <form action="" method="post" class="apply-form">
                                     @csrf
-                                    {{--                            <input type="hidden" name="jobId" value="">--}}
-                                    {{--                            <input type="hidden" name="jobTitle" value="Relationship Manager">--}}
-                                    <div class="actions  mt-2">
-                                        <button type="submit" class="apply-btn show-apply-model"  data-job-id="{{ $singleJobTask->id }}" data-job-company-logo="{{ asset($singleJobTask?->employerCompany?->logo) ?? '' }}">Easy Apply</button>
-                                        {{--                                <button type="button" class="share-btn">Share profile</button>--}}
-                                        {{--                                <button type="button" class="save-btn">--}}
-                                        {{--                                    <img src="images/contentImages/saveIcon.png" alt="Save Icon" class="save-icon"> Save--}}
-                                        {{--                                </button>--}}
+                                    <div class="">
+                                        <button style="padding: 8px 20px;" type="submit" class="apply-btn show-apply-model"  data-job-id="{{ $singleJobTask->id }}" data-job-company-logo="{{ asset($singleJobTask?->employerCompany?->logo) ?? '' }}">Easy Apply</button>
+
                                     </div>
                                 </form>
                                 {{--                        <a href="javascript:void(0)" onclick="document.getElementById('applyJob{{ $singleJobTask->id }}').submit()" class="apply-btn" style="text-decoration: none;">Easy Apply</a>--}}
+                            @else
+                                <form action="" method="post" class="apply-form">
+                                    <div class="">
+                                        <button style="padding: 8px 20px;" type="submit" class="apply-btn " disabled >Applied</button>
+
+                                    </div>
+                                </form>
                             @endif
-                            @if(!$isSaved)
-                                <button class="save-btn" data-job-id="{{ $singleJobTask->id }}"><img src="{{ asset('/') }}frontend/employee/images/contentImages/saveIcon.png" alt="Save Icon" class="save-icon"> Save</button>
-                            @endif
+                                @if(!$isSaved)
+                                    <button style="padding: 6px 20px;" is-saved="no" class="save-btn" data-job-id="{{ $singleJobTask->id }}"><img id="saveBtnImg{{ $singleJobTask->id }}" src="{{ asset('/') }}frontend/employee/images/contentImages/saveIcon.png" alt="Save Icon" class="save-icon"> <span id="saveBtnTxt{{ $singleJobTask->id }}">Save</span></button>
+                                @else
+                                    <button style="padding: 6px 20px;" is-saved="yes" class="save-btn" data-job-id="{{ $singleJobTask->id }}"><img id="saveBtnImg{{ $singleJobTask->id }}" src="{{ asset('/frontend/bookmark-circle.png') }}" style="height: 20px; width: 20px" alt="Save Icon" class=""> <span id="saveBtnTxt{{ $singleJobTask->id }}">Saved</span></button>
+                                @endif
                         </div>
 
+
                         <h5 style="" class="fw-bold">About {{ $singleJobTask?->employerCompany?->name ?? 'company Name' }}</h5>
-                        <p>{{ $singleJobTask?->employerCompany?->company_overview ?? 'company overview' }}</p>
+                        <p class="text-muted">{{ $singleJobTask?->employerCompany?->company_overview ?? 'company overview' }}</p>
                         <h5 class="fw-bold">Job Requirements</h5>
-                        <div class="job-requirements ms-0">
+                        <div class="job-requirements ms-0 text-muted" style="color: gray">
                             {!! $singleJobTask->description ?? 'job description here' !!}
                         </div>
                     </div>
                 @else
                     <div class="job-details" style="min-height: 570px">
                         <div class="row mt-5">
-                            <div class="col-md-8 mx-auto">
-                                <div class="card card-body">
-                                    <p class="text-danger text-center f-s-20 fw-bold p-5">Sorry!! No job found.</p>
+                            <div class="col-md-11 mx-auto">
+                                <div class="card card-body border-0">
+                                    <div class="d-flex text-center">
+                                        <p>
+                                            <img src="https://dev.mixmrt.com/assets/admin/svg/illustrations/think.svg" alt="empty-img" class="" style="max-height: 300px; min-width: 300px">
+                                        </p>
+                                        <p class="text-danger text-center f-s-20 fw-bold p-5" style="margin-top: 75px">Sorry!! No job found.</p>
+                                    </div>
+
                                 </div>
                             </div>
                         </div>
@@ -489,6 +516,8 @@
             /*background-color: #0033a0;*/
             color: white;
         }
+        .select-box { padding: 1px 32px 1px 16px !important;}
+        .custom-select{max-width: 135px!important;}
     </style>
 @endpush
 @push('script')
@@ -496,48 +525,58 @@
     <script>
         $(document).on('click', '.job-card-ajax', function () {
             var jobId = $(this).attr('data-job-id');
-            sendAjaxRequest('get-job-details/'+jobId, 'GET').then(function (response) {
-                var job = response.job;
+            sendAjaxRequest('get-job-details/'+jobId+'?render=1', 'GET').then(function (response) {
+                console.log(response);
                 const jobDetailsDiv = document.querySelector('.job-details');
                 jobDetailsDiv.style.display = 'block';
-                jobDetailsDiv.innerHTML = `
-                                    <div class="company-info mb-2">
-                        <img style="height: 40px; margin-right: 10px;" src="${base_url+job.employer_company.logo}" alt="${job.employer_company.name}-logo" class="company-logo">
-                        <div class="company-details d-flex  pt-2" style="padding-top: 14px;">
-                            <h3 class="p-t-5">${job.employer_company.name}</h3>
-                            <span class="mx-1 p-t-5">,</span>
-                            <p class="p-t-5">${job.employer_company.address ?? 'Dhaka'}</p>
-                        </div>
-                    </div>
-                    <h4 class="job-title mb-2">${job.job_title ?? 'Job Title'}</h4>
-                    <div class="job-type"><span class="badge">${job.job_type.name}</span> <span class="badge">${job.job_location_type.name}</span> </div>
-                    <div class="d-flex gap-2  mb-4">
-                        ${!response.isApplied ? `
-                    <form class="apply-form " action="${base_url}employee/apply-job/${job.id}" method="POST">
-<input type="hidden" name="_token" value="<?php echo csrf_token() ?>">
-      <div class="actions  mt-2">
-        <button type="submit" class="apply-btn show-apply-model" data-job-id="${job.id}" data-job-company-logo="${base_url+job.employer_company.logo}">Easy Apply</button>
-      </div>
-    </form>
-                    ` : ''}
-                    ${!response.isSaved ? `<button class="save-btn" data-job-id="${job.id}"><img src="${base_url}frontend/employee/images/contentImages/saveIcon.png" alt="Save Icon" title="Save Job" class="save-icon"> Save</button>` : ''}
-                    </div>
-                    <h5>About ${job.employer_company.name}</h5>
-                    <p>${job.employer_company.company_overview}</p>
-                    <h5>Job Requirements</h5>
-                    <div class="job-requirements ms-0">${job.description}</ul>
-                `;
+                jobDetailsDiv.innerHTML = response;
+{{--                var job = response.job;--}}
+{{--                jobDetailsDiv.innerHTML = `--}}
+{{--                                    <div class="company-info mb-2">--}}
+{{--                        <img style="height: 40px; margin-right: 10px;" src="${base_url+job.employer_company.logo}" alt="${job.employer_company.name}-logo" class="company-logo">--}}
+{{--                        <div class="company-details d-flex  pt-2" style="padding-top: 14px;">--}}
+{{--                            <h3 class="p-t-5">${job.employer_company.name}</h3>--}}
+{{--                            <span class="mx-1 p-t-5">,</span>--}}
+{{--                            <p class="p-t-5">${job.employer_company.address ?? 'Dhaka'}</p>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
+{{--                    <h4 class="job-title mb-2">${job.job_title ?? 'Job Title'}</h4>--}}
+{{--                    <div class="job-type"><span class="badge">${job.job_type.name}</span> <span class="badge">${job.job_location_type.name}</span> </div>--}}
+{{--                    <div class="d-flex gap-2  mb-3 mt-1">--}}
+{{--                        ${!response.isApplied ? `--}}
+{{--                    <form class="apply-form " action="${base_url}employee/apply-job/${job.id}" method="POST">--}}
+{{--<input type="hidden" name="_token" value="<?php echo csrf_token() ?>">--}}
+{{--      <div class="">--}}
+{{--        <button type="submit" style="padding: 8px 20px;" class="apply-btn show-apply-model" data-job-id="${job.id}" data-job-company-logo="${base_url+job.employer_company.logo}">Easy Apply</button>--}}
+{{--      </div>--}}
+{{--    </form>--}}
+{{--                    ` : ''}--}}
+{{--                    ${!response.isSaved ? `<button style="padding: 8px 20px;" class="save-btn" data-job-id="${job.id}"><img src="${base_url}frontend/employee/images/contentImages/saveIcon.png" alt="Save Icon" title="Save Job" class="save-icon"> Save</button>` : ''}--}}
+{{--                    </div>--}}
+{{--                    <h5>About ${job.employer_company.name}</h5>--}}
+{{--                    <p>${job.employer_company.company_overview}</p>--}}
+{{--                    <h5>Job Requirements</h5>--}}
+{{--                    <div class="job-requirements ms-0">${job.description}</ul>--}}
+{{--                `;--}}
             });
 
         })
 
         $(document).on('click', '.save-btn', function () {
             var jobId = $(this).attr('data-job-id');
+            var isSaved = $(this).attr('is-saved');
+            if (isSaved == 'yes')
+            {
+                toastr.info('You have already saved this job.');
+                return;
+            }
             sendAjaxRequest('employee/save-job/'+jobId, 'GET').then(function (response) {
                 // console.log(response);
                 if (response.status == 'success')
                 {
-                    $(this).addClass('d-none');
+                    $(this).attr('disabled', true);
+                    $('#saveBtnImg'+jobId).attr('src', "{{ asset('/frontend/bookmark-circle.png') }}");
+                    $('#saveBtnTxt'+jobId).text('Saved');
                     toastr.success(response.msg);
                 }
                 else if (response.status == 'error')
