@@ -248,6 +248,7 @@
                 </div>
             </div>
 
+            <button class="d-none" type="button" id="skipBtn"></button>
             <!-- STEP 0 -->
             <template id="step-0">
                 <form id="form-employer-contact" autocomplete="on" novalidate enctype="multipart/form-data" method="post" action="">

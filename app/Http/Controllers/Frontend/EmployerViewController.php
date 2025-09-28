@@ -179,6 +179,7 @@ class EmployerViewController extends Controller
         ];
 
         return ViewHelper::checkViewForApi($data, 'frontend.employer.jobs.head-hunt');
+        return \view('frontend.employer.jobs.head-hunt');
     }
     public function headHuntBackup(Request $request)
     {

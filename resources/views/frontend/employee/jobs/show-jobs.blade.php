@@ -250,7 +250,7 @@
                                     <div class="card card-body border-0">
                                         <div class="d-flex text-center">
                                             <p>
-                                                <img src="https://dev.mixmrt.com/assets/admin/svg/illustrations/think.svg" alt="empty-img" class="" style="max-height: 300px; min-width: 300px">
+                                                <img src="{{ asset('/frontend/think.svg') }}" alt="empty-img" class="" style="max-height: 300px; min-width: 300px">
                                             </p>
                                         </div>
                                         <p class="text-danger text-center f-s-20 fw-bold p-5" style="margin-top: 10px">Sorry!! No job found.</p>
@@ -320,7 +320,7 @@
                                 <div class="card card-body border-0">
                                     <div class="d-flex text-center">
                                         <p>
-                                            <img src="https://dev.mixmrt.com/assets/admin/svg/illustrations/think.svg" alt="empty-img" class="" style="max-height: 300px; min-width: 300px">
+                                            <img src="{{ asset('/frontend/think.svg') }}" alt="empty-img" class="" style="max-height: 300px; min-width: 300px">
                                         </p>
                                         <p class="text-danger text-center f-s-20 fw-bold p-5" style="margin-top: 75px">Sorry!! No job found.</p>
                                     </div>

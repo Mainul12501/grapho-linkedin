@@ -21,5 +21,21 @@
 <!-- Your Custom CSS -->
 <link rel="stylesheet" href="{{ asset('/') }}frontend/employer/style.css" />
 
+{{--    font--}}
+<style>
+    h1,h2,h3,h4,h5,h6 {
+        font-family: "Geist", sans-serif;
+        font-optical-sizing: auto;
+        font-weight: 600;
+        font-size: 16px;
+    }
+    p,span,label,span,button {
+        font-family: "Geist", sans-serif;
+        font-optical-sizing: auto;
+        font-weight: 400;
+        font-size: 13px;
+    }
+</style>
+
 @yield('style')
 @stack('style')

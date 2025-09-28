@@ -15,7 +15,7 @@
         <section class="bg-white">
             <div class="container">
                 <!-- Filters form -->
-                <form id="jobFilters" class="customWrapper" method="get" action="/jobs" data-autosubmit="true" >
+                <form id="jobFilters" class="customWrapper" method="get" action="" data-autosubmit="true" >
         <!-- Filters: label (icon + text) -->
                 <div class="fielterIcon me-2">
                     <div>
@@ -25,8 +25,8 @@
                 </div>
 
                 <!-- ===== Filter #1: Date posted ===== -->
-                <div class="custom-select" data-filter-key="workplace_type" data-placeholder="Select Workplace Type">
-                    <label class="custom-select-label">Workplace Type</label>
+                <div class="custom-select" data-filter-key="workplace_type" style="max-width: 166px!important;" data-placeholder="Workplace Type">
+{{--                    <label class="custom-select-label">Workplace Type</label>--}}
                     <input type="text" class="form-control select-box locationSearch" placeholder="Select Workplace Type" readonly="">
                     <div class="dropdown-menu locationDropdown" style="max-height: none;">
                         <input type="text" class="form-control search-box searchBar" placeholder="Search...">
@@ -46,8 +46,8 @@
                 </div>
 
                 <!-- ===== Filter #2: Company type ===== -->
-                <div class="custom-select" data-filter-key="university_name" data-placeholder="Select University Name">
-                    <label class="custom-select-label">University Name</label>
+                <div class="custom-select" data-filter-key="university_name" style="max-width: 125px!important;" data-placeholder="University">
+{{--                    <label class="custom-select-label">University Name</label>--}}
                     <input type="text" class="form-control select-box locationSearch" placeholder="Select company type" readonly="">
                     <div class="dropdown-menu locationDropdown" style="max-height: none;">
                         <input type="text" class="form-control search-box searchBar" placeholder="Search...">
@@ -71,8 +71,8 @@
                 </div>
 
                 <!-- ===== Filter #3: Location ===== -->
-                <div class="custom-select" data-filter-key="location" data-placeholder="Select District">
-                    <label class="custom-select-label">District</label>
+                <div class="custom-select" data-filter-key="location" style="max-width: 105px!important;" data-placeholder="District">
+{{--                    <label class="custom-select-label">District</label>--}}
                     <input type="text" class="form-control select-box locationSearch" placeholder="Select District" readonly="">
                     <div class="dropdown-menu locationDropdown" style="max-height: none;">
                         <input type="text" class="form-control search-box searchBar" placeholder="Search...">
@@ -148,8 +148,8 @@
                 </div>
 
                 <!-- ===== Filter #4: Industry ===== -->
-                <div class="custom-select" data-filter-key="industry" data-placeholder="Select industry">
-                    <label class="custom-select-label">Industry</label>
+                <div class="custom-select" data-filter-key="industry" style="max-width: 110px!important;" data-placeholder="industry">
+{{--                    <label class="custom-select-label">Industry</label>--}}
                     <input type="text" class="form-control select-box locationSearch" placeholder="Select industry" readonly="">
                     <div class="dropdown-menu locationDropdown" style="max-height: none;">
                         <input type="text" class="form-control search-box searchBar" placeholder="Search...">
@@ -173,8 +173,8 @@
                 </div>
 
                 <!-- ===== Filter #5: Company ===== -->
-                <div class="custom-select" data-filter-key="field_of_study" data-placeholder="Select Field Of Study">
-                    <label class="custom-select-label">Field Of Study</label>
+                <div class="custom-select" data-filter-key="field_of_study" style="max-width: 155px!important;" data-placeholder="Field Of Study">
+{{--                    <label class="custom-select-label">Field Of Study</label>--}}
                     <input type="text" class="form-control select-box locationSearch" placeholder="Select company" readonly="">
                     <div class="dropdown-menu locationDropdown" style="max-height: none;">
                         <input type="text" class="form-control search-box searchBar" placeholder="Search...">
@@ -197,8 +197,8 @@
                 </div>
 
                 <!-- ===== Filter #6: Salary ===== -->
-                <div class="custom-select" data-filter-key="skills" data-placeholder="Select Skills">
-                    <label class="custom-select-label">Skills</label>
+                <div class="custom-select" data-filter-key="skills" style="max-width: 90px!important;" data-placeholder="Skills">
+{{--                    <label class="custom-select-label">Skills</label>--}}
                     <input type="text" class="form-control select-box locationSearch" placeholder="Select salary range" readonly="">
                     <div class="dropdown-menu locationDropdown" style="max-height: none;">
                         <input type="text" class="form-control search-box searchBar" placeholder="Search...">
@@ -225,9 +225,9 @@
                 </div>
 
                     <!-- ===== Filter #7: Gender ===== -->
-                    <div class="custom-select" data-filter-key="gender" data-placeholder="Select Gender">
-                        <label class="custom-select-label">Gender</label>
-                        <input type="text" class="form-control select-box locationSearch" placeholder="Select Gender" readonly="">
+                    <div class="custom-select" data-filter-key="gender" style="max-width: 105px!important;" data-placeholder="Gender">
+{{--                        <label class="custom-select-label">Gender</label>--}}
+                        <input type="text" class="form-control select-box locationSearch" placeholder="Gender" readonly="">
                         <div class="dropdown-menu locationDropdown" style="max-height: none;">
                             <input type="text" class="form-control search-box searchBar" placeholder="Search...">
 
@@ -243,29 +243,29 @@
                         <input type="hidden" class="filter-payload" name="filters[gender]" value="[]">
                     </div>
                     <!-- ===== Filter #7: CGPA ===== -->
-                    <div class="custom-select" data-filter-key="cgpa" data-placeholder="Select CGPA">
-                        <label class="custom-select-label">CGPA</label>
-                        <input type="text" class="form-control select-box locationSearch" style="background-image: none" name="cgpa" placeholder="Set Minimum Gender" >
+                    <div class="custom-select" data-filter-key="cgpa" style="max-width: 100px!important;" data-placeholder="CGPA">
+{{--                        <label class="custom-select-label">CGPA</label>--}}
+                        <input type="text" class="form-control select-box locationSearch" style="background-image: none" name="cgpa" placeholder="CGPA" >
                     </div>
                     <!-- ===== Filter #7: Experience ===== -->
-                    <div class="custom-select" data-filter-key="cgpa" data-placeholder="Select Experience">
-                        <label class="custom-select-label">Experience</label>
-                        <input type="text" class="form-control select-box locationSearch" style="background-image: none" name="experience" placeholder="Set Minimum Gender" >
+                    <div class="custom-select" data-filter-key="experience" style="max-width: 130px!important;" data-placeholder="Experience">
+{{--                        <label class="custom-select-label">Experience</label>--}}
+                        <input type="text" class="form-control select-box locationSearch" style="background-image: none" name="experience" placeholder="Experience" >
                     </div>
                     <!-- ===== Filter #7: Search Text ===== -->
-                    <div class="custom-select" data-filter-key="search_text" data-placeholder="Select Search Text">
-                        <label class="custom-select-label">Search Text</label>
-                        <input type="text" class="form-control select-box locationSearch" style="background-image: none; max-width: 250px!important;" name="search_text" placeholder="Set Minimum Gender" >
+                    <div class="custom-select" data-filter-key="search_text" style="max-width: 166px!important;" data-placeholder="Search Text">
+{{--                        <label class="custom-select-label">Search Text</label>--}}
+                        <input type="text" class="form-control select-box locationSearch" style="background-image: none; max-width: 250px!important;" name="search_text" placeholder="Search by text" >
                     </div>
 
                 <!-- Clear All button (resets the filter selections) -->
-                <button type="button" class="clear-all-btn d-flex" id="clearAllBtn">Clear All</button>
-                <button type="submit" class="clear-all-btn btn d-flex" id="clearAllBtn">Filter</button>
+                    <button type="submit" class="clear-all-btn border btn d-flex" style="border: 1px solid gray" id="clearAllBtn">Search</button>
+                    <button type="button" class="clear-all-btn border btn d-flex" style="border: 1px solid gray" id="clearAllBtn">Clear All</button>
                 </form>
             </div>
         </section>
 
-        <div class="d-flex justify-content-between mb-3" style="font-size: 14px; cursor: pointer;">
+        <div class="d-flex justify-content-between mb-3 mt-3" style="font-size: 14px; cursor: pointer;">
             <p class="text-muted">Showing {{ count($employees) ?? 0 }} results.</p>
 
         </div>
@@ -273,7 +273,7 @@
 
         <div class="row row-cols-1 row-cols-md-3 g-3 headhuntPP-card">
             <!-- Candidate Card Template -->
-            @foreach($employees as $employee)
+            @forelse($employees as $employee)
                 <div class="col">
                     <div class="card h-100 shadow-sm">
                         <div class="card-body">
@@ -297,7 +297,19 @@
                         </div>
                     </div>
                 </div>
-            @endforeach
+            @empty
+                <div class="col-11 mx-auto" style="width: 91.66%">
+                    <div class="card card-body border-0">
+                        <div class="d-flex text-center mx-auto">
+                            <p>
+                                <img src="{{ asset('/frontend/think.svg') }}" alt="empty-img" class="" style="max-height: 300px; min-width: 300px">
+                            </p>
+                            <p class="text-danger text-center f-s-20 fw-bold p-5" style="margin-top: 75px">Sorry!! No job found.</p>
+                        </div>
+
+                    </div>
+                </div>
+            @endforelse
 
         </div>
     </div>
@@ -307,9 +319,10 @@
 @push('style')
     <style>
         .custom-select {
-            max-width: 170px !important;
-            min-width: 150px !important;
+            max-width: 145px !important;
+            min-width: 100px !important;
         }
+        .select-box { padding: 1px 32px 1px 16px !important;}
     </style>
 @endpush
 
