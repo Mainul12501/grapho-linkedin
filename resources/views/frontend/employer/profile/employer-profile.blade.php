@@ -16,7 +16,7 @@
                             <div class="mb-4 profile-left-card-info">
                                 <div class="">
                                     <img
-                                        src="{{ isset($employeeDetails->profile_image) ? asset($employeeDetails->profile_image) : 'https://randomuser.me/api/portraits/men/75.jpg' }}"
+                                        src="{{ isset($employeeDetails->profile_image) ? asset($employeeDetails->profile_image) : asset('/frontend/user-vector-img.jpg') }}"
                                         alt="Profile Picture"
                                         class="rounded-circle"
                                         style="width: 80px; height: 80px; object-fit: cover"
@@ -31,12 +31,12 @@
                                 @endif
 
                                 <p class="skills mb-3">
-                                    {{ $employeeDetails->profile_title ?? 'Profile Moto like Mobile App Developer, Flutter Developer, Instructor & Mentor' }}
+                                    {{ $employeeDetails->profile_title ?? 'Employee profile Title here' }}
                                 </p>
                             </div>
 
                             <div class="d-flex gap-2 mb-4">
-                                <a href="{{ route('twilio.view') }}" class="btn btn-dark flex-grow-1 d-flex align-items-center justify-content-center gap-2">
+                                <a href="{{ url("/chat/$employeeDetails->id" ) }}" target="_blank" class="btn btn-dark flex-grow-1 d-flex align-items-center justify-content-center gap-2">
                                     <img src="{{ asset('/') }}frontend/employer/images/employersHome/messengerIcon.png" alt=""> Message
                                 </a>
                                 <a href="tel:{{ $employeeDetails->mobile }}" class="btn btn-outline-dark flex-grow-1 d-flex align-items-center justify-content-center gap-2">
@@ -66,13 +66,13 @@
                                         {{ $employeeDetails->mobile ?? 'Ex: +880 123 456 7890' }}
                                     </div>
                                 </li>
-                                <li class="d-flex align-items-center gap-3">
-                                    <img src="{{ asset('/') }}frontend/employer/images/employersHome/profile website.png" alt="">
-                                    <div>
-                                        <small class="fw-bold d-block">Website</small>
-                                        <a href="https://www.devpranto.com" target="_blank" class="text-decoration-none">{{ $employeeDetails->website ?? 'grapho.com' }}</a>
-                                    </div>
-                                </li>
+{{--                                <li class="d-flex align-items-center gap-3">--}}
+{{--                                    <img src="{{ asset('/') }}frontend/employer/images/employersHome/profile website.png" alt="">--}}
+{{--                                    <div>--}}
+{{--                                        <small class="fw-bold d-block">Website</small>--}}
+{{--                                        <a href="https://www.devpranto.com" target="_blank" class="text-decoration-none">{{ $employeeDetails->website ?? 'grapho.com' }}</a>--}}
+{{--                                    </div>--}}
+{{--                                </li>--}}
                             </ul>
                         </div>
                     </div>
@@ -83,7 +83,7 @@
                         <section class="mb-5">
                             <h5 class="card mb-0 p-4 fw-semibold ">Work experiences</h5>
                             @forelse($employeeDetails->employeeWorkExperiences as $workExperience)
-                                <div class="card p-4 mb-4 shadow-sm rounded-3">
+                                <div class="card p-4 shadow-sm rounded-3" style="border-radius: 0px!important;">
                                     <div class="d-flex align-items-center mb-3 gap-3">
                                         <img src="{{ asset($workExperience->company_logo ?? '/frontend/company-vector.jpg') }}" alt="UCB Logo" style=" object-fit: contain; height: 60px; border-radius: 50%" />
                                         <div>
@@ -91,10 +91,14 @@
                                             <small class="text-muted">{{ $workExperience->company_name }} &bull; {{ $workExperience->job_type ?? 'Full Time' }}</small><br />
                                             <small class="text-muted">{{ $workExperience->is_working_currently == 1 ? (\Illuminate\Support\Carbon::parse($workExperience->start_date)->format('M Y') ?? 'Jan 1971').' - Present' : (\Illuminate\Support\Carbon::parse($workExperience->start_date)->format('M Y') ?? 'Jan 2025').' - '.(\Illuminate\Support\Carbon::parse($workExperience->end_date)->format('M Y') ?? 'Jan 2025') }} &bull; {{ $workExperience->duration ?? '0 Years' }}</small><br />
                                             <small class="text-muted">{{ $workExperience->office_address ?? 'Dhaka, Bangladesh' }}</small>
+
+                                            <p class="mb-1 fw-semibold mt-2">Job Summary:</p>
+                                            <div>
+                                                {!! str()->words($workExperience->job_responsibilities, 30, ' ....') ?? 'Job responsibilities' !!}
+                                            </div>
                                         </div>
                                     </div>
-                                    <p class="mb-1 fw-semibold">Job Summary:</p>
-                                    <p>{!! str()->words($workExperience->job_responsibilities, 30, ' ....') ?? 'Job responsibilities' !!}</p>
+
                                 </div>
                             @empty
                                 <div class="card  p-4 mb-4 shadow-sm rounded-3">
@@ -125,9 +129,9 @@
 
                         <!-- Education -->
                         <section class="mb-5">
-                            <h5 class="fw-semibold mb-4">Education</h5>
+                            <h5 class="card mb-0 fw-semibold p-4 ">Education</h5>
                             @forelse($employeeDetails->employeeEducations as $education)
-                                <div class="card p-4 mb-4 shadow-sm rounded-3">
+                                <div class="card p-4 shadow-sm rounded-3" style="border-radius: 0px!important;">
                                     <div class="d-flex align-items-center mb-3 gap-3">
                                         <img src="{{ asset( $education?->universityName?->logo ?? '/frontend/company-vector.jpg') }}" alt="UCB Logo" style=" object-fit: contain; border-radius: 50%" height="60"  />
                                         <div>
@@ -161,9 +165,9 @@
                         <!-- documents -->
                         <!-- Education -->
                         <section class="mb-5">
-                            <h5 class="fw-semibold mb-4">Documents</h5>
+                            <h5 class="card mb-0 fw-semibold p-4 ">Documents</h5>
                             @forelse($employeeDetails->employeeDocuments as $document)
-                                <div class="card p-4 mb-4 shadow-sm rounded-3">
+                                <div class="card p-4 shadow-sm rounded-3" style="border-radius: 0px!important;">
                                     <div class="d-flex align-items-center mb-3 gap-3">
                                         <a href="{{ asset($document->file) }}" download="">
                                             @if( explode('/', $document->file_type)[1] == 'image' )

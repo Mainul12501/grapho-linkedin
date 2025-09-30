@@ -9,7 +9,7 @@
                 <div class="col-md-6 mx-auto" id="appendContentHere">
                     <div class="card card-body d-flex">
                         <p class="d-inline-flex">Have Something New On mind?</p>
-                        <p class="d-inline-flex"><a href="{{ route('employer.posts.create') }}" class="btn btn-sm btn-success">Add Post</a></p>
+                        <p class="d-inline-flex"><a href="{{ route('employer.posts.create') }}" class="btn btn-sm btn-success">Post</a></p>
                     </div>
 {{--                    contents appends here--}}
                 </div>

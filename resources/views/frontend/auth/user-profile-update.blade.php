@@ -253,23 +253,14 @@
             <template id="step-0">
                 <form id="form-employer-contact" autocomplete="on" novalidate enctype="multipart/form-data" method="post" action="">
                     <div class="grid grid-1">
-                        <div class="grid">
-                            <div><label>Company Name <span style="color: red">*</span></label><input name="name" type="text" value="{{ $loggedUser?->employerCompany?->name ?? '' }}" placeholder="Company Name" required /></div>
-                            <div><label>Address</label><input name="address" type="text" value="{{ $loggedUser->address ?? '' }}" placeholder="company Address" /></div>
-                        </div>
-                        <div class="grid">
+                        <div class="">
+                            <div><label>Company Name <span style="color: red">*</span></label><input name="name" type="text" value="{{ $loggedUser?->employerCompanies[0]?->name ?? '' }}" placeholder="Company Name" required /></div>
                             <input type="hidden" name="user_id" value="{{ $loggedUser->id ?? '' }}" id="userId">
                             <input type="hidden" name="is_profile_updated" value="1" >
-                            <div><label>Email <span style="color: red">*</span></label><input name="email" type="email" value="{{ $loggedUser->email ?? '' }}" required /></div>
-                            <div><label>Phone <span style="color: red">*</span></label><input name="mobile" type="tel" value="{{ $loggedUser->mobile }}" /></div>
-                        </div>
-                        <div class="grid">
-                            <div><label>Founded On <span style="color: red">*</span></label><input name="founded_on" type="text" placeholder="Founded On" value="" required /></div>
-                            <div><label>Total Employees <span style="color: red">*</span></label><input name="total_employees" type="text"  required /></div>
-                        </div>
-
-                        <div class="grid">
-                            <div>
+                            <div class="mt-2"><label>Email <span style="color: red">*</span></label><input name="email" type="email" value="{{ $loggedUser->email ?? '' }}" required /></div>
+                            <div class="mt-2"><label>Phone <span style="color: red">*</span></label><input name="mobile" type="tel" value="{{ $loggedUser->mobile }}" /></div>
+                            <div class="mt-2"><label>Logo <span style="color: red">*</span></label><input name="logo" required type="file" accept="image/*" /></div>
+                            <div class="mt-2 d-none">
                                 <label>Company Category</label>
                                 <select name="employer_company_category_id" required id="">
                                     <option disabled selected>Select Company Category</option>
@@ -279,7 +270,7 @@
 
                                 </select>
                             </div>
-                            <div>
+                            <div class="mt-2">
                                 <label>Industry</label>
                                 <select name="industry_id" required id="">
                                     <option disabled selected>Select Industry</option>
@@ -288,19 +279,16 @@
                                     @endforeach
                                 </select>
                             </div>
-                        </div>
-                        <div class="grid">
-                            <div><label>Bin Number <span style="color: red">*</span></label><input type="text" required name="bin_number" value="{{ $loggedUser?->employerCompany?->bin_number ?? '' }}" placeholder="Bin Number"></div>
-                            <div><label>Trade License Number <span style="color: red">*</span></label><input required type="text" name="trade_license_number" value="{{ $loggedUser?->employerCompany?->trade_license_number ?? '' }}" placeholder="Trade License Number"></div>
-                        </div>
-                        <div class="grid">
-                            <div><label>Website</label><input name="website" type="text" value="" placeholder="www.website.com" /></div>
-                            <div><label>Logo <span style="color: red">*</span></label><input name="logo" required type="file" accept="image/*" /></div>
-                        </div>
-                        <div class="">
-                            <div><label>OverView</label><textarea name="company_overview" id="" style="width: 100%" rows="10"></textarea></div>
 
+                            <div class="mt-2"><label>Bin Number <span style="color: red">*</span></label><input type="text" required name="bin_number" value="{{ $loggedUser?->employerCompanies[0]?->bin_number ?? '' }}" placeholder="Bin Number"></div>
+                            <div class="mt-2"><label>Trade License Number <span style="color: red">*</span></label><input required type="text" name="trade_license_number" value="{{ $loggedUser?->employerCompanies[0]?->trade_license_number ?? '' }}" placeholder="Trade License Number"></div>
+                            <div class="mt-2"><label>Company Overview</label><textarea name="company_overview" id="" style="width: 100%" rows="10"></textarea></div>
+                            <div class="mt-2"><label>Address</label><input name="address" type="text" value="{{ $loggedUser->address ?? '' }}" placeholder="company Address" /></div>
+                            <div class="mt-2"><label>Founded On <span style="color: red">*</span></label><input name="founded_on" type="text" placeholder="Founded On" value="" required /></div>
+                            <div class="mt-2"><label>Total Employees <span style="color: red">*</span></label><input name="total_employees" type="text"  required /></div>
+                            <div class="mt-2"><label>Website</label><input name="website" type="text" value="" placeholder="www.website.com" /></div>
                         </div>
+
                     </div>
                     {{--            <div style="margin-top:14px;text-align:right">--}}
                     {{--                <button class="btn btn-primary" id="employeeProfileUpdateBtn" type="button">Save Changes</button>--}}

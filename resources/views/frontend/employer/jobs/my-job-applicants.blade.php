@@ -115,7 +115,7 @@
                     @forelse($pendingApplicants as $pendingApplicant))
                         <div class="card mb-3 p-3 shadow-sm rounded-3">
                             <div class="d-flex align-items-start flex-column gap-3">
-                                <img src="{{ asset($pendingApplicant?->user->profile_image ?? 'frontend/employer/images/employersHome/talent-1.png') }}" alt="Ayesha Begum" class="rounded-circle"
+                                <img src="{{ asset($pendingApplicant?->user->profile_image ?? 'frontend/user-vector-img.jpg') }}" alt="Ayesha Begum" class="rounded-circle"
                                      style="width: 48px; height: 48px; object-fit: cover;" />
                                 <div>
                                     <strong>{{ $pendingApplicant?->user?->name ?? 'User Name' }}</strong><br />
@@ -161,7 +161,7 @@
                         @forelse($shortListedApplicants as $shortListedApplicant)
                             <tr>
                                 <td class="d-flex align-items-center gap-3">
-                                    <img src="{{ asset($shortListedApplicant?->user->profile_image ?? 'frontend/employer/images/employersHome/talent-1.png') }}" alt="Ayesha Begum" class="rounded-circle"
+                                    <img src="{{ asset($shortListedApplicant?->user->profile_image ?? 'frontend/user-vector-img.jpg') }}" alt="Ayesha Begum" class="rounded-circle"
                                          style="width: 38px; height: 38px; object-fit: cover;" />
                                     {{ $shortListedApplicant?->user?->name ?? 'User Name' }}
                                 </td>
@@ -236,7 +236,7 @@
                     @forelse($shortListedApplicants as $shortListedApplicant))
                     <div class="card mb-3 p-3 shadow-sm rounded-3">
                         <div class="d-flex align-items-start flex-column gap-3">
-                            <img src="{{ asset($shortListedApplicant?->user->profile_image ?? 'frontend/employer/images/employersHome/talent-1.png') }}" alt="Ayesha Begum" class="rounded-circle"
+                            <img src="{{ asset($shortListedApplicant?->user->profile_image ?? 'frontend/user-vector-img.jpg') }}" alt="Ayesha Begum" class="rounded-circle"
                                  style="width: 48px; height: 48px; object-fit: cover;" />
                             <div>
                                 <strong>{{ $shortListedApplicant?->user?->name ?? 'User Name' }}</strong><br />
@@ -281,7 +281,7 @@
                         @forelse($rejectedApplicants as $rejectedApplicant)
                             <tr>
                                 <td class="d-flex align-items-center gap-3">
-                                    <img src="{{ asset($rejectedApplicant?->user->profile_image ?? 'frontend/employer/images/employersHome/talent-1.png') }}" alt="Ayesha Begum" class="rounded-circle"
+                                    <img src="{{ asset($rejectedApplicant?->user->profile_image ?? 'frontend/user-vector-img.jpg') }}" alt="Ayesha Begum" class="rounded-circle"
                                          style="width: 38px; height: 38px; object-fit: cover;" />
                                     {{ $rejectedApplicant?->user?->name ?? 'User Name' }}
                                 </td>
@@ -359,7 +359,7 @@
                     @forelse($rejectedApplicants as $rejectedApplicant))
                     <div class="card mb-3 p-3 shadow-sm rounded-3">
                         <div class="d-flex align-items-start flex-column gap-3">
-                            <img src="{{ asset($rejectedApplicant?->user->profile_image ?? 'frontend/employer/images/employersHome/talent-1.png') }}" alt="Ayesha Begum" class="rounded-circle"
+                            <img src="{{ asset($rejectedApplicant?->user->profile_image ?? 'frontend/user-vector-img.jpg') }}" alt="Ayesha Begum" class="rounded-circle"
                                  style="width: 48px; height: 48px; object-fit: cover;" />
                             <div>
                                 <strong>{{ $rejectedApplicant?->user?->name ?? 'User Name' }}</strong><br />
@@ -403,7 +403,7 @@
                         @forelse($approvedApplicants as $approvedApplicant)
                             <tr>
                                 <td class="d-flex align-items-center gap-3">
-                                    <img src="{{ asset($approvedApplicant?->user->profile_image ?? 'frontend/employer/images/employersHome/talent-1.png') }}" alt="Ayesha Begum" class="rounded-circle"
+                                    <img src="{{ asset($approvedApplicant?->user->profile_image ?? 'frontend/user-vector-img.jpg') }}" alt="Ayesha Begum" class="rounded-circle"
                                          style="width: 38px; height: 38px; object-fit: cover;" />
                                     {{ $approvedApplicant?->user?->name ?? 'User Name' }}
                                 </td>
@@ -481,7 +481,7 @@
                     @forelse($approvedApplicants as $approvedApplicant))
                     <div class="card mb-3 p-3 shadow-sm rounded-3">
                         <div class="d-flex align-items-start flex-column gap-3">
-                            <img src="{{ asset($approvedApplicant?->user->profile_image ?? 'frontend/employer/images/employersHome/talent-1.png') }}" alt="Ayesha Begum" class="rounded-circle"
+                            <img src="{{ asset($approvedApplicant?->user->profile_image ?? 'frontend/user-vector-img.jpg') }}" alt="Ayesha Begum" class="rounded-circle"
                                  style="width: 48px; height: 48px; object-fit: cover;" />
                             <div>
                                 <strong>{{ $approvedApplicant?->user?->name ?? 'User Name' }}</strong><br />

@@ -5,15 +5,19 @@
     <!-- STEP 1 -->
     <div class="stepOne">
         <!-- Modal Header -->
-        <div class="d-flex align-items-center gap-2 mb-4">
-            <img src="{{ asset('/') }}frontend/employer/images/employersHome/leftarrow.png" alt="" class="me-2" style="cursor: default;">
-            <h5 class="mb-0 fw-semibold">Edit job</h5>
+
+        <div class="d-flex align-items-center justify-content-between mb-4">
+            <div class="d-flex align-items-center gap-2">
+                <img src="http://127.0.0.1:8000/frontend/employer/images/employersHome/leftarrow.png" alt="" class="me-2" style="cursor: default;">
+                <h5 class="mb-0 fw-semibold">Edit job</h5>
+            </div>
+            <button class="btn btn-sm btn-close" data-bs-dismiss="modal" type="button"></button>
         </div>
 
         <!-- Job Title -->
         <div class="mb-4">
             <label class="form-label fw-semibold">Job title</label>
-            <input type="text" class="form-control" value="{{ $jobTask->job_title ?? '' }}" name="job_title" placeholder="Senior Officer, Corporate Banking">
+            <input type="text" class="form-control" value="{{ $jobTask->job_title ?? '' }}" required name="job_title" placeholder="Senior Officer, Corporate Banking">
         </div>
 
         <!-- Job Type -->
@@ -55,9 +59,9 @@
                     <h5 class="fw-bold mb-0">Edit job</h5>
                 </div>
                 <!-- Button triggers modal -->
-                                                <button type="button" class="btn btn-warning text-dark fw-semibold px-4 py-2 rounded-3 show-review-btn" data-modal-id="editJobModal" {{--data-bs-toggle="modal" data-bs-target="#jobDetailsModal"--}}>
-                                                    Review & Post
-                                                </button>
+{{--                                                <button type="button" class="btn btn-warning text-dark fw-semibold px-4 py-2 rounded-3 show-review-btn" data-modal-id="editJobModal" --}}{{--data-bs-toggle="modal" data-bs-target="#jobDetailsModal"--}}{{-->--}}
+{{--                                                    Review & Post--}}
+{{--                                                </button>--}}
 {{--                <button type="submit" class="btn btn-warning text-dark fw-semibold px-4 py-2 rounded-3" --}}{{--data-bs-toggle="modal" data-bs-target="#jobDetailsModal"--}}{{-->--}}
 {{--                    Update Job--}}
 {{--                </button>--}}
@@ -67,8 +71,8 @@
         <div style="background-color: #f2f2f4;" class="jobModalForPost">
             <!-- Container and header -->
             <!-- Main Job Info Card -->
-            <div class="container mb-4">
-                <div class="bg-white rounded-4 p-4 shadow-sm">
+            <div class="container px-0 border-bottom">
+                <div style="border-radius: 0px" class="bg-white p-4 shadow-sm">
                     <div class="d-flex justify-content-between flex-wrap gap-3">
                         <div>
                             <h5 class="fw-semibold mb-2"><span id="formJobTitle">IT Support, Corporate Banking</span></h5>
@@ -84,31 +88,31 @@
                 </div>
             </div>
             <!-- Experience Card -->
-            <div class="container mb-4">
-                <div class="bg-white rounded-4 p-4 shadow-sm">
+            <div class="container px-0 border-bottom">
+                <div style="border-radius: 0px" class="bg-white p-4 shadow-sm">
                     <h6 class="fw-semibold mb-3">Required years of experience</h6>
                     <div class="d-flex flex-wrap gap-2">
                         <input type="radio" class="btn-check" name="required_experience" id="edit-exp-any" value="Any" autocomplete="off" {{ $jobTask->required_experience == 'Any' ? 'checked' : '' }} >
-                        <label class="btn btn-outline-warning" for="edit-exp-any">Any</label>
+                        <label class="btn btn-outline-warning" style="color: black!important;" for="edit-exp-any">Any</label>
 
                         <input type="radio" class="btn-check" name="required_experience" id="edit-exp-1to3" value="1–3 yrs" autocomplete="off" {{ $jobTask->required_experience == '1–3 yrs' ? 'checked' : '' }} >
-                        <label class="btn btn-outline-warning" for="edit-exp-1to3">1–3 yrs</label>
+                        <label class="btn btn-outline-warning" style="color: black!important;" for="edit-exp-1to3">1–3 yrs</label>
 
                         <input type="radio" class="btn-check" name="required_experience" id="edit-exp-0" value="0" autocomplete="off" {{ $jobTask->required_experience == '0' ? 'checked' : '' }} >
-                        <label class="btn btn-outline-warning" for="edit-exp-0">N/A</label>
+                        <label class="btn btn-outline-warning" style="color: black!important;" for="edit-exp-0">N/A</label>
 
                         <input type="radio" class="btn-check" name="required_experience" id="custom" value="custom" {{ $jobTask->is_custom_exp == 1 ? 'checked' : '' }} autocomplete="off">
-                        <label id="editshowCustomExperienceField" class="btn btn-outline-warning" for="custom">Custom</label>
+                        <label id="editshowCustomExperienceField" style="color: black!important;" class="btn btn-outline-warning" for="custom">Custom</label>
 
                         <span id="editcustomExperienceField" style="display: none">
-                                                            <input type="text" style="width: 60px; background-color: darkgrey;" class="btn btn-outline-primary " value="{{ $jobTask->is_custom_exp == 1 ? explode('-', $jobTask->required_experience)[0] : 0 }}" name="exp_range_start"> to <input type="text" style="width: 60px; background-color: darkgrey;" class="btn btn-outline-primary " value="{{ $jobTask->is_custom_exp == 1 ?explode('-', $jobTask->required_experience)[1] : 1 }}" name="exp_range_end"> Years
+                                                            <input type="text" style="width: 60px; background-color: #f8ffbe; color: black!important;" class="btn btn-outline-primary " value="{{ $jobTask->is_custom_exp == 1 ? explode('-', $jobTask->required_experience)[0] : 0 }}" name="exp_range_start"> to <input type="text" style="width: 60px; background-color: #f8ffbe; color: black!important;" class="btn btn-outline-primary " value="{{ $jobTask->is_custom_exp == 1 ?explode('-', $jobTask->required_experience)[1] : 1 }}" name="exp_range_end"> Years
                                                         </span>
                     </div>
                 </div>
             </div>
             <!-- Industry -->
-            <div class="container mb-4">
-                <div class="bg-white rounded-4 p-4 shadow-sm">
+            <div class="container px-0 border-bottom">
+                <div style="border-radius: 0px" class="bg-white p-4 shadow-sm">
                     <h6 class="fw-semibold mb-3">Industry</h6>
                     <select name="industry_id" id="select2-div" class="form-control select2 industryId"  >
                         @foreach($industries as $industryKey => $industry)
@@ -118,8 +122,8 @@
                 </div>
             </div>
             <!-- University Preference -->
-            <div class="container mb-4">
-                <div class="bg-white rounded-4 p-4 shadow-sm">
+            <div class="container px-0 border-bottom">
+                <div style="border-radius: 0px" class="bg-white p-4 shadow-sm">
                     <h6 class="fw-semibold mb-3">University preference</h6>
                     {{--                                    <input type="text" class="form-control mb-3" name="" placeholder="Search universities">--}}
                     <select name="university_preference[]" id="select2-div" class=" select2"  multiple="multiple">
@@ -130,8 +134,8 @@
                 </div>
             </div>
             <!-- Field of Study -->
-            <div class="container mb-4">
-                <div class="bg-white rounded-4 p-4 shadow-sm">
+            <div class="container px-0 border-bottom">
+                <div style="border-radius: 0px" class="bg-white p-4 shadow-sm">
                     <h6 class="fw-semibold mb-3">Field of study</h6>
                     {{--                                    <input type="text" class="form-control mb-3" placeholder="Search field of study">--}}
                     <select name="field_of_study_preference[]" id="" class=" select2" multiple="multiple">
@@ -142,15 +146,15 @@
                 </div>
             </div>
             <!-- CGPA Preference -->
-            <div class="container mb-4">
-                <div class="bg-white rounded-4 p-4 shadow-sm">
+            <div class="container px-0 border-bottom">
+                <div style="border-radius: 0px" class="bg-white p-4 shadow-sm">
                     <h6 class="fw-semibold mb-3">CGPA preference</h6>
                     <input type="text" name="cgpa" value="{{ $jobTask->cgpa ?? 0 }}" class="form-control" placeholder="EX: 3.50 to 3.90">
                 </div>
             </div>
             <!-- Gender Preference -->
-            <div class="container mb-4">
-                <div class="bg-white rounded-4 p-4 shadow-sm">
+            <div class="container px-0 border-bottom">
+                <div style="border-radius: 0px" class="bg-white p-4 shadow-sm">
                     <h6 class="fw-semibold mb-3">Gender preference</h6>
                     <select name="gender" id="" class="form-control select2">
                         <option value="" disabled selected>Select a gender</option>
@@ -161,8 +165,8 @@
                 </div>
             </div>
             <!-- Salary Section -->
-            <div class="container mb-4">
-                <div class="bg-white rounded-4 p-4 shadow-sm">
+            <div class="container px-0 border-bottom">
+                <div style="border-radius: 0px" class="bg-white p-4 shadow-sm">
                     <h6 class="fw-semibold mb-3">Salary</h6>
                     <ul class="nav nav-tabs mb-3" id="salaryTab" role="tablist">
                         <li class="nav-item"><a class="nav-link {{ $jobTask->job_pref_salary_payment_type == 'monthly' ? 'active' : '' }} salary-type" data-value="monthly" data-bs-toggle="tab" href="#">Monthly</a></li>
@@ -175,15 +179,15 @@
                 </div>
             </div>
             <!-- Job Description -->
-            <div class="container mb-4">
-                <div class="bg-white rounded-4 p-4 shadow-sm">
+            <div class="container px-0 border-bottom">
+                <div style="border-radius: 0px" class="bg-white p-4 shadow-sm">
                     <h6 class="fw-semibold mb-3">Job description & Key responsibilities</h6>
                     <textarea class="form-control summernote" id="summernote" name="description" rows="15" placeholder="Tell more about the job - specifications & responsibilities...">{!! $jobTask->description ?? '' !!}</textarea>
                 </div>
             </div>
             <!-- Application Deadline -->
-            <div class="container mb-4">
-                <div class="bg-white rounded-4 p-4 shadow-sm">
+            <div class="container px-0 border-bottom">
+                <div style="border-radius: 0px" class="bg-white p-4 shadow-sm">
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <h6 class="fw-semibold mb-0">Application deadline</h6>
                     </div>
@@ -195,8 +199,8 @@
                 </div>
             </div>
             <!-- Skills Section -->
-            <div class="container mb-4">
-                <div class="bg-white rounded-4 p-4 shadow-sm">
+            <div class="container px-0 border-bottom">
+                <div style="border-radius: 0px" class="bg-white p-4 shadow-sm">
                     <h6 class="fw-semibold mb-3">Skill requirements</h6>
                     <div class="<!--d-flex flex-wrap gap-2-->">
 
@@ -233,8 +237,8 @@
                 </div>
             </div>
             <!-- Status -->
-            <div class="container mb-4">
-                <div class="bg-white rounded-4 p-4 shadow-sm">
+            <div class="container px-0 border-bottom">
+                <div style="border-radius: 0px" class="bg-white p-4 shadow-sm">
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <h6 class="fw-semibold mb-0">Job Status</h6>
                     </div>
@@ -246,6 +250,15 @@
                             </select>
                         </div>
                     </div>
+                </div>
+            </div>
+            <!-- Submit Form -->
+            <div class="container px-0 ">
+                <div class="bg-white p-4 text-end shadow-sm" style="border-radius: 0px">
+                    <!-- Button triggers modal -->
+                    <button type="button" class="btn btn-warning text-dark fw-semibold px-4 py-2 rounded-3 show-review-btn" data-modal-id="editJobModal" {{--data-bs-toggle="modal" data-bs-target="#jobDetailsModal"--}}>
+                        Review & Post
+                    </button>
                 </div>
             </div>
         </div>

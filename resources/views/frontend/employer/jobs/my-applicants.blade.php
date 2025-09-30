@@ -12,7 +12,7 @@
 
         <div class="row g-4">
             @forelse($jobTasks as $jobTask)
-                <div class="col-12 col-md-6 col-lg-6">
+                <div class="col-12 col-md-6 col-lg-6 pe-0 mt-2">
                     <a href="{{ route('employer.my-job-applicants', ['jobTask' => $jobTask->id]) }}" style="padding-left: 35px!important;" class="d-flex justify-content-between align-items-center border rounded-3 p-4 text-decoration-none text-dark card-link bg-white">
                         <div>
                             <h6 class="mb-1 fw-semibold">{{ $jobTask->job_title ?? 'Job Title' }}</h6>

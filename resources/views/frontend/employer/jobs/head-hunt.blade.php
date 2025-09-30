@@ -4,6 +4,24 @@
 
 @section('body')
 
+    @php
+        function getSelectedFilters($filterKey) {
+            $filters = request('filters', []);
+            if (!isset($filters[$filterKey])) {
+                return [];
+            }
+
+            $value = $filters[$filterKey];
+
+            if (is_string($value)) {
+                $decoded = json_decode($value, true);
+                return is_array($decoded) ? $decoded : [];
+            }
+
+            return is_array($value) ? $value : [];
+        }
+    @endphp
+
     <div class="ps-3 py-2 d-block d-md-none">
         <img src="{{ asset('/') }}frontend/employer/images/employersHome/leftarrow.png" alt="">
     </div>
@@ -25,22 +43,18 @@
                 </div>
 
                 <!-- ===== Filter #1: Date posted ===== -->
-                <div class="custom-select" data-filter-key="workplace_type" style="max-width: 166px!important;" data-placeholder="Workplace Type">
+                <div class="custom-select" data-filter-key="job_type" style="max-width: 120px!important;" data-placeholder="Job Type">
 {{--                    <label class="custom-select-label">Workplace Type</label>--}}
                     <input type="text" class="form-control select-box locationSearch" placeholder="Select Workplace Type" readonly="">
                     <div class="dropdown-menu locationDropdown" style="max-height: none;">
                         <input type="text" class="form-control search-box searchBar" placeholder="Search...">
                         @foreach($jobTypes  as $jobType)
                             <div class="checkbox-item">
-                                <input type="checkbox" class="locationCheckbox" id="workplace-{{ $jobType->id }}" value="{{ $jobType->slug }}">
+                                <input type="checkbox" class="locationCheckbox" {{ in_array($jobType->slug, getSelectedFilters('job_type')) ? 'checked' : '' }} id="workplace-{{ $jobType->id }}" value="{{ $jobType->slug }}">
                                 <label for="workplace-{{ $jobType->id }}">{{ $jobType->name }}</label>
                             </div>
                         @endforeach
 
-{{--                        <div class="checkbox-item">--}}
-{{--                            <input type="checkbox" class="locationCheckbox" id="date7d">--}}
-{{--                            <label for="date7d">Last 7 days</label>--}}
-{{--                        </div>--}}
                     </div>
                     <input type="hidden" class="filter-payload" name="filters[job_type]" value="[]">
                 </div>
@@ -53,96 +67,86 @@
                         <input type="text" class="form-control search-box searchBar" placeholder="Search...">
                         @foreach($universityNames  as $universityName)
                             <div class="checkbox-item">
-                                <input type="checkbox" class="locationCheckbox" id="uni-{{ $universityName->id }}" value="{{ $universityName->slug }}">
+                                <input type="checkbox" class="locationCheckbox" id="uni-{{ $universityName->id }}" {{ in_array($universityName->slug, getSelectedFilters('university_name')) ? 'checked' : '' }} value="{{ $universityName->slug }}">
                                 <label for="uni-{{ $universityName->id }}">{{ $universityName->name }}</label>
                             </div>
 
                         @endforeach
-{{--                        <div class="checkbox-item">--}}
-{{--                            <input type="checkbox" class="locationCheckbox" id="ctype-consult">--}}
-{{--                            <label for="ctype-consult">Consulting Firms</label>--}}
-{{--                        </div>--}}
-{{--                        <div class="checkbox-item">--}}
-{{--                            <input type="checkbox" class="locationCheckbox" id="ctype-law">--}}
-{{--                            <label for="ctype-law">Law Firms</label>--}}
-{{--                        </div>--}}
                     </div>
                     <input type="hidden" class="filter-payload" name="filters[university_name]" value="[]">
                 </div>
 
                 <!-- ===== Filter #3: Location ===== -->
-                <div class="custom-select" data-filter-key="location" style="max-width: 105px!important;" data-placeholder="District">
+                <div class="custom-select" data-filter-key="district" style="max-width: 105px!important;" data-placeholder="District">
 {{--                    <label class="custom-select-label">District</label>--}}
                     <input type="text" class="form-control select-box locationSearch" placeholder="Select District" readonly="">
                     <div class="dropdown-menu locationDropdown" style="max-height: none;">
                         <input type="text" class="form-control search-box searchBar" placeholder="Search...">
 
-                        <div class="checkbox-item"><input type="checkbox" value="Bagerhat" class="locationCheckbox" id="loc-Bagerhat" /> <label for="loc-Bagerhat">Bagerhat</label></div>
-                        <div class="checkbox-item"><input type="checkbox" value="Bandarban" class="locationCheckbox" id="loc-Bandarban" /> <label for="loc-Bandarban">Bandarban</label></div>
-                        <div class="checkbox-item"><input type="checkbox" value="Barguna" class="locationCheckbox" id="loc-Barguna" /> <label for="loc-Barguna">Barguna</label></div>
-                        <div class="checkbox-item"><input type="checkbox" value="Barisal" class="locationCheckbox" id="loc-Barisal" /> <label for="loc-Barisal">Barisal</label></div>
-                        <div class="checkbox-item"><input type="checkbox" value="Bhola" class="locationCheckbox" id="loc-Bhola" /> <label for="loc-Bhola">Bhola</label></div>
-                        <div class="checkbox-item"><input type="checkbox" value="Bogura" class="locationCheckbox" id="loc-Bogura" /> <label for="loc-Bogura">Bogura</label></div>
-                        <div class="checkbox-item"><input type="checkbox" value="Brahmanbaria" class="locationCheckbox" id="loc-Brahmanbaria" /> <label for="loc-Brahmanbaria">Brahmanbaria</label></div>
-                        <div class="checkbox-item"><input type="checkbox" value="Chandpur" class="locationCheckbox" id="loc-Chandpur" /> <label for="loc-Chandpur">Chandpur</label></div>
-                        <div class="checkbox-item"><input type="checkbox" value="Chapainawabganj" class="locationCheckbox" id="loc-Chapainawabganj" /> <label for="loc-Chapainawabganj">Chapainawabganj</label></div>
-                        <div class="checkbox-item"><input type="checkbox" value="Chattogram" class="locationCheckbox" id="loc-Chattogram" /> <label for="loc-Chattogram">Chattogram</label></div>
-                        <div class="checkbox-item"><input type="checkbox" value="Chuadanga" class="locationCheckbox" id="loc-Chuadanga" /> <label for="loc-Chuadanga">Chuadanga</label></div>
-                        <div class="checkbox-item"><input type="checkbox" value="Coxs Bazar" class="locationCheckbox" id="loc-Coxs-Bazar" /> <label for="loc-Coxs-Bazar">Cox's Bazar</label></div>
-                        <div class="checkbox-item"><input type="checkbox" value="Cumilla" class="locationCheckbox" id="loc-Cumilla" /> <label for="loc-Cumilla">Cumilla</label></div>
-                        <div class="checkbox-item"><input type="checkbox" value="Dhaka" class="locationCheckbox" id="loc-Dhaka" /> <label for="loc-Dhaka">Dhaka</label></div>
-                        <div class="checkbox-item"><input type="checkbox" value="Dinajpur" class="locationCheckbox" id="loc-Dinajpur" /> <label for="loc-Dinajpur">Dinajpur</label></div>
-                        <div class="checkbox-item"><input type="checkbox" value="Faridpur" class="locationCheckbox" id="loc-Faridpur" /> <label for="loc-Faridpur">Faridpur</label></div>
-                        <div class="checkbox-item"><input type="checkbox" value="Feni" class="locationCheckbox" id="loc-Feni" /> <label for="loc-Feni">Feni</label></div>
-                        <div class="checkbox-item"><input type="checkbox" value="Gaibandha" class="locationCheckbox" id="loc-Gaibandha" /> <label for="loc-Gaibandha">Gaibandha</label></div>
-                        <div class="checkbox-item"><input type="checkbox" value="Gazipur" class="locationCheckbox" id="loc-Gazipur" /> <label for="loc-Gazipur">Gazipur</label></div>
-                        <div class="checkbox-item"><input type="checkbox" value="Gopalganj" class="locationCheckbox" id="loc-Gopalganj" /> <label for="loc-Gopalganj">Gopalganj</label></div>
-                        <div class="checkbox-item"><input type="checkbox" value="Habiganj" class="locationCheckbox" id="loc-Habiganj" /> <label for="loc-Habiganj">Habiganj</label></div>
-                        <div class="checkbox-item"><input type="checkbox" value="Jamalpur" class="locationCheckbox" id="loc-Jamalpur" /> <label for="loc-Jamalpur">Jamalpur</label></div>
-                        <div class="checkbox-item"><input type="checkbox" value="Jashore" class="locationCheckbox" id="loc-Jashore" /> <label for="loc-Jashore">Jashore</label></div>
-                        <div class="checkbox-item"><input type="checkbox" value="Jhalokati" class="locationCheckbox" id="loc-Jhalokati" /> <label for="loc-Jhalokati">Jhalokati</label></div>
-                        <div class="checkbox-item"><input type="checkbox" value="Jhenaidah" class="locationCheckbox" id="loc-Jhenaidah" /> <label for="loc-Jhenaidah">Jhenaidah</label></div>
-                        <div class="checkbox-item"><input type="checkbox" value="Joypurhat" class="locationCheckbox" id="loc-Joypurhat" /> <label for="loc-Joypurhat">Joypurhat</label></div>
-                        <div class="checkbox-item"><input type="checkbox" value="Khagrachari" class="locationCheckbox" id="loc-Khagrachari" /> <label for="loc-Khagrachari">Khagrachari</label></div>
-                        <div class="checkbox-item"><input type="checkbox" value="Khulna" class="locationCheckbox" id="loc-Khulna" /> <label for="loc-Khulna">Khulna</label></div>
-                        <div class="checkbox-item"><input type="checkbox" value="Kishoreganj" class="locationCheckbox" id="loc-Kishoreganj" /> <label for="loc-Kishoreganj">Kishoreganj</label></div>
-                        <div class="checkbox-item"><input type="checkbox" value="Kurigram" class="locationCheckbox" id="loc-Kurigram" /> <label for="loc-Kurigram">Kurigram</label></div>
-                        <div class="checkbox-item"><input type="checkbox" value="Kushtia" class="locationCheckbox" id="loc-Kushtia" /> <label for="loc-Kushtia">Kushtia</label></div>
-                        <div class="checkbox-item"><input type="checkbox" value="Lakshmipur" class="locationCheckbox" id="loc-Lakshmipur" /> <label for="loc-Lakshmipur">Lakshmipur</label></div>
-                        <div class="checkbox-item"><input type="checkbox" value="Lalmonirhat" class="locationCheckbox" id="loc-Lalmonirhat" /> <label for="loc-Lalmonirhat">Lalmonirhat</label></div>
-                        <div class="checkbox-item"><input type="checkbox" value="Madaripur" class="locationCheckbox" id="loc-Madaripur" /> <label for="loc-Madaripur">Madaripur</label></div>
-                        <div class="checkbox-item"><input type="checkbox" value="Magura" class="locationCheckbox" id="loc-Magura" /> <label for="loc-Magura">Magura</label></div>
-                        <div class="checkbox-item"><input type="checkbox" value="Manikganj" class="locationCheckbox" id="loc-Manikganj" /> <label for="loc-Manikganj">Manikganj</label></div>
-                        <div class="checkbox-item"><input type="checkbox" value="Meherpur" class="locationCheckbox" id="loc-Meherpur" /> <label for="loc-Meherpur">Meherpur</label></div>
-                        <div class="checkbox-item"><input type="checkbox" value="Moulvibazar" class="locationCheckbox" id="loc-Moulvibazar" /> <label for="loc-Moulvibazar">Moulvibazar</label></div>
-                        <div class="checkbox-item"><input type="checkbox" value="Munshiganj" class="locationCheckbox" id="loc-Munshiganj" /> <label for="loc-Munshiganj">Munshiganj</label></div>
-                        <div class="checkbox-item"><input type="checkbox" value="Mymensingh" class="locationCheckbox" id="loc-Mymensingh" /> <label for="loc-Mymensingh">Mymensingh</label></div>
-                        <div class="checkbox-item"><input type="checkbox" value="Naogaon" class="locationCheckbox" id="loc-Naogaon" /> <label for="loc-Naogaon">Naogaon</label></div>
-                        <div class="checkbox-item"><input type="checkbox" value="Narail" class="locationCheckbox" id="loc-Narail" /> <label for="loc-Narail">Narail</label></div>
-                        <div class="checkbox-item"><input type="checkbox" value="Narayanganj" class="locationCheckbox" id="loc-Narayanganj" /> <label for="loc-Narayanganj">Narayanganj</label></div>
-                        <div class="checkbox-item"><input type="checkbox" value="Narsingdi" class="locationCheckbox" id="loc-Narsingdi" /> <label for="loc-Narsingdi">Narsingdi</label></div>
-                        <div class="checkbox-item"><input type="checkbox" value="Natore" class="locationCheckbox" id="loc-Natore" /> <label for="loc-Natore">Natore</label></div>
-                        <div class="checkbox-item"><input type="checkbox" value="Netrokona" class="locationCheckbox" id="loc-Netrokona" /> <label for="loc-Netrokona">Netrokona</label></div>
-                        <div class="checkbox-item"><input type="checkbox" value="Nilphamari" class="locationCheckbox" id="loc-Nilphamari" /> <label for="loc-Nilphamari">Nilphamari</label></div>
-                        <div class="checkbox-item"><input type="checkbox" value="Noakhali" class="locationCheckbox" id="loc-Noakhali" /> <label for="loc-Noakhali">Noakhali</label></div>
-                        <div class="checkbox-item"><input type="checkbox" value="Pabna" class="locationCheckbox" id="loc-Pabna" /> <label for="loc-Pabna">Pabna</label></div>
-                        <div class="checkbox-item"><input type="checkbox" value="Panchagarh" class="locationCheckbox" id="loc-Panchagarh" /> <label for="loc-Panchagarh">Panchagarh</label></div>
-                        <div class="checkbox-item"><input type="checkbox" value="Patuakhali" class="locationCheckbox" id="loc-Patuakhali" /> <label for="loc-Patuakhali">Patuakhali</label></div>
-                        <div class="checkbox-item"><input type="checkbox" value="Pirojpur" class="locationCheckbox" id="loc-Pirojpur" /> <label for="loc-Pirojpur">Pirojpur</label></div>
-                        <div class="checkbox-item"><input type="checkbox" value="Rajbari" class="locationCheckbox" id="loc-Rajbari" /> <label for="loc-Rajbari">Rajbari</label></div>
-                        <div class="checkbox-item"><input type="checkbox" value="Rajshahi" class="locationCheckbox" id="loc-Rajshahi" /> <label for="loc-Rajshahi">Rajshahi</label></div>
-                        <div class="checkbox-item"><input type="checkbox" value="Rangamati" class="locationCheckbox" id="loc-Rangamati" /> <label for="loc-Rangamati">Rangamati</label></div>
-                        <div class="checkbox-item"><input type="checkbox" value="Rangpur" class="locationCheckbox" id="loc-Rangpur" /> <label for="loc-Rangpur">Rangpur</label></div>
-                        <div class="checkbox-item"><input type="checkbox" value="Satkhira" class="locationCheckbox" id="loc-Satkhira" /> <label for="loc-Satkhira">Satkhira</label></div>
-                        <div class="checkbox-item"><input type="checkbox" value="Shariatpur" class="locationCheckbox" id="loc-Shariatpur" /> <label for="loc-Shariatpur">Shariatpur</label></div>
-                        <div class="checkbox-item"><input type="checkbox" value="Sherpur" class="locationCheckbox" id="loc-Sherpur" /> <label for="loc-Sherpur">Sherpur</label></div>
-                        <div class="checkbox-item"><input type="checkbox" value="Sirajganj" class="locationCheckbox" id="loc-Sirajganj" /> <label for="loc-Sirajganj">Sirajganj</label></div>
-                        <div class="checkbox-item"><input type="checkbox" value="Sunamganj" class="locationCheckbox" id="loc-Sunamganj" /> <label for="loc-Sunamganj">Sunamganj</label></div>
-                        <div class="checkbox-item"><input type="checkbox" value="Sylhet" class="locationCheckbox" id="loc-Sylhet" /> <label for="loc-Sylhet">Sylhet</label></div>
-                        <div class="checkbox-item"><input type="checkbox" value="Tangail" class="locationCheckbox" id="loc-Tangail" /> <label for="loc-Tangail">Tangail</label></div>
-                        <div class="checkbox-item"><input type="checkbox" value="Thakurgaon" class="locationCheckbox" id="loc-Thakurgaon" /> <label for="loc-Thakurgaon">Thakurgaon</label></div>
-
-
+                        <div class="checkbox-item"><input type="checkbox" value="Bagerhat" {{ in_array('Bagerhat', getSelectedFilters('district')) ? 'checked' : '' }} class="locationCheckbox" id="loc-Bagerhat" /> <label for="loc-Bagerhat">Bagerhat</label></div>
+                        <div class="checkbox-item"><input type="checkbox" value="Bandarban" {{ in_array('Bandarban', getSelectedFilters('district')) ? 'checked' : '' }} class="locationCheckbox" id="loc-Bandarban" /> <label for="loc-Bandarban">Bandarban</label></div>
+                        <div class="checkbox-item"><input type="checkbox" value="Barguna" {{ in_array('Barguna', getSelectedFilters('district')) ? 'checked' : '' }} class="locationCheckbox" id="loc-Barguna" /> <label for="loc-Barguna">Barguna</label></div>
+                        <div class="checkbox-item"><input type="checkbox" value="Barisal" {{ in_array('Barisal', getSelectedFilters('district')) ? 'checked' : '' }} class="locationCheckbox" id="loc-Barisal" /> <label for="loc-Barisal">Barisal</label></div>
+                        <div class="checkbox-item"><input type="checkbox" value="Bhola" {{ in_array('Bhola', getSelectedFilters('district')) ? 'checked' : '' }} class="locationCheckbox" id="loc-Bhola" /> <label for="loc-Bhola">Bhola</label></div>
+                        <div class="checkbox-item"><input type="checkbox" value="Bogura" {{ in_array('Bogura', getSelectedFilters('district')) ? 'checked' : '' }} class="locationCheckbox" id="loc-Bogura" /> <label for="loc-Bogura">Bogura</label></div>
+                        <div class="checkbox-item"><input type="checkbox" value="Brahmanbaria" {{ in_array('Brahmanbaria', getSelectedFilters('district')) ? 'checked' : '' }} class="locationCheckbox" id="loc-Brahmanbaria" /> <label for="loc-Brahmanbaria">Brahmanbaria</label></div>
+                        <div class="checkbox-item"><input type="checkbox" value="Chandpur" {{ in_array('Chandpur', getSelectedFilters('district')) ? 'checked' : '' }} class="locationCheckbox" id="loc-Chandpur" /> <label for="loc-Chandpur">Chandpur</label></div>
+                        <div class="checkbox-item"><input type="checkbox" value="Chapainawabganj" {{ in_array('Chapainawabganj', getSelectedFilters('district')) ? 'checked' : '' }} class="locationCheckbox" id="loc-Chapainawabganj" /> <label for="loc-Chapainawabganj">Chapainawabganj</label></div>
+                        <div class="checkbox-item"><input type="checkbox" value="Chattogram" {{ in_array('Chattogram', getSelectedFilters('district')) ? 'checked' : '' }} class="locationCheckbox" id="loc-Chattogram" /> <label for="loc-Chattogram">Chattogram</label></div>
+                        <div class="checkbox-item"><input type="checkbox" value="Chuadanga" {{ in_array('Chuadanga', getSelectedFilters('district')) ? 'checked' : '' }} class="locationCheckbox" id="loc-Chuadanga" /> <label for="loc-Chuadanga">Chuadanga</label></div>
+                        <div class="checkbox-item"><input type="checkbox" value="Coxs Bazar" {{ in_array('Coxs Bazar', getSelectedFilters('district')) ? 'checked' : '' }} class="locationCheckbox" id="loc-Coxs-Bazar" /> <label for="loc-Coxs-Bazar">Cox's Bazar</label></div>
+                        <div class="checkbox-item"><input type="checkbox" value="Cumilla" {{ in_array('Cumilla', getSelectedFilters('district')) ? 'checked' : '' }} class="locationCheckbox" id="loc-Cumilla" /> <label for="loc-Cumilla">Cumilla</label></div>
+                        <div class="checkbox-item"><input type="checkbox" value="Dhaka" {{ in_array('Dhaka', getSelectedFilters('district')) ? 'checked' : '' }} class="locationCheckbox" id="loc-Dhaka" /> <label for="loc-Dhaka">Dhaka</label></div>
+                        <div class="checkbox-item"><input type="checkbox" value="Dinajpur" {{ in_array('Dinajpur', getSelectedFilters('district')) ? 'checked' : '' }} class="locationCheckbox" id="loc-Dinajpur" /> <label for="loc-Dinajpur">Dinajpur</label></div>
+                        <div class="checkbox-item"><input type="checkbox" value="Faridpur" {{ in_array('Faridpur', getSelectedFilters('district')) ? 'checked' : '' }} class="locationCheckbox" id="loc-Faridpur" /> <label for="loc-Faridpur">Faridpur</label></div>
+                        <div class="checkbox-item"><input type="checkbox" value="Feni" {{ in_array('Feni', getSelectedFilters('district')) ? 'checked' : '' }} class="locationCheckbox" id="loc-Feni" /> <label for="loc-Feni">Feni</label></div>
+                        <div class="checkbox-item"><input type="checkbox" value="Gaibandha" {{ in_array('Gaibandha', getSelectedFilters('district')) ? 'checked' : '' }} class="locationCheckbox" id="loc-Gaibandha" /> <label for="loc-Gaibandha">Gaibandha</label></div>
+                        <div class="checkbox-item"><input type="checkbox" value="Gazipur" {{ in_array('Gazipur', getSelectedFilters('district')) ? 'checked' : '' }} class="locationCheckbox" id="loc-Gazipur" /> <label for="loc-Gazipur">Gazipur</label></div>
+                        <div class="checkbox-item"><input type="checkbox" value="Gopalganj" {{ in_array('Gopalganj', getSelectedFilters('district')) ? 'checked' : '' }} class="locationCheckbox" id="loc-Gopalganj" /> <label for="loc-Gopalganj">Gopalganj</label></div>
+                        <div class="checkbox-item"><input type="checkbox" value="Habiganj" {{ in_array('Habiganj', getSelectedFilters('district')) ? 'checked' : '' }} class="locationCheckbox" id="loc-Habiganj" /> <label for="loc-Habiganj">Habiganj</label></div>
+                        <div class="checkbox-item"><input type="checkbox" value="Jamalpur" {{ in_array('Jamalpur', getSelectedFilters('district')) ? 'checked' : '' }} class="locationCheckbox" id="loc-Jamalpur" /> <label for="loc-Jamalpur">Jamalpur</label></div>
+                        <div class="checkbox-item"><input type="checkbox" value="Jashore" {{ in_array('Jashore', getSelectedFilters('district')) ? 'checked' : '' }} class="locationCheckbox" id="loc-Jashore" /> <label for="loc-Jashore">Jashore</label></div>
+                        <div class="checkbox-item"><input type="checkbox" value="Jhalokati" {{ in_array('Jhalokati', getSelectedFilters('district')) ? 'checked' : '' }} class="locationCheckbox" id="loc-Jhalokati" /> <label for="loc-Jhalokati">Jhalokati</label></div>
+                        <div class="checkbox-item"><input type="checkbox" value="Jhenaidah" {{ in_array('Jhenaidah', getSelectedFilters('district')) ? 'checked' : '' }} class="locationCheckbox" id="loc-Jhenaidah" /> <label for="loc-Jhenaidah">Jhenaidah</label></div>
+                        <div class="checkbox-item"><input type="checkbox" value="Joypurhat" {{ in_array('Joypurhat', getSelectedFilters('district')) ? 'checked' : '' }} class="locationCheckbox" id="loc-Joypurhat" /> <label for="loc-Joypurhat">Joypurhat</label></div>
+                        <div class="checkbox-item"><input type="checkbox" value="Khagrachari" {{ in_array('Khagrachari', getSelectedFilters('district')) ? 'checked' : '' }} class="locationCheckbox" id="loc-Khagrachari" /> <label for="loc-Khagrachari">Khagrachari</label></div>
+                        <div class="checkbox-item"><input type="checkbox" value="Khulna" {{ in_array('Khulna', getSelectedFilters('district')) ? 'checked' : '' }} class="locationCheckbox" id="loc-Khulna" /> <label for="loc-Khulna">Khulna</label></div>
+                        <div class="checkbox-item"><input type="checkbox" value="Kishoreganj" {{ in_array('Kishoreganj', getSelectedFilters('district')) ? 'checked' : '' }} class="locationCheckbox" id="loc-Kishoreganj" /> <label for="loc-Kishoreganj">Kishoreganj</label></div>
+                        <div class="checkbox-item"><input type="checkbox" value="Kurigram" {{ in_array('Kurigram', getSelectedFilters('district')) ? 'checked' : '' }} class="locationCheckbox" id="loc-Kurigram" /> <label for="loc-Kurigram">Kurigram</label></div>
+                        <div class="checkbox-item"><input type="checkbox" value="Kushtia" {{ in_array('Kushtia', getSelectedFilters('district')) ? 'checked' : '' }} class="locationCheckbox" id="loc-Kushtia" /> <label for="loc-Kushtia">Kushtia</label></div>
+                        <div class="checkbox-item"><input type="checkbox" value="Lakshmipur" {{ in_array('Lakshmipur', getSelectedFilters('district')) ? 'checked' : '' }} class="locationCheckbox" id="loc-Lakshmipur" /> <label for="loc-Lakshmipur">Lakshmipur</label></div>
+                        <div class="checkbox-item"><input type="checkbox" value="Lalmonirhat" {{ in_array('Lalmonirhat', getSelectedFilters('district')) ? 'checked' : '' }} class="locationCheckbox" id="loc-Lalmonirhat" /> <label for="loc-Lalmonirhat">Lalmonirhat</label></div>
+                        <div class="checkbox-item"><input type="checkbox" value="Madaripur" {{ in_array('Madaripur', getSelectedFilters('district')) ? 'checked' : '' }} class="locationCheckbox" id="loc-Madaripur" /> <label for="loc-Madaripur">Madaripur</label></div>
+                        <div class="checkbox-item"><input type="checkbox" value="Magura" {{ in_array('Magura', getSelectedFilters('district')) ? 'checked' : '' }} class="locationCheckbox" id="loc-Magura" /> <label for="loc-Magura">Magura</label></div>
+                        <div class="checkbox-item"><input type="checkbox" value="Manikganj" {{ in_array('Manikganj', getSelectedFilters('district')) ? 'checked' : '' }} class="locationCheckbox" id="loc-Manikganj" /> <label for="loc-Manikganj">Manikganj</label></div>
+                        <div class="checkbox-item"><input type="checkbox" value="Meherpur" {{ in_array('Meherpur', getSelectedFilters('district')) ? 'checked' : '' }} class="locationCheckbox" id="loc-Meherpur" /> <label for="loc-Meherpur">Meherpur</label></div>
+                        <div class="checkbox-item"><input type="checkbox" value="Moulvibazar" {{ in_array('Moulvibazar', getSelectedFilters('district')) ? 'checked' : '' }} class="locationCheckbox" id="loc-Moulvibazar" /> <label for="loc-Moulvibazar">Moulvibazar</label></div>
+                        <div class="checkbox-item"><input type="checkbox" value="Munshiganj" {{ in_array('Munshiganj', getSelectedFilters('district')) ? 'checked' : '' }} class="locationCheckbox" id="loc-Munshiganj" /> <label for="loc-Munshiganj">Munshiganj</label></div>
+                        <div class="checkbox-item"><input type="checkbox" value="Mymensingh" {{ in_array('Mymensingh', getSelectedFilters('district')) ? 'checked' : '' }} class="locationCheckbox" id="loc-Mymensingh" /> <label for="loc-Mymensingh">Mymensingh</label></div>
+                        <div class="checkbox-item"><input type="checkbox" value="Naogaon" {{ in_array('Naogaon', getSelectedFilters('district')) ? 'checked' : '' }} class="locationCheckbox" id="loc-Naogaon" /> <label for="loc-Naogaon">Naogaon</label></div>
+                        <div class="checkbox-item"><input type="checkbox" value="Narail" {{ in_array('Narail', getSelectedFilters('district')) ? 'checked' : '' }} class="locationCheckbox" id="loc-Narail" /> <label for="loc-Narail">Narail</label></div>
+                        <div class="checkbox-item"><input type="checkbox" value="Narayanganj" {{ in_array('Narayanganj', getSelectedFilters('district')) ? 'checked' : '' }} class="locationCheckbox" id="loc-Narayanganj" /> <label for="loc-Narayanganj">Narayanganj</label></div>
+                        <div class="checkbox-item"><input type="checkbox" value="Narsingdi" {{ in_array('Narsingdi', getSelectedFilters('district')) ? 'checked' : '' }} class="locationCheckbox" id="loc-Narsingdi" /> <label for="loc-Narsingdi">Narsingdi</label></div>
+                        <div class="checkbox-item"><input type="checkbox" value="Natore" {{ in_array('Natore', getSelectedFilters('district')) ? 'checked' : '' }} class="locationCheckbox" id="loc-Natore" /> <label for="loc-Natore">Natore</label></div>
+                        <div class="checkbox-item"><input type="checkbox" value="Netrokona" {{ in_array('Netrokona', getSelectedFilters('district')) ? 'checked' : '' }} class="locationCheckbox" id="loc-Netrokona" /> <label for="loc-Netrokona">Netrokona</label></div>
+                        <div class="checkbox-item"><input type="checkbox" value="Nilphamari" {{ in_array('Nilphamari', getSelectedFilters('district')) ? 'checked' : '' }} class="locationCheckbox" id="loc-Nilphamari" /> <label for="loc-Nilphamari">Nilphamari</label></div>
+                        <div class="checkbox-item"><input type="checkbox" value="Noakhali" {{ in_array('Noakhali', getSelectedFilters('district')) ? 'checked' : '' }} class="locationCheckbox" id="loc-Noakhali" /> <label for="loc-Noakhali">Noakhali</label></div>
+                        <div class="checkbox-item"><input type="checkbox" value="Pabna" {{ in_array('Pabna', getSelectedFilters('district')) ? 'checked' : '' }} class="locationCheckbox" id="loc-Pabna" /> <label for="loc-Pabna">Pabna</label></div>
+                        <div class="checkbox-item"><input type="checkbox" value="Panchagarh" {{ in_array('Panchagarh', getSelectedFilters('district')) ? 'checked' : '' }} class="locationCheckbox" id="loc-Panchagarh" /> <label for="loc-Panchagarh">Panchagarh</label></div>
+                        <div class="checkbox-item"><input type="checkbox" value="Patuakhali" {{ in_array('Patuakhali', getSelectedFilters('district')) ? 'checked' : '' }} class="locationCheckbox" id="loc-Patuakhali" /> <label for="loc-Patuakhali">Patuakhali</label></div>
+                        <div class="checkbox-item"><input type="checkbox" value="Pirojpur" {{ in_array('Pirojpur', getSelectedFilters('district')) ? 'checked' : '' }} class="locationCheckbox" id="loc-Pirojpur" /> <label for="loc-Pirojpur">Pirojpur</label></div>
+                        <div class="checkbox-item"><input type="checkbox" value="Rajbari" {{ in_array('Rajbari', getSelectedFilters('district')) ? 'checked' : '' }} class="locationCheckbox" id="loc-Rajbari" /> <label for="loc-Rajbari">Rajbari</label></div>
+                        <div class="checkbox-item"><input type="checkbox" value="Rajshahi" {{ in_array('Rajshahi', getSelectedFilters('district')) ? 'checked' : '' }} class="locationCheckbox" id="loc-Rajshahi" /> <label for="loc-Rajshahi">Rajshahi</label></div>
+                        <div class="checkbox-item"><input type="checkbox" value="Rangamati" {{ in_array('Rangamati', getSelectedFilters('district')) ? 'checked' : '' }} class="locationCheckbox" id="loc-Rangamati" /> <label for="loc-Rangamati">Rangamati</label></div>
+                        <div class="checkbox-item"><input type="checkbox" value="Rangpur" {{ in_array('Rangpur', getSelectedFilters('district')) ? 'checked' : '' }} class="locationCheckbox" id="loc-Rangpur" /> <label for="loc-Rangpur">Rangpur</label></div>
+                        <div class="checkbox-item"><input type="checkbox" value="Satkhira" {{ in_array('Satkhira', getSelectedFilters('district')) ? 'checked' : '' }} class="locationCheckbox" id="loc-Satkhira" /> <label for="loc-Satkhira">Satkhira</label></div>
+                        <div class="checkbox-item"><input type="checkbox" value="Shariatpur" {{ in_array('Shariatpur', getSelectedFilters('district')) ? 'checked' : '' }} class="locationCheckbox" id="loc-Shariatpur" /> <label for="loc-Shariatpur">Shariatpur</label></div>
+                        <div class="checkbox-item"><input type="checkbox" value="Sherpur" {{ in_array('Sherpur', getSelectedFilters('district')) ? 'checked' : '' }} class="locationCheckbox" id="loc-Sherpur" /> <label for="loc-Sherpur">Sherpur</label></div>
+                        <div class="checkbox-item"><input type="checkbox" value="Sirajganj" {{ in_array('Sirajganj', getSelectedFilters('district')) ? 'checked' : '' }} class="locationCheckbox" id="loc-Sirajganj" /> <label for="loc-Sirajganj">Sirajganj</label></div>
+                        <div class="checkbox-item"><input type="checkbox" value="Sunamganj" {{ in_array('Sunamganj', getSelectedFilters('district')) ? 'checked' : '' }} class="locationCheckbox" id="loc-Sunamganj" /> <label for="loc-Sunamganj">Sunamganj</label></div>
+                        <div class="checkbox-item"><input type="checkbox" value="Sylhet" {{ in_array('Sylhet', getSelectedFilters('district')) ? 'checked' : '' }} class="locationCheckbox" id="loc-Sylhet" /> <label for="loc-Sylhet">Sylhet</label></div>
+                        <div class="checkbox-item"><input type="checkbox" value="Tangail" {{ in_array('Tangail', getSelectedFilters('district')) ? 'checked' : '' }} class="locationCheckbox" id="loc-Tangail" /> <label for="loc-Tangail">Tangail</label></div>
+                        <div class="checkbox-item"><input type="checkbox" value="Thakurgaon" {{ in_array('Thakurgaon', getSelectedFilters('district')) ? 'checked' : '' }} class="locationCheckbox" id="loc-Thakurgaon" /> <label for="loc-Thakurgaon">Thakurgaon</label></div>
                     </div>
                     <input type="hidden" class="filter-payload" name="filters[district]" value="[]">
                 </div>
@@ -155,7 +159,7 @@
                         <input type="text" class="form-control search-box searchBar" placeholder="Search...">
                         @foreach($industries  as $industry)
                             <div class="checkbox-item">
-                                <input type="checkbox" class="locationCheckbox" id="ind-{{ $industry->id }}" value="{{ $industry->slug }}">
+                                <input type="checkbox" class="locationCheckbox" id="ind-{{ $industry->id }}" {{ in_array($industry->slug, getSelectedFilters('industry')) ? 'checked' : '' }} value="{{ $industry->slug }}">
                                 <label for="ind-{{ $industry->id }}">{{ $industry->name }}</label>
                             </div>
 
@@ -180,7 +184,7 @@
                         <input type="text" class="form-control search-box searchBar" placeholder="Search...">
                         @foreach($fieldOfStudies  as $fieldOfStudy)
                             <div class="checkbox-item">
-                                <input type="checkbox" class="locationCheckbox" id="fos-{{ $fieldOfStudy->id }}" value="{{ $fieldOfStudy->slug }}">
+                                <input type="checkbox" class="locationCheckbox" {{ in_array($fieldOfStudy->slug, getSelectedFilters('field_of_study')) ? 'checked' : '' }} id="fos-{{ $fieldOfStudy->id }}" value="{{ $fieldOfStudy->slug }}">
                                 <label for="fos-{{ $fieldOfStudy->id }}">{{ $fieldOfStudy->field_name }}</label>
                             </div>
                         @endforeach
@@ -206,7 +210,7 @@
                             <span style="font-weight: bold">{{ $skillCategory->category_name }}</span>
                             @foreach($skillCategory->skills as $skill)
                                 <div class="checkbox-item">
-                                    <input type="checkbox" class="locationCheckbox" id="skill-{{ $skill->id }}" value="{{ $skill->slug }}">
+                                    <input type="checkbox" class="locationCheckbox" {{ in_array($skill->slug, getSelectedFilters('skills')) ? 'checked' : '' }} id="skill-{{ $skill->id }}" value="{{ $skill->slug }}">
                                     <label for="skill-{{ $skill->id }}">{{ $skill->skill_name }}</label>
                                 </div>
                             @endforeach
@@ -232,11 +236,11 @@
                             <input type="text" class="form-control search-box searchBar" placeholder="Search...">
 
                             <div class="checkbox-item">
-                                <input type="checkbox" class="locationCheckbox" id="co-male" value="male">
+                                <input type="checkbox" class="locationCheckbox" {{ in_array('male', getSelectedFilters('gender')) ? 'checked' : '' }} id="co-male" value="male">
                                 <label for="co-male">Male</label>
                             </div>
                             <div class="checkbox-item">
-                                <input type="checkbox" class="locationCheckbox" id="co-female" value="female">
+                                <input type="checkbox" class="locationCheckbox" {{ in_array('female', getSelectedFilters('gender')) ? 'checked' : '' }} id="co-female" value="female">
                                 <label for="co-female">Female</label>
                             </div>
                         </div>
@@ -245,21 +249,21 @@
                     <!-- ===== Filter #7: CGPA ===== -->
                     <div class="custom-select" data-filter-key="cgpa" style="max-width: 100px!important;" data-placeholder="CGPA">
 {{--                        <label class="custom-select-label">CGPA</label>--}}
-                        <input type="text" class="form-control select-box locationSearch" style="background-image: none" name="cgpa" placeholder="CGPA" >
+                        <input type="text" class="form-control select-box locationSearch" value="{{ request('cgpa') }}" style="background-image: none" name="cgpa" placeholder="CGPA" >
                     </div>
                     <!-- ===== Filter #7: Experience ===== -->
                     <div class="custom-select" data-filter-key="experience" style="max-width: 130px!important;" data-placeholder="Experience">
 {{--                        <label class="custom-select-label">Experience</label>--}}
-                        <input type="text" class="form-control select-box locationSearch" style="background-image: none" name="experience" placeholder="Experience" >
+                        <input type="text" class="form-control select-box locationSearch" style="background-image: none" value="{{ request('experience') ?? '' }}" name="experience" placeholder="Experience" >
                     </div>
                     <!-- ===== Filter #7: Search Text ===== -->
                     <div class="custom-select" data-filter-key="search_text" style="max-width: 166px!important;" data-placeholder="Search Text">
 {{--                        <label class="custom-select-label">Search Text</label>--}}
-                        <input type="text" class="form-control select-box locationSearch" style="background-image: none; max-width: 250px!important;" name="search_text" placeholder="Search by text" >
+                        <input type="text" class="form-control select-box locationSearch" value="{{ request('search_text') ?? '' }}" style="background-image: none; max-width: 250px!important;" name="search_text" placeholder="Search by text" >
                     </div>
 
                 <!-- Clear All button (resets the filter selections) -->
-                    <button type="submit" class="clear-all-btn border btn d-flex" style="border: 1px solid gray" id="clearAllBtn">Search</button>
+                    <button type="submit" class="clear-all-btn border btn d-flex" style="border: 1px solid gray" id="saveBtn">Search</button>
                     <button type="button" class="clear-all-btn border btn d-flex" style="border: 1px solid gray" id="clearAllBtn">Clear All</button>
                 </form>
             </div>
@@ -274,28 +278,30 @@
         <div class="row row-cols-1 row-cols-md-3 g-3 headhuntPP-card">
             <!-- Candidate Card Template -->
             @forelse($employees as $employee)
-                <div class="col">
-                    <div class="card h-100 shadow-sm">
-                        <div class="card-body">
-                            <div class="d-flex align-items-center mb-3">
-                                <img src="{{ asset($employee->profile_image ?? '/frontend/user-vector-img.jpg') }}" alt="{{ $employee->name ?? '' }}" class="rounded-circle me-3" style="width: 56px; height: 56px; object-fit: cover;" />
-{{--                                <span class="badge   ms-auto fullTime d-flex align-items-center"><img src="{{ asset('/') }}frontend/employer/images/employersHome/fulltime-dot.png" alt="" class="me-1">Full-time</span>--}}
-                            </div>
-                            <h5 class="card-title fw-bold mb-1">{{ $employee->name ?? 'Employee Name' }}</h5>
-                            <p class="card-text mb-2" style="font-size: 14px;">
-                                {{ $employee->profile_title ?? 'Employee Profile Title' }}
-                            </p>
-                            <p class="text-muted mb-1" style="font-size: 13px;">
-                                <img src="{{ asset('/') }}frontend/employer/images/employersHome/profile location.png" alt="Location" style="width: 20px;" />
-                                {!! $employee->address ?? 'Employee Address' !!}
-                            </p>
-                            <div class="d-flex flex-wrap gap-2 mt-3">
-                                <span class="badge bg-light text-dark">{{ $employee?->employeeWorkExperiences[0]?->duration ?? 0 }} yrs</span>
-                                <span class="badge bg-light text-dark">{{ $employee?->employeeEducations[0]?->cgpa ?? 0 }} CGPA</span>
-{{--                                <span class="badge bg-light text-dark">Developer</span>--}}
+                <div class="col p-1">
+                    <a href="{{ route('employee-profile', $employee->id) }}" style="text-decoration: none">
+                        <div class="card h-100 shadow-sm border-0">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center mb-3">
+                                    <img src="{{ asset($employee->profile_image ?? '/frontend/user-vector-img.jpg') }}" alt="{{ $employee->name ?? '' }}" class="rounded-circle me-3" style="width: 56px; height: 56px; object-fit: cover;" />
+                                    {{--                                <span class="badge   ms-auto fullTime d-flex align-items-center"><img src="{{ asset('/') }}frontend/employer/images/employersHome/fulltime-dot.png" alt="" class="me-1">Full-time</span>--}}
+                                </div>
+                                <h5 class="card-title fw-bold mb-1">{{ $employee->name ?? 'Employee Name' }}</h5>
+                                <p class="card-text mb-2" style="font-size: 14px;">
+                                    {{ $employee->profile_title ?? 'Employee Profile Title' }}
+                                </p>
+                                <p class="text-muted mb-1" style="font-size: 13px;">
+                                    <img src="{{ asset('/') }}frontend/employer/images/employersHome/profile location.png" alt="Location" style="width: 20px;" />
+                                    {!! $employee->address ?? 'Employee Address' !!}
+                                </p>
+                                <div class="d-flex flex-wrap gap-2 mt-3">
+                                    <span class="badge bg-light text-dark">{{ $employee?->employeeWorkExperiences[0]?->duration ?? 0 }} yrs</span>
+                                    <span class="badge bg-light text-dark">{{ $employee?->employeeEducations[0]?->cgpa ?? 0 }} CGPA</span>
+                                    {{--                                <span class="badge bg-light text-dark">Developer</span>--}}
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
             @empty
                 <div class="col-11 mx-auto" style="width: 91.66%">
@@ -304,7 +310,7 @@
                             <p>
                                 <img src="{{ asset('/frontend/think.svg') }}" alt="empty-img" class="" style="max-height: 300px; min-width: 300px">
                             </p>
-                            <p class="text-danger text-center f-s-20 fw-bold p-5" style="margin-top: 75px">Sorry!! No job found.</p>
+                            <p class="text-danger text-center f-s-20 fw-bold p-5" style="margin-top: 75px">Sorry!! No Employee found.</p>
                         </div>
 
                     </div>
@@ -331,6 +337,149 @@
 
 {{--    <link rel="stylesheet" href="{{ asset('/frontend/employee/headerStyle.css') }}">--}}
     <link rel="stylesheet" href="{{ asset('/frontend/employee/mainstyle.css') }}">
-    <script src="{{ asset('/frontend/employee/script.js') }}"></script>
+{{--    <script src="{{ asset('/frontend/employee/script.js') }}"></script>--}}
+    <script>
+        /* =================================================
+   JOBS PAGE – FILTER DROPDOWNS (labels, payloads, UX)
+   - Fixed to properly send array data to server
+================================================= */
+        window.addEventListener('DOMContentLoaded', function () {
+            const filterWrapper = document.querySelector('.customWrapper');
+            if (!filterWrapper) return; // page guard
+
+            // Initialize all dropdown widgets
+            document.querySelectorAll('.custom-select').forEach(initDropdown);
+
+            // Clear All
+            const clearBtn = document.getElementById('clearAllBtn');
+            if (clearBtn) clearBtn.addEventListener('click', resetAllDropdowns);
+
+            function initDropdown(dropdownEl) {
+                const searchBar        = dropdownEl.querySelector('.searchBar');
+                const panel            = dropdownEl.querySelector('.locationDropdown');
+                const input            = dropdownEl.querySelector('.locationSearch');
+                const dropdownMenu     = dropdownEl.querySelector('.dropdown-menu');
+                const hiddenPayload    = dropdownEl.querySelector('.filter-payload');
+                const filterKey        = dropdownEl.dataset.filterKey || 'filter';
+                const placeholderText  = dropdownEl.dataset.placeholder || 'Select...';
+
+                if (!panel || !input) return;
+
+                // Initial UI: no default selection → show placeholder
+                input.value = '';
+                input.placeholder = placeholderText;
+                input.classList.remove('select-boxCustom');
+
+                // Toggle open/close
+                input.addEventListener('click', () => {
+                    const isOpen = panel.style.display === 'block';
+                    document.querySelectorAll('.locationDropdown').forEach(dd => dd.style.display = 'none');
+                    panel.style.display = isOpen ? 'none' : 'block';
+                });
+
+                // Search filter
+                if (searchBar) {
+                    searchBar.addEventListener('input', (e) => {
+                        const q = e.target.value.toLowerCase();
+                        dropdownEl.querySelectorAll('.checkbox-item').forEach(item => {
+                            item.style.display = item.textContent.toLowerCase().includes(q) ? 'block' : 'none';
+                        });
+                    });
+                }
+
+                // Update selected labels + UI + hidden payload
+                const updateSelected = () => {
+                    const values = Array.from(dropdownEl.querySelectorAll('.locationCheckbox'))
+                        .filter(cb => cb.checked)
+                        .map(cb => cb.value)
+                        .filter(Boolean);
+
+                    // Get the LABELS from the checked checkboxes for the visible input field
+                    const labels = Array.from(dropdownEl.querySelectorAll('.locationCheckbox'))
+                        .filter(cb => cb.checked)
+                        .map(cb => cb.nextElementSibling?.textContent?.trim() || '')
+                        .filter(Boolean);
+
+                    // Display text + active bg
+                    if (labels.length) {
+                        input.value = labels.join(', ');
+                        input.classList.add('select-boxCustom');
+                    } else {
+                        input.value = '';
+                        input.placeholder = placeholderText;
+                        input.classList.remove('select-boxCustom');
+                    }
+
+                    // FIXED: Remove existing hidden inputs for this filter
+                    const existingInputs = dropdownEl.querySelectorAll('input[type="hidden"][data-filter-value]');
+                    existingInputs.forEach(inp => inp.remove());
+
+                    // FIXED: Create separate hidden inputs for each selected value
+                    // This allows Laravel to receive them as an array
+                    if (values.length > 0) {
+                        values.forEach(value => {
+                            const hiddenInput = document.createElement('input');
+                            hiddenInput.type = 'hidden';
+                            hiddenInput.name = `filters[${filterKey}][]`; // Note the [] for array
+                            hiddenInput.value = value;
+                            hiddenInput.setAttribute('data-filter-value', 'true');
+                            dropdownEl.appendChild(hiddenInput);
+                        });
+                    }
+
+                    // Remove the old single hidden input if it exists
+                    if (hiddenPayload) {
+                        hiddenPayload.remove();
+                    }
+
+                    // Optional: live object & event for backend hooks
+                    window.JOB_FILTERS = window.JOB_FILTERS || {};
+                    window.JOB_FILTERS[filterKey] = labels;
+                    document.dispatchEvent(new CustomEvent('filters:change', { detail: { ...window.JOB_FILTERS } }));
+                };
+
+                // Bind all checkboxes
+                dropdownEl.querySelectorAll('.locationCheckbox')
+                    .forEach(cb => cb.addEventListener('change', updateSelected));
+
+                // Close when clicking outside
+                window.addEventListener('click', (e) => {
+                    if (!e.target.closest('.custom-select')) {
+                        panel.style.display = 'none';
+                    }
+                });
+
+                // Allow content to define height
+                if (dropdownMenu) dropdownMenu.style.maxHeight = 'none';
+
+                // Ensure clean start
+                updateSelected();
+            }
+
+            function resetAllDropdowns() {
+                document.querySelectorAll('.custom-select').forEach(dropdownEl => {
+                    dropdownEl.querySelectorAll('.locationCheckbox').forEach(cb => (cb.checked = false));
+
+                    // Remove all dynamic hidden inputs
+                    dropdownEl.querySelectorAll('input[type="hidden"][data-filter-value]').forEach(inp => inp.remove());
+
+                    const input = dropdownEl.querySelector('.locationSearch');
+                    const placeholderText = dropdownEl.dataset.placeholder || 'Select...';
+                    if (input) {
+                        input.value = '';
+                        input.placeholder = placeholderText;
+                        input.classList.remove('select-boxCustom');
+                    }
+
+                    const panel = dropdownEl.querySelector('.locationDropdown');
+                    if (panel) panel.style.display = 'none';
+                });
+
+                // Reset live object + event
+                window.JOB_FILTERS = {};
+                document.dispatchEvent(new CustomEvent('filters:change', { detail: {} }));
+            }
+        });
+    </script>
 
 @endpush

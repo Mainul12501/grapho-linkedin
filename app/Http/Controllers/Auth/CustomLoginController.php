@@ -382,6 +382,7 @@ class CustomLoginController extends Controller
                 'jobTypes'  => JobType::where(['status' => 1])->get(['id', 'name']),
             ];
         }
+
         return ViewHelper::checkViewForApi($data, 'frontend.auth.user-profile-update');
         return view('frontend.auth.user-profile-update', $data);
     }

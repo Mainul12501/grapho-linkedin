@@ -17,7 +17,7 @@
                             <div class="d-flex justify-content-between align-items-start flex-wrap gap-2 mb-2">
                                 <!-- Heading -->
                                 <div>
-                                    <h5 class="fw-bold mb-1">My Jobs</h5>
+                                    <h5 class="fw-bold mb-1 f-s-28">My Jobs</h5>
                                     <p class="text-muted small mb-0">See all your posted jobs here</p>
                                 </div>
                                 <!-- Post a job button -->
@@ -33,30 +33,32 @@
                             <!-- ✅ Mobile Search -->
                             <div class="d-block d-md-none mb-3">
                                 <div class="input-group">
-        <span class="input-group-text bg-white border-end-0">
-          <img src="{{ asset('/') }}frontend/employer/images/employersHome/search 1.png" alt="">
-        </span>
+                                    <span class="input-group-text bg-white border-end-0">
+                                      <img src="{{ asset('/') }}frontend/employer/images/employersHome/search 1.png" alt="">
+                                    </span>
                                     <input type="text" class="form-control border-start-0" placeholder="Search jobs (mobile)" />
                                 </div>
                             </div>
 
                             <!-- ✅ Desktop Search -->
-                            <div class="d-none d-md-flex justify-content-end mb-3">
-                                <div style="max-width: 320px; width: 100%;">
-                                    <div class="input-group">
-          <span class="input-group-text bg-white border-end-0">
-          <img src="{{ asset('/') }}frontend/employer/images/employersHome/search 1.png" alt="">
-          </span>
-                                        <input type="text" class="form-control border-start-0" placeholder="Search jobs (desktop)" />
-                                    </div>
+                            <div class="d-none d-md-flex justify-content-between align-items-center gap-3 mb-3 flex-wrap">
+                                <!-- Filter Buttons (Left Side) -->
+                                <div id="t2" class="d-flex flex-wrap gap-2">
+                                    <a href="{{ route('employer.my-jobs', ['job_status' => 'open']) }}"><button class="btn {{  request('job_status') != 'closed' ? 'btn-dark' : 'btn-light' }} btn-sm rounded-pill px-3">Open Jobs</button></a>
+                                    <a href="{{ route('employer.my-jobs', ['job_status' => 'closed']) }}"><button class="btn  {{ request('job_status') && request('job_status') == 'closed' ? 'btn-dark text-white' : 'btn-light text-muted' }} btn-sm rounded-pill px-3 ">Closed Jobs</button></a>
                                 </div>
-                            </div>
 
-                            <!-- Filter Buttons -->
-                            <div class="d-flex flex-wrap gap-2">
-                                <button class="btn btn-dark btn-sm rounded-pill px-3">Open Jobs</button>
-{{--                                <button class="btn btn-light btn-sm rounded-pill px-3 text-muted">Drafts</button>--}}
-{{--                                <button class="btn btn-light btn-sm rounded-pill px-3 text-muted">Archives</button>--}}
+                                <!-- Desktop Search (Right Side) -->
+                                <div id="t1" style="max-width: 320px; width: 100%;">
+                                    <form action="" id="searchForm">
+                                        <div class="input-group">
+                                          <span class="input-group-text bg-white border-end-0" onclick="document.getElementById('searchForm').submit();">
+                                            <img src="{{ asset('/') }}frontend/employer/images/employersHome/search 1.png" alt="">
+                                          </span>
+                                            <input type="text" class="form-control border-start-0" name="search_text" placeholder="Search jobs " />
+                                        </div>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -77,7 +79,7 @@
                                 <article class="job-card d-flex flex-wrap justify-content-between align-items-start gap-3">
 
                                     <!-- ✅ Modal Trigger Area -->
-                                    <div class="job-main clickable-area flex-grow-1 show-job-details" data-job-id="{{ $publishedJob->id }}" {{--data-bs-toggle="modal" data-bs-target="#jobDetailsModal"--}} style="cursor: pointer;">
+                                    <div class="job-main clickable-area  show-job-details" data-job-id="{{ $publishedJob->id }}" {{--data-bs-toggle="modal" data-bs-target="#jobDetailsModal"--}} style="cursor: pointer;">
                                         <div class="job-details">
                                             <h6 class="job-title fw-semibold mb-2">{{ $publishedJob->job_title ?? 'Job Title' }}</h6>
                                             <div class="job-badges d-flex flex-wrap gap-2 mb-2">
@@ -86,17 +88,19 @@
 {{--                                                <span class="badge bg-light text-secondary">Day Shift</span>--}}
                                             </div>
                                         </div>
-                                        <div class="job-info text-muted small">
-                                            <div class="mb-1">
-                                                <img src="{{ asset('/') }}frontend/employer/images/employersHome/postdOn.png" class="me-1" alt=""> Posted on: {{ $publishedJob->created_at->format('d M, Y') ?? '16 Feb, 2025' }}
-                                            </div>
-                                            <div class="mb-1">
-                                                <img src="{{ asset('/') }}frontend/employer/images/employersHome/Dedline.png" class="me-1" alt=""> Deadline: {{ \Illuminate\Support\Carbon::parse($publishedJob->deadline)->format('d M, Y') ?? '16 Feb, 2025' }}
-                                            </div>
-                                            <div>
-                                                <img src="{{ asset('/') }}frontend/employer/images/employersHome/24application.png" class="me-1" alt="">
-                                                <a href="{{ route('employer.my-job-applicants', ['jobTask' => $publishedJob->id]) }}" class="text-decoration-underline">{{ $publishedJob->employeeAppliedJobs->count() ?? 0 }} Applicants</a>
-                                            </div>
+
+                                    </div>
+
+                                    <div class="job-info text-muted small">
+                                        <div class="mb-1">
+                                            <img src="{{ asset('/') }}frontend/employer/images/employersHome/postdOn.png" class="me-1" alt=""> Posted on: {{ $publishedJob->created_at->format('d M, Y') ?? '16 Feb, 2025' }}
+                                        </div>
+                                        <div class="mb-1">
+                                            <img src="{{ asset('/') }}frontend/employer/images/employersHome/Dedline.png" class="me-1" alt=""> Deadline: {{ \Illuminate\Support\Carbon::parse($publishedJob->deadline)->format('d M, Y') ?? '16 Feb, 2025' }}
+                                        </div>
+                                        <div>
+                                            <img src="{{ asset('/') }}frontend/employer/images/employersHome/24application.png" class="me-1" alt="">
+                                            <a href="{{ route('employer.my-job-applicants', ['jobTask' => $publishedJob->id]) }}" class="text-decoration-underline">{{ $publishedJob->employeeAppliedJobs->count() ?? 0 }} Applicants</a>
                                         </div>
                                     </div>
 
@@ -121,8 +125,21 @@
                                 </article>
                             </div>
                         @empty
-                            <div class="col-12">
-                                <p style="font-size: 36px;">No Published Job yet</p>
+                            <div class="job-card "  style="min-height: 570px; justify-content: center!important;">
+                                <div class="row">
+                                    <div class="col-md-11 mx-auto">
+                                        <div class="card card-body border-0">
+                                            <div class="d-flex text-center align-content-center">
+                                                <p>
+                                                    <img src="{{ asset('/frontend/think.svg') }}" alt="empty-img" class="" style="max-height: 300px; min-width: 300px">
+                                                </p>
+                                                <p class="text-danger text-center f-s-20 fw-bold p-5" style="margin-top: 10px">Sorry!!
+                                                    <br> No Available job Found.</p>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         @endforelse
 
@@ -283,37 +300,39 @@
                     </div>
                 </div>
 
-                <!-- Company Info -->
-                <div class="mb-2">
-                    <img id="detailsCompanyLogo" src="{{ asset('/') }}frontend/employer/images/employersHome/UCB logo.png" alt="company logo" style="height: 30px; border-radius: 50%">
-                    <span class="fw-semibold" id="detailsCompanyName">United Commercial Bank PLC</span> ·
-                    <span class="text-muted" id="detailsCompanyAddress">Gulshan, Dhaka</span>
+                <div id="printJobDetailsHere">
+                    <!-- Company Info -->
+                    <div class="mb-2">
+                        <img id="detailsCompanyLogo" src="{{ asset('/') }}frontend/employer/images/employersHome/UCB logo.png" alt="company logo" style="height: 30px; border-radius: 50%">
+                        <span class="fw-semibold" id="detailsCompanyName">United Commercial Bank PLC</span> ·
+                        <span class="text-muted" id="detailsCompanyAddress">Gulshan, Dhaka</span>
+                    </div>
+
+                    <!-- Job Title -->
+                    <h4 class="fw-bold mb-3" id="detailsJobTitle">Senior Officer, Corporate Banking</h4>
+
+                    <!-- Tags -->
+                    <div class="d-flex flex-wrap gap-2 mb-4">
+                        <span class="badge bg-light text-dark fw-medium" id="detailsJobType">Full Time</span>
+                        <span class="badge bg-light text-dark fw-medium" id="detailsJobLocationType">On-Site</span>
+                        {{--                    <span class="badge bg-light text-dark fw-medium">Day Shift</span>--}}
+                    </div>
+
+                    <!-- About -->
+                    <h6 class="fw-semibold mb-2" >About <span id="detailsAboutCompanyName">UCB</span></h6>
+                    <p class="text-muted" id="detailsCompanyOverview" style="line-height: 1.6;">
+                        Be part of the world's most successful, purpose-led business. Work with brands that are well-loved around the world, that improve the lives of our consumers and the communities around us. We promote innovation, big and small, to make our business win and grow; and we believe in business as a force for good. Unleash your curiosity, challenge ideas and disrupt processes; use your energy to make this happen.
+                        <br><br>
+                        Our brilliant business leaders and colleagues provide mentorship and inspiration, so you can be at your best. Every day, nine out of ten Indian households use our products to feel good, look good and get more out of life – giving us a unique opportunity to build a brighter future.
+                    </p>
+
+                    <!-- Requirements -->
+                    <h6 class="fw-semibold mt-4 mb-2">Job Requirements</h6>
+                    <ul class="text-muted" id="detailsJobDescription" style="line-height: 1.8;">
+                        <li>Analyse internal and external data to identify geography-wise issues/opportunities and action upon them.</li>
+                        <li>Work with media teams and other stakeholders to deploy effective communication for Surf across traditional and new-age media platforms.</li>
+                    </ul>
                 </div>
-
-                <!-- Job Title -->
-                <h4 class="fw-bold mb-3" id="detailsJobTitle">Senior Officer, Corporate Banking</h4>
-
-                <!-- Tags -->
-                <div class="d-flex flex-wrap gap-2 mb-4">
-                    <span class="badge bg-light text-dark fw-medium" id="detailsJobType">Full Time</span>
-                    <span class="badge bg-light text-dark fw-medium" id="detailsJobLocationType">On-Site</span>
-{{--                    <span class="badge bg-light text-dark fw-medium">Day Shift</span>--}}
-                </div>
-
-                <!-- About -->
-                <h6 class="fw-semibold mb-2" >About <span id="detailsAboutCompanyName">UCB</span></h6>
-                <p class="text-muted" id="detailsCompanyOverview" style="line-height: 1.6;">
-                    Be part of the world's most successful, purpose-led business. Work with brands that are well-loved around the world, that improve the lives of our consumers and the communities around us. We promote innovation, big and small, to make our business win and grow; and we believe in business as a force for good. Unleash your curiosity, challenge ideas and disrupt processes; use your energy to make this happen.
-                    <br><br>
-                    Our brilliant business leaders and colleagues provide mentorship and inspiration, so you can be at your best. Every day, nine out of ten Indian households use our products to feel good, look good and get more out of life – giving us a unique opportunity to build a brighter future.
-                </p>
-
-                <!-- Requirements -->
-                <h6 class="fw-semibold mt-4 mb-2">Job Requirements</h6>
-                <ul class="text-muted" id="detailsJobDescription" style="line-height: 1.8;">
-                    <li>Analyse internal and external data to identify geography-wise issues/opportunities and action upon them.</li>
-                    <li>Work with media teams and other stakeholders to deploy effective communication for Surf across traditional and new-age media platforms.</li>
-                </ul>
             </div>
         </div>
     </div>
@@ -336,14 +355,14 @@
                         <!-- Modal Header -->
                         <div class="d-flex align-items-center gap-2 mb-4">
                             <img src="{{ asset('/') }}frontend/employer/images/employersHome/leftarrow.png" alt="" class="me-2" style="cursor: default;">
-                            <h5 class="mb-0 fw-semibold">Post a job</h5>
+                            <h5 class="mb-0 fw-semibold">Post job</h5>
                             <button type="button" class="btn-close position-absolute" style="right: 4%;" data-bs-dismiss="modal"></button>
                         </div>
 
                         <!-- Job Title -->
                         <div class="mb-4">
                             <label class="form-label fw-semibold">Job title</label>
-                            <input type="text" class="form-control" name="job_title" placeholder="Senior Officer, Corporate Banking">
+                            <input type="text" class="form-control" required name="job_title" placeholder="Job Title here">
                         </div>
 
                         <!-- Job Type -->
@@ -370,7 +389,7 @@
 
                         <!-- Footer Buttons -->
                         <div class="d-flex justify-content-between align-items-center mt-4">
-                            <button class="btn btn-outline-dark px-4 py-2 rounded-3" data-bs-dismiss="modal">Cancel</button>
+                            <button class="btn btn-outline-dark px-4 py-2 rounded-3" type="button" data-bs-dismiss="modal">Cancel</button>
                             <button id="continueToStep2" type="button" class="btn btn-warning text-dark fw-semibold px-4 py-2 rounded-3">Continue</button>
                         </div>
                     </div>
@@ -382,12 +401,12 @@
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="d-flex align-items-center gap-2 backToStepOne" id="backToStepOne" style="cursor:pointer">
                                     <img src="{{ asset('/') }}frontend/employee/images/authentication images/leftArrow.png" alt="Back" style="width:20px; height:20px;">
-                                    <h5 class="fw-bold mb-0">Post a job</h5>
+                                    <h5 class="fw-bold mb-0">Post job</h5>
                                 </div>
                                 <!-- Button triggers modal -->
-                                <button type="button" class="btn btn-warning text-dark fw-semibold px-4 py-2 rounded-3 show-review-btn" data-modal-id="createJobModal" {{--data-bs-toggle="modal" data-bs-target="#jobDetailsModal"--}}>
-                                    Review & Post
-                                </button>
+{{--                                <button type="button" class="btn btn-warning text-dark fw-semibold px-4 py-2 rounded-3 show-review-btn" data-modal-id="createJobModal" --}}{{--data-bs-toggle="modal" data-bs-target="#jobDetailsModal"--}}{{-->--}}
+{{--                                    Review & Post--}}
+{{--                                </button>--}}
 {{--                                <button type="submit" class="btn btn-warning text-dark fw-semibold px-4 py-2 rounded-3" data-bs-toggle="modal" data-bs-target="#jobDetailsModal">--}}
 {{--                                    Post Job--}}
 {{--                                </button>--}}
@@ -401,8 +420,8 @@
 
 
                             <!-- Main Job Info Card -->
-                            <div class="container mb-4">
-                                <div class="bg-white rounded-4 p-4 shadow-sm">
+                            <div class="container px-0 border-bottom">
+                                <div class="bg-white p-4 shadow-sm" style="border-radius: 0px">
                                     <div class="d-flex justify-content-between flex-wrap gap-3">
                                         <div>
                                             <h5 class="fw-semibold mb-2"><span id="formJobTitle">IT Support, Corporate Banking</span></h5>
@@ -419,23 +438,23 @@
                             </div>
 
                             <!-- Experience Card -->
-                            <div class="container mb-4">
-                                <div class="bg-white rounded-4 p-4 shadow-sm">
+                            <div class="container px-0 border-bottom">
+                                <div class="bg-white  p-4 shadow-sm" style="border-radius: 0px">
                                     <h6 class="fw-semibold mb-3">Required years of experience</h6>
                                     <div class="d-flex flex-wrap gap-2">
                                         <input type="radio" class="btn-check" name="required_experience" id="exp-any" value="Any" autocomplete="off" checked>
-                                        <label class="btn btn-outline-warning" for="exp-any">Any</label>
+                                        <label class="btn btn-outline-warning" style="color: black" for="exp-any">Any</label>
 
                                         <input type="radio" class="btn-check" name="required_experience" id="exp-1to3" value="1–3 yrs" autocomplete="off">
-                                        <label class="btn btn-outline-warning" for="exp-1to3">1–3 yrs</label>
+                                        <label class="btn btn-outline-warning" style="color: black" for="exp-1to3">1–3 yrs</label>
 
                                         <input type="radio" class="btn-check" name="required_experience" id="exp-0" value="0" autocomplete="off">
-                                        <label class="btn btn-outline-warning" for="exp-0">N/A</label>
+                                        <label class="btn btn-outline-warning" style="color: black" for="exp-0">N/A</label>
 
                                         <input type="radio" class="btn-check" name="required_experience" id="custom" value="custom" autocomplete="off">
-                                        <label id="showCustomExperienceField" class="btn btn-outline-warning" for="custom">Custom</label>
+                                        <label id="showCustomExperienceField" style="color: black" class="btn btn-outline-warning" for="custom">Custom</label>
                                         <span id="customExperienceField" style="display: none">
-                                                            <input type="text" style="width: 60px; background-color: #f8ffbe;" class="btn btn-outline-primary " name="exp_range_start"> to <input type="text" style="width: 60px; background-color: darkgrey;" class="btn btn-outline-primary " name="exp_range_end"> Years
+                                                            <input type="text" style="width: 60px; background-color: #f8ffbe; color: black!important;" class="btn btn-outline-primary " name="exp_range_start"> to <input type="text" style="width: 60px; background-color: #f8ffbe; color: black!important;" class="btn btn-outline-primary " name="exp_range_end"> Years
                                                         </span>
 
                                     </div>
@@ -444,8 +463,8 @@
 
 
                             <!-- Industry -->
-                            <div class="container mb-4">
-                                <div class="bg-white rounded-4 p-4 shadow-sm">
+                            <div class="container px-0 border-bottom">
+                                <div class="bg-white  p-4 shadow-sm" style="border-radius: 0px">
                                     <h6 class="fw-semibold mb-3">Industry</h6>
 {{--                                    <input type="text" class="form-control mb-3" name="" placeholder="Search universities">--}}
                                     <select name="industry_id" id="industryId" class="form-control select2 industryId"  >
@@ -457,8 +476,8 @@
                                 </div>
                             </div>
                             <!-- University Preference -->
-                            <div class="container mb-4">
-                                <div class="bg-white rounded-4 p-4 shadow-sm">
+                            <div class="container px-0 border-bottom">
+                                <div class="bg-white  p-4 shadow-sm" style="border-radius: 0px">
                                     <h6 class="fw-semibold mb-3">University preference</h6>
 {{--                                    <input type="text" class="form-control mb-3" name="" placeholder="Search universities">--}}
                                     <select name="university_preference[]" id="select2-div" class=" select2"  multiple="multiple">
@@ -471,8 +490,8 @@
                             </div>
 
                             <!-- Field of Study -->
-                            <div class="container mb-4">
-                                <div class="bg-white rounded-4 p-4 shadow-sm">
+                            <div class="container px-0 border-bottom">
+                                <div class="bg-white  p-4 shadow-sm" style="border-radius: 0px">
                                     <h6 class="fw-semibold mb-3">Field of study preference</h6>
 {{--                                    <input type="text" class="form-control mb-3" placeholder="Search field of study">--}}
                                     <select name="field_of_study_preference[]" id="" class=" select2" multiple="multiple">
@@ -484,16 +503,16 @@
                             </div>
 
                             <!-- CGPA Preference -->
-                            <div class="container mb-4">
-                                <div class="bg-white rounded-4 p-4 shadow-sm">
+                            <div class="container px-0 border-bottom">
+                                <div class="bg-white  p-4 shadow-sm" style="border-radius: 0px">
                                     <h6 class="fw-semibold mb-3">CGPA preference</h6>
                                     <input type="text" name="cgpa" class="form-control" placeholder="e.g. 3.50 to 3.90">
                                 </div>
                             </div>
 
                             <!-- Gender Preference -->
-                            <div class="container mb-4">
-                                <div class="bg-white rounded-4 p-4 shadow-sm">
+                            <div class="container px-0 border-bottom">
+                                <div class="bg-white p-4 shadow-sm" style="border-radius: 0px">
                                     <h6 class="fw-semibold mb-3">Gender preference</h6>
                                     <select name="gender" id="" class="form-control select2">
                                         <option value="" disabled selected>Select a gender</option>
@@ -505,8 +524,8 @@
                             </div>
 
                             <!-- Salary Section -->
-                            <div class="container mb-4">
-                                <div class="bg-white rounded-4 p-4 shadow-sm">
+                            <div class="container px-0 border-bottom">
+                                <div class="bg-white  p-4 shadow-sm" style="border-radius: 0px">
                                     <h6 class="fw-semibold mb-3">Salary</h6>
                                     <ul class="nav nav-tabs mb-3" id="salaryTab" role="tablist">
                                         <li class="nav-item"><a class="nav-link active salary-type" data-value="monthly" data-bs-toggle="tab" href="#">Monthly</a></li>
@@ -524,16 +543,16 @@
                             </div>
 
                             <!-- Job Description -->
-                            <div class="container mb-4">
-                                <div class="bg-white rounded-4 p-4 shadow-sm">
+                            <div class="container px-0 border-bottom">
+                                <div class="bg-white p-4 shadow-sm" style="border-radius: 0px">
                                     <h6 class="fw-semibold mb-3">Job description & Key responsibilities</h6>
                                     <textarea class="form-control" id="summernote" name="description" rows="15" placeholder="Tell more about the job - specifications & responsibilities..."></textarea>
                                 </div>
                             </div>
 
                             <!-- Application Deadline -->
-                            <div class="container mb-4">
-                                <div class="bg-white rounded-4 p-4 shadow-sm">
+                            <div class="container px-0 border-bottom">
+                                <div class="bg-white p-4 shadow-sm" style="border-radius: 0px">
                                     <div class="d-flex justify-content-between align-items-center mb-3">
                                         <h6 class="fw-semibold mb-0">Application deadline</h6>
 {{--                                        <div class="form-check form-switch mb-0">--}}
@@ -547,9 +566,11 @@
                                     </div>
                                 </div>
                             </div>
+
+
                             <!-- Skills Section -->
-                            <div class="container mb-4">
-                                <div class="bg-white rounded-4 p-4 shadow-sm">
+                            <div class="container px-0 border-bottom">
+                                <div class="bg-white  p-4 shadow-sm" style="border-radius: 0px">
                                     <h6 class="fw-semibold mb-3">Skill requirements</h6>
                                     <div class="<!--d-flex flex-wrap gap-2-->">
 {{--                                        <span class="badge bg-light text-dark">Sales</span>--}}
@@ -573,6 +594,16 @@
                                             @endforeach
                                         </div>
                                     </div>
+                                </div>
+                            </div>
+
+                            <!-- Submit Form -->
+                            <div class="container px-0 ">
+                                <div class="bg-white p-4 text-end shadow-sm" style="border-radius: 0px">
+                                    <!-- Button triggers modal -->
+                                    <button type="button" class="btn btn-warning text-dark fw-semibold px-4 py-2 rounded-3 show-review-btn" data-modal-id="createJobModal" {{--data-bs-toggle="modal" data-bs-target="#jobDetailsModal"--}}>
+                                        Review & Post
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -720,6 +751,21 @@
             z-index: 1059 !important;
         }
     </style>
+{{--    show job details css--}}
+    <style>
+        .job-type .badge {
+            background-color: #edeff2;
+            border-radius: 100px;
+            padding: 6px 12px;
+            font-weight: 500;
+            font-size: 14px;
+            line-height: 120%;
+            letter-spacing: -1%;
+            color: #484f5b;
+            cursor: pointer;
+        }
+        .about-company-name {margin-top: 10px}
+    </style>
 @endpush
 
 @push('script')
@@ -814,26 +860,27 @@
         // });
         $(document).on('click', '.show-job-details', function () {
             var jobId = $(this).attr('data-job-id');
-            sendAjaxRequest('get-job-details/'+jobId, 'GET', {job_task: jobId})
+            sendAjaxRequest('get-job-details/'+jobId+'?render=1', 'GET', {job_task: jobId})
                 .then(function (response) {
-                    console.log(response.job);
-                    if (response.status == 'success')
-                    {
-                        var job = response.job;
-                        $('#detailsCompanyLogo').attr('src', base_url+job.employer_company.logo);
-                        $('#detailsCompanyName').text(job.employer_company.name);
-                        $('#detailsAboutCompanyName').text(job.employer_company.name);
-                        $('#detailsCompanyAddress').text(job.employer_company.address);
-                        $('#detailsJobTitle').text(job.job_title);
-                        $('#detailsJobType').text(job.job_type.name);
-                        $('#detailsJobLocationType').text(job.job_location_type.name);
-                        $('#detailsCompanyOverview').html(job.employer_company.company_overview);
-                        $('#detailsJobDescription').html(job.description);
-                        $('#jobDetailsModal').modal('show');
-                    } else {
-                        toastr.error('Something went wrong. Please try again.')
-                    }
-
+                    // console.log(response.job);
+                    // if (response.status == 'success')
+                    // {
+                    //     var job = response.job;
+                    //     $('#detailsCompanyLogo').attr('src', base_url+job.employer_company.logo);
+                    //     $('#detailsCompanyName').text(job.employer_company.name);
+                    //     $('#detailsAboutCompanyName').text(job.employer_company.name);
+                    //     $('#detailsCompanyAddress').text(job.employer_company.address);
+                    //     $('#detailsJobTitle').text(job.job_title);
+                    //     $('#detailsJobType').text(job.job_type.name);
+                    //     $('#detailsJobLocationType').text(job.job_location_type.name);
+                    //     $('#detailsCompanyOverview').html(job.employer_company.company_overview);
+                    //     $('#detailsJobDescription').html(job.description);
+                    //     $('#jobDetailsModal').modal('show');
+                    // } else {
+                    //     toastr.error('Something went wrong. Please try again.')
+                    // }
+                    $('#printJobDetailsHere').empty().append(response);
+                    $('#jobDetailsModal').modal('show');
                 })
         })
         $(document).on('click', '.select-skill', function () {

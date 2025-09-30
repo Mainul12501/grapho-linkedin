@@ -29,8 +29,19 @@
                                     <textarea name="description" class="form-control summernote" {{ $isShown ? 'disabled' : '' }} id="" cols="30" rows="2">{!! isset($post) ? $post->description : '' !!}</textarea>
                                 </div>
                                 <div class="mt-2">
-                                    <label for="">Post Images</label>
-                                    <input type="file" name="images[]" accept="images/*" multiple />
+                                    <label for="">Post Images</label> <br>
+                                    @if(!$isShown)
+                                        <input type="file" name="images[]" accept="images/*" multiple />
+                                    @endif
+                                    @if(isset($post))
+                                        <div class="mt-1">
+                                            @foreach(json_decode($post->images) as $image)
+                                                <span class="p-1">
+                                                <img src="{{ asset($image) }}" alt="" style="height: 60px">
+                                            </span>
+                                            @endforeach
+                                        </div>
+                                    @endif
                                 </div>
                                 <div class="mt-2 row">
                                     <div class="col-md-3">
@@ -42,6 +53,7 @@
 {{--                                            </div>--}}
 
                                             <label for="flexSwitchCheckChecked" class="d-inline-flex" id="form-check-label">Is Published</label>
+                                            <br>
                                             <div class="form-check form-switch d-inline-flex">
                                                 <input class="form-check-input" name="status" type="checkbox" role="switch" id="flexSwitchCheckChecked" {{ isset($post) && $post->status == 0 ? '' : 'checked' }}>
 {{--                                                <label class="form-check-label" for="flexSwitchCheckChecked">Checked switch checkbox input</label>--}}

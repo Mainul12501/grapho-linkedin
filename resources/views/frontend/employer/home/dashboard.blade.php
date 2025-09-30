@@ -31,7 +31,8 @@
 {{--                    </div>--}}
                     <div class="sidebar-box delegate mt-4">
                         <div class="sidebar-icon delegate">
-                            <img src="{{ asset('/') }}frontend/employer/images/employersHome/user.png" alt="">
+{{--                            <img src="{{ asset('/') }}frontend/employer/images/employersHome/user.png" alt="">--}}
+                            <span style="font-size: 20px;"><i class="bi bi-search bi-2x"></i></span>
                         </div>
                         <h6 class="fw-bold">Find Talent Employees</h6>
                         <p class="small mb-3 text-capitalize">search, filter and Find Best employees for your company.</p>
@@ -55,7 +56,7 @@
                         @forelse($jobTasks as $jobTask)
                             <div class="col-12">
                                 <article class="job-card">
-                                    <div class="job-details flex-grow-1">
+                                    <div class="job-details <!--flex-grow-1-->">
                                         <h6 class="job-title">{{ $jobTask->job_title ?? 'Senior Officer, Corporate Banking' }}</h6>
                                         <div class="job-badges d-flex flex-wrap gap-2">
                                             <span class="badge bg-light text-secondary">{{ $jobTask?->jobType?->name ?? 'Full Time' }}</span>
@@ -70,22 +71,22 @@
                                         <div><img src="{{ asset('/') }}frontend/employer/images/employersHome/24application.png" alt="" class="me-2"><a href="{{ route('employer.my-job-applicants', $jobTask->id) }}" class="text-decoration-underline">{{ $jobTask->employeeAppliedJobs->count() ?? 0 }} Applicants</a></div>
                                     </div>
 
-{{--                                    <div class="job-actions dropdown">--}}
-{{--                                        <button class="btn btn-link p-0 text-secondary" type="button"--}}
-{{--                                                data-bs-toggle="dropdown" aria-expanded="false">--}}
-{{--                                            <img src="{{ asset('/') }}frontend/employer/images/employersHome/three dot.png" alt="">--}}
-{{--                                        </button>--}}
-{{--                                        <ul class="dropdown-menu dropdown-menu-end">--}}
-{{--                                            <li><a class="dropdown-item" href="#">Edit</a></li>--}}
-{{--                                            <li>--}}
-{{--                                                <form action="{{ route('employer.job-tasks.destroy', $jobTask->id) }}" method="post">--}}
-{{--                                                    @csrf--}}
-{{--                                                    @method('delete')--}}
-{{--                                                    <button class="dropdown-item" type="submit">Delete</button>--}}
-{{--                                                </form>--}}
-{{--                                            </li>--}}
-{{--                                        </ul>--}}
-{{--                                    </div>--}}
+                                    <div class="job-actions dropdown">
+                                        <button class="btn btn-link p-0 text-secondary" type="button"
+                                                data-bs-toggle="dropdown" aria-expanded="false">
+                                            <img src="{{ asset('/') }}frontend/employer/images/employersHome/three dot.png" alt="">
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-end">
+                                            <li><a class="dropdown-item" href="{{ route('employer.job-tasks.edit', $jobTask->id) }}">Edit</a></li>
+                                            <li>
+                                                <form action="{{ route('employer.job-tasks.destroy', $jobTask->id) }}" method="post">
+                                                    @csrf
+                                                    @method('delete')
+                                                    <button class="dropdown-item" type="submit">Delete</button>
+                                                </form>
+                                            </li>
+                                        </ul>
+                                    </div>
                                 </article>
                             </div>
                         @empty
@@ -169,9 +170,9 @@
                     <!-- Top talent picks -->
                     <div class="d-flex justify-content-between align-items-center mt-5 mb-3 flex-wrap">
                         <h5 class="fw-bold mb-0">Top talent picks for you</h5>
-{{--                        <a href="#" class="text-decoration-none small fw-semibold d-flex align-items-center showall">--}}
-{{--                            Explore <img src="{{ asset('/') }}frontend/employer/images/employersHome/arrow-right 1.png" alt="" class="ms-2">--}}
-{{--                        </a>--}}
+                        <a href="{{ route('employer.head-hunt') }}" class="text-decoration-none small fw-semibold d-flex align-items-center showall">
+                            Explore <img src="{{ asset('/') }}frontend/employer/images/employersHome/arrow-right 1.png" alt="" class="ms-2">
+                        </a>
                     </div>
 
                     <div class="row g-3">
@@ -250,5 +251,11 @@
 
 @push('style')
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+@endpush
+
+@push('script')
+    <script>
+        equalizeHeights('talent-card');
+    </script>
 @endpush
 

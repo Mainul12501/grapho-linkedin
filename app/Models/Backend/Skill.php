@@ -3,6 +3,7 @@
 namespace App\Models\Backend;
 
 use App\Models\Scopes\Searchable;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -43,5 +44,10 @@ class Skill extends Model
     public function jobTasks()
     {
         return $this->belongsToMany(JobTask::class);
+    }
+
+    public function employees()
+    {
+        return $this->belongsToMany(User::class);
     }
 }

@@ -23,8 +23,8 @@
         <li class="nav-item mb-2">
             <a class="nav-link {{ request()->is('employer.posts') ? 'active' : '' }}" href="{{ route('employer.posts.index') }}"><img src="{{ asset('/') }}frontend/employer/images/employersHome/Head HuntDesk.png" alt="" class="me-2">Posts</a>
         </li>
-{{--        <li class="nav-item">--}}
-{{--            <a class="nav-link " href="#"><img src="{{ asset('/') }}frontend/employer/images/employersHome/InboxDEsk.png" alt="" class="me-2">Inbox</a>--}}
-{{--        </li>--}}
+        <li class="nav-item">
+            <a class="nav-link " href="{{ url('/chat') }}" target="_blank"><img src="{{ asset('/') }}frontend/employer/images/employersHome/InboxDEsk.png" alt="" class="me-2">Inbox</a>
+        </li>
     </ul>
 </aside>

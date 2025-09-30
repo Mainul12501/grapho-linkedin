@@ -75,7 +75,7 @@ Route::middleware([
 
     Route::post('auth/user-password-update', [CustomLoginController::class, 'userPasswordUpdate'])->name('auth.user-password-update');
     Route::get('call-user/{type?}', [TwilioVideoController::class, 'viewPage'])->name('employer.call-user');
-
+    Route::get('view-company-profile/{employerCompany}', [EmployeeViewController::class, 'viewCompanyProfile'])->name('view-company-profile');
 
     Route::prefix('employer')->as('employer.')->middleware('isEmployer')->group(function (){
         Route::get('home', [EmployerViewController::class, 'employerHome'])->name('home');
@@ -117,7 +117,7 @@ Route::middleware([
         Route::get('delete-saved-job/{jobTask}', [EmployeeViewController::class, 'deleteSaveJob'])->name('delete-saved-job');
         Route::get('change-job-active-status/{status}', [EmployeeViewController::class, 'changeJobActiveStatus'])->name('change-job-active-status');
         Route::get('get-total-saved-jobs', [EmployeeViewController::class, 'getTotalSavedJobs'])->name('get-total-saved-jobs');
-        Route::get('view-company-profile/{employerCompany}', [EmployeeViewController::class, 'viewCompanyProfile'])->name('view-company-profile');
+
 
         Route::post('apply-job/{jobTask}', [EmployeeViewController::class, 'applyJob'])->name('apply-job');
         Route::post('update-profile/{user}', [EmployeeViewController::class, 'updateProfile'])->name('update-profile');

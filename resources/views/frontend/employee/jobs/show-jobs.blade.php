@@ -225,14 +225,14 @@
                         <div class="job-card job-card-ajax border-bottom {{ $singleJobTask->id == $jobTask->id ? 'active' : '' }}" onclick="setLetSideActiveJob({{ $key }})" data-job-id="{{ $jobTask->id }}" id="job-{{ $key }}">
                             <div class="row">
                                 <div class="col-2">
-                                    <a href="{{ route('employee.view-company-profile', $jobTask->employer_company_id) }}">
+                                    <a href="{{ route('view-company-profile', $jobTask->employer_company_id) }}">
                                         <img style="cursor: pointer" src="{{ isset($jobTask?->employerCompany?->logo) ? asset($jobTask?->employerCompany?->logo) : asset('/frontend/employee/images/contentImages/jobCardLogo.png') }}" alt="{{ $jobTask->job_title }}" class="img-fluid" />
                                     </a>
                                 </div>
                                 <div class="col-10">
                                     <h5 class="mb-0 ">{{ $jobTask->job_title ?? 'Job Title' }}</h5>
                                     <p class="text-muted">
-                                        <a href="{{ route('employee.view-company-profile', $jobTask->employer_company_id) }}" class="text-muted nav-link">{{ $jobTask?->employerCompany?->name ?? 'Company Name' }}</a>
+                                        <a href="{{ route('view-company-profile', $jobTask->employer_company_id) }}" class="text-muted nav-link">{{ $jobTask?->employerCompany?->name ?? 'Company Name' }}</a>
                                     </p>
                                     <div class="job-type d-flex text-muted">
                                         <span class="badge" style="background-color: #EDEFF2">{{ $jobTask?->jobType?->name ?? 'Full x Time' }}</span>
@@ -267,12 +267,12 @@
                 @if($foundData)
                     <div class="job-details" id="" style="display: block;">
                         <div class="company-info mb-2">
-                            <a href="{{ route('employee.view-company-profile', $singleJobTask->employer_company_id) }}">
+                            <a href="{{ route('view-company-profile', $singleJobTask->employer_company_id) }}">
                                 <img style="height: 40px; margin-right: 10px; cursor: pointer" src="{{ isset($singleJobTask?->employerCompany?->logo) ? asset($singleJobTask?->employerCompany?->logo) : asset('/frontend/employee/images/contentImages/jobCardLogo.png') }}" alt="{{ $singleJobTask?->employerCompany?->name ?? 'job-0' }}" class="company-logo">
                             </a>
                             <div class="company-details d-flex pt-2" style="padding-top: 14px;">
                                 <h3 class="p-t-5">
-                                    <a href="{{ route('employee.view-company-profile', $singleJobTask->employer_company_id) }}" class="text-muted nav-link">{{ $singleJobTask?->employerCompany?->name ?? 'company name' }}</a>
+                                    <a href="{{ route('view-company-profile', $singleJobTask->employer_company_id) }}" class="text-muted nav-link">{{ $singleJobTask?->employerCompany?->name ?? 'company name' }}</a>
                                 </h3>
                                 <span class="mx-1 p-t-5">,</span>
                                 <p class="p-t-5">{{ $singleJobTask?->employerCompany?->address ?? 'company address' }}</p>

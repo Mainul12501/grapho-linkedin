@@ -17,6 +17,7 @@ use App\Models\Backend\JobType;
 use App\Models\Backend\Post;
 use App\Models\Backend\PostViewer;
 use App\Models\Backend\RoleManagement\Role;
+use App\Models\Backend\Skill;
 use App\Models\Backend\SubscriptionPlan;
 use App\Models\Backend\UniversityName;
 use App\Models\Backend\UserProfileView;
@@ -152,6 +153,11 @@ class User extends Authenticatable
     public function employeeDocuments()
     {
         return $this->hasMany(EmployeeDocument::class);
+    }
+
+    public function employeeSkills()
+    {
+        return $this->belongsToMany(Skill::class);
     }
 
     public function webNotifications()

@@ -11,7 +11,7 @@
                 <div class="col-md-4 col-12 text-break">
                     <div class="card d-flex flex-column  p-4 border rounded-3">
                         <div class="mb-3">
-                            <img src="{{ asset( $companyDetails->logo ??  '/frontend/employer/images/employersHome/gpLogo.png') }}" alt="{{ $companyDetails->name ?? 'company' }}-Logo" class="companyProfilecontainer__logo" />
+                            <img src="{{ asset( $companyDetails->logo ??  '/frontend/company-vector.jpg') }}" alt="{{ $companyDetails->name ?? 'company' }}-Logo" class="companyProfilecontainer__logo" />
                         </div>
                         <h5 class="fw-semibold mb-4">{{ $companyDetails->name ?? 'Company Name' }}</h5>
 
@@ -56,11 +56,11 @@
                 <!-- Right part -->
                 <div class="col-md-8 col-12">
                     <div class="card">
-                        <div class="d-flex justify-content-between align-items-center mb-3 companyProfilecontainer__topbar p-4">
+                        <div class="d-flex justify-content-between align-items-center mb-3 companyProfilecontainer__topbar p-4 border-bottom">
                             <h6 class="mb-0 fw-semibold">Company overview</h6>
                             <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#employerCompanyEditModal">Edit</button>
                         </div>
-                        <div class=" companyProfilecontainer__right-part p-4">
+                        <div class=" companyProfilecontainer__right-part pb-4 pt-1 px-4">
                             <div class="mb-4">
                                 {!! $companyDetails->company_overview ?? strip_tags('<p class="f-s-30">Company Overview Not found</p>') !!}
                             </div>

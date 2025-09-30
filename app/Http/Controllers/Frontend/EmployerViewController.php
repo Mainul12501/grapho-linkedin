@@ -71,12 +71,20 @@ class EmployerViewController extends Controller
         {
             if ($request->job_status == 'closed')
             {
-                $jobs = JobTask::where(['user_id' => ViewHelper::loggedUser()->id, 'status' => 0])->get();
+                $jobs = JobTask::where(['user_id' => ViewHelper::loggedUser()->id, 'status' => 0])->paginate(10);
             } else {
-                $jobs = JobTask::where(['user_id' => ViewHelper::loggedUser()->id, 'status' => 1])->get();
+                $jobs = JobTask::where(['user_id' => ViewHelper::loggedUser()->id, 'status' => 1])->paginate(10);
             }
-        } else {
-            $jobs = JobTask::where(['user_id' => ViewHelper::loggedUser()->id, 'status' => 1])->get();
+        }
+        elseif (isset($request->search_text)){
+            $jobs = JobTask::where([
+                'user_id'   => ViewHelper::loggedUser()->id,
+                'status' => 1,
+
+            ])->where('job_title', 'LIKE', "%{$request->search_text}%")->paginate(10);
+        }
+        else {
+            $jobs = JobTask::where(['user_id' => ViewHelper::loggedUser()->id, 'status' => 1])->paginate(10);
         }
         $data = [
             'jobTypes'  => JobType::where(['status' => 1])->get(['id', 'name']),
@@ -120,7 +128,189 @@ class EmployerViewController extends Controller
         return ViewHelper::returnBackViewAndSendDataForApiAndAjax($this->data, 'frontend.employer.jobs.my-job-applicants');
         return view('frontend.employer.jobs.my-job-applicants');
     }
+
     public function headHunt(Request $request)
+    {
+        $employees = User::query()->with([
+            'universityName',
+            'industry',
+            'fieldOfStudy',
+            'jobTypes',
+            'jobLocationTypes',
+            'employeeSkills',
+            'employeeWorkExperiences',
+            'employeeEducations'
+        ]);
+
+        // Helper function to ensure array input
+        $ensureArray = function ($value) {
+            if (empty($value)) return [];
+
+            // If it's a JSON string, decode it
+            if (is_string($value) && (strpos($value, '[') === 0 || strpos($value, '{') === 0)) {
+                $decoded = json_decode($value, true);
+                if (json_last_error() === JSON_ERROR_NONE && is_array($decoded)) {
+                    return $decoded;
+                }
+            }
+
+            // If the value is a string with commas, split it
+            if (is_string($value) && strpos($value, ',') !== false) {
+                return array_map('trim', explode(',', $value));
+            }
+
+            return is_array($value) ? $value : [$value];
+        };
+
+        // Get all filters from the request
+        $filters = $request->input('filters', []);
+
+        // Base condition: only employees open for hire
+        $employees = $employees->where(['user_type' => 'employee', 'is_open_for_hire' => 1]);
+
+        // 1. Workplace Type (Job Type) filter
+        if (isset($filters['job_type']) && !empty($filters['job_type'])) {
+            $jobTypes = $ensureArray($filters['job_type']);
+            if (!empty($jobTypes)) {
+                $employees = $employees->whereHas('jobTypes', function($query) use ($jobTypes) {
+                    $query->whereIn('slug', $jobTypes);
+                });
+            }
+        }
+
+        // 2. University filter
+        if (isset($filters['university_name']) && !empty($filters['university_name'])) {
+            $universities = $ensureArray($filters['university_name']);
+            if (!empty($universities)) {
+                $employees = $employees->whereHas('universityName', function($q) use ($universities) {
+                    $q->whereIn('slug', $universities);
+                });
+            }
+        }
+
+        // 3. District/Location filter
+        if (isset($filters['district']) && !empty($filters['district'])) {
+            $districts = $ensureArray($filters['district']);
+            if (!empty($districts)) {
+                $employees = $employees->whereIn('district', $districts);
+            }
+        }
+
+        // 4. Industry filter
+        if (isset($filters['industry']) && !empty($filters['industry'])) {
+            $industries = $ensureArray($filters['industry']);
+            if (!empty($industries)) {
+                $employees = $employees->whereHas('industry', function($q) use ($industries) {
+                    $q->whereIn('slug', $industries);
+                });
+            }
+        }
+
+        // 5. Field of Study filter
+        if (isset($filters['field_of_study']) && !empty($filters['field_of_study'])) {
+            $fieldOfStudies = $ensureArray($filters['field_of_study']);
+            if (!empty($fieldOfStudies)) {
+                $employees = $employees->whereHas('fieldOfStudy', function($q) use ($fieldOfStudies) {
+                    $q->whereIn('slug', $fieldOfStudies);
+                });
+            }
+        }
+
+        // 6. Skills filter
+        if (isset($filters['skills']) && !empty($filters['skills'])) {
+            $skills = $ensureArray($filters['skills']);
+            if (!empty($skills)) {
+                $employees = $employees->whereHas('employeeSkills', function($q) use ($skills) {
+                    $q->whereIn('slug', $skills);
+                });
+            }
+        }
+
+        // 7. Gender filter
+        if (isset($filters['gender']) && !empty($filters['gender'])) {
+            $genders = $ensureArray($filters['gender']);
+            if (!empty($genders)) {
+                $employees = $employees->whereIn('gender', $genders);
+            }
+        }
+
+        // 8. CGPA filter (minimum CGPA)
+        if ($request->filled('cgpa')) {
+            $cgpa = (float) $request->input('cgpa');
+            $employees = $employees->whereHas('employeeEducations', function($q) use ($cgpa) {
+                $q->where('cgpa', '>=', $cgpa);
+            });
+        }
+
+        // 9. Experience filter (minimum years of experience)
+        if ($request->filled('experience')) {
+            $experience = (int) $request->input('experience');
+            $employees = $employees->whereHas('employeeWorkExperiences', function($q) use ($experience) {
+                // Assuming you have start_date and end_date or total_experience field
+                // Option 1: If you have a calculated experience field
+                $q->where('duration', '>=', $experience);
+
+                // Option 2: If you need to calculate from dates
+                // $q->whereRaw('TIMESTAMPDIFF(MONTH, start_date, COALESCE(end_date, NOW())) >= ?', [$experience * 12]);
+            });
+        }
+
+        // 10. Search Text filter (searches across multiple fields)
+        if ($request->filled('search_text')) {
+            $searchText = $request->input('search_text');
+            $employees = $employees->where(function($q) use ($searchText) {
+                $q->where('name', 'LIKE', "%{$searchText}%")
+                    ->orWhere('profile_title', 'LIKE', "%{$searchText}%")
+                    ->orWhere('address', 'LIKE', "%{$searchText}%")
+                    ->orWhere('email', 'LIKE', "%{$searchText}%")
+//                    ->orWhere('bio', 'LIKE', "%{$searchText}%")
+                    ->orWhereHas('universityName', function($q) use ($searchText) {
+                        $q->where('name', 'LIKE', "%{$searchText}%");
+                    })
+                    ->orWhereHas('industry', function($q) use ($searchText) {
+                        $q->where('name', 'LIKE', "%{$searchText}%");
+                    })
+                    ->orWhereHas('fieldOfStudy', function($q) use ($searchText) {
+                        $q->where('field_name', 'LIKE', "%{$searchText}%");
+                    })
+                    ->orWhereHas('employeeSkills', function($q) use ($searchText) {
+                        $q->where('skill_name', 'LIKE', "%{$searchText}%");
+                    });
+            });
+        }
+
+        // Execute query with pagination
+        $employees = $employees->select([
+            'id',
+            'name',
+            'profile_title',
+            'address',
+            'profile_image',
+            'email',
+            'gender',
+            'district'
+        ])->paginate(21);
+
+        $data = [
+            'employees' => $employees,
+            'jobTypes' => JobType::where(['status' => 1])->get(['id', 'name', 'slug']),
+            'universityNames' => UniversityName::where(['status' => 1])->get(['id', 'name', 'slug']),
+            'industries' => Industry::where(['status' => 1])->get(['id', 'name', 'slug']),
+            'jobLocations' => JobLocationType::where(['status' => 1])->get(['id', 'name', 'slug']),
+            'fieldOfStudies' => FieldOfStudy::where(['status' => 1])->get(['id', 'field_name', 'slug']),
+            'skillCategories' => SkillsCategory::where(['status' => 1])->with('skills')->get(['id', 'category_name', 'slug']),
+            // Pass current filters back to the view for maintaining state
+            'currentFilters' => [
+                'filters' => $filters,
+                'cgpa' => $request->input('cgpa'),
+                'experience' => $request->input('experience'),
+                'search_text' => $request->input('search_text'),
+            ]
+        ];
+
+        return ViewHelper::checkViewForApi($data, 'frontend.employer.jobs.head-hunt');
+    }
+    public function headHunt_backup(Request $request)
     {
         $employees = User::query()->with([
             'universityName',

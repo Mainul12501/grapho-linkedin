@@ -28,13 +28,13 @@
 
 
 
-            <p class="mt-4 mb-4 fw-bold f-s-26">Available Plans</p>
+            <p class="mb-4 fw-bold f-s-26">Available Plans</p>
             <div class="right-panel w-100 subscriptionPlanDetails">
 
-                <div class="planWrapper row justify-content-between">
+                <div class="planWrapper row <!--justify-content-between-->">
 
                     @forelse($subscriptionPlans as $key => $subscriptionPlan)
-                        <div class="col-12 col-md-6 planOne ">
+                        <div class="col-12 col-md-4 planOne ">
                             <div class="card card-body">
                                 <p class="olanDuration">{{ $subscriptionPlan->title ?? '' }}</p>
                                 <h2 class="planPrive">Tk. {{ $subscriptionPlan->price ?? 0 }}</h2>

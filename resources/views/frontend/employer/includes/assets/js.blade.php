@@ -42,6 +42,37 @@
     function setInputValueByClassName(clickEventClassEle, targetClassEle, targetAttr) {
         $('.'+targetClassEle).val(clickEventClassEle.attr(targetAttr));
     }
+    function equalizeHeights(className) {
+        // Ensure className starts with dot for jQuery selector
+        if (!className.startsWith('.')) {
+            className = '.' + className;
+        }
+
+        const elements = $(className);
+
+        // Return early if no elements found
+        if (elements.length === 0) {
+            console.warn(`No elements found with class: ${className}`);
+            return;
+        }
+
+        // Reset heights to auto to get natural heights
+        elements.css('height', 'auto');
+
+        // Find the maximum height
+        let maxHeight = 0;
+        elements.each(function() {
+            const currentHeight = $(this).outerHeight();
+            if (currentHeight > maxHeight) {
+                maxHeight = currentHeight;
+            }
+        });
+
+        // Set all elements to the maximum height
+        elements.css('height', maxHeight + 'px');
+
+        console.log(`Set ${elements.length} elements with class ${className} to height: ${maxHeight}px`);
+    }
 </script>
 @yield('script')
 @stack('script')
