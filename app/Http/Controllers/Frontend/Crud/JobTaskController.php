@@ -212,6 +212,14 @@ class JobTaskController extends Controller
         $jobTask = JobTask::with(['jobType', 'jobLocationType', 'employerCompany'])->find($id);
         $isApplied = false;
         $isSaved = false;
+        $showApplyButton = true;
+        if (isset($request->show_apply))
+        {
+            if ($request->show_apply == 0)
+            {
+                $showApplyButton = false;
+            }
+        }
         if (ViewHelper::loggedUser())
         {
             $user = ViewHelper::loggedUser();
@@ -225,7 +233,7 @@ class JobTaskController extends Controller
         }
         if (isset($request->render) && $request->render == 1)
         {
-            return \view('frontend.employee.include-edit-forms.job-details', ['singleJobTask' => $jobTask, 'isSaved' => $isSaved, 'isApplied' => $isApplied])->render();
+            return \view('frontend.employee.include-edit-forms.job-details', ['singleJobTask' => $jobTask, 'isSaved' => $isSaved, 'isApplied' => $isApplied, 'showApplyButton' => $showApplyButton])->render();
         }
         if ($jobTask)
             return response()->json(['status' => 'success', 'job' => $jobTask, 'isSaved' => $isSaved, 'isApplied' => $isApplied]);

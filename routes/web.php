@@ -15,6 +15,7 @@ use App\Http\Controllers\Payment\SSLCommerzController;
 use App\Http\Controllers\Frontend\Crud\PostController;
 use App\Http\Controllers\Frontend\Crud\FollowerHistroyController;
 use App\Http\Controllers\Frontend\Twilio\TwilioVideoController;
+use Illuminate\Support\Facades\Artisan;
 
 Route::get('/', [FrontendViewController::class, 'homePage'])->name('/');
 Route::get('/page/{slug?}', [FrontendViewController::class, 'showCommonPage'])->name('show-common-page');
@@ -131,3 +132,17 @@ Route::middleware([
     });
 });
 
+/* create symbolic link */
+Route::get('/symlink', function () {
+    Artisan::call('storage:link');
+    echo Artisan::output();
+});
+
+Route::get('/clear-all-cache', function () {
+    Artisan::call('optimize:clear');
+    return redirect()->back()->with('success', 'Cache cleared successfully' );
+})->name('clear-all-cache');
+
+Route::get('/phpinfo', function () {
+    phpinfo();
+});

@@ -10,7 +10,7 @@
 </div>
 <h4 class="job-title mb-2 f-s-19">{{ $singleJobTask->job_title }}</h4>
 <div class="job-type"><span class="badge">{{ $singleJobTask?->jobType?->name ?? 'job type' }}</span> <span class="badge">{{ $singleJobTask?->jobLocationType?->name ?? 'job location' }}</span> </div>
-@if(auth()->user()->user_type == 'employee')
+@if(auth()->user()->user_type == 'employee' && $showApplyButton)
     <div class="d-flex gap-2 mt-1 mb-2">
         @if(!$isApplied)
             <form action="" method="post" class="apply-form">

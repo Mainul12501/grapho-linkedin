@@ -107,7 +107,7 @@
                                         </a>
 
                                         <div class="paddingforMobile">
-                                            <h3>{{ $topJobForEmployee->job_title  ?? 'Job Title' }}</h3>
+                                            <h3 onclick="showJobDetails({{ $topJobForEmployee->id }}, `{{ $topJobForEmployee->job_title }}`)" style="cursor: pointer;">{{ $topJobForEmployee->job_title  ?? 'Job Title' }}</h3>
                                             <p class="text-muted"><a class="text-muted nav-link" href="{{ route('view-company-profile', ['employerCompany' => $topJobForEmployee->employer_company_id]) }}">{{ $topJobForEmployee?->employerCompany?->name ?? 'Company Name' }}</a></p>
                                         </div>
                                     </div>
@@ -189,7 +189,7 @@
                                     </a>
 
                                     <div class="paddingforMobile">
-                                        <h3>{{ $topJobForEmployee->job_title  ?? 'Senior Officer, Corporate Banking' }}</h3>
+                                        <h3 onclick="showJobDetails({{ $topJobForEmployee->id }}, `{{ $topJobForEmployee->job_title }}`)" style="cursor: pointer;">{{ $topJobForEmployee->job_title  ?? 'Job Title' }}</h3>
                                         <p class="text-muted"><a class="nav-link text-muted" href="{{ route('view-company-profile', $topJobForEmployee->employer_company_id) }}">{{ $topJobForEmployee?->employerCompany?->name ?? 'Company Name' }}</a></p>
                                     </div>
                                 </div>
@@ -273,6 +273,23 @@
                     <button class="share-profile-btn w-100 mb-2" {{-- onclick="shareProfile()"--}} type="submit">Share My Profile</button>
                 </form>
                 <button class="cancel-btn w-100" onclick="closeEasyApplyModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" tabindex="-1" id="viewJobModal">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="viewJobModalTitle">View Job</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="viewJobModalBody">
+                    <p>Modal body text goes here.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
             </div>
         </div>
     </div>
@@ -405,6 +422,7 @@
             /*background-color: #0033a0;*/
             color: white;
         }
+        .modal .job-type {margin-bottom: 10px}
     </style>
 @endpush
 
@@ -473,5 +491,13 @@
                 display: "flex"
             });
         })
+        function showJobDetails(jobId, jobTitle = 'View Job Title') {
+            sendAjaxRequest('get-job-details/'+jobId+'?render=1&show_apply=0', 'GET').then(function (response) {
+                // console.log(response);
+                $('#viewJobModalTitle').empty().append(jobTitle);
+                $('#viewJobModalBody').empty().append(response);
+                $('#viewJobModal').modal('show');
+            })
+        }
     </script>
 @endpush
