@@ -57,7 +57,7 @@
                             <div class="col-12">
                                 <article class="job-card">
                                     <div class="job-details <!--flex-grow-1-->">
-                                        <h6 class="job-title">{{ $jobTask->job_title ?? 'Senior Officer, Corporate Banking' }}</h6>
+                                        <h6 class="job-title" onclick="showJobDetails({{ $jobTask->id }}, `{{ $jobTask->job_title }}`)" style="cursor: pointer;">{{ $jobTask->job_title ?? 'Job Title' }}</h6>
                                         <div class="job-badges d-flex flex-wrap gap-2">
                                             <span class="badge bg-light text-secondary">{{ $jobTask?->jobType?->name ?? 'Full Time' }}</span>
                                             <span class="badge bg-light text-secondary">{{ $jobTask?->jobLocationType?->name ?? 'On-site' }}</span>
@@ -96,7 +96,7 @@
                         @endforelse
                         <div class="col-12 text-center align-content-center">
                             @if(count($jobTasks) > 10)
-                                {!! $jobTasks->links !!}
+                                {!! $jobTasks->links() !!}
                             @endif
                         </div>
 
@@ -247,15 +247,44 @@
         </div>
 
     </main>
+    <div class="modal" tabindex="-1" id="viewJobModal">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="viewJobModalTitle">View Job</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="viewJobModalBody">
+                    <p>Modal body text goes here.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @push('style')
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <style>
+        .modal .job-type {margin-bottom: 10px}
+    </style>
 @endpush
 
 @push('script')
     <script>
         equalizeHeights('talent-card');
+    </script>
+    <script>
+        function showJobDetails(jobId, jobTitle = 'View Job Title') {
+            sendAjaxRequest('get-job-details/'+jobId+'?render=1&show_apply=0', 'GET').then(function (response) {
+                // console.log(response);
+                $('#viewJobModalTitle').empty().append(jobTitle);
+                $('#viewJobModalBody').empty().append(response);
+                $('#viewJobModal').modal('show');
+            })
+        }
     </script>
 @endpush
 

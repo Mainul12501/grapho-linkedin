@@ -47,8 +47,9 @@
                                     <a href="https://www.grameenphone.com" target="_blank" class="text-decoration-none small">{{ $companyDetails->website ?? 'company.com' }}</a>
                                 </div>
                             </div>
-
-                            <button class="btn btn-link p-0 mt-3 editButtonCompanyProfile" data-bs-toggle="modal" data-bs-target="#employerCompanyEditModal" style="font-size: 0.9rem;"> <img src="{{ asset('/') }}frontend/employer/images/employersHome/Edit pencil.png" alt=""> Edit contact info</button>
+                            @if($employerView)
+                                <button class="btn btn-link p-0 mt-3 editButtonCompanyProfile" data-bs-toggle="modal" data-bs-target="#employerCompanyEditModal" style="font-size: 0.9rem;"> <img src="{{ asset('/') }}frontend/employer/images/employersHome/Edit pencil.png" alt=""> Edit contact info</button>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -58,7 +59,15 @@
                     <div class="card">
                         <div class="d-flex justify-content-between align-items-center mb-3 companyProfilecontainer__topbar p-4 border-bottom">
                             <h6 class="mb-0 fw-semibold">Company overview</h6>
-                            <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#employerCompanyEditModal">Edit</button>
+                            @if($employerView)
+                                <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#employerCompanyEditModal">Edit</button>
+                            @endif
+                            @if(!$employerView)
+                                <div class="text-warning">
+                                    <a href="{{ route('twilio.view') }}" class="f-s-18" title="Video Call"><i class="fa-solid text-success fa-video"></i></a>
+                                    <a href="{{ url('/chat/'.$companyDetails->id) }}" class="f-s-18" title="Send Message"><i class="fa-brands text-success fa-telegram"></i></a>
+                                </div>
+                            @endif
                         </div>
                         <div class=" companyProfilecontainer__right-part pb-4 pt-1 px-4">
                             <div class="mb-4">
@@ -186,6 +195,10 @@
         </div>
     </div>
 @endsection
+
+@push('style')
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+@endpush
 
 @push('script')
     @include('common-resource-files.selectize')

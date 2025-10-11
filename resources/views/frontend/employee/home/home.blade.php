@@ -107,7 +107,7 @@
                                         </a>
 
                                         <div class="paddingforMobile">
-                                            <h3 onclick="showJobDetails({{ $topJobForEmployee->id }}, `{{ $topJobForEmployee->job_title }}`)" style="cursor: pointer;">{{ $topJobForEmployee->job_title  ?? 'Job Title' }}</h3>
+                                            <h3  style="cursor: pointer;">{{ $topJobForEmployee->job_title  ?? 'Job Title' }} <span class="text-success" onclick="showJobDetails({{ $topJobForEmployee->id }}, `{{ $topJobForEmployee->job_title }}`)" >view</span></h3>
                                             <p class="text-muted"><a class="text-muted nav-link" href="{{ route('view-company-profile', ['employerCompany' => $topJobForEmployee->employer_company_id]) }}">{{ $topJobForEmployee?->employerCompany?->name ?? 'Company Name' }}</a></p>
                                         </div>
                                     </div>
@@ -189,7 +189,7 @@
                                     </a>
 
                                     <div class="paddingforMobile">
-                                        <h3 onclick="showJobDetails({{ $topJobForEmployee->id }}, `{{ $topJobForEmployee->job_title }}`)" style="cursor: pointer;">{{ $topJobForEmployee->job_title  ?? 'Job Title' }}</h3>
+                                        <h3  style="cursor: pointer;">{{ $topJobForEmployee->job_title  ?? 'Job Title' }} <span class="text-success" onclick="showJobDetails({{ $topJobForEmployee->id }}, `{{ $topJobForEmployee->job_title }}`)">View</span></h3>
                                         <p class="text-muted"><a class="nav-link text-muted" href="{{ route('view-company-profile', $topJobForEmployee->employer_company_id) }}">{{ $topJobForEmployee?->employerCompany?->name ?? 'Company Name' }}</a></p>
                                     </div>
                                 </div>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Helpers\ViewHelper;
 use App\Http\Controllers\Controller;
+use App\Models\Backend\Advertisement;
 use App\Models\Backend\EmployerCompany;
 use App\Models\Backend\EmployerCompanyCategory;
 use App\Models\Backend\FieldOfStudy;
@@ -50,7 +51,7 @@ class EmployerViewController extends Controller
             return \view('frontend.employer.include-edit-forms.home-append', ['posts' => $posts])->render();
         }
         $data = [
-
+            'advertisements'    => Advertisement::where(['status' => 1])->latest()->inRandomOrder()->paginate(10),
         ];
         return ViewHelper::checkViewForApi($data, 'frontend.employer.home.home');
         return view('frontend.employer.home.home', $data);
@@ -557,11 +558,20 @@ class EmployerViewController extends Controller
         return ViewHelper::checkViewForApi($this->data, 'frontend.employer.config.settings');
         return view('frontend.employer.config.settings');
     }
-    public function companyProfile()
+    public function companyProfile(Request $request)
     {
+        $employerView = (isset($request->view) && $request->view == 'employer') ? false : true;
+        $loggedUser = ViewHelper::loggedUser();
+        if (isset($request->company_id) && isset($request->view))
+        {
+            $companyDetails = EmployerCompany::find($request->company_id);
+        } else {
+            $companyDetails = EmployerCompany::where(['user_id' => ViewHelper::loggedUser()->id])->first();
+        }
         $this->data = [
-            'loggedUser'    =>  ViewHelper::loggedUser(),
-            'companyDetails'    => EmployerCompany::where(['user_id' => ViewHelper::loggedUser()->id])->first(),
+            'employerView'  => $employerView,
+            'loggedUser'    =>  $loggedUser,
+            'companyDetails'    => $companyDetails,
             'industries'    => Industry::where(['status' => 1])->get(['id', 'name']),
             'employerCompanyCategories'    => EmployerCompanyCategory::where(['status' => 1])->get(['id', 'category_name']),
         ];
@@ -678,6 +688,8 @@ class EmployerViewController extends Controller
                 $company->company_overview = $request->company_overview;
             }
             $company->save();
+            $user->is_profile_updated = $request->is_profile_updated ?? 0;
+            $user->save();
             return ViewHelper::returnSuccessMessage('Company information updated successfully');
 
         } catch (\Exception $e) {
