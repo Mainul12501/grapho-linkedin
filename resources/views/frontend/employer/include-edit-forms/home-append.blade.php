@@ -3,7 +3,7 @@
         <div>
             <a href="{{ route('employer.company-profile', ['view' => 'employer', 'company_id' => $post?->employer?->employerCompany?->id ]) }}" style="text-decoration: none">
                 <span style="" class="mr-2"><img src="{{ asset($post?->employer?->employerCompany?->logo ?? 'frontend/employee/images/authentication images/Compnay logo.png') }}" style="height: 60px; border-radius: 50%; width: 60px " alt=""></span>
-                <span class="fw-bolder">{{ $post?->employer?->name ?? 'Employer Name' }}</span>
+                <span class="fw-bolder">{{ $post?->employer?->employerCompany?->name ?? 'Employer Name' }}</span>
             </a>
             <span class="float-end">
                     <button type="button" data-employer-id="{{ $post->user_id }}" data-follow-history-status="{{ $post->follow_history_status == 1 ? 1 : 0 }}" data-post-id="{{ $post->id }}" id="followBtn{{ $post->id }}" class="btn btn-primary btn-sm follow-btn">{{ $post->follow_history_status == 1 ? 'Unfollow' : 'Follow' }}</button>

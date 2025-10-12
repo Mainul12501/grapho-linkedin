@@ -28,14 +28,30 @@ class EmployerViewController extends Controller
     protected array $data = [];
     public function employerHome(Request $request)
     {
-        $posts = Post::query()->latest();
-        if (isset($request->start_number))
-            $posts  = $posts->skip($request->start_number)->take(10);
-        $posts = $posts->where(['status' => 1, 'user_type' => 'employer'])->with(['employer' => function ($employer) {
-            $employer->select('id', 'name', 'employer_company_id')->with(['employerCompany' => function ($employerCompany) {
-                $employerCompany->select('id', 'name', 'logo');
-            }]);
-        }])->get();
+        $posts = Post::query()
+            ->where(['status' => 1, 'user_type' => 'employer'])
+            ->latest();
+
+        if ($request->filled('start_number')) {
+            $posts = $posts->skip($request->start_number);
+        }
+
+        if ($request->filled('search_text')) {
+            $posts = $posts->whereHas('employer.employerCompany', function ($query) use ($request) {
+                $query->where('name', 'LIKE', '%' . $request->search_text . '%');
+            });
+        }
+
+        $posts = $posts->with(['employer' => function ($query) {
+            $query->select('id', 'name', 'employer_company_id')
+                ->with(['employerCompany' => function ($query) {
+                    $query->select('id', 'name', 'logo');
+                }]);
+        }])
+            ->take(10)
+            ->get();
+
+
         foreach ($posts as $post)
         {
             $post['follow_history_status'] = ViewHelper::checkFollowHistory($post->user_id, ViewHelper::loggedUser()->id) ?? false;

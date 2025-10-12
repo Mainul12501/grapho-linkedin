@@ -30,13 +30,14 @@
 {{--                        <button class="btn btn-dark btn-sm px-4">Add user</button>--}}
 {{--                    </div>--}}
                     <div class="sidebar-box delegate mt-4">
-                        <div class="sidebar-icon delegate">
+                        <div class="sidebar-icon delegate text-center " style="height: 70px; width: 70px;">
 {{--                            <img src="{{ asset('/') }}frontend/employer/images/employersHome/user.png" alt="">--}}
-                            <span style="font-size: 20px;"><i class="bi bi-search bi-2x"></i></span>
+                            <span style="font-size: 40px;"><i class="bi bi-search bi-2x" ></i></span>
                         </div>
-                        <h6 class="fw-bold">Find Talent Employees</h6>
+                        <a href="{{ route('employer.head-hunt') }}" class="btn btn-dark btn-sm px-4 f-s-23 mx-auto">Head Hunt</a>
+                        <h6 class="fw-bold mt-3">Find Talent Employees</h6>
                         <p class="small mb-3 text-capitalize">search, filter and Find Best employees for your company.</p>
-                        <a href="{{ route('employer.head-hunt') }}" class="btn btn-dark btn-sm px-4">Head Hunt</a>
+
                     </div>
                 </aside>
 

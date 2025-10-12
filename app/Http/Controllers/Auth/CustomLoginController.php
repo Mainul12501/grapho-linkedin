@@ -93,8 +93,10 @@ class CustomLoginController extends Controller
                 'user'  => $user,
                 'otp'   => $otp,
                 'request'   => $request,
+                'purpose'   => 'verify',
+                'siteSetting'   => SiteSetting::first(),
             ];
-            Mail::send('frontend.auth.recover-account-mail', $data, function ($message) use ($data){
+            Mail::send('frontend.auth.email-otp-verify-account', $data, function ($message) use ($data){
                 $message->to($data['request']->email, 'Like Wise Bd')->subject('Account Recovery');
             });
             return response()->json(['status'=> 'success', 'msg' => "An OTP has sent to your email."]);
@@ -107,7 +109,7 @@ class CustomLoginController extends Controller
                 return response()->json(['status'=> 'error', 'error' => "No user found with this Mobile."]);
             }
             $otp = ViewHelper::generateOtp($request->mobile);
-//            ViewHelper::sendSms($request->mobile, "Your recovery OTP for LikeWiseBd.com is $otp.");
+            ViewHelper::sendSms($request->mobile, "Your recovery OTP for LikeWiseBd.com is $otp.");
             return response()->json(['status'=> 'success', 'msg' => "An OTP has sent to your Mobile.", 'otp' => $otp]);
         }
     }
@@ -400,10 +402,49 @@ class CustomLoginController extends Controller
                 }
             }
             $otp = ViewHelper::generateOtp($request->mobile);
-//            ViewHelper::sendSms($request->mobile, "Your Grapho OTP is $otp.");
-            return response()->json(['status'=> 'success', 'msg' => "An OTP has sent to your number.", ]);
+            ViewHelper::sendSms($request->mobile, "Your Grapho OTP is $otp.");
+            return response()->json(['status'=> 'success', 'msg' => "An OTP has sent to your number.",]);
+        } elseif ($request->filled('email'))
+        {
+            if ($request->filled('req_from') && $request->req_from == 'login')
+            {
+                $user = User::where(['email' => $request->email])->first();
+                if (!$user)
+                {
+                    return response()->json(['status' => 'error', 'msg' => 'User not found. Please try again.']);
+                }
+            }
+            $otp = ViewHelper::generateOtp($request->email);
+            $data = [
+                'otp'   => $otp,
+                'request'   => $request,
+                'purpose'   => 'verify',
+                'siteSetting'   => SiteSetting::first(),
+            ];
+            Mail::send('frontend.auth.email-otp-verify-account', $data, function ($message) use ($data){
+                $message->to($data['request']->email, 'Like Wise Bd')->subject('Verify Email');
+            });
+            return response()->json(['status'=> 'success', 'msg' => "An OTP has sent to your email - $request->email.",]);
         } else {
             return response()->json(['status' => 'error', 'msg' => 'No mobile Number found.']);
+        }
+    }
+
+    public function verifyOtp(Request $request)
+    {
+
+        if ($request->filled('email'))
+        {
+            $server_otp = ViewHelper::getSessionOtp($request->email);
+        } elseif ($request->filled('mobile'))
+        {
+            $server_otp = ViewHelper::getSessionOtp($request->mobile);
+        }
+        if ($server_otp == $request->user_otp)
+        {
+            return response()->json(['status'=> 'success', 'msg' => "OTP verified successfully",]);
+        } else {
+            return response()->json(['status'=> 'error', 'msg' => "OTP mismatched. Please try again.",]);
         }
     }
 

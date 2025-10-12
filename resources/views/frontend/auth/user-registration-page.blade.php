@@ -39,6 +39,17 @@
             overflow-y: scroll;
             height: auto!important;
         }
+        .signUpMail {
+            border: 1.5px solid #DADADA;
+            padding: 16px;
+            border-radius: 16px;
+            margin-bottom: 15px;
+            color: #141C25;
+            font-weight: 400;
+            font-size: 16px;
+            line-height: 160%;
+            letter-spacing: -1%;
+        }
     </style>
 </head>
 
@@ -80,12 +91,21 @@
 {{--            @endif--}}
             <div id="signUpEmailDiv1">
                 <label for="signUpMail">Email address</label>
-                <div>
-                    <input type="text" id="signUpMail" placeholder="Type here" class="w-100 signUpMail form-control">
+                <div class="input-group">
+                    <input type="text" id="signUpMail" placeholder="Type here" class=" signUpMail form-control" style="border-radius: 16px 0px 0px 16px">
+                    <span class="input-group-text signUpMail" id="sendOtpForEmailBtn" style="cursor: pointer; border-radius: 0px 16px 16px 0px">Send OTP</span>
                     <span class="text-danger" id="signUpMailError"></span>
                 </div>
 
-                <a href="javascript:void(0)"><button type="button" id="emailContinueBtn">Continue</button></a>
+                <div id="emailOtpDiv" class="d-none">
+                    <label for="signUpOtp">OTP</label>
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control py-3 signUpMail" name="otp" placeholder="OTP Number" id="emailOtp">
+                        <span class="input-group-text signUpMail" id="checkEmailOtpBtn" style="cursor: pointer">Verify</span>
+                    </div>
+                </div>
+
+                <a href="javascript:void(0)"><button type="button" id="emailContinueBtn" class="d-none">Continue</button></a>
             </div>
             <div id="signUpMobileDiv1" class="d-none">
                 <label for="signUpMail">Phone Number</label>
@@ -108,8 +128,9 @@
                 <div class="p-2">
 
                     <label for="signUpMail">Email address</label>
-                    <div>
+                    <div class="">
                         <input type="email" id="signUpMail" name="email" value="" class="printSignUpMail w-100">
+
                     </div>
 
 {{--                    @if(isset($_GET['user']) && $_GET['user'] == 'Employer')--}}
@@ -295,15 +316,78 @@
             }
         })
     })
+    $(document).on('click', '#sendOtpForEmailBtn', function () {
+        $.ajax({
+            url: '{{ route('send-otp') }}',
+            type: 'POST',
+            data: {
+                _token: '{{ csrf_token() }}',
+                email: $('#signUpMail').val(),
+            },
+            success: function (response) {
+                if (response.status == 'success')
+                {
+                    // serverOtp = response.otp;
+                    toastr.success(response.msg);
+                    $('#emailOtpDiv').removeClass('d-none');
+                } else {
+                    toastr.error(response.msg);
+                }
+            },
+            error: function (xhr) {
+                toastr.error('An error occurred while sending the OTP.');
+            }
+        })
+    })
     $(document).on('click', '#checkOtpBtn', function () {
         var enteredOtp = $('#otp').val();
-        console.log( serverOtp);
-        if (enteredOtp == serverOtp) {
-            toastr.success('OTP verified successfully!');
-            $('#phoneContinueBtnDiv').removeClass('d-none');
-        } else {
-            toastr.error('Invalid OTP. Please try again.');
-        }
+        $.ajax({
+            url: '{{ route('verify-otp') }}',
+            type: 'POST',
+            data: {
+                _token: '{{ csrf_token() }}',
+                mobile: $('#phoneNumber').val(),
+                user_otp: enteredOtp,
+            },
+            success: function (response) {
+                if (response.status == 'success')
+                {
+                    // serverOtp = response.otp;
+                    toastr.success(response.msg);
+                    $('#phoneContinueBtnDiv').removeClass('d-none');
+                } else {
+                    toastr.error(response.msg);
+                }
+            },
+            error: function (xhr) {
+                toastr.error('An error occurred while sending the OTP.');
+            }
+        })
+    });
+    $(document).on('click', '#checkEmailOtpBtn', function () {
+        var enteredOtp = $('#emailOtp').val();
+        $.ajax({
+            url: '{{ route('verify-otp') }}',
+            type: 'POST',
+            data: {
+                _token: '{{ csrf_token() }}',
+                email: $('#signUpMail').val(),
+                user_otp: enteredOtp,
+            },
+            success: function (response) {
+                if (response.status == 'success')
+                {
+                    // serverOtp = response.otp;
+                    toastr.success(response.msg);
+                    $('#emailContinueBtn').removeClass('d-none');
+                } else {
+                    toastr.error(response.msg);
+                }
+            },
+            error: function (xhr) {
+                toastr.error('An error occurred while sending the OTP.');
+            }
+        })
     });
     $(document).on('click', '#signUpWithMobileBtn', function () {
         $('#signUpEmailDiv1').addClass('d-none');

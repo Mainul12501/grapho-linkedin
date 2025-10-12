@@ -5,6 +5,18 @@
 @section('body')
     <main class="dashboardContent p-4">
         <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="float-end">
+                        <form action="" method="get">
+                            <div class="input-group mb-3" style="max-width: 400px">
+                                <input type="text" name="search_text" class="form-control" placeholder="Search Company">
+                                <button type="submit" class="input-group-text" id="basic-addon2">Search</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
             <div class="row g-4">
                 <div class="col-md-8 ps-5" id="appendContentHere">
                     <div class="card card-body d-flex">

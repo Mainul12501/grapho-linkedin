@@ -25,6 +25,7 @@ Route::get('employee-profile/{employeeId}', [EmployerViewController::class, 'emp
 Route::get('auth/{provider}/redirect', [SocialLoginController::class , 'redirect'])->name('auth.socialite.redirect');
 Route::get('auth/{provider}/callback', [SocialLoginController::class , 'callback'])->name('auth.socialite.callback');
 Route::post('send-otp', [CustomLoginController::class, 'sendOtp'])->name('send-otp');
+Route::post('verify-otp', [CustomLoginController::class, 'verifyOtp'])->name('verify-otp');
 Route::post('buy-subscription/{subscriptionPlan}', [FrontendViewController::class, 'buySubscription'])->name('buy-subscription');
 
 
