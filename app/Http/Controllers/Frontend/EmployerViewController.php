@@ -688,7 +688,7 @@ class EmployerViewController extends Controller
                 $company->company_overview = $request->company_overview;
             }
             $company->save();
-            $user->is_profile_updated = $request->is_profile_updated ?? 0;
+            $user->is_profile_updated = $request->is_profile_updated ?? $user->is_profile_updated;
             $user->save();
             return ViewHelper::returnSuccessMessage('Company information updated successfully');
 
