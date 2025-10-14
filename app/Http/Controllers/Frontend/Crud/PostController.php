@@ -65,6 +65,11 @@ class PostController extends Controller
      */
     public function show(string $id)
     {
+        $data = [
+            'isShown'   => true,
+            'post' => Post::find($id)
+        ];
+        return ViewHelper::checkViewForApi($data, 'frontend.employer.posts.create');
          return view('frontend.employer.posts.create', [
             'isShown'   => true,
              'post' => Post::find($id)
@@ -89,6 +94,11 @@ class PostController extends Controller
      */
     public function edit(string $id)
     {
+        $data = [
+            'isShown'   => false,
+            'post' => Post::find($id)
+        ];
+        return ViewHelper::checkViewForApi($data, 'frontend.employer.posts.create');
          return view('frontend.employer.posts.create', [
             'isShown'   => false,
              'post' => Post::find($id)
