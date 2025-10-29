@@ -3,14 +3,14 @@
 @section('title', 'Create Posts')
 
 @section('body')
-    <div class="container-fluid">
+    <div class="container-fluid py-5">
         <div class="row">
             <div class="col-md-8 mx-auto">
                 <div class="card">
-                    <div class="card-header">
+                    <div class="card-header pt-3">
                         <h4 class="float-start">{{ isset($post) ? 'Update' : 'Create' }} Posts</h4>
                         <p class="float-end">
-                            <a href="{{ route('employer.posts.index') }}" class="btn btn-sm btn-success">Manage</a>
+                            <a href="{{ route('employer.posts.index') }}" class="btn btn-sm btn-success">Back</a>
                         </p>
                     </div>
                     <div class="card-body">

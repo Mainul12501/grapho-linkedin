@@ -16,26 +16,26 @@
         <!-- Bootstrap Tabs -->
         <div class="talentMobileTop">
             <ul class="nav nav-tabs mb-4 talenttabbutton" id="applicationTabs" role="tablist">
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link active rounded-pill px-4" id="pending-tab" data-bs-toggle="tab"
+                <li class="nav-item mx-1" role="presentation">
+                    <button class="nav-link active rounded-pill px-4 tab-btn-bg" id="pending-tab" data-bs-toggle="tab"
                             data-bs-target="#pending" type="button" role="tab" aria-controls="pending" aria-selected="true">
                         Pending
                     </button>
                 </li>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link rounded-pill px-4" id="shortlisted-tab" data-bs-toggle="tab"
+                <li class="nav-item mx-1" role="presentation">
+                    <button class="nav-link rounded-pill px-4 tab-btn-bg" id="shortlisted-tab" data-bs-toggle="tab"
                             data-bs-target="#shortlisted" type="button" role="tab" aria-controls="shortlisted" aria-selected="false">
                         Shortlisted
                     </button>
                 </li>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link rounded-pill px-4" id="rejected-tab" data-bs-toggle="tab" data-bs-target="#rejected"
+                <li class="nav-item mx-1" role="presentation">
+                    <button class="nav-link rounded-pill px-4 tab-btn-bg" id="rejected-tab" data-bs-toggle="tab" data-bs-target="#rejected"
                             type="button" role="tab" aria-controls="rejected" aria-selected="false">
                         Rejected
                     </button>
                 </li>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link rounded-pill px-4" id="rejected-tab" data-bs-toggle="tab" data-bs-target="#approved"
+                <li class="nav-item mx-1" role="presentation">
+                    <button class="nav-link rounded-pill px-4 tab-btn-bg" id="rejected-tab" data-bs-toggle="tab" data-bs-target="#approved"
                             type="button" role="tab" aria-controls="rejected" aria-selected="false">
                         Approved
                     </button>
@@ -72,8 +72,8 @@
                                          style="width: 38px; height: 38px; object-fit: cover;" />
                                     {{ $pendingApplicant?->user?->name ?? 'User Name' }}
                                 </td>
-                                <td>{{ $pendingApplicant?->user?->employeeEducations[count($pendingApplicant?->user?->employeeEducations)-1]?->universityName?->name ?? 'No University name Found' }}</td>
-                                <td>{{ $pendingApplicant?->user?->employeeEducations[count($pendingApplicant?->user?->employeeEducations)-1]?->cgpa ?? 'No Date found' }}</td>
+                                <td>{{ $pendingApplicant?->user?->employeeEducations[count($pendingApplicant?->user?->employeeEducations)-1]?->universityName?->name ?? '' }}</td>
+                                <td>{{ $pendingApplicant?->user?->employeeEducations[count($pendingApplicant?->user?->employeeEducations)-1]?->cgpa ?? '0.00' }}</td>
                                 <td>{{ $pendingApplicant->created_at->format('D-m-Y') ?? '25-09-2024' }}</td>
                                 <td>
                                     <div class="d-flex align-items-center gap-3">
@@ -513,4 +513,10 @@
 
 @push('style')
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        .tab-btn-bg {
+            background-color: lightgrey;
+            color: black;
+        }
+    </style>
 @endpush

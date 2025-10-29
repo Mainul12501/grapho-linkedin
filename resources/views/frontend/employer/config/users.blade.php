@@ -206,9 +206,9 @@
 {{--                    </div>--}}
 
                     <div class="mb-3">
-                        <button class="add-user-btn btn flex-start" data-bs-toggle="modal" data-bs-target="#addUserModal" style="background-color: #FFCB11">
+                        <button class="add-user-btn btn flex-start btn-dark" data-bs-toggle="modal" data-bs-target="#addUserModal"{{-- style="background-color: #FFCB11"--}}>
                             <img src="{{ asset('/') }}frontend/employer/images/employersHome/addUser.png" alt="">
-                            <span class="d-none d-md-block">Add User</span>
+                            <span class="d-none d-md-block text-white">Add User</span>
                         </button>
                     </div>
 
@@ -237,7 +237,7 @@
                                             <td><a href="{{ route('employer.change-sub-employer-status', ['user' => $employerUser->id, 'status' => $employerUser->employer_agent_active_status == 'active' ? 'inactive' : 'active']) }}"><span class="status badge {{ $employerUser->employer_agent_active_status == 'active' ? 'active bg-success' : 'invited bg-secondary' }}">{{ $employerUser->employer_agent_active_status == 'active' ? 'Active' : 'Inactive' }}</span></a></td>
                                             <td>
 {{--                                                <a href="" class="btn btn-sm btn-success mx-1"><i class="fa fa-eye text-white f-s-11"></i></a>--}}
-                                                <a href="" class="btn btn-sm btn-primary mx-1"><i class="fa fa-edit text-white f-s-11"></i></a>
+                                                <a href="" class="btn btn-sm btn-primary mx-1 user-edit" data-user-id="{{ $employerUser->id }}"><i class="fa fa-edit text-white f-s-11"></i></a>
                                                 <a href="#" class="btn btn-sm btn-danger mx-1" onclick="event.preventDefault(); document.getElementById('delSubEmployer{{ $employerUser->id }}').submit()"><i class="fa fa-trash text-white f-s-11"></i></a>
                                                 <form action="{{ route('employer.delete-sub-employer', $employerUser->id) }}" onsubmit="return confirm('Are you sure to delete this user?')" method="post" id="delSubEmployer{{ $employerUser->id }}">
                                                     @csrf
@@ -307,6 +307,25 @@
         </div>
     </div>
 
+    <!-- Edit User Modal -->
+    <div class="modal fade" id="editUserModal" tabindex="-1" aria-labelledby="addUserModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" style="max-width: 450px;">
+            <div class="modal-content rounded-4 p-4">
+                <div class="modal-header border-0 pb-2">
+                    <button type="button" class="btn p-0 me-2" data-bs-dismiss="modal" aria-label="Close">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M15 8a.5.5 0 0 1-.5.5H3.707l3.147 3.146a.5.5 0 0 1-.708.708l-4-4a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L3.707 7.5H14.5A.5.5 0 0 1 15 8z"/>
+                        </svg>
+                    </button>
+                    <h5 class="modal-title fw-semibold">Edit user</h5>
+                </div>
+                <div class="modal-body pt-0" id="employerUserEditForm">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
 @endsection
 
     @push('style')
@@ -314,7 +333,7 @@
     @endpush
 
     @push('script')
-        @include('backend.includes.assets.plugin-files.datatable')
+{{--        @include('backend.includes.assets.plugin-files.datatable')--}}
         <script>
             $(document).ready(function() {
                 $('#datatable').DataTable({
@@ -324,4 +343,13 @@
                     buttons: ['copy', 'csv', 'excel', 'pdf', 'print']
                 }).buttons().container().appendTo('#datatable-buttons_wrapper .col-md-6:eq(0)');
             });
+            $(document).on('click', '.user-edit', function () {
+                event.preventDefault();
+                var userId = $(this).attr('data-user-id');
+                sendAjaxRequest('employer/get-employer-user-info/'+userId, 'GET').then(function (data) {
+                    $('#employerUserEditForm').empty().append(data);
+                    $('#editUserModal').modal('show');
+                })
+            });
+        </script>
     @endpush

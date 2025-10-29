@@ -50,6 +50,18 @@
             line-height: 160%;
             letter-spacing: -1%;
         }
+        .otp-send-btn {
+            cursor: pointer;
+            border: 1.5px solid #DADADA;
+            padding: 16px;
+            border-radius: 0px 16px 16px 0px;
+            margin-bottom: 15px;
+            color: #141C25;
+            font-weight: 400;
+            font-size: 16px;
+            line-height: 160%;
+            letter-spacing: -1%;
+        }
     </style>
 </head>
 
@@ -111,13 +123,13 @@
                 <label for="signUpMail">Phone Number</label>
                 <div class="input-group mb-3">
                     <input type="text" class="form-control py-3 signUpMail" name="phone" placeholder="Recipient’s Phone Number" id="phoneNumber">
-                    <span class="input-group-text" id="sendOtpBtn" style="cursor: pointer">Send OTP</span>
+                    <span class="input-group-text otp-send-btn" id="sendOtpBtn" style="cursor: pointer">Send OTP</span>
                 </div>
                 <div id="otpDiv" class="d-none">
                     <label for="signUpOtp">OTP</label>
                     <div class="input-group mb-3">
                         <input type="text" class="form-control py-3 signUpMail" name="otp" placeholder="OTP Number" id="otp">
-                        <span class="input-group-text" id="checkOtpBtn" style="cursor: pointer">Verify</span>
+                        <span class="input-group-text otp-send-btn" id="checkOtpBtn" style="cursor: pointer">Verify</span>
                     </div>
                 </div>
                 <div id="phoneContinueBtnDiv" class="d-none">

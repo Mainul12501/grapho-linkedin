@@ -330,11 +330,15 @@ class CustomLoginController extends Controller
                     'status'    => 200
                 ]);
             } else {
+                if ($user->user_type == 'sub_employer')
+                    return redirect()->route('employer.home')->with('success', 'You are successfully logged in.');
+
                 if ($user->is_profile_updated == 0)
                 {
                     Toastr::success('You are successfully logged in. Please complete your profile.');
                     return redirect()->route('auth.user-profile-update')->with('success', 'You are successfully logged in. Please complete your profile.');
                 }
+
                 if ($user->roles[0]->id == 3)
                 {
                     return redirect()->route('employee.home')->with('success', 'You are successfully logged in.');
@@ -353,11 +357,12 @@ class CustomLoginController extends Controller
     public function userProfileUpdate(Request $request)
     {
         $loggedUser = ViewHelper::loggedUser();
-//        if ($loggedUser->is_profile_updated == 1)
-//        {
-//            Toastr::error('you already updated your profile');
-//            return  redirect('/');
-//        }
+        if ($loggedUser->is_profile_updated == 1)
+        {
+            Toastr::error('you already updated your profile');
+            return  redirect('/');
+        }
+
         $data = [];
         if ($loggedUser->user_type == 'employee')
         {

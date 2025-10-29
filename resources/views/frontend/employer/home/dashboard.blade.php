@@ -19,25 +19,20 @@
                         <a href="{{ route('employer.my-jobs') }}" class="btn btn-dark btn-sm px-4">Post a job</a>
                     </div>
 
-                    <!-- Delegate your tasks -->
-{{--                    <div class="sidebar-box delegate mt-4">--}}
-{{--                        <div class="sidebar-icon delegate">--}}
-{{--                            <img src="{{ asset('/') }}frontend/employer/images/employersHome/user.png" alt="">--}}
-{{--                        </div>--}}
-{{--                        <h6 class="fw-bold">Delegate your tasks</h6>--}}
-{{--                        <p class="small mb-3">You can add users who can do tasks so that you don't have to do--}}
-{{--                            all the work</p>--}}
-{{--                        <button class="btn btn-dark btn-sm px-4">Add user</button>--}}
-{{--                    </div>--}}
-                    <div class="sidebar-box delegate mt-4">
-                        <div class="sidebar-icon delegate text-center " style="height: 70px; width: 70px;">
-{{--                            <img src="{{ asset('/') }}frontend/employer/images/employersHome/user.png" alt="">--}}
-                            <span style="font-size: 40px;"><i class="bi bi-search bi-2x" ></i></span>
-                        </div>
-                        <a href="{{ route('employer.head-hunt') }}" class="btn btn-dark btn-sm px-4 f-s-23 mx-auto">Head Hunt</a>
-                        <h6 class="fw-bold mt-3">Find Talent Employees</h6>
-                        <p class="small mb-3 text-capitalize">search, filter and Find Best employees for your company.</p>
 
+{{--                    <div class="sidebar-box delegate mt-4">--}}
+{{--                        <div class="sidebar-icon delegate text-center " style="height: 70px; width: 70px;">--}}
+{{--                            <img src="{{ asset('/') }}frontend/employer/images/employersHome/user.png" alt="">--}}
+{{--                            <span style="font-size: 40px;"><i class="bi bi-search bi-2x" ></i></span>--}}
+{{--                        </div>--}}
+{{--                        <a href="{{ route('employer.head-hunt') }}" class="btn btn-dark btn-sm px-4 f-s-23 mx-auto">Head Hunt</a>--}}
+{{--                        <h6 class="fw-bold mt-3">Find Talent Employees</h6>--}}
+{{--                        <p class="small mb-3 text-capitalize">search, filter and Find Best employees for your company.</p>--}}
+{{--                    </div>--}}
+                    <div class="mt-4">
+                        <a href="{{ route('employer.head-hunt') }}">
+                            <img src="{{ asset('/frontend/employer/images/22.png') }}" alt="" class="img-fluid">
+                        </a>
                     </div>
                 </aside>
 

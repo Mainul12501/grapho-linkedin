@@ -19,6 +19,7 @@ use App\Models\Backend\UniversityName;
 use App\Models\Backend\UserProfileView;
 use App\Models\Backend\WebNotification;
 use App\Models\User;
+use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\View\View;
@@ -566,6 +567,16 @@ class EmployerViewController extends Controller
         return ViewHelper::checkViewForApi($this->data, 'frontend.employer.config.users');
         return view('frontend.employer.config.users');
     }
+
+    public function employerUserInfo(User $user)
+    {
+        if (\request()->ajax())
+        {
+            return \view('frontend.employer.include-edit-forms.employer-user', ['user' => $user])->render();
+        }
+        return \view('frontend.employer.include-edit-forms.employer-user', ['user' => $user]);
+    }
+
     public function settings()
     {
         $this->data = [
@@ -740,6 +751,43 @@ class EmployerViewController extends Controller
             $subUser->organization_name = $user->organization_name;
             $subUser->employer_agent_active_status = 'active';
             $subUser->save();
+            return ViewHelper::returnSuccessMessage('Sub user created successfully');
+        } catch (\Exception $e) {
+            return ViewHelper::returEexceptionError($e->getMessage());
+        }
+    }
+
+    public function updateSubUser(User $user, Request $request)
+    {
+        $user = ViewHelper::loggedUser();
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            'email' => [ 'email', 'unique:users'],
+            'mobile' => ['required', 'unique:users'],
+        ]);
+        if ($validator->fails()) {
+            return ViewHelper::returEexceptionError($validator->errors());
+        }
+        if (User::where(['user_id' => $user->id, 'user_type' => 'sub_employer'])->count() >= 5) {
+            return ViewHelper::returEexceptionError('You can not create more than 5 sub users');
+        }
+        try {
+            $subUser = new User();
+            $subUser->name = $request->name;
+            $subUser->email = $request->email;
+            $subUser->mobile = $request->mobile;
+            if ($request->filled('password'))
+            {
+                $subUser->password = bcrypt($request->password);
+            }
+            $subUser->user_type = 'sub_employer';
+            $subUser->user_id = $user->id;
+            $subUser->employer_company_id = $user->employer_company_id;
+            $subUser->organization_name = $user->organization_name;
+            $subUser->employer_agent_active_status = 'active';
+            $subUser->save();
+            Toastr::success('Sub user updated successfully');
+            return route('employer.employer-user-management');
             return ViewHelper::returnSuccessMessage('Sub user created successfully');
         } catch (\Exception $e) {
             return ViewHelper::returEexceptionError($e->getMessage());

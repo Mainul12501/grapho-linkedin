@@ -34,13 +34,13 @@ class EmployeeViewController extends Controller
     protected $data = [];
     public function employeeHome()
     {
-        $topJobsForEmployee = JobTask::where(['status' => 1])->take(5)->latest()->get();
+        $topJobsForEmployee = JobTask::where(['status' => 1])->with('employerCompany', 'jobType')->take(5)->latest()->get();
         foreach ($topJobsForEmployee as $job)
         {
             $job->isSaved    = ViewHelper::getJobSaveApplyInfo($job->id)['isSaved'] ?? false;
             $job->isApplied    = ViewHelper::getJobSaveApplyInfo($job->id)['isApplied'] ?? false;
         }
-        $moreJobsForEmployee = JobTask::where(['status' => 1])->take(5)->inRandomOrder()->get();
+        $moreJobsForEmployee = JobTask::where(['status' => 1])->with('employerCompany', 'jobType')->take(5)->inRandomOrder()->get();
         foreach ($moreJobsForEmployee as $jobx)
         {
             $jobx->isSaved    = ViewHelper::getJobSaveApplyInfo($jobx->id)['isSaved'] ?? false;
@@ -263,11 +263,16 @@ class EmployeeViewController extends Controller
     }
     public function myProfile()
     {
+        $loggedUser = ViewHelper::loggedUser();
+        if (str()->contains(url()->current(), '/api/'))
+        {
+            $loggedUser->profile_image = asset($loggedUser->profile_image);
+        }
         $data = [
             'workExperiences'    => EmployeeWorkExperience::where(['user_id' => auth()->id(), 'status' => 1])->get(), // stringp tags for api
             'employeeEducations'    => EmployeeEducation::where(['user_id' => auth()->id(), 'status' => 1])->get(),
             'employeeDocuments'    => EmployeeDocument::where(['user_id' => auth()->id(), 'status' => 1])->get(),
-            'employeeProfileDate'   => ViewHelper::loggedUser(),
+            'employeeProfileDate'   => $loggedUser,
             'educationDegreeNames'   => EducationDegreeName::where(['status' => 1])->get(['id', 'degree_name', 'need_institute_field']),
             'universityNames'   => UniversityName::where(['status' => 1])->get(['id', 'name']),
             'fieldOfStudies'   => FieldOfStudy::where(['status' => 1])->get(['id', 'field_name']),

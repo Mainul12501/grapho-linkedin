@@ -3,11 +3,11 @@
 @section('title', 'Employer Posts')
 
 @section('body')
-    <div class="container-fluid">
+    <div class="container-fluid py-5">
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
-                    <div class="card-header">
+                    <div class="card-header pt-3">
                         <h4 class="float-start">{{ auth()->user()->name ?? 'Employer Name' }} Posts</h4>
                         <p class="float-end">
                             <a href="{{ route('employer.posts.create') }}" class="btn btn-sm btn-success">Create</a>

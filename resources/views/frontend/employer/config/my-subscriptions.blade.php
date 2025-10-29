@@ -29,23 +29,23 @@
 
 
             <p class="mb-4 fw-bold f-s-26">Available Plans</p>
-            <div class="right-panel w-100 subscriptionPlanDetails">
+            <div class="right-panel w-100 subscriptionPlanDetails pb-5">
 
                 <div class="planWrapper row <!--justify-content-between-->">
 
                     @forelse($subscriptionPlans as $key => $subscriptionPlan)
                         <div class="col-12 col-md-4 planOne ">
-                            <div class="card card-body">
+                            <div class="card card-body p-4">
                                 <p class="olanDuration">{{ $subscriptionPlan->title ?? '' }}</p>
                                 <h2 class="planPrive">Tk. {{ $subscriptionPlan->price ?? 0 }}</h2>
 
                                 @if($subscriptionPlan->id != $loggedUser->subscription_plan_id)
                                     <form id="subsForm{{$key}}" action="{{ route('buy-subscription', $subscriptionPlan->id) }}" method="post">
                                         @csrf
-                                        <button type="submit" onsubmit="return confirm('Are you sure to Purchase this plan. Your previous plan will be replaced if exists.')" class="btn w-100 text-white my-3" style="background-color: #FFCB11; color: black!important;">Subscribe</button>
+                                        <button type="submit" onsubmit="return confirm('Are you sure to Purchase this plan. Your previous plan will be replaced if exists.')" class="btn w-100 text-white my-3 py-3" style="background-color: #FFCB11; color: black!important; border-radius: 20px;">Subscribe</button>
                                     </form>
                                 @else
-                                    <button type="button" disabled class="btn w-100 bg-dark text-white my-3">Already Purchased</button>
+                                    <button type="button" disabled class="btn w-100 bg-dark text-white my-3 py-3" style="border-radius: 20px">Already Purchased</button>
                                 @endif
 
 

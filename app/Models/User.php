@@ -230,7 +230,9 @@ class User extends Authenticatable
     }
     public function appliedJobsWithJobDetails()
     {
-        return $this->hasMany(EmployeeAppliedJob::class, 'user_id')->with('jobTask');
+        return $this->hasMany(EmployeeAppliedJob::class, 'user_id')->with(['jobTask' => function ($jobtask) {
+            return $jobtask->with('employerCompany');
+        }]);
     }
 
     public function viewEmployerIds()
@@ -245,7 +247,7 @@ class User extends Authenticatable
 
     public function employeeSavedJobs()
     {
-        return $this->belongsToMany(JobTask::class);
+        return $this->belongsToMany(JobTask::class)->with('employerCompany');
     }
 
     public function roles()

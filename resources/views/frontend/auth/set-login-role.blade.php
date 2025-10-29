@@ -49,9 +49,9 @@
 <!-- Card Container -->
 <div class="card shadow signUpCard loginMain">
 
-    <a href="{{ route('/') }}" class="signupArrow text-decoration-none mb-4">
-        <img src="{{ asset(isset($siteSetting->logo) ? $siteSetting->logo : '/frontend/employee/images/authentication images/Compnay logo.png') }}" alt="site logo" class="w-25" style="width: 115px; height: 28px">
-    </a>
+{{--    <a href="{{ route('/') }}" class="signupArrow text-decoration-none mb-4">--}}
+{{--        <img src="{{ asset(isset($siteSetting->logo) ? $siteSetting->logo : '/frontend/employee/images/authentication images/Compnay logo.png') }}" alt="site logo" class="w-25" style="width: 115px; height: 28px">--}}
+{{--    </a>--}}
 
     <h1>Log in to your account</h1>
     <p>Welcome back! Please enter your details</p>

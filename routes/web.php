@@ -87,6 +87,7 @@ Route::middleware([
         Route::get('my-job-applicants/{jobTask}', [EmployerViewController::class, 'myJobApplicants'])->name('my-job-applicants');
         Route::get('head-hunt', [EmployerViewController::class, 'headHunt'])->name('head-hunt');
         Route::get('employer-user-management', [EmployerViewController::class, 'employerUserManagement'])->name('employer-user-management');
+        Route::get('get-employer-user-info/{user}', [EmployerViewController::class, 'employerUserInfo'])->name('get-employer-user-info');
         Route::get('settings', [EmployerViewController::class, 'settings'])->name('settings');
         Route::get('company-profile', [EmployerViewController::class, 'companyProfile'])->name('company-profile');
         Route::get('change-sub-employer-status/{user}/{status}', [EmployerViewController::class, 'changeSubEmployerStatus'])->name('change-sub-employer-status');
@@ -98,6 +99,7 @@ Route::middleware([
         Route::post('update-settings', [EmployerViewController::class, 'updateSettings'])->name('update-settings');
         Route::post('update-company-info', [EmployerViewController::class, 'updateCompanyInfo'])->name('update-company-info');
         Route::post('create-sub-user', [EmployerViewController::class, 'createSubUser'])->name('create-sub-user');
+        Route::post('update-sub-user/{user}', [EmployerViewController::class, 'updateSubUser'])->name('update-sub-user');
         Route::post('delete-sub-employer/{user}', [EmployerViewController::class, 'deleteSubEmployer'])->name('delete-sub-employer');
 
         Route::resources([
