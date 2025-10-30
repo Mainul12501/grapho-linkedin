@@ -18,7 +18,36 @@
     <!-- PAGE-HEADER END -->
 
     <!-- ROW-1 -->
-
+    <section class="py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="card ">
+                        <div class="card-body">
+                            <h4 class="fw-bolder f-s-25">Total Jobs</h4>
+                            <span class="fw-bold f-s-25" style="">{{ $totalJobs ?? 0 }}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card ">
+                        <div class="card-body">
+                            <h4 class="fw-bolder f-s-25">Total Employers</h4>
+                            <span class="fw-bold f-s-25" style="">{{ $totalEmployers ?? 0 }}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card ">
+                        <div class="card-body">
+                            <h4 class="fw-bolder f-s-25">Total Employees</h4>
+                            <span class="fw-bold f-s-25" style="">{{ $totalEmployees ?? 0 }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
     <!-- ROW-1 END-->
 
 

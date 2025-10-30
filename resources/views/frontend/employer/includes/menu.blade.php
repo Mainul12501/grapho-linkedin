@@ -6,7 +6,7 @@
             <a class="nav-link {{ request()->is('employer/home') ? 'active' : '' }}" href="{{ route('employer.home') }}" ><img src="{{ asset('/') }}frontend/employer/images/employersHome/HomeDesk.png" alt="" class="me-2">Home</a>
         </li>
         <li class="nav-item mb-2">
-            <a class="nav-link {{ request()->is('employer/dashboard') ? 'active' : '' }}" href="{{ route('employer.dashboard') }}" ><img src="{{ asset('/') }}frontend/employer/images/employersHome/HomeDesk.png" alt="" class="me-2">Dashboard</a>
+            <a class="nav-link {{ request()->is('employer/dashboard') ? 'active' : '' }}" href="{{ route('employer.dashboard') }}" ><img src="{{ asset('/backend/assets/images/dashboard.png') }}" alt="" style="height: 20px" class="me-2">Dashboard</a>
         </li>
         <li class="nav-item mb-2">
             <a class="nav-link {{ request()->is('employer/my-jobs') ? 'active' : '' }}" href="{{ route('employer.my-jobs') }}"><img src="{{ asset('/') }}frontend/employer/images/employersHome/My JobsDesk.png" alt="" class="me-2">My Jobs</a>
@@ -18,10 +18,10 @@
 {{--            <a class="nav-link {{ request()->is('employer/head-hunt') ? 'active' : '' }}" href="{{ route('employer.head-hunt') }}"><img src="{{ asset('/') }}frontend/employer/images/employersHome/Head HuntDesk.png" alt="" class="me-2">Head Hunt</a>--}}
 {{--        </li>--}}
         <li class="nav-item mb-2">
-            <a class="nav-link {{ request()->is('employer.employer-subscriptions') ? 'active' : '' }}" href="{{ route('employer.employer-subscriptions') }}"><img src="{{ asset('/') }}frontend/employer/images/employersHome/Head HuntDesk.png" alt="" class="me-2">Subscriptions</a>
+            <a class="nav-link {{ request()->is('employer.employer-subscriptions') ? 'active' : '' }}" href="{{ route('employer.employer-subscriptions') }}"><img src="{{ asset('/backend/assets/images/save-money.png') }}" style="height: 20px" alt="" class="me-2">Subscriptions</a>
         </li>
         <li class="nav-item mb-2">
-            <a class="nav-link {{ request()->is('employer.posts') ? 'active' : '' }}" href="{{ route('employer.posts.index') }}"><img src="{{ asset('/') }}frontend/employer/images/employersHome/Head HuntDesk.png" alt="" class="me-2">Posts</a>
+            <a class="nav-link {{ request()->is('employer.posts') ? 'active' : '' }}" href="{{ route('employer.posts.index') }}"><img src="{{ asset('/backend/assets/images/post.png') }}" style="height: 20px;" alt="" class="me-2">Posts</a>
         </li>
         <li class="nav-item">
             <a class="nav-link " href="{{ url('/chat') }}" target="_blank"><img src="{{ asset('/') }}frontend/employer/images/employersHome/InboxDEsk.png" alt="" class="me-2">Inbox</a>

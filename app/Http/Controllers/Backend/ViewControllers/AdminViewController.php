@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Backend\ViewControllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Backend\Course\Course;
+use App\Models\Backend\JobTask;
 use App\Models\Backend\OrderManagement\ParentOrder;
 use App\Models\Backend\UserManagement\Student;
 use App\Models\Backend\UserManagement\Teacher;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 use App\Models\Backend\Course\CourseSection;
@@ -20,7 +22,12 @@ class AdminViewController extends Controller
     public function dashboard ()
     {
         $user = auth()->user();
-
+        $this->data = [
+            'loggedInUser' => $user,
+            'totalJobs' => JobTask::count(),
+            'totalEmployees' => User::where(['user_type' => 'employee'])->count(),
+            'totalEmployers' => User::where(['user_type' => 'employer'])->count(),
+        ];
         return view('backend.single-view.dashboard.dashboard', $this->data);
     }
 

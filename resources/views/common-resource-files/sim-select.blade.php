@@ -1,5 +1,5 @@
 <link href="https://unpkg.com/slim-select@latest/dist/slimselect.css" rel="stylesheet"></link>
-<script src="https://unpkg.com/slim-select@latest/dist/slimselect.min.js"></script>
+<script src="https://unpkg.com/slim-select@3.0.6/dist/slimselect.js"></script>
 <script>
     // new SlimSelect({
     //     select: '.select2',

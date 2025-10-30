@@ -247,7 +247,7 @@ class User extends Authenticatable
 
     public function employeeSavedJobs()
     {
-        return $this->belongsToMany(JobTask::class)->with('employerCompany');
+        return $this->belongsToMany(JobTask::class)->with('jobType','employerCompany');
     }
 
     public function roles()
