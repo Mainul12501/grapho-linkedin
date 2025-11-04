@@ -104,6 +104,13 @@ class EmployerViewController extends Controller
         else {
             $jobs = JobTask::where(['user_id' => ViewHelper::loggedUser()->id, 'status' => 1])->paginate(10);
         }
+        if (ViewHelper::checkIfRequestFromApi())
+        {
+            foreach ($jobs as $job)
+            {
+                $job->total_applicants = $job->employeeAppliedJobs()->count();
+            }
+        }
         $data = [
             'jobTypes'  => JobType::where(['status' => 1])->get(['id', 'name']),
             'jobLocations'  => JobLocationType::where(['status' => 1])->get(['id', 'name']),
@@ -118,8 +125,16 @@ class EmployerViewController extends Controller
     }
     public function myJobWiseApplicants()
     {
+        $jobTasks = JobTask::where(['user_id' => ViewHelper::loggedUser()->id, 'status' => 1])->get(['id', 'job_title']);
+        if (ViewHelper::checkIfRequestFromApi())
+        {
+            foreach ($jobTasks as $jobTask)
+            {
+                $jobTask->total_applicants = $jobTask->employeeAppliedJobs()->count() ?? 0;
+            }
+        }
         $data = [
-            'jobTasks'  => JobTask::where(['user_id' => ViewHelper::loggedUser()->id, 'status' => 1])->get(['id', 'job_title']),
+            'jobTasks'  => $jobTasks,
         ];
         return ViewHelper::checkViewForApi($data, 'frontend.employer.jobs.my-applicants');
         return view('frontend.employer.jobs.my-applicants');
@@ -327,6 +342,7 @@ class EmployerViewController extends Controller
         ];
 
         return ViewHelper::checkViewForApi($data, 'frontend.employer.jobs.head-hunt');
+        return \view('frontend.employer.jobs.head-hunt');
     }
     public function headHunt_backup(Request $request)
     {

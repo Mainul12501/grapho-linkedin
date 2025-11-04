@@ -22,7 +22,7 @@
                                         style="width: 80px; height: 80px; object-fit: cover"
                                     />
                                 </div>
-                                <h5 class="fw-bold mb-1">{{ $employeeDetails->name ?? 'User Name' }}</h5>
+                                <h5 class="fw-bold mb-2 mt-3 f-s-23" style="border-radius: 0px">{{ $employeeDetails->name ?? 'User Name' }}</h5>
 
                                 @if($employeeDetails->is_open_for_hire == 1)
                                     <span class="badge d-inline-flex align-items-center mb-3 gap-2">
@@ -81,7 +81,7 @@
                     <div class="col-lg-9">
                         <!-- Work Experiences -->
                         <section class="mb-5">
-                            <h5 class="card mb-0 p-4 fw-semibold ">Work experiences</h5>
+                            <h5 class="card mb-0 p-4 fw-semibold " style="border-radius: 0px!important;">Work experiences</h5>
                             @forelse($employeeDetails->employeeWorkExperiences as $workExperience)
                                 <div class="card p-4 shadow-sm rounded-3" style="border-radius: 0px!important;">
                                     <div class="d-flex align-items-center mb-3 gap-3">
@@ -101,7 +101,7 @@
 
                                 </div>
                             @empty
-                                <div class="card  p-4 mb-4 shadow-sm rounded-3">
+                                <div class="card  p-4 mb-4 shadow-sm rounded-3" style="border-radius: 0px!important">
                                     <p class="f-s-26 text-center">No Data Available</p>
                                 </div>
                             @endforelse
@@ -129,7 +129,7 @@
 
                         <!-- Education -->
                         <section class="mb-5">
-                            <h5 class="card mb-0 fw-semibold p-4 ">Education</h5>
+                            <h5 class="card mb-0 fw-semibold p-4 f-s-23" style="border-radius: 0px!important">Education</h5>
                             @forelse($employeeDetails->employeeEducations as $education)
                                 <div class="card p-4 shadow-sm rounded-3" style="border-radius: 0px!important;">
                                     <div class="d-flex align-items-center mb-3 gap-3">
@@ -142,7 +142,7 @@
                                     </div>
                                 </div>
                             @empty
-                                <div class="card  p-4 mb-4 shadow-sm rounded-3">
+                                <div class="card  p-4 mb-4 shadow-sm rounded-3" style="border-radius: 0px!important">
                                     <p class="f-s-26 text-center">No Data Available</p>
                                 </div>
                             @endforelse
@@ -165,7 +165,7 @@
                         <!-- documents -->
                         <!-- Education -->
                         <section class="mb-5">
-                            <h5 class="card mb-0 fw-semibold p-4 ">Documents</h5>
+                            <h5 class="card mb-0 fw-semibold p-4 f-s-23">Documents</h5>
                             @forelse($employeeDetails->employeeDocuments as $document)
                                 <div class="card p-4 shadow-sm rounded-3" style="border-radius: 0px!important;">
                                     <div class="d-flex align-items-center mb-3 gap-3">
@@ -192,7 +192,7 @@
                                     </div>
                                 </div>
                             @empty
-                                <div class="card  p-4 mb-4 shadow-sm rounded-3">
+                                <div class="card  p-4 mb-4 shadow-sm rounded-3" style="border-radius: 0px!important">
                                     <p class="f-s-26 text-center">No Data Available</p>
                                 </div>
                             @endforelse

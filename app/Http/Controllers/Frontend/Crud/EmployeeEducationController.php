@@ -151,9 +151,9 @@ class EmployeeEducationController extends Controller
         if ($employeeEducation)
         {
             $employeeEducation->delete();
-            Toastr::success('Employee Education Info deleted successfully.');
+            return ViewHelper::returnSuccessMessage('Employee Education Info deleted successfully.');
         } else {
-            Toastr::error('Employee Education Info not found.');
+            return ViewHelper::returEexceptionError('Employee Education Info not found.');
         }
         return back();
     }

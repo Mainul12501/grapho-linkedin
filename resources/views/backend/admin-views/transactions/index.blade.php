@@ -1,37 +1,18 @@
 @extends('backend.master')
 
-@section('title', 'Subscription Plan')
+@section('title', 'Transactions')
 
 @section('body')
-    <div class="card card-body mt-4">
-        <div class="row ">
-            <div class="col-6">
-                <div>
-                    <h3>Set Free Subscription to Users</h3>
-                </div>
-            </div>
-            <div class="col-6 text-end">
-                <div>
-                    <button type="button" data-bs-toggle="modal" data-bs-target="#FreeSubscriptionModal" class="btn btn-sm- btn-success" >Set Free Subscription</button>
-                </div>
-            </div>
-            <div class="col-12 mt-3">
-                <div class="card card-body">
-
-                </div>
-            </div>
-        </div>
-    </div>
 
     <div class="row py-5">
         <div class="col-12">
             <div class="card">
                 <div class="card-header bg-warning">
-                    <h4 class="float-start text-white">Subscription Plan</h4>
+                    <h4 class="float-start text-white">Transactions</h4>
 {{--                    @can('create-permission-category')--}}
-                        <a href="{{ route('subscriptions.create') }}" class="rounded-circle text-white border-5 text-light f-s-22 btn position-absolute end-0 me-4">
-                            <i class="fa-solid fa-circle-plus"></i>
-                        </a>
+{{--                        <a href="{{ route('transactions.create') }}" class="rounded-circle text-white border-5 text-light f-s-22 btn position-absolute end-0 me-4">--}}
+{{--                            <i class="fa-solid fa-circle-plus"></i>--}}
+{{--                        </a>--}}
 {{--                    @endcan--}}
                 </div>
                 <div class="card-body">
@@ -39,43 +20,48 @@
                         <thead>
                             <tr>
                                 <th>#</th>
-                                <th>Title</th>
-                                <th>Price</th>
-                                <th>For</th>
-                                <th>Duration (in days)</th>
-                                <th>Features</th>
+                                <th>Name</th>
+                                <th>Subscription Plan</th>
+                                <th>Invoice Id</th>
+                                <th>P. Method</th>
+                                <th>P. Amount</th>
+                                <th>Trans. Info</th>
                                 <th>Note</th>
                                 <th>Status</th>
-                                <th>Action</th>
+{{--                                <th>Action</th>--}}
                             </tr>
                         </thead>
                         <tbody>
-                        @foreach($subscriptions as $subscription)
+                        @foreach($transactions as $transaction)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
-                                <td><a href="">{{ $subscription->title ?? '' }}</a></td>
-                                <td>{{ $subscription->price ?? '0' }}</td>
-                                <td>{{ $subscription->subscription_for ?? '0' }}</td>
-                                <td>{{ $subscription->duration_in_days ?? '0' }}</td>
-                                <td>{!! \Illuminate\Support\Str::words($subscription->plan_features, 30, '...') ?? '' !!}</td>
-                                <td>{!! \Illuminate\Support\Str::words($subscription->note, 30, '...') ?? '' !!}</td>
-                                <td>{{ $subscription->status == 1 ? 'Published' : 'Unpublished' }}</td>
-                                <td class="">
+                                <td>{{ $transaction?->user?->name ?? '' }}</td>
+                                <td>{{ $transaction?->subscriptionPlan?->title ?? '' }}</td>
+                                <td>{{ $transaction->invoice_number ?? '' }}</td>
+                                <td>{{ $transaction->payment_method ?? '' }}</td>
+                                <td>{{ $transaction->paid_amount ?? '0' }}</td>
+                                <td>
+                                    <p>Bank Trans Id : {{ $transaction->bank_trans_id ?? '' }}</p>
+                                    <p>Gateway Id : {{ $transaction->gateway_val_id ?? '' }}</p>
+                                </td>
+                                <td>{!! \Illuminate\Support\Str::words($transaction->note, 30, '...') ?? '' !!}</td>
+                                <td>{{ $transaction->status ?? '' }}</td>
+{{--                                <td class="">--}}
 {{--                                    @can('edit-permission-category')--}}
-                                    <a href="{{ route('subscriptions.edit', $subscription->id) }}" class="btn btn-sm btn-warning" title="Edit">
-                                        <i class="fa-solid fa-edit"></i>
-                                    </a>
+{{--                                    <a href="{{ route('transactions.edit', $transaction->id) }}" class="btn btn-sm btn-warning" title="Edit">--}}
+{{--                                        <i class="fa-solid fa-edit"></i>--}}
+{{--                                    </a>--}}
 {{--                                    @endcan--}}
 {{--                                    @can('delete-permission-category')--}}
-                                        <form class="d-inline" action="{{ route('subscriptions.destroy', $subscription->id) }}" method="post">
-                                            @csrf
-                                            @method('delete')
-                                            <button type="submit" class="btn btn-sm btn-danger data-delete-form" title="Delete">
-                                                <i class="fa-solid fa-trash"></i>
-                                            </button>
-                                        </form>
+{{--                                        <form class="d-inline" action="{{ route('transactions.destroy', $transaction->id) }}" method="post">--}}
+{{--                                            @csrf--}}
+{{--                                            @method('delete')--}}
+{{--                                            <button type="submit" class="btn btn-sm btn-danger data-delete-form" title="Delete">--}}
+{{--                                                <i class="fa-solid fa-trash"></i>--}}
+{{--                                            </button>--}}
+{{--                                        </form>--}}
 {{--                                    @endcan--}}
-                                </td>
+{{--                                </td>--}}
                             </tr>
                         @endforeach
                         </tbody>
@@ -121,7 +107,7 @@
                             <label for="subscriptionPlanSelect">Select Subscription Plan</label>
                             <select name="subscription_plan_id" id="subscriptionPlanSelect" class="select2">
                                 <option value="" disabled selected>Select a Subscription Plan</option>
-                                @foreach($subscriptions as $plan)
+                                @foreach($transactions as $plan)
 
                                     <option value="{{ $plan->id }}" >{{ $plan->title ?? '' }} - ({{ $plan->duration_in_days ?? 0 }} days)</option>
 

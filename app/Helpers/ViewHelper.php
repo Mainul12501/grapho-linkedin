@@ -10,6 +10,7 @@ use Brian2694\Toastr\Facades\Toastr;
 use http\Client\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Cache;
+use phpDocumentor\Reflection\Types\Boolean;
 use Xenon\LaravelBDSms\Facades\SMS;
 use function Pest\Laravel\json;
 
@@ -300,5 +301,13 @@ class ViewHelper
 
         $duration = max(1, $duration);
         return (int) round($duration);
+    }
+
+    public static function checkIfRequestFromApi()
+    {
+        if (str()->contains(url()->current(), '/api/'))
+            return true;
+        else
+            return false;
     }
 }

@@ -55,14 +55,21 @@
                                 <td class="">
 {{--                                    @can('edit-permission')--}}
 {{--                                        <a href="{{ route('users.edit', $user->id) }}" class="btn btn-sm btn-warning">--}}
-{{--                                            <i class="fa-solid fa-edit"></i>--}}
+{{--                                            <i class="fa-solid fa-blog"></i>--}}
 {{--                                        </a>--}}
 {{--                                    @endcan--}}
+                                    <form class="d-inline" action="{{ route('users.destroy', ['user' => $user->id, 'req_for' => $user->status == 'blocked' ? 'unblock' : 'block']) }}" method="post" >
+                                        @csrf
+                                        @method('delete')
+                                        <button type="button" class="btn btn-sm btn-{{ $user->status == 'blocked' ? 'warning' : 'primary' }} data-block-form" data-status="{{ $user->status == 'blocked' ? 'blocked' : 'unblocked' }}">
+                                            <i class="fa-solid fa-signs-post"></i>
+                                        </button>
+                                    </form>
                                     @can('delete-permission')
-                                        <form class="d-inline" action="{{ route('users.destroy', $user->id) }}" method="post" >
+                                        <form class="d-inline" action="{{ route('users.destroy', ['user' => $user->id, 'req_for' => 'delete']) }}" method="post" >
                                             @csrf
                                             @method('delete')
-                                            <button type="submit" class="btn btn-sm btn-danger data-delete-form">
+                                            <button type="button" class="btn btn-sm btn-danger data-delete-form">
                                                 <i class="fa-solid fa-trash"></i>
                                             </button>
                                         </form>
@@ -81,8 +88,10 @@
 
 @push('style')
     <!-- DataTables -->
-    <link href="{{ asset('/') }}backend/assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('/') }}backend/assets/libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+{{--    <link href="{{ asset('/') }}backend/assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />--}}
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.3.4/css/dataTables.bootstrap4.min.css">
+{{--    <link href="{{ asset('/') }}backend/assets/libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />--}}
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/3.2.5/css/buttons.bootstrap4.min.css">
 @endpush
 
 @push('script')
@@ -90,4 +99,34 @@
 {{--    {{ $dataTable->scripts(attributes: ['type' => 'module']) }}--}}
     <!-- yo -->
     @include('backend.includes.assets.plugin-files.datatable')
+
+<script>
+    $(document).on('click', '.data-block-form', function (event) {
+        event.preventDefault();
+        var currentBlockStatus = 'Block';
+        if ($(this).attr('data-status') == 'blocked')
+        {
+            currentBlockStatus = 'Unblock';
+        }
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: `Yes, ${currentBlockStatus} it!`
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Swal.fire(
+                //     'Deleted!',
+                //     'Your file has been deleted.',
+                //     'success'
+                // )
+                $(this).parent().submit();
+            }
+
+        })
+    })
+</script>
 @endpush

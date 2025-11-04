@@ -27,7 +27,7 @@
     </div>
     <!-- head hunt -->
     <div class="headHunt p-4">
-        <h2 class="mb-1 fw-bold">Head Hunt</h2>
+        <h2 class="mb-1 fw-bold f-s-23">Head Hunt</h2>
         <p class="text-muted mb-3">Browse talents & find the perfect match for your company.</p>
 
         <section class="bg-white">
@@ -284,7 +284,9 @@
                             <div class="card-body">
                                 <div class="d-flex align-items-center mb-3">
                                     <img src="{{ asset($employee->profile_image ?? '/frontend/user-vector-img.jpg') }}" alt="{{ $employee->name ?? '' }}" class="rounded-circle me-3" style="width: 56px; height: 56px; object-fit: cover;" />
-                                    {{--                                <span class="badge   ms-auto fullTime d-flex align-items-center"><img src="{{ asset('/') }}frontend/employer/images/employersHome/fulltime-dot.png" alt="" class="me-1">Full-time</span>--}}
+                                    @if(isset($employee?->jobTypes[0]))
+                                        <span class="badge   ms-auto fullTime d-flex align-items-center"><img src="{{ asset('/frontend/employer/images/employersHome/fulltime-dot.png') }}" alt="" class="me-1">{{ $employee?->jobTypes[0]?->name ?? '' }}</span>
+                                    @endif
                                 </div>
                                 <h5 class="card-title fw-bold mb-1">{{ $employee->name ?? 'Employee Name' }}</h5>
                                 <p class="card-text mb-2" style="font-size: 14px;">

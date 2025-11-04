@@ -113,15 +113,15 @@ class SubscriptionController extends Controller
         }
         if ($request->user_type == 'employee')
         {
-            $users = \App\Models\User::where('user_type', 'employee')->get();
+            $users = \App\Models\User::where('user_type', 'employee')->get(['id', 'subscription_plan_id', 'subscription_end_date']);
         }
         elseif ($request->user_type == 'employer')
         {
-            $users = \App\Models\User::where('user_type', 'employer')->get();
+            $users = \App\Models\User::where('user_type', 'employer')->get(['id', 'subscription_plan_id', 'subscription_end_date']);
         }
         elseif ($request->user_type == 'all')
         {
-            $users = \App\Models\User::whereNotIn('user_type', ['super_admin', 'admin'])->get();
+            $users = \App\Models\User::whereNotIn('user_type', ['super_admin', 'admin'])->get(['id', 'subscription_plan_id', 'subscription_end_date']);
         }
         if ($users->count() > 0)
         {

@@ -26,32 +26,32 @@ use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 use PHPUnit\Util\PHP\Job;
 
 class EmployeeViewController extends Controller
 {
     protected $data = [];
+
     public function employeeHome()
     {
         $topJobsForEmployee = JobTask::where(['status' => 1])->with('employerCompany', 'jobType')->take(5)->latest()->get();
-        foreach ($topJobsForEmployee as $job)
-        {
-            $job->isSaved    = ViewHelper::getJobSaveApplyInfo($job->id)['isSaved'] ?? false;
-            $job->isApplied    = ViewHelper::getJobSaveApplyInfo($job->id)['isApplied'] ?? false;
+        foreach ($topJobsForEmployee as $job) {
+            $job->isSaved = ViewHelper::getJobSaveApplyInfo($job->id)['isSaved'] ?? false;
+            $job->isApplied = ViewHelper::getJobSaveApplyInfo($job->id)['isApplied'] ?? false;
         }
         $moreJobsForEmployee = JobTask::where(['status' => 1])->with('employerCompany', 'jobType')->take(5)->inRandomOrder()->get();
-        foreach ($moreJobsForEmployee as $jobx)
-        {
-            $jobx->isSaved    = ViewHelper::getJobSaveApplyInfo($jobx->id)['isSaved'] ?? false;
-            $jobx->isApplied    = ViewHelper::getJobSaveApplyInfo($jobx->id)['isApplied'] ?? false;
+        foreach ($moreJobsForEmployee as $jobx) {
+            $jobx->isSaved = ViewHelper::getJobSaveApplyInfo($jobx->id)['isSaved'] ?? false;
+            $jobx->isApplied = ViewHelper::getJobSaveApplyInfo($jobx->id)['isApplied'] ?? false;
         }
         $data = [
-            'totalSavedJobs'    => auth()->user()->employeeSavedJobs()->count() ?? 0,
-            'totalAppliedApplications'    => auth()->user()->employeeAppliedJobs()->count() ?? 0,
-            'totalViewedEmployers'    => auth()->user()->viewedEmployers()->count() ?? 0,
-            'topJobsForEmployee'    => $topJobsForEmployee,
-            'moreJobsForEmployee'    => $moreJobsForEmployee,
+            'totalSavedJobs' => auth()->user()->employeeSavedJobs()->count() ?? 0,
+            'totalAppliedApplications' => auth()->user()->employeeAppliedJobs()->count() ?? 0,
+            'totalViewedEmployers' => auth()->user()->viewedEmployers()->count() ?? 0,
+            'topJobsForEmployee' => $topJobsForEmployee,
+            'moreJobsForEmployee' => $moreJobsForEmployee,
         ];
         return ViewHelper::checkViewForApi($data, 'frontend.employee.home.home');
         return \view('frontend.employee.home.home');
@@ -63,10 +63,10 @@ class EmployeeViewController extends Controller
         return response()->json($loggedUser->employeeSavedJobs()->count() ?? 0);
     }
 
-    public function viewCompanyProfile(EmployerCompany $employerCompany,Request $request)
+    public function viewCompanyProfile(EmployerCompany $employerCompany, Request $request)
     {
         $data = [
-            'employerCompany'   => $employerCompany,
+            'employerCompany' => $employerCompany,
         ];
         return ViewHelper::checkViewForApi($data, 'frontend.employee.jobs.company-profile');
         return \view('frontend.employee.jobs.company-profile');
@@ -83,13 +83,13 @@ class EmployeeViewController extends Controller
         if ($request->has('search_text') && !empty($request->search_text)) {
             $searchText = $request->search_text;
 
-            $jobTasks = $jobTasks->where(function($query) use ($searchText) {
-                $query->where('job_title', 'like', '%'.$searchText.'%')
-                    ->orWhereHas('employerCompany', function($q) use ($searchText) {
-                        $q->where('name', 'like', '%'.$searchText.'%');
+            $jobTasks = $jobTasks->where(function ($query) use ($searchText) {
+                $query->where('job_title', 'like', '%' . $searchText . '%')
+                    ->orWhereHas('employerCompany', function ($q) use ($searchText) {
+                        $q->where('name', 'like', '%' . $searchText . '%');
                     })
-                    ->orWhereHas('industry', function($q) use ($searchText) {
-                        $q->where('name', 'like', '%'.$searchText.'%');
+                    ->orWhereHas('industry', function ($q) use ($searchText) {
+                        $q->where('name', 'like', '%' . $searchText . '%');
                     });
             });
         }
@@ -123,9 +123,9 @@ class EmployeeViewController extends Controller
 
             if (is_array($districts) && !empty($districts)) {
                 $jobTasks = $jobTasks->whereHas('employerCompany', function ($q) use ($districts) {
-                    $q->where(function($query) use ($districts) {
+                    $q->where(function ($query) use ($districts) {
                         foreach ($districts as $district) {
-                            $query->orWhere('address', 'like', '%'.$district.'%');
+                            $query->orWhere('address', 'like', '%' . $district . '%');
                         }
                     });
                 });
@@ -144,13 +144,11 @@ class EmployeeViewController extends Controller
         }
 
         // filter by job types
-        if (isset($filters['job_type']) && !empty($filters['job_type']))
-        {
+        if (isset($filters['job_type']) && !empty($filters['job_type'])) {
             $jobTypes = json_decode($filters['job_type'], true);
 
-            if (is_array($jobTypes) && !empty($jobTypes))
-            {
-                $jobTasks = $jobTasks->whereHas('jobType', function ($j) use ($jobTypes){
+            if (is_array($jobTypes) && !empty($jobTypes)) {
+                $jobTasks = $jobTasks->whereHas('jobType', function ($j) use ($jobTypes) {
                     $j->whereIn('slug', $jobTypes);
                 });
             }
@@ -180,6 +178,13 @@ class EmployeeViewController extends Controller
 
         $jobTasks = $jobTasks->where(['status' => 1])->latest()->paginate(20);
 
+        if (count($jobTasks) > 0) {
+            foreach ($jobTasks as $jobTask) {
+                $jobTask->isSaved = $getJobSaveApplyInfo['isSaved'] ?? false;
+                $jobTask->isApplied = $getJobSaveApplyInfo['isApplied'] ?? false;
+            }
+        }
+
         if (isset($request->job_task)) {
             $singleJobTask = JobTask::find($request->job_task);
         } else {
@@ -208,13 +213,13 @@ class EmployeeViewController extends Controller
         return ViewHelper::checkViewForApi($data, 'frontend.employee.jobs.show-jobs');
         return \view('frontend.employee.jobs.show-jobs', $data);
     }
+
     public function mySavedJobs()
     {
         $loggedUser = ViewHelper::loggedUser();
-        $savedJobs  = $loggedUser->employeeSavedJobs;
-        foreach ($savedJobs as $savedJob)
-        {
-            $savedJob->isApplied    = ViewHelper::getJobSaveApplyInfo($savedJob->id);
+        $savedJobs = $loggedUser->employeeSavedJobs;
+        foreach ($savedJobs as $savedJob) {
+            $savedJob->isApplied = ViewHelper::getJobSaveApplyInfo($savedJob->id);
         }
         $data = $loggedUser ? [
             'savedJobs' => $savedJobs ?? [],
@@ -222,6 +227,7 @@ class EmployeeViewController extends Controller
         return ViewHelper::checkViewForApi($data, 'frontend.employee.jobs.my-saved-jobs');
         return \view('frontend.employee.jobs.my-saved-jobs');
     }
+
     public function myApplications()
     {
         $user = ViewHelper::loggedUser();
@@ -229,58 +235,63 @@ class EmployeeViewController extends Controller
         $data = [
 //            'myApplications'    => $user->employeeAppliedJobs
 //            'myApplications'    => $user->appliedJobs
-            'myApplications'    => $user->appliedJobsWithJobDetails
+            'myApplications' => $user->appliedJobsWithJobDetails
         ];
         return ViewHelper::checkViewForApi($data, 'frontend.employee.jobs.my-applications');
         return \view('frontend.employee.jobs.my-applications');
     }
+
     public function myProfileViewers()
     {
         $user = ViewHelper::loggedUser();
         $profileViewerIds = UserProfileView::where(['employee_id' => $user->id, 'viewed_by' => 'employer'])->with('employerCompany')->get();
         $data = [
-            'myProfileViewers'  => $profileViewerIds
+            'myProfileViewers' => $profileViewerIds
         ];
         return ViewHelper::checkViewForApi($data, 'frontend.employee.base-functionalities.profile-viewers');
         return \view('frontend.employee.base-functionalities.profile-viewers');
     }
+
     public function mySubscriptions()
     {
         $this->data = [
-            'loggedUser'    => ViewHelper::loggedUser(),
+            'loggedUser' => ViewHelper::loggedUser(),
             'subscriptionPlans' => SubscriptionPlan::where(['status' => 1, 'subscription_for' => 'employee'])->get()
         ];
         return ViewHelper::checkViewForApi($this->data, 'frontend.employee.base-functionalities.my-subscriptions');
         return \view('frontend.employee.base-functionalities.my-subscriptions');
     }
+
     public function settings()
     {
         $this->data = [
-            'loggedUser'    => ViewHelper::loggedUser()
+            'loggedUser' => ViewHelper::loggedUser()
         ];
         return ViewHelper::checkViewForApi($this->data, 'frontend.employee.base-functionalities.settings');
         return \view('frontend.employee.base-functionalities.settings');
     }
+
     public function myProfile()
     {
         $loggedUser = ViewHelper::loggedUser();
-        if (str()->contains(url()->current(), '/api/'))
-        {
+        if (str()->contains(url()->current(), '/api/')) {
             $loggedUser->profile_image = asset($loggedUser->profile_image);
         }
         $data = [
-            'workExperiences'    => EmployeeWorkExperience::where(['user_id' => auth()->id(), 'status' => 1])->get(), // stringp tags for api
-            'employeeEducations'    => EmployeeEducation::where(['user_id' => auth()->id(), 'status' => 1])->get(),
-            'employeeDocuments'    => EmployeeDocument::where(['user_id' => auth()->id(), 'status' => 1])->get(),
-            'employeeProfileDate'   => $loggedUser,
-            'educationDegreeNames'   => EducationDegreeName::where(['status' => 1])->get(['id', 'degree_name', 'need_institute_field']),
-            'universityNames'   => UniversityName::where(['status' => 1])->get(['id', 'name']),
-            'fieldOfStudies'   => FieldOfStudy::where(['status' => 1])->get(['id', 'field_name']),
-            'companyList'   => EmployerCompany::where(['status' => 1])->get(['id', 'name']),
+            'workExperiences' => EmployeeWorkExperience::where(['user_id' => auth()->id(), 'status' => 1])->get(), // stringp tags for api
+            'employeeEducations' => EmployeeEducation::where(['user_id' => auth()->id(), 'status' => 1])->get(),
+            'employeeDocuments' => EmployeeDocument::where(['user_id' => auth()->id(), 'status' => 1])->get(),
+            'employeeProfileDate' => $loggedUser,
+            'educationDegreeNames' => EducationDegreeName::where(['status' => 1])->get(['id', 'degree_name', 'need_institute_field']),
+            'universityNames' => UniversityName::where(['status' => 1])->get(['id', 'name']),
+            'fieldOfStudies' => FieldOfStudy::where(['status' => 1])->get(['id', 'field_name']),
+            'companyList' => EmployerCompany::where(['status' => 1])->get(['id', 'name']),
+            'jobTypes' => JobType::where(['status' => 1])->get(['id', 'name']),
         ];
         return ViewHelper::checkViewForApi($data, 'frontend.employee.base-functionalities.my-profile');
         return \view('frontend.employee.base-functionalities.my-profile');
     }
+
     public function myNotifications()
     {
         $loggedUser = ViewHelper::loggedUser();
@@ -298,17 +309,16 @@ class EmployeeViewController extends Controller
     public function saveJob(Request $request, JobTask $jobTask)
     {
         $user = ViewHelper::loggedUser();
-        if (isset($jobTask) && $user)
-        {
+        if (isset($jobTask) && $user) {
             $user->employeeSavedJobs()->syncWithoutDetaching($jobTask->id);
             $data = [
-                'status'    => 'success',
-                'msg'   => 'Job Saved successfully.'
+                'status' => 'success',
+                'msg' => 'Job Saved successfully.'
             ];
         } else {
             $data = [
-                'status'    => 'error',
-                'msg'   => 'Job or User Not found.'
+                'status' => 'error',
+                'msg' => 'Job or User Not found.'
             ];
         }
 
@@ -317,8 +327,7 @@ class EmployeeViewController extends Controller
 
     public function deleteSaveJob(Request $request, JobTask $jobTask)
     {
-        if ($jobTask)
-        {
+        if ($jobTask) {
             $user = ViewHelper::loggedUser();
             $user->employeeSavedJobs()->detach($jobTask->id);
             return ViewHelper::returnSuccessMessage('Job removed from my jobs.');
@@ -330,7 +339,7 @@ class EmployeeViewController extends Controller
     public function changeJobActiveStatus($status = 0)
     {
         $loggedUser = ViewHelper::loggedUser();
-        $loggedUser->is_open_for_hire   = $status;
+        $loggedUser->is_open_for_hire = $status;
         $loggedUser->save();
         return ViewHelper::returnSuccessMessage('Your job active status changed successfully.');
     }
@@ -339,8 +348,7 @@ class EmployeeViewController extends Controller
     {
 //        return $jobTask;
         $loggedUser = ViewHelper::loggedUser();
-        if ($jobTask && $loggedUser)
-        {
+        if ($jobTask && $loggedUser) {
             try {
                 $employeeAppliedJob = new EmployeeAppliedJob();
                 $employeeAppliedJob->user_id = $loggedUser->id;
@@ -348,8 +356,7 @@ class EmployeeViewController extends Controller
                 $employeeAppliedJob->status = 'pending';
                 $employeeAppliedJob->save();
                 return ViewHelper::returnSuccessMessage('You applied for this job successfully.');
-            } catch (\Exception $exception)
-            {
+            } catch (\Exception $exception) {
                 return ViewHelper::returEexceptionError($exception->getMessage());
             }
         } else {
@@ -360,53 +367,61 @@ class EmployeeViewController extends Controller
 
     public function updateProfile(Request $request, User $user)
     {
+
 //        return $request->all();
         $validator = Validator::make($request->all(), [
-            'email' => $user->email != $request->email ? 'unique:users' : '',
-            'mobile' => $user->mobile != $request->mobile ? 'unique:users' : '',
+            'email' => [
+                'nullable',
+                'email:rfc,dns',
+                Rule::unique('users', 'email')->ignore($user->id),
+//                $user->email != $request->email ? 'unique:users,email' : ''
+            ],
+//            'mobile' => $user->mobile != $request->mobile ? ['unique:users,mobile', 'regex:/^01[0-9]{9}$/'] : '',
+            'mobile' => [
+                'regex:/^01[0-9]{9}$/',
+                Rule::unique('users', 'mobile')->ignore($user->id)
+            ],
+        ], [
+            'email.email' => 'Please enter a valid email address',
+            'email.unique' => 'This email address is already taken',
+            'mobile.unique' => 'This mobile number is already registered',
+            'mobile.regex' => 'Mobile number must be 11 digits and start with 01',
         ]);
-        if ($validator->fails())
-        {
+        if ($validator->fails()) {
 //            Toastr::error($validator->errors());
             return ViewHelper::returEexceptionError($validator->errors());
             return back();
         }
-        if (isset($request->prev_password) && isset($request->new_password))
-        {
-            if (!Hash::check($request->prev_password, $user->password))
-            {
+        if (isset($request->prev_password) && isset($request->new_password)) {
+            if (!Hash::check($request->prev_password, $user->password)) {
                 return ViewHelper::returEexceptionError('Password Mismatch. Please provide correct password.');
             }
         }
         try {
 
-            if ($user)
-            {
-                $user->profile_title    = $request->profile_title ?? $user->profile_title;
-                $user->name    = $request->name ?? $user->name;
-                $user->email    = $request->email ?? $user->email;
-                $user->mobile    = $request->mobile ?? $user->mobile;
-                $user->website    = $request->website ?? $user->website;
-                $user->division    = $request->division ?? $user->division;
-                $user->district    = $request->district ?? $user->district;
-                $user->post_office    = $request->post_office ?? $user->post_office;
-                $user->postal_code    = $request->postal_code ?? $user->postal_code;
-                $user->is_open_for_hire    = $request->is_open_for_hire ?? $user->is_open_for_hire;
-                $user->is_profile_updated    = $request->is_profile_updated ?? $user->is_profile_updated;
-                if (isset($request->cropped_image_data))
-                {
-                    $user->profile_image    = imageUpload($request->cropped_image_data, 'profile-image', 'profile_image', 200,200, $user->profile_image ?? null, true);
-                } elseif ($request->hasFile('profile_image'))
-                {
-                    $user->profile_image    = imageUpload($request->file('profile_image'), 'profile-image', 'profile_image', 200,200, $user->profile_image ?? null);
+            if ($user) {
+                $user->profile_title = $request->profile_title ?? $user->profile_title;
+                $user->name = $request->name ?? $user->name;
+                $user->email = $request->email ?? $user->email;
+                $user->mobile = $request->mobile ?? $user->mobile;
+                $user->website = $request->website ?? $user->website;
+                $user->division = $request->division ?? $user->division;
+                $user->district = $request->district ?? $user->district;
+                $user->post_office = $request->post_office ?? $user->post_office;
+                $user->postal_code = $request->postal_code ?? $user->postal_code;
+                $user->is_open_for_hire = $request->is_open_for_hire ?? $user->is_open_for_hire;
+                $user->is_profile_updated = $request->is_profile_updated ?? $user->is_profile_updated;
+                if (isset($request->cropped_image_data)) {
+                    $user->profile_image = imageUpload($request->cropped_image_data, 'profile-image', 'profile_image', 200, 200, $user->profile_image ?? null, true);
+                } elseif ($request->hasFile('profile_image')) {
+                    $user->profile_image = imageUpload($request->file('profile_image'), 'profile-image', 'profile_image', 200, 200, $user->profile_image ?? null);
                 }
-                $user->address    = $request->address ?? $user->address;
+                $user->address = $request->address ?? $user->address;
                 $user->save();
             }
 //            Toastr::success('Profile Info updated successfully.');
-            return ViewHelper::returnResponseFromPostRequest(true,'Profile Info updated successfully.');
-        } catch (\Exception $exception)
-        {
+            return ViewHelper::returnResponseFromPostRequest(true, 'Profile Info updated successfully.');
+        } catch (\Exception $exception) {
 //            Toastr::error($exception->getMessage());
             return ViewHelper::returnResponseFromPostRequest(false, $exception->getMessage());
         }
@@ -416,19 +431,16 @@ class EmployeeViewController extends Controller
     public function updateEmployeeInfo(Request $request)
     {
         $loggedUser = ViewHelper::loggedUser();
-        if ($loggedUser)
-        {
+        if ($loggedUser) {
             $loggedUser->jobTypes()->syncWithoutDetaching($request->job_type_id);
             $loggedUser->jobLocationTypes()->syncWithoutDetaching($request->job_location_type_id);
-            if ($request->has('cropped_image_data'))
-            {
-                if ($loggedUser->user_type == 'employee')
-                {
-                    $loggedUser->profile_image  = imageUpload($request->cropped_image_data, 'profile-image', 'profile_image', 200,200, $user->profile_image ?? null, true);
+            if ($request->has('cropped_image_data')) {
+                if ($loggedUser->user_type == 'employee') {
+                    $loggedUser->profile_image = imageUpload($request->cropped_image_data, 'profile-image', 'profile_image', 200, 200, $user->profile_image ?? null, true);
                 } else {
                     $company = EmployerCompany::find($loggedUser->employerCompany->id);
-                    $loggedUser->profile_image  = imageUpload($request->cropped_image_data, 'profile-image', 'profile_image', 200,200, $user->profile_image ?? null, true);
-                    $company->logo = $loggedUser->profile_image  = imageUpload($request->cropped_image_data, 'employer_company_logos', 'employer_company_logos', 200,200, $user->profile_image ?? null, true);
+                    $loggedUser->profile_image = imageUpload($request->cropped_image_data, 'profile-image', 'profile_image', 200, 200, $user->profile_image ?? null, true);
+                    $company->logo = $loggedUser->profile_image = imageUpload($request->cropped_image_data, 'employer_company_logos', 'employer_company_logos', 200, 200, $user->profile_image ?? null, true);
                     $company->save();
                 }
                 $loggedUser->save();

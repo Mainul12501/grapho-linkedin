@@ -6,6 +6,7 @@ use App\DataTables\UsersDataTable;
 use App\Helpers\ViewHelper;
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -89,9 +90,30 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(User $user, Request $request)
     {
-        //
+        if ($user)
+        {
+            if (isset($request->req_for) && $request->req_for == 'block')
+            {
+                $user->status = 'blocked';
+                $user->save();
+                Toastr::success('User Blocked Successfully.');
+            } elseif (isset($request->req_for) && $request->req_for == 'unblock')
+            {
+                $user->status = null;
+                $user->save();
+                Toastr::success('User Blocked Successfully.');
+            } elseif (isset($request->req_for) && $request->req_for == 'delete') {
+                $user->delete();
+                Toastr::success('User Deleted Successfully.');
+            } else {
+                Toastr::error('Something went wrong. Please try again.');
+            }
+            return back();
+        } else {
+            return ViewHelper::returEexceptionError('User not found.');
+        }
     }
 
     public function PendingUsers()

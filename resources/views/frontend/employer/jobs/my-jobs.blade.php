@@ -616,11 +616,10 @@
 
     <!-- Detailed Job Review Modal -->
     <div class="modal fade modal-over-modal" id="jobDetailsModalReview" style="">
-        <div class="modal-dialog modal-lg ">
-            <div class="modal-content rounded-4 p-4">
-
+        <div class="modal-dialog modal-lg " style="height: calc(100vh - 5px); margin: 5px auto;">
+            <div class="modal-content rounded-4 p-4" style="height: 100%; overflow-y: auto;">
                 <!-- Header with back arrow and buttons -->
-                <div class="d-flex justify-content-between align-items-center mb-4" style="padding: 16px 24px; background: #fff; border-radius: 16px;">
+                <div class="d-flex justify-content-between align-items-center mb-4 border-bottom" id="reviewBorderBottom" style="padding: 16px 24px; background: #fff; border-radius: 16px 16px 0px 0px;">
                     <h6 class="mb-0 fw-semibold d-flex align-items-center gap-2 hide-review-modal" style="font-weight: 600; font-size: 1rem; cursor: pointer;">
                         <img src="{{ asset('/') }}frontend/employer/images/employersHome/leftarrow.png" alt="Back" style="width: 24px; height: 24px;">
                         Review job details
@@ -634,7 +633,7 @@
                 <!-- Snackbar / Toast -->
                 <div id="snackbar" class="snackbar">
                     <img src="{{ asset('/') }}frontend/employer/images/employersHome/toasterTik.png" alt="Success" class="snackbar-icon">
-                    <span class="snackbar-text">You posted the job: <b id="" class="reviewJobTitle">Senior Officer, Corporate Banking</b></span>
+                    <span class="snackbar-text">You posted the job: <b id="" class="reviewJobTitle" style="font-size: 19px">Senior Officer, Corporate Banking</b></span>
 {{--                    <button id="snackbar-close" class="snackbar-close"><img src="{{ asset('/') }}frontend/employer/images/employersHome/ToasterCross.png" alt=""></button>--}}
                 </div>
 
@@ -643,7 +642,7 @@
 
                 <!-- Company Info -->
                 <div class="mb-2 d-flex align-items-center gap-2">
-                    <img id="companyLogo" src="{{ asset('/') }}frontend/employer/images/employersHome/UCB logo.png" alt="UCB Logo" style="height:24px;">
+                    <img id="modalCompanyLogo" src="{{ asset('/') }}frontend/employer/images/employersHome/UCB logo.png" alt="UCB Logo" style="height:24px;">
                     <span class="fw-semibold companyName">United Commercial Bank PLC</span>
                     <span class="text-muted" id="companyAddress">&middot; Gulshan, Dhaka</span>
                 </div>
@@ -657,17 +656,17 @@
                     <span class="badge bg-light text-dark fw-medium" id="reviewJobLocationType">On-Site</span>
                 </div>
 
-                <div class="row mt-2">
+                <div class="row my-4">
                     <div class="col-md-4">
-                        <p><b>Required Experience</b></p>
+                        <p class="mb-1"><b>Required Experience</b></p>
                         <p id="reviewExperience">1-3 Years</p>
                     </div>
                     <div class="col-md-4">
-                        <p><b>Application Deadline</b></p>
+                        <p class="mb-1"><b>Application Deadline</b></p>
                         <p id="reviewDeadline">20-5-25</p>
                     </div>
                     <div class="col-md-4">
-                        <p><b>Salary</b></p>
+                        <p class="mb-1"><b>Salary</b></p>
                         <p id="reviewSalary">BDT 10000</p>
                     </div>
                 </div>
@@ -765,6 +764,14 @@
             cursor: pointer;
         }
         .about-company-name {margin-top: 10px}
+
+        /* modal codes*/
+        #reviewBorderBottom {
+            margin: -16px -24px 0 -24px; /* Negative margin to extend to parent edges */
+            padding: 16px 24px;
+            border-bottom: 2px solid #dee2e6; /* or your desired color */
+        }
+
     </style>
 @endpush
 
@@ -965,6 +972,7 @@
             // print values
             $('.reviewJobTitle').text(jobTitle);
             $('#companyLogo').text(companyLogo);
+            $('#modalCompanyLogo').attr('src', companyLogo);
             $('.companyName').text(companyName);
             $('#companyAddress').text(companyAddress);
             $('.companyOverview').html(companyOverview);

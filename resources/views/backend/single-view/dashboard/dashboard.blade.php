@@ -45,6 +45,14 @@
                         </div>
                     </div>
                 </div>
+                <div class="col-md-6">
+                    <div class="card ">
+                        <div class="card-body">
+                            <h4 class="fw-bolder f-s-22">Current Month Total Transactions</h4>
+                            <span class="fw-bold f-s-25" style="">{{ $thisMonthTransaction ?? 0 }}</span>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>

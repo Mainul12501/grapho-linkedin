@@ -65,6 +65,7 @@
 {{--                <button type="submit" class="btn btn-warning text-dark fw-semibold px-4 py-2 rounded-3" --}}{{--data-bs-toggle="modal" data-bs-target="#jobDetailsModal"--}}{{-->--}}
 {{--                    Update Job--}}
 {{--                </button>--}}
+                <button class="btn btn-sm btn-close" data-bs-dismiss="modal" type="button"></button>
             </div>
         </div>
         <!-- Your provided step 2 content starts here -->

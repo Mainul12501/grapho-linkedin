@@ -22,12 +22,14 @@ use App\Http\Controllers\Backend\SiteControllers\AdvertisementController;
 use App\Http\Controllers\Backend\SiteControllers\SiteSettingsController;
 use App\Http\Controllers\Backend\SiteControllers\SubscriptionController;
 use App\Http\Controllers\Backend\SiteControllers\CommonPageController;
+use App\Http\Controllers\Backend\Employer\TransactionController;
 
 
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
     'verified',
+    'isAdmin'
 ])->group(function () {
 
     Route::get('/dashboard', [AdminViewController::class, 'dashboard'])->name('dashboard');
@@ -59,6 +61,7 @@ Route::middleware([
         'advertisements' => AdvertisementController::class,
         'site-settings' => SiteSettingsController::class,
         'subscriptions' => SubscriptionController::class,
+        'transactions' => TransactionController::class,
     ]);
 
 });

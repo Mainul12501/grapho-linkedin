@@ -73,5 +73,8 @@
     .select2-container {
         width: 100% !important;
     }
+    #file-datatable_length .select2-container {
+        width: 20% !important;
+    }
 </style>
 @stack('style')
