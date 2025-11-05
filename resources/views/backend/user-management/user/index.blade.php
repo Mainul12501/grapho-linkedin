@@ -9,9 +9,12 @@
                 <div class="card-header bg-warning">
                     <h4 class="float-start text-white">Manage Users</h4>
 {{--                    @can('create-user')--}}
-{{--                        <a href="{{ route('users.create') }}" class="rounded-circle text-white border-5 text-light f-s-22 btn position-absolute end-0 me-4">--}}
-{{--                            <i class="fa-solid fa-circle-plus"></i>--}}
-{{--                        </a>--}}
+                    @if(isset($_GET['show_sub_employer']))
+                        <a href="{{ route('users.index', ['user_type' => $_GET['user_type']]) }}" class="rounded-circle text-white border-5 text-light f-s-22 btn position-absolute end-0 me-4">
+                            <i class="fa-solid fa-circle-arrow-left"></i>
+                        </a>
+                    @endif
+
 {{--                    @endcan--}}
                 </div>
                 <div class="card-body">
@@ -28,7 +31,9 @@
                             <th>Subscription Plan</th>
                             @if($userType == 'employer')
                                 <th>Jobs</th>
-                                <th>Sub Employers</th>
+                                @if(!isset($_GET['show_sub_employer']))
+                                    <th>Sub Employers</th>
+                                @endif
                             @endif
                             <th>Action</th>
                         </tr>
@@ -50,7 +55,9 @@
                                 <td>{{ $user?->subscriptionPlan?->title?? '' }}</td>
                                 @if($userType == 'employer')
                                     <td><a href="{{ route('view-employer-jobs', $user->id) }}" title="Total Jobs" class="btn btn-sm btn-primary">{{ $user?->jobs()->count() ?? 0 }}</a></td>
-                                    <td><a href="{{ route('users.index', ['user_type' => 'employer', 'employer_id' => $user->id, 'show_sub_employer' => 1]) }}" title="Total Sub Employers" class="btn btn-sm btn-primary">{{ $user?->users()->count() ?? 0 }}</a></td>
+                                    @if(!isset($_GET['show_sub_employer']))
+                                        <td><a href="{{ route('users.index', ['user_type' => 'employer', 'employer_id' => $user->id, 'show_sub_employer' => 1]) }}" title="Total Sub Employers" class="btn btn-sm btn-primary">{{ $user?->users()->count() ?? 0 }}</a></td>
+                                    @endif
                                 @endif
                                 <td class="">
 {{--                                    @can('edit-permission')--}}

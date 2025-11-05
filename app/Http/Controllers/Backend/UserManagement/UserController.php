@@ -29,7 +29,7 @@ class UserController extends Controller
         {
             if ($request->has('show_sub_employer') && $request->show_sub_employer == 1 && $request->has('employer_id'))
             {
-                $this->users = User::where(['user_type' => 'employer', 'user_id' => $request->employer_id])->get();
+                $this->users = User::where(['user_type' => 'sub_employer', 'user_id' => $request->employer_id])->get();
             } else {
                 $this->users = User::where(['user_type' => 'employer'])->get();
             }
