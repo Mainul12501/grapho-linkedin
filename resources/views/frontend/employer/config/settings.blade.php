@@ -21,10 +21,10 @@
                             <!-- Full Name -->
                             <div class="mb-3 d-flex justify-content-between align-items-center border-bottom p-3">
                                 <div class="d-flex align-items-center" style="gap:8px;">
-                                    <img src="{{ asset('/') }}frontend/employer/images/employersHome/Settings-Full Name.png" alt="">
+                                    <img src="{{ asset('/') }}frontend/employer/images/employersHome/Settings-Full Name.png" alt="user-icon" style="height: 30px">
                                     Full Name
                                 </div>
-                                <div class="border px-5 py-2 rounded" >
+                                <div class="border px-5 py-2 rounded" data-bs-toggle="modal" data-bs-target="#employeeSettingsModal" style="cursor: pointer">
                                     <span>{{ $loggedUser->name ?? 'User Name' }}</span>
                                 </div>
                             </div>

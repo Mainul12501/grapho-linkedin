@@ -22,15 +22,17 @@ use App\Models\User;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 
 class EmployerViewController extends Controller
 {
     protected array $data = [];
+
     public function employerHome(Request $request)
     {
         $posts = Post::query()
-            ->where(['status' => 1, 'user_type' => 'employer'])
+            ->where(['status' => 1, 'user_type' => 'employer'])->orWhere('user_type' , 'employer')
             ->latest();
 
         if ($request->filled('start_number')) {
@@ -53,22 +55,19 @@ class EmployerViewController extends Controller
             ->get();
 
 
-        foreach ($posts as $post)
-        {
+        foreach ($posts as $post) {
             $post['follow_history_status'] = ViewHelper::checkFollowHistory($post->user_id, ViewHelper::loggedUser()->id) ?? false;
         }
 //        return response()->json($posts);
 //        return $posts;
-        if (str()->contains(url()->current(), '/api/'))
-        {
-            return  response()->json($posts);
+        if (str()->contains(url()->current(), '/api/')) {
+            return response()->json($posts);
         }
-        if ($request->ajax() )
-        {
+        if ($request->ajax()) {
             return \view('frontend.employer.include-edit-forms.home-append', ['posts' => $posts])->render();
         }
         $data = [
-            'advertisements'    => Advertisement::where(['status' => 1])->latest()->inRandomOrder()->paginate(10),
+            'advertisements' => Advertisement::where(['status' => 1])->latest()->inRandomOrder()->paginate(10),
         ];
         return ViewHelper::checkViewForApi($data, 'frontend.employer.home.home');
         return view('frontend.employer.home.home', $data);
@@ -77,68 +76,63 @@ class EmployerViewController extends Controller
     public function dashboard()
     {
         $data = [
-            'jobTasks'  => JobTask::where(['user_id' => ViewHelper::loggedUser()->id, 'status' => 1])->paginate(10),
+            'jobTasks' => JobTask::where(['user_id' => ViewHelper::loggedUser()->id, 'status' => 1])->paginate(10),
             'employees' => User::where(['user_type' => 'employee', 'is_open_for_hire' => 1])->take(3)->get(['id', 'name', 'profile_title', 'address', 'profile_image']),
         ];
         return ViewHelper::checkViewForApi($data, 'frontend.employer.home.dashboard');
         return view('frontend.employer.home.dashboard', $data);
     }
+
     public function myJobs(Request $request)
     {
-        if ($request->has('job_status'))
-        {
-            if ($request->job_status == 'closed')
-            {
+        if ($request->has('job_status')) {
+            if ($request->job_status == 'closed') {
                 $jobs = JobTask::where(['user_id' => ViewHelper::loggedUser()->id, 'status' => 0])->paginate(10);
             } else {
                 $jobs = JobTask::where(['user_id' => ViewHelper::loggedUser()->id, 'status' => 1])->paginate(10);
             }
-        }
-        elseif (isset($request->search_text)){
+        } elseif (isset($request->search_text)) {
             $jobs = JobTask::where([
-                'user_id'   => ViewHelper::loggedUser()->id,
+                'user_id' => ViewHelper::loggedUser()->id,
                 'status' => 1,
 
             ])->where('job_title', 'LIKE', "%{$request->search_text}%")->paginate(10);
-        }
-        else {
+        } else {
             $jobs = JobTask::where(['user_id' => ViewHelper::loggedUser()->id, 'status' => 1])->paginate(10);
         }
-        if (ViewHelper::checkIfRequestFromApi())
-        {
-            foreach ($jobs as $job)
-            {
+        if (ViewHelper::checkIfRequestFromApi()) {
+            foreach ($jobs as $job) {
                 $job->total_applicants = $job->employeeAppliedJobs()->count();
             }
         }
         $data = [
-            'jobTypes'  => JobType::where(['status' => 1])->get(['id', 'name']),
-            'jobLocations'  => JobLocationType::where(['status' => 1])->get(['id', 'name']),
-            'universityNames'   => UniversityName::where(['status' => 1])->get(['id', 'name']),
-            'fieldOfStudies'   => FieldOfStudy::where(['status' => 1])->get(['id', 'field_name']),
-            'skillCategories'   => SkillsCategory::where(['status' => 1])->get(['id', 'category_name']),
+            'jobTypes' => JobType::where(['status' => 1])->get(['id', 'name']),
+            'jobLocations' => JobLocationType::where(['status' => 1])->get(['id', 'name']),
+            'universityNames' => UniversityName::where(['status' => 1])->get(['id', 'name']),
+            'fieldOfStudies' => FieldOfStudy::where(['status' => 1])->get(['id', 'field_name']),
+            'skillCategories' => SkillsCategory::where(['status' => 1])->get(['id', 'category_name']),
             'publishedJobs' => $jobs,
-            'industries'    => Industry::where(['status' => 1])->get(['id', 'name', 'slug']),
+            'industries' => Industry::where(['status' => 1])->get(['id', 'name', 'slug']),
         ];
         return ViewHelper::checkViewForApi($data, 'frontend.employer.jobs.my-jobs');
         return view('frontend.employer.jobs.my-jobs', $data);
     }
+
     public function myJobWiseApplicants()
     {
         $jobTasks = JobTask::where(['user_id' => ViewHelper::loggedUser()->id, 'status' => 1])->get(['id', 'job_title']);
-        if (ViewHelper::checkIfRequestFromApi())
-        {
-            foreach ($jobTasks as $jobTask)
-            {
+        if (ViewHelper::checkIfRequestFromApi()) {
+            foreach ($jobTasks as $jobTask) {
                 $jobTask->total_applicants = $jobTask->employeeAppliedJobs()->count() ?? 0;
             }
         }
         $data = [
-            'jobTasks'  => $jobTasks,
+            'jobTasks' => $jobTasks,
         ];
         return ViewHelper::checkViewForApi($data, 'frontend.employer.jobs.my-applicants');
         return view('frontend.employer.jobs.my-applicants');
     }
+
     public function myJobApplicants(JobTask $jobTask, Request $request)
     {
 //        if (!isset($request->status))
@@ -150,8 +144,8 @@ class EmployerViewController extends Controller
         $approvedApplicants = $applicants->where('status', 'approved');
         $rejectedApplicants = $applicants->where('status', 'rejected');
         $shortListedApplicants = $applicants->where('status', 'shortlisted');
-         $this->data = [
-            'jobTask'   => $jobTask,
+        $this->data = [
+            'jobTask' => $jobTask,
 //            'applicants' => $jobTask->employeeAppliedJobs()->where(['status' => 'pending'])->with(['user'])->get(),
             'pendingApplicants' => $pendingApplicants,
             'approvedApplicants' => $approvedApplicants,
@@ -205,7 +199,7 @@ class EmployerViewController extends Controller
         if (isset($filters['job_type']) && !empty($filters['job_type'])) {
             $jobTypes = $ensureArray($filters['job_type']);
             if (!empty($jobTypes)) {
-                $employees = $employees->whereHas('jobTypes', function($query) use ($jobTypes) {
+                $employees = $employees->whereHas('jobTypes', function ($query) use ($jobTypes) {
                     $query->whereIn('slug', $jobTypes);
                 });
             }
@@ -215,7 +209,7 @@ class EmployerViewController extends Controller
         if (isset($filters['university_name']) && !empty($filters['university_name'])) {
             $universities = $ensureArray($filters['university_name']);
             if (!empty($universities)) {
-                $employees = $employees->whereHas('universityName', function($q) use ($universities) {
+                $employees = $employees->whereHas('universityName', function ($q) use ($universities) {
                     $q->whereIn('slug', $universities);
                 });
             }
@@ -233,7 +227,7 @@ class EmployerViewController extends Controller
         if (isset($filters['industry']) && !empty($filters['industry'])) {
             $industries = $ensureArray($filters['industry']);
             if (!empty($industries)) {
-                $employees = $employees->whereHas('industry', function($q) use ($industries) {
+                $employees = $employees->whereHas('industry', function ($q) use ($industries) {
                     $q->whereIn('slug', $industries);
                 });
             }
@@ -243,7 +237,7 @@ class EmployerViewController extends Controller
         if (isset($filters['field_of_study']) && !empty($filters['field_of_study'])) {
             $fieldOfStudies = $ensureArray($filters['field_of_study']);
             if (!empty($fieldOfStudies)) {
-                $employees = $employees->whereHas('fieldOfStudy', function($q) use ($fieldOfStudies) {
+                $employees = $employees->whereHas('fieldOfStudy', function ($q) use ($fieldOfStudies) {
                     $q->whereIn('slug', $fieldOfStudies);
                 });
             }
@@ -253,7 +247,7 @@ class EmployerViewController extends Controller
         if (isset($filters['skills']) && !empty($filters['skills'])) {
             $skills = $ensureArray($filters['skills']);
             if (!empty($skills)) {
-                $employees = $employees->whereHas('employeeSkills', function($q) use ($skills) {
+                $employees = $employees->whereHas('employeeSkills', function ($q) use ($skills) {
                     $q->whereIn('slug', $skills);
                 });
             }
@@ -269,16 +263,16 @@ class EmployerViewController extends Controller
 
         // 8. CGPA filter (minimum CGPA)
         if ($request->filled('cgpa')) {
-            $cgpa = (float) $request->input('cgpa');
-            $employees = $employees->whereHas('employeeEducations', function($q) use ($cgpa) {
+            $cgpa = (float)$request->input('cgpa');
+            $employees = $employees->whereHas('employeeEducations', function ($q) use ($cgpa) {
                 $q->where('cgpa', '>=', $cgpa);
             });
         }
 
         // 9. Experience filter (minimum years of experience)
         if ($request->filled('experience')) {
-            $experience = (int) $request->input('experience');
-            $employees = $employees->whereHas('employeeWorkExperiences', function($q) use ($experience) {
+            $experience = (int)$request->input('experience');
+            $employees = $employees->whereHas('employeeWorkExperiences', function ($q) use ($experience) {
                 // Assuming you have start_date and end_date or total_experience field
                 // Option 1: If you have a calculated experience field
                 $q->where('duration', '>=', $experience);
@@ -291,22 +285,22 @@ class EmployerViewController extends Controller
         // 10. Search Text filter (searches across multiple fields)
         if ($request->filled('search_text')) {
             $searchText = $request->input('search_text');
-            $employees = $employees->where(function($q) use ($searchText) {
+            $employees = $employees->where(function ($q) use ($searchText) {
                 $q->where('name', 'LIKE', "%{$searchText}%")
                     ->orWhere('profile_title', 'LIKE', "%{$searchText}%")
                     ->orWhere('address', 'LIKE', "%{$searchText}%")
                     ->orWhere('email', 'LIKE', "%{$searchText}%")
 //                    ->orWhere('bio', 'LIKE', "%{$searchText}%")
-                    ->orWhereHas('universityName', function($q) use ($searchText) {
+                    ->orWhereHas('universityName', function ($q) use ($searchText) {
                         $q->where('name', 'LIKE', "%{$searchText}%");
                     })
-                    ->orWhereHas('industry', function($q) use ($searchText) {
+                    ->orWhereHas('industry', function ($q) use ($searchText) {
                         $q->where('name', 'LIKE', "%{$searchText}%");
                     })
-                    ->orWhereHas('fieldOfStudy', function($q) use ($searchText) {
+                    ->orWhereHas('fieldOfStudy', function ($q) use ($searchText) {
                         $q->where('field_name', 'LIKE', "%{$searchText}%");
                     })
-                    ->orWhereHas('employeeSkills', function($q) use ($searchText) {
+                    ->orWhereHas('employeeSkills', function ($q) use ($searchText) {
                         $q->where('skill_name', 'LIKE', "%{$searchText}%");
                     });
             });
@@ -344,6 +338,7 @@ class EmployerViewController extends Controller
         return ViewHelper::checkViewForApi($data, 'frontend.employer.jobs.head-hunt');
         return \view('frontend.employer.jobs.head-hunt');
     }
+
     public function headHunt_backup(Request $request)
     {
         $employees = User::query()->with([
@@ -371,7 +366,7 @@ class EmployerViewController extends Controller
         // Workplace Type (Job Type) filter
         if (isset($filters['job_type']) && !empty($filters['job_type'])) {
             $jobTypes = $ensureArray($filters['job_type']);
-            $employees = $employees->whereHas('jobTypes', function($query) use ($jobTypes) {
+            $employees = $employees->whereHas('jobTypes', function ($query) use ($jobTypes) {
                 $query->whereIn('slug', $jobTypes);
             });
         }
@@ -379,7 +374,7 @@ class EmployerViewController extends Controller
         // University filter
         if (isset($filters['university_name']) && !empty($filters['university_name'])) {
             $universities = $ensureArray($filters['university_name']);
-            $employees = $employees->whereHas('universityName', function($q) use ($universities) {
+            $employees = $employees->whereHas('universityName', function ($q) use ($universities) {
                 $q->whereIn('slug', $universities);
             });
         }
@@ -405,6 +400,7 @@ class EmployerViewController extends Controller
         return ViewHelper::checkViewForApi($data, 'frontend.employer.jobs.head-hunt');
         return \view('frontend.employer.jobs.head-hunt');
     }
+
     public function headHuntBackup(Request $request)
     {
         $employees = User::query()->with([
@@ -424,39 +420,37 @@ class EmployerViewController extends Controller
 // Search text filter
         if ($request->filled('search_text')) {
             $searchText = $request->input('search_text');
-            $employees = $employees->where(function($query) use ($searchText) {
+            $employees = $employees->where(function ($query) use ($searchText) {
                 $query->where('name', 'like', "%$searchText%")
-                    ->orWhereHas('universityName', function($q) use ($searchText) {
+                    ->orWhereHas('universityName', function ($q) use ($searchText) {
                         $q->where('name', 'like', "%$searchText%");
                     })
-                    ->orWhereHas('industry', function($q) use ($searchText) {
+                    ->orWhereHas('industry', function ($q) use ($searchText) {
                         $q->where('name', 'like', "%$searchText%");
                     })
-                    ->orWhereHas('fieldOfStudy', function($q) use ($searchText) {
+                    ->orWhereHas('fieldOfStudy', function ($q) use ($searchText) {
                         $q->where('field_name', 'like', "%$searchText%");
                     })
-                    ->orWhereHas('jobTypes', function($q) use ($searchText) {
+                    ->orWhereHas('jobTypes', function ($q) use ($searchText) {
                         $q->where('name', 'like', "%$searchText%");
                     })
-                    ->orWhereHas('jobLocationTypes', function($q) use ($searchText) {
+                    ->orWhereHas('jobLocationTypes', function ($q) use ($searchText) {
                         $q->where('name', 'like', "%$searchText%");
                     });
             });
         }
 
-        if ($request->filled('gender'))
-        {
+        if ($request->filled('gender')) {
             $employees = $employees->where('gender', $request->gender);
         }
-        if ($request->filled('district'))
-        {
+        if ($request->filled('district')) {
             $employees = $employees->where('district', $request->district);
         }
 
         // CGPA filter (minimum value)
         if ($request->filled('cgpa')) {
             $minCgpa = (float)$request->input('cgpa');
-            $employees = $employees->whereHas('employeeEducations', function($query) use ($minCgpa) {
+            $employees = $employees->whereHas('employeeEducations', function ($query) use ($minCgpa) {
                 $query->where('cgpa', '>=', $minCgpa)
                     ->orderBy('cgpa', 'desc'); // Get the highest CGPA for each user
             });
@@ -465,7 +459,7 @@ class EmployerViewController extends Controller
 // Experience filter (minimum years)
         if ($request->filled('experience')) {
             $minExperience = (float)$request->input('experience');
-            $employees = $employees->whereHas('employeeWorkExperiences', function($query) use ($minExperience) {
+            $employees = $employees->whereHas('employeeWorkExperiences', function ($query) use ($minExperience) {
                 $query->select('user_id')
                     ->groupBy('user_id')
                     ->havingRaw('SUM(duration) >= ?', [$minExperience]);
@@ -475,8 +469,8 @@ class EmployerViewController extends Controller
 // Job Type filter
         if ($request->filled('job_type')) {
             $jobTypes = $ensureArray($request->input('job_type'));
-            $employees = $employees->where(function($query) use ($jobTypes) {
-                $query->whereHas('jobTypes', function($q) use ($jobTypes) {
+            $employees = $employees->where(function ($query) use ($jobTypes) {
+                $query->whereHas('jobTypes', function ($q) use ($jobTypes) {
                     $q->whereIn('slug', $jobTypes);
                 })->orWhereDoesntHave('jobTypes');
             });
@@ -485,8 +479,8 @@ class EmployerViewController extends Controller
 // Job Location filter
         if ($request->filled('job_location')) {
             $jobLocations = $ensureArray($request->input('job_location'));
-            $employees = $employees->where(function($query) use ($jobLocations) {
-                $query->whereHas('jobLocationTypes', function($q) use ($jobLocations) {
+            $employees = $employees->where(function ($query) use ($jobLocations) {
+                $query->whereHas('jobLocationTypes', function ($q) use ($jobLocations) {
                     $q->whereIn('slug', $jobLocations);
                 })->orWhereDoesntHave('jobLocationTypes');
             });
@@ -495,8 +489,8 @@ class EmployerViewController extends Controller
 // University filter
         if ($request->filled('university_name')) {
             $universities = $ensureArray($request->input('university_name'));
-            $employees = $employees->where(function($query) use ($universities) {
-                $query->whereHas('universityName', function($q) use ($universities) {
+            $employees = $employees->where(function ($query) use ($universities) {
+                $query->whereHas('universityName', function ($q) use ($universities) {
                     $q->whereIn('slug', $universities);
                 })->orWhereDoesntHave('universityName');
             });
@@ -505,8 +499,8 @@ class EmployerViewController extends Controller
 // Industry filter
         if ($request->filled('industry')) {
             $industries = $ensureArray($request->input('industry'));
-            $employees = $employees->where(function($query) use ($industries) {
-                $query->whereHas('industry', function($q) use ($industries) {
+            $employees = $employees->where(function ($query) use ($industries) {
+                $query->whereHas('industry', function ($q) use ($industries) {
                     $q->whereIn('slug', $industries);
                 })->orWhereDoesntHave('industry');
             });
@@ -515,8 +509,8 @@ class EmployerViewController extends Controller
 // Field of Study filter
         if ($request->filled('field_of_study')) {
             $fields = $ensureArray($request->input('field_of_study'));
-            $employees = $employees->where(function($query) use ($fields) {
-                $query->whereHas('fieldOfStudy', function($q) use ($fields) {
+            $employees = $employees->where(function ($query) use ($fields) {
+                $query->whereHas('fieldOfStudy', function ($q) use ($fields) {
                     $q->whereIn('slug', $fields);
                 })->orWhereDoesntHave('fieldOfStudy');
             });
@@ -525,7 +519,7 @@ class EmployerViewController extends Controller
 // Skills filter
         if ($request->filled('skills')) {
             $skills = $ensureArray($request->input('skills'));
-            $employees = $employees->whereHas('skills', function($query) use ($skills) {
+            $employees = $employees->whereHas('skills', function ($query) use ($skills) {
                 $query->whereIn('slug', $skills);
             });
         }
@@ -544,21 +538,19 @@ class EmployerViewController extends Controller
         return ViewHelper::checkViewForApi($data, 'frontend.employer.jobs.head-hunt');
         return view('frontend.employer.jobs.head-hunt');
     }
+
     public function employeeProfile($userId)
     {
         $loggedUser = ViewHelper::loggedUser();
-        if ($loggedUser)
-        {
-            if ($loggedUser->user_type == 'employer')
-            {
+        if ($loggedUser) {
+            if ($loggedUser->user_type == 'employer') {
                 $existProfileView = UserProfileView::where(['employee_id' => $userId, 'employer_id' => $loggedUser->id, 'viewed_by' => 'employer'])->first();
-                if (!$existProfileView)
-                {
+                if (!$existProfileView) {
                     $newProfileView = new UserProfileView();
-                    $newProfileView->employee_id    = $userId;
-                    $newProfileView->employer_id    = $loggedUser->id;
-                    $newProfileView->viewed_by    = 'employer';
-                    $newProfileView->employer_company_id    = $loggedUser?->employerCompany?->id;
+                    $newProfileView->employee_id = $userId;
+                    $newProfileView->employer_id = $loggedUser->id;
+                    $newProfileView->viewed_by = 'employer';
+                    $newProfileView->employer_company_id = $loggedUser?->employerCompany?->id;
                     $newProfileView->save();
                 }
             }
@@ -570,15 +562,16 @@ class EmployerViewController extends Controller
             $webNotification->save();
         }
         $employee = User::with('employeeEducations', 'employeeDocuments', 'employeeWorkExperiences')->find($userId);
-        return ViewHelper::returnBackViewAndSendDataForApiAndAjax(['employeeDetails' => $employee],'frontend.employer.profile.employer-profile');
+        return ViewHelper::returnBackViewAndSendDataForApiAndAjax(['employeeDetails' => $employee], 'frontend.employer.profile.employer-profile');
         return view('frontend.employer.profile.employer-profile');
     }
+
     public function employerUserManagement()
     {
         $user = ViewHelper::loggedUser();
         $this->data = [
-            'loggedUser'    =>  $user,
-            'employerUsers' =>  User::where(['user_type' => 'sub_employer', 'user_id' => $user->id])->get(['id', 'name', 'email', 'mobile', 'profile_image', 'user_type', 'employer_agent_active_status']),
+            'loggedUser' => $user,
+            'employerUsers' => User::where(['user_type' => 'sub_employer', 'user_id' => $user->id])->get(['id', 'name', 'email', 'mobile', 'profile_image', 'user_type', 'employer_agent_active_status']),
         ];
         return ViewHelper::checkViewForApi($this->data, 'frontend.employer.config.users');
         return view('frontend.employer.config.users');
@@ -586,8 +579,7 @@ class EmployerViewController extends Controller
 
     public function employerUserInfo(User $user)
     {
-        if (\request()->ajax())
-        {
+        if (\request()->ajax()) {
             return \view('frontend.employer.include-edit-forms.employer-user', ['user' => $user])->render();
         }
         return \view('frontend.employer.include-edit-forms.employer-user', ['user' => $user]);
@@ -596,27 +588,27 @@ class EmployerViewController extends Controller
     public function settings()
     {
         $this->data = [
-            'loggedUser'    =>  ViewHelper::loggedUser(),
+            'loggedUser' => ViewHelper::loggedUser(),
         ];
         return ViewHelper::checkViewForApi($this->data, 'frontend.employer.config.settings');
         return view('frontend.employer.config.settings');
     }
+
     public function companyProfile(Request $request)
     {
         $employerView = (isset($request->view) && $request->view == 'employer') ? false : true;
         $loggedUser = ViewHelper::loggedUser();
-        if (isset($request->company_id) && isset($request->view))
-        {
+        if (isset($request->company_id) && isset($request->view)) {
             $companyDetails = EmployerCompany::find($request->company_id);
         } else {
             $companyDetails = EmployerCompany::where(['user_id' => ViewHelper::loggedUser()->id])->first();
         }
         $this->data = [
-            'employerView'  => $employerView,
-            'loggedUser'    =>  $loggedUser,
-            'companyDetails'    => $companyDetails,
-            'industries'    => Industry::where(['status' => 1])->get(['id', 'name']),
-            'employerCompanyCategories'    => EmployerCompanyCategory::where(['status' => 1])->get(['id', 'category_name']),
+            'employerView' => $employerView,
+            'loggedUser' => $loggedUser,
+            'companyDetails' => $companyDetails,
+            'industries' => Industry::where(['status' => 1])->get(['id', 'name']),
+            'employerCompanyCategories' => EmployerCompanyCategory::where(['status' => 1])->get(['id', 'category_name']),
         ];
         return ViewHelper::checkViewForApi($this->data, 'frontend.employer.config.company-profile');
         return view('frontend.employer.config.company-profile');
@@ -640,7 +632,7 @@ class EmployerViewController extends Controller
         }
     }
 
-    public function changeEmployeeJobApplicationStatus(Request $request, JobTask $jobTask, User $user,  $status = 'pending')
+    public function changeEmployeeJobApplicationStatus(Request $request, JobTask $jobTask, User $user, $status = 'pending')
     {
         $loggedUser = ViewHelper::loggedUser();
         if ($loggedUser->id != $jobTask->user_id) {
@@ -663,6 +655,7 @@ class EmployerViewController extends Controller
             return ViewHelper::returEexceptionError($e->getMessage());
         }
     }
+
     public function updateSettings(Request $request)
     {
         $user = ViewHelper::loggedUser();
@@ -681,7 +674,7 @@ class EmployerViewController extends Controller
             $user->name = $request->name ?? $user->name;
             $user->email = $request->email ?? $user->email;
             $user->mobile = $request->mobile ?? $user->mobile;
-            $user->profile_image = imageUpload($request->file('profile_image'), 'profile_images', 'profile_images',150, 100, $user->profile_image);
+            $user->profile_image = imageUpload($request->file('profile_image'), 'profile_images', 'profile_images', 150, 100, $user->profile_image);
             $user->save();
             return ViewHelper::returnSuccessMessage('User settings updated successfully');
         } catch (\Exception $e) {
@@ -716,8 +709,9 @@ class EmployerViewController extends Controller
             $company->website = $request->website ?? $company->website;
             $company->bin_number = $request->bin_number ?? $company->bin_number;
             $company->trade_license_number = $request->trade_license_number ?? $company->trade_license_number;
-            $company->founded_on = /*date('Y-m-d', strtotime($request->founded_on)) ?? null*/ $request->founded_on ?? $company->founded_on;
-            $company->total_employees = (int)$request->total_employees ?? ( $company->total_employees ?? 0);
+            $company->founded_on = /*date('Y-m-d', strtotime($request->founded_on)) ?? null*/
+                $request->founded_on ?? $company->founded_on;
+            $company->total_employees = (int)$request->total_employees ?? ($company->total_employees ?? 0);
             $company->industry_id = (int)$request->industry_id ?? 0;
             $company->employer_company_category_id = (int)$request->employer_company_category_id ?? 0;
             if ($request->hasFile('logo')) {
@@ -745,7 +739,7 @@ class EmployerViewController extends Controller
         $user = ViewHelper::loggedUser();
         $validator = Validator::make($request->all(), [
             'name' => 'required',
-            'email' => [ 'email', 'unique:users'],
+            'email' => ['email', 'unique:users'],
             'mobile' => ['required', 'unique:users'],
             'password' => 'required|min:6',
         ]);
@@ -775,35 +769,58 @@ class EmployerViewController extends Controller
 
     public function updateSubUser(User $user, Request $request)
     {
-        $user = ViewHelper::loggedUser();
-        $validator = Validator::make($request->all(), [
+        $loggedUser = ViewHelper::loggedUser();
+        $rules = [
             'name' => 'required',
-            'email' => [ 'email', 'unique:users'],
-            'mobile' => ['required', 'unique:users'],
-        ]);
+        ];
+
+        $messages = [
+            'name.required' => 'Name is required.',
+            'email.email' => 'Please provide a valid email address with a valid domain.',
+            'email.unique' => 'This email is already registered.',
+            'mobile.required' => 'Mobile number is required.',
+            'mobile.unique' => 'This mobile number is already registered.',
+            'mobile.regex' => 'Please provide a valid Bangladeshi mobile number (11 digits starting with 01).',
+        ];
+
+// Only validate email if it's different
+        if ($request->email != $user->email) {
+            $rules['email'] = ['required', 'email:rfc,dns', 'unique:users'];
+        }
+
+// Only validate mobile if it's different
+        if ($request->mobile != $user->mobile) {
+            $rules['mobile'] = ['required', 'regex:/^01[3-9]\d{8}$/', 'unique:users'];
+        }
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
         if ($validator->fails()) {
             return ViewHelper::returEexceptionError($validator->errors());
         }
+
         if (User::where(['user_id' => $user->id, 'user_type' => 'sub_employer'])->count() >= 5) {
             return ViewHelper::returEexceptionError('You can not create more than 5 sub users');
         }
+
         try {
-            $subUser = new User();
-            $subUser->name = $request->name;
-            $subUser->email = $request->email;
-            $subUser->mobile = $request->mobile;
-            if ($request->filled('password'))
-            {
-                $subUser->password = bcrypt($request->password);
+//            $subUser = new User();
+            $user->name = $request->name;
+            if ($request->email != $user->email)
+                $user->email = $request->email;
+            if ($request->mobile != $user->mobile)
+                $user->mobile = $request->mobile;
+            if ($request->filled('password')) {
+                $user->password = bcrypt($request->password);
             }
-            $subUser->user_type = 'sub_employer';
-            $subUser->user_id = $user->id;
-            $subUser->employer_company_id = $user->employer_company_id;
-            $subUser->organization_name = $user->organization_name;
-            $subUser->employer_agent_active_status = 'active';
-            $subUser->save();
+            $user->user_type = 'sub_employer';
+            $user->user_id = $loggedUser->id;
+//            $user->employer_company_id = $user->employer_company_id;
+//            $user->organization_name = $user->organization_name;
+            $user->employer_agent_active_status = $request->employer_agent_active_status;
+            $user->save();
             Toastr::success('Sub user updated successfully');
-            return route('employer.employer-user-management');
+            return redirect()->route('employer.employer-user-management');
             return ViewHelper::returnSuccessMessage('Sub user created successfully');
         } catch (\Exception $e) {
             return ViewHelper::returEexceptionError($e->getMessage());
@@ -830,7 +847,7 @@ class EmployerViewController extends Controller
     public function employerSubscriptions()
     {
         $this->data = [
-            'loggedUser'    => ViewHelper::loggedUser(),
+            'loggedUser' => ViewHelper::loggedUser(),
             'subscriptionPlans' => SubscriptionPlan::where(['status' => 1, 'subscription_for' => 'employer'])->active()->get()
         ];
         return ViewHelper::checkViewForApi($this->data, 'frontend.employer.config.my-subscriptions');

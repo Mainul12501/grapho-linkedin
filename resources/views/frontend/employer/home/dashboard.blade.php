@@ -16,7 +16,7 @@
                         <h5 class="fw-bold">Find your next hire</h5>
                         <p class="small mb-3">More than {{ \App\Models\User::where('user_type', 'employee')->count() ?? 0 }} talents are on the network waiting for your call
                         </p>
-                        <a href="{{ route('employer.my-jobs') }}" class="btn btn-dark btn-sm px-3 py-2" style="border-radius: 10px;">Post a job</a>
+                        <a href="{{ route('employer.my-jobs', ['show_modal' => 'create']) }}" class="btn btn-dark btn-sm px-3 py-2" style="border-radius: 10px;">Post a job</a>
                     </div>
 
 

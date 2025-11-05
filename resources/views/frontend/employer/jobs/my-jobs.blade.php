@@ -780,6 +780,14 @@
     @include('common-resource-files.sim-select')
     @include('common-resource-files.summernote')
 
+    @if(isset($_GET['show_modal']) && $_GET['show_modal'] == 'create')
+        <script>
+            $(document).ready(function () {
+                $('#createJobModal').modal('show');
+            })
+        </script>
+    @endif
+
     <script>
         $(document).on('click', '.edit-job', function () {
 

@@ -99,7 +99,7 @@ Route::middleware([
         Route::post('update-settings', [EmployerViewController::class, 'updateSettings'])->name('update-settings');
         Route::post('update-company-info', [EmployerViewController::class, 'updateCompanyInfo'])->name('update-company-info');
         Route::post('create-sub-user', [EmployerViewController::class, 'createSubUser'])->name('create-sub-user');
-        Route::post('update-sub-user/{user}', [EmployerViewController::class, 'updateSubUser'])->name('update-sub-user');
+        Route::put('update-sub-user/{user}', [EmployerViewController::class, 'updateSubUser'])->name('update-sub-user');
         Route::post('delete-sub-employer/{user}', [EmployerViewController::class, 'deleteSubEmployer'])->name('delete-sub-employer');
 
         Route::resources([

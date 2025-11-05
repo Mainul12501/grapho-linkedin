@@ -66,7 +66,7 @@ class JobTaskController extends Controller
             $jobTask->job_type_id = $request->job_type_id;
             $jobTask->job_location_type_id = $request->job_location_type_id;
             $jobTask->industry_id = $request->industry_id;
-            $jobTask->employer_company_id = ViewHelper::loggedUser()?->employerCompanies[0]?->id;
+            $jobTask->employer_company_id = ViewHelper::loggedUser()?->user_type == 'sub_employer' ? ViewHelper::loggedUser()?->user?->employerCompanies[0]?->id : ViewHelper::loggedUser()?->employerCompanies[0]?->id ;
             $jobTask->is_custom_exp = $request->required_experience == 'custom' ? 1 : 0;
             $jobTask->required_experience = $request->required_experience == 'custom' ? $request->exp_range_start.'-'.$request->exp_range_end: $request->required_experience;
             $jobTask->job_pref_salary_payment_type = $request->job_pref_salary_payment_type;
@@ -162,7 +162,7 @@ class JobTaskController extends Controller
             $jobTask->job_type_id = $request->job_type_id;
             $jobTask->job_location_type_id = $request->job_location_type_id;
             $jobTask->industry_id = $request->industry_id;
-            $jobTask->employer_company_id = ViewHelper::loggedUser()?->employerCompanies[0]?->id;
+            $jobTask->employer_company_id = ViewHelper::loggedUser()?->user_type == 'sub_employer' ? ViewHelper::loggedUser()?->user?->employerCompanies[0]?->id : ViewHelper::loggedUser()?->employerCompanies[0]?->id;
             $jobTask->is_custom_exp = $request->required_experience == 'custom' ? 1 : 0;
             $jobTask->required_experience = $request->required_experience == 'custom' ? $request->exp_range_start.'-'.$request->exp_range_end: $request->required_experience;
             $jobTask->job_pref_salary_payment_type = $request->job_pref_salary_payment_type;
