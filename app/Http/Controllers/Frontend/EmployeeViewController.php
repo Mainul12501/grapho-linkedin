@@ -256,7 +256,7 @@ class EmployeeViewController extends Controller
     {
         $this->data = [
             'loggedUser' => ViewHelper::loggedUser(),
-            'subscriptionPlans' => SubscriptionPlan::where(['status' => 1, 'subscription_for' => 'employee'])->get()
+            'subscriptionPlans' => SubscriptionPlan::where(['status' => 1, 'subscription_for' => 'employee'])->active()->get()
         ];
         return ViewHelper::checkViewForApi($this->data, 'frontend.employee.base-functionalities.my-subscriptions');
         return \view('frontend.employee.base-functionalities.my-subscriptions');

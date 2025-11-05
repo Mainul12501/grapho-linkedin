@@ -38,6 +38,7 @@ Route::middleware([
         Route::post('/change-user-approve-status/{user}/{status?}', [UserController::class, 'changeUserApproveStatus'])->name('change-user-approve-status');
         Route::get('/view-employer-jobs/{user}', [UserController::class, 'viewEmployerJobs'])->name('view-employer-jobs');
         Route::post('/set-subs-to-all-user', [SubscriptionController::class, 'setSubsToAllUser'])->name('set-subs-to-all-user');
+        Route::get('/show-subscription-users/{subscriptionPlan}', [SubscriptionController::class, 'showSubscriptionUsers'])->name('show-subscription-users');
     });
 
     Route::resources([

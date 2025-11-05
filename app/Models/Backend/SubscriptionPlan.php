@@ -48,4 +48,9 @@ class SubscriptionPlan extends Model
     {
         return $this->hasMany(User::class);
     }
+
+    public function scopeActive($query)
+    {
+        return $query->whereRaw('DATE_ADD(created_at, INTERVAL duration_in_days DAY) > NOW()');
+    }
 }

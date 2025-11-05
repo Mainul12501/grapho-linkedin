@@ -15,11 +15,6 @@
                     <button type="button" data-bs-toggle="modal" data-bs-target="#FreeSubscriptionModal" class="btn btn-sm- btn-success" >Set Free Subscription</button>
                 </div>
             </div>
-            <div class="col-12 mt-3">
-                <div class="card card-body">
-
-                </div>
-            </div>
         </div>
     </div>
 
@@ -53,7 +48,7 @@
                         @foreach($subscriptions as $subscription)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
-                                <td><a href="">{{ $subscription->title ?? '' }}</a></td>
+                                <td><a href="{{ route('show-subscription-users', $subscription->id) }}">{{ $subscription->title ?? '' }}</a></td>
                                 <td>{{ $subscription->price ?? '0' }}</td>
                                 <td>{{ $subscription->subscription_for ?? '0' }}</td>
                                 <td>{{ $subscription->duration_in_days ?? '0' }}</td>

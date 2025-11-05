@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Backend\SiteControllers;
 use App\Helpers\ViewHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Backend\SubscriptionPlan;
+use App\Models\User;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -138,5 +139,13 @@ class SubscriptionController extends Controller
         {
             return ViewHelper::returEexceptionError('No users found for the selected user type.');
         }
+    }
+
+    public function showSubscriptionUsers(SubscriptionPlan $subscriptionPlan)
+    {
+        return view('backend.admin-views.subscriptions.users',[
+            'subscription' => $subscriptionPlan,
+            'users' => User::whereIn('user_type', ['employee', 'employer'])->where('subscription_plan_id', $subscriptionPlan->id)->get()
+        ]);
     }
 }
