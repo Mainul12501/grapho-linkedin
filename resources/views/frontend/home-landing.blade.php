@@ -59,9 +59,9 @@
         <ul class="navbar-nav mb-3">
 {{--            <li class="nav-item"><a class="nav-link custom-hover" href="#">Community</a></li>--}}
 {{--            <li class="nav-item"><a class="nav-link custom-hover" href="#">Jobs</a></li>--}}
-            <li class="nav-item"><a class="nav-link custom-hover" href="{{ route('auth.set-login-role') }}">Companies</a></li>
+            <li class="nav-item"><a class="nav-link custom-hover" href="{{ route('auth.set-login-role') }}">{{ trans('home.companies') }}</a></li>
 {{--            <li class="nav-item"><a class="nav-link custom-hover" href="#">Salaries</a></li>--}}
-            <li class="nav-item"><a class="nav-link custom-hover" href="{{ route('auth.set-login-role') }}">For Employers</a></li>
+            <li class="nav-item"><a class="nav-link custom-hover" href="{{ route('auth.set-login-role') }}">{{ trans('home.for_employers') }}</a></li>
         </ul>
 
         <!-- Notification Icon & Sign In in offcanvas -->
@@ -69,11 +69,11 @@
             @if(auth()->check())
                 <a href="{{ auth()->user()->user_type == 'employee' ? route('employee.home') : (auth()->user()->user_type == 'employer' ? route('employer.home') : route('dashboard')) }}" class="btn btn-primary d-flex align-items-center gap-2 px-3 py-2 rounded-3">
 {{--                    <img src="{{ asset('/') }}frontend/home-landing/images/signin.png" alt="Login" width="20px">--}}
-                    <span>Dashboard</span>
+                    <span>{{ trans('home.dashboard') }}</span>
                 </a>
                 <a href="#" onclick="event.preventDefault(); document.getElementsByClassName('logoutForm')[0].submit()" class="btn btn-dark d-flex align-items-center gap-2 px-3 py-2 rounded-3">
 {{--                    <img src="{{ asset('/') }}frontend/home-landing/images/signin.png" alt="Login" width="20px">--}}
-                    <span>Logout</span>
+                    <span>{{ trans('home.logout') }}</span>
                 </a>
                 <form action="{{ route('logout') }}" method="post" class="logoutForm">
                     @csrf
@@ -81,7 +81,7 @@
             @else
                 <a href="{{ route('auth.select-auth-method') }}" class="btn btn-dark d-flex align-items-center gap-2 px-3 py-2 rounded-3">
                     <img src="{{ asset('/') }}frontend/home-landing/images/signin.png" alt="Login" width="20px">
-                    <span>Sign In</span>
+                    <span>{{ trans('auth.sign_in') }}</span>
                 </a>
             @endif
 
@@ -134,11 +134,11 @@
             @if(auth()->check())
                 <a href="{{ auth()->user()->user_type == 'employee' ? route('employee.home') : (auth()->user()->user_type == 'employer' ? route('employer.home') : route('dashboard')) }}" class="btn btn-primary d-flex align-items-center gap-2 px-3 py-2 rounded-3">
                     {{--                    <img src="{{ asset('/') }}frontend/home-landing/images/signin.png" alt="Login" width="20px">--}}
-                    <span>Dashboard</span>
+                    <span>{{ trans('home.dashboard') }}</span>
                 </a>
                 <a href="#" onclick="event.preventDefault(); document.getElementsByClassName('logoutForm')[0].submit()" class="btn btn-dark d-flex align-items-center gap-2 px-3 py-2 rounded-3">
                     {{--                    <img src="{{ asset('/') }}frontend/home-landing/images/signin.png" alt="Login" width="20px">--}}
-                    <span>Logout</span>
+                    <span>{{ trans('home.logout') }}</span>
                 </a>
                 <form action="{{ route('logout') }}" method="post" class="logoutForm">
                     @csrf
@@ -146,7 +146,7 @@
             @else
                 <a href="{{ route('auth.select-auth-method') }}" class="btn btn-dark d-flex align-items-center gap-2 px-3 py-2 rounded-3">
                     <img src="{{ asset('/') }}frontend/home-landing/images/signin.png" alt="Login" width="20px">
-                    <span>Sign In</span>
+                    <span>{{ trans('auth.sign_in') }}</span>
                 </a>
             @endif
         </div>
@@ -165,7 +165,7 @@
         <div class="d-lg-none text-center mb-4">
             <img src="{{ asset('/') }}frontend/home-landing/images/5.png" alt="Mobile Illustration" class="img-fluid">
         </div>
-        <h1 class="d-none d-lg-block text-center">Your work people are here</h1>
+        <h1 class="d-none d-lg-block text-center">{{ trans('home.your_work_people_are_here') }}</h1>
 
         <div class="row justify-content-center align-items-center">
             <!-- Left Illustration (Hidden on mobile) -->
@@ -177,20 +177,20 @@
             <div class="col-12 col-lg-4 text-center">
                 <!-- Header -->
                 <div class="mb-4">
-                    <h1 class="d-lg-none">Your work people are here</h1>
-                    <p>By continuing, you agree to our <a href="" class="text-dark">Terms of Use and Privacy Policy.</a></p>
+                    <h1 class="d-lg-none">{{ trans('home.your_work_people_are_here') }}</h1>
+                    <p>{{ trans('home.by_continuing_agree_terms') }}</p>
                 </div>
 
                 <!-- Login Buttons -->
                 @if(auth()->check())
                     <div class="d-flex flex-column mb-4">
 
-                        <a href="{{ auth()->user()->user_type == 'employee' ? route('employee.home') : (auth()->user()->user_type == 'employer' ? route('employer.home') : route('dashboard')) }}" class="btn btn-outline-dark mb-2">Visit Dashboard</a>
+                        <a href="{{ auth()->user()->user_type == 'employee' ? route('employee.home') : (auth()->user()->user_type == 'employer' ? route('employer.home') : route('dashboard')) }}" class="btn btn-outline-dark mb-2">{{ trans('home.visit_dashboard') }}</a>
                     </div>
                 @else
                     <div class="d-flex flex-column mb-4">
                         <button class="btn btn-outline-dark mb-2" type="button" data-bs-toggle="modal" data-bs-target="#googleUserTypeSelect">
-                            <img src="{{ asset('/') }}frontend/home-landing/images/gooleIcon.png" alt="Google Icon" style="width: 30px;"> Continue with Google
+                            <img src="{{ asset('/') }}frontend/home-landing/images/gooleIcon.png" alt="Google Icon" style="width: 30px;"> {{ trans('home.continue_with_google') }}
                         </button>
                         {{--                    <button class="btn btn-outline-dark mb-2">--}}
                         {{--                        <img src="{{ asset('/') }}frontend/home-landing/images/appleIcon.png" alt="Apple Icon" style="width: 30px;"> Continue with Apple--}}
@@ -199,7 +199,7 @@
                         <!-- Divider with "or" -->
                         <div class="d-flex align-items-center my-3">
                             <hr class="flex-grow-1">
-                            <span class="px-2 text-muted">or</span>
+                            <span class="px-2 text-muted">{{ trans('home.or') }}</span>
                             <hr class="flex-grow-1">
                         </div>
 
@@ -210,7 +210,7 @@
                         </div>
 
 
-                        <a href="{{ route('auth.select-auth-method') }}" class="btn btn-outline-dark mb-2">Continue with Email</a>
+                        <a href="{{ route('auth.select-auth-method') }}" class="btn btn-outline-dark mb-2">{{ trans('home.continue_with_email') }}</a>
                     </div>
                 @endif
 
@@ -227,8 +227,8 @@
 
 <!-- Get Ahead with Glassdoor Section -->
 <section class="container text-center py-5">
-    <h2 class="fw-semibold mb-2">Get ahead with LikeWiseBD</h2>
-    <p class="text-muted mb-4">We're serving up trusted insights and anonymous conversation, so you'll have the goods you need to succeed.</p>
+    <h2 class="fw-semibold mb-2">{{ trans('home.get_ahead_with_likewisebd') }}</h2>
+    <p class="text-muted mb-4">{{ trans('home.serving_trusted_insights') }}</p>
 
     <div class="row justify-content-center g-4">
         <div class="col-6 col-md-3">
@@ -236,7 +236,7 @@
                 <div class="rounded-circle border d-flex justify-content-center align-items-center" style="width: 72px; height: 72px;">
                     <img src="{{ asset('/') }}frontend/home-landing/images/jobcummunity.png" alt="Community" style="width: 40px;">
                 </div>
-                <span class="mt-2">Join your work community</span>
+                <span class="mt-2">{{ trans('home.join_work_community') }}</span>
             </div>
         </div>
         <div class="col-6 col-md-3">
@@ -244,7 +244,7 @@
                 <div class="rounded-circle border d-flex justify-content-center align-items-center" style="width: 72px; height: 72px;">
                     <img src="{{ asset('/') }}frontend/home-landing/images/jobsearch.png" alt="Search Jobs" style="width: 40px;">
                 </div>
-                <span class="mt-2">Find and apply to jobs</span>
+                <span class="mt-2">{{ trans('home.find_and_apply_to_jobs') }}</span>
             </div>
         </div>
         <div class="col-6 col-md-3">
@@ -252,7 +252,7 @@
                 <div class="rounded-circle border d-flex justify-content-center align-items-center" style="width: 72px; height: 72px;">
                     <img src="{{ asset('/') }}frontend/home-landing/images/searchcompany.png" alt="Company Reviews" style="width: 40px;">
                 </div>
-                <span class="mt-2">Search company reviews</span>
+                <span class="mt-2">{{ trans('home.search_company_reviews') }}</span>
             </div>
         </div>
         <div class="col-6 col-md-3">
@@ -260,7 +260,7 @@
                 <div class="rounded-circle border d-flex justify-content-center align-items-center" style="width: 72px; height: 72px;">
                     <img src="{{ asset('/') }}frontend/home-landing/images/salary.png" alt="Salaries" style="width: 40px;">
                 </div>
-                <span class="mt-2">Compare salaries</span>
+                <span class="mt-2">{{ trans('home.compare_salaries') }}</span>
             </div>
         </div>
     </div>
@@ -270,9 +270,9 @@
 <!-- Start Your Search Section -->
 <section class="text-center py-5 bg-light">
     <div class="container">
-        <h3>Start your search</h3>
-        <p>Need some inspiration? See what millions of people are looking for on Grapho today.</p>
-        <input type="text" class="form-control mx-auto" placeholder="Search for jobs, companies, or salaries" style="max-width: 600px;">
+        <h3>{{ trans('home.start_your_search') }}</h3>
+        <p>{{ trans('home.need_inspiration') }}</p>
+        <input type="text" class="form-control mx-auto" placeholder="{{ trans('home.search_for_jobs_companies_salaries') }}" style="max-width: 600px;">
     </div>
 </section>
 
@@ -290,17 +290,17 @@
 {{--                    <li><a href="#" class="text-decoration-none text-dark">Contact Us</a></li>--}}
 {{--                    <li><a href="#" class="text-decoration-none text-dark">Guides</a></li>--}}
 {{--                </ul>--}}
-                <p class="" style="text-align: justify">Grapho is job hub.. More content here..</p>
+                <p class="" style="text-align: justify">{{ trans('home.grapho_description') }}</p>
             </div>
             <div class="col-md-2 mb-3">
-                <h6 class="fw-semibold">Employers</h6>
+                <h6 class="fw-semibold">{{ trans('home.employers') }}</h6>
                 <ul class="list-unstyled small">
-                    <li><a href="{{ url('auth/user-registration-page?user=Employer') }}" class="text-decoration-none text-dark">Get a Free Employer Account</a></li>
-                    <li><a href="{{ url('auth/user-registration-page?user=Employer') }}" class="text-decoration-none text-dark">Employer Center</a></li>
+                    <li><a href="{{ url('auth/user-registration-page?user=Employer') }}" class="text-decoration-none text-dark">{{ trans('home.get_free_employer_account') }}</a></li>
+                    <li><a href="{{ url('auth/user-registration-page?user=Employer') }}" class="text-decoration-none text-dark">{{ trans('home.employer_center') }}</a></li>
                 </ul>
             </div>
             <div class="col-md-3 mb-3">
-                <h6 class="fw-semibold">Pages</h6>
+                <h6 class="fw-semibold">{{ trans('home.pages') }}</h6>
                 <ul class="list-unstyled small">
                     @foreach($commonPages as $commonPage)
                         <li><a href="#" class="text-decoration-none text-dark">{{ $commonPage->title ?? 'page name' }}</a></li>
@@ -315,16 +315,16 @@
                 </ul>
             </div>
             <div class="col-md-2 mb-3">
-                <h6 class="fw-semibold">Work With Us</h6>
+                <h6 class="fw-semibold">{{ trans('home.work_with_us') }}</h6>
                 <ul class="list-unstyled small">
-                    <li><a href="{{ url('auth/user-registration-page?user=Employer') }}" class="text-decoration-none text-dark">Advertisers</a></li>
-                    <li><a href="{{ url('auth/user-registration-page?user=Employee') }}" class="text-decoration-none text-dark">Careers</a></li>
+                    <li><a href="{{ url('auth/user-registration-page?user=Employer') }}" class="text-decoration-none text-dark">{{ trans('home.advertisers') }}</a></li>
+                    <li><a href="{{ url('auth/user-registration-page?user=Employee') }}" class="text-decoration-none text-dark">{{ trans('home.careers') }}</a></li>
                 </ul>
             </div>
 
             <div class="col-md-3 mb-3 d-flex flex-column align-items-start justify-content-between">
                 <div class="mb-2">
-                    <span class="small">Download the App</span>
+                    <span class="small">{{ trans('home.download_the_app') }}</span>
                     <div class="d-inline-flex gap-2 ms-2">
                         <a href="{{ isset($siteSetting) ? $siteSetting->apk_link : 'javascript:void(0)' }}" aria-label="Download on Android">
                             <img src="{{ asset('/') }}frontend/home-landing/images/android.png" alt="Android" style="width: 30px;">
@@ -374,7 +374,7 @@
 {{--        </div>--}}
 
         <div class="text-center mt-2 small text-muted">
-            Copyright &copy; 2008-2025. Grapho LLC.
+            {{ trans('home.copyright_text') }}
         </div>
     </div>
 </footer>
@@ -401,8 +401,8 @@
                                             <img src="{{ asset('frontend/employee/images/authentication images/employeeIcon.png') }}" alt="" class="userSelectOptionIcon">
                                         </div>
                                         <div class="col-9">
-                                            <h5>Employer</h5>
-                                            <p>Looking to scale your team.</p>
+                                            <h5>{{ trans('home.employer_text') }}</h5>
+                                            <p>{{ trans('home.employer_desc') }}</p>
                                         </div>
                                         <div class="col-1">
                                             <img src="{{ asset('frontend/employee/images/authentication images/arrow-right 1.png') }}" alt="" class="arrowIcon">
@@ -416,8 +416,8 @@
                                             <img src="{{ asset('frontend/employee/images/authentication images/jobSeekerIcon.png') }}" alt="" class="userSelectOptionIcon">
                                         </div>
                                         <div class="col-9">
-                                            <h5>Job-seeker</h5>
-                                            <p>Looking for job opportunities.</p>
+                                            <h5>{{ trans('home.job_seeker') }}</h5>
+                                            <p>{{ trans('home.job_seeker_desc') }}</p>
                                         </div>
                                         <div class="col-1">
                                             <img src="{{ asset('frontend/employee/images/authentication images/arrow-right 1.png') }}" alt="" class="arrowIcon">

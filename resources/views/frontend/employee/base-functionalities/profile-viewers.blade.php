@@ -16,8 +16,8 @@
 
         <!-- Right Scrollable Jobs -->
         <section class="w-100 profileOptionRight">
-            <h1 class="forLarge">Profile viewers</h1>
-            <p class="">You have {{ count($myProfileViewers) ?? 0 }} profile viewers</p>
+            <h1 class="forLarge">{{ trans('employee.profiler_viewers') }}</h1>
+            <p class="">You have {{ count($myProfileViewers) ?? 0 }} {{ trans('employee.profiler_viewers') }}</p>
             <div class="right-panel w-100 profileViewer">
 
                 <!-- Row 1 -->

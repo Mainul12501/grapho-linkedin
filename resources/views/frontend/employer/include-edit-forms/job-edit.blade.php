@@ -9,20 +9,20 @@
         <div class="d-flex align-items-center justify-content-between mb-4">
             <div class="d-flex align-items-center gap-2">
                 <img src="http://127.0.0.1:8000/frontend/employer/images/employersHome/leftarrow.png" alt="" class="me-2" style="cursor: default;">
-                <h5 class="mb-0 fw-semibold">Edit job</h5>
+                <h5 class="mb-0 fw-semibold">{{ trans('common.edit') }} {{ trans('employer.post_job') }}</h5>
             </div>
             <button class="btn btn-sm btn-close" data-bs-dismiss="modal" type="button"></button>
         </div>
 
         <!-- Job Title -->
         <div class="mb-4">
-            <label class="form-label fw-semibold">Job title</label>
-            <input type="text" class="form-control" value="{{ $jobTask->job_title ?? '' }}" required name="job_title" placeholder="Senior Officer, Corporate Banking">
+            <label class="form-label fw-semibold">{{ trans('employer.job_title') }}</label>
+            <input type="text" class="form-control" value="{{ $jobTask->job_title ?? '' }}" required name="job_title" placeholder="{{ trans('employer.senior_officer_corporate_banking') }}">
         </div>
 
         <!-- Job Type -->
         <div class="mb-4">
-            <label class="form-label fw-semibold mb-2">Job type</label>
+            <label class="form-label fw-semibold mb-2">{{ trans('employer.job_type') }}</label>
             <div class="pill-group" role="group" aria-label="Job type">
                 @foreach($jobTypes as $jobTypesKey => $jobType)
                     <input type="radio" class="btn-check" name="job_type_id" {{ $jobTask->job_type_id == $jobType->id ? 'checked' : '' }} id="EDITjobType{{ $jobTypesKey }}" value="{{ $jobType->id }}" autocomplete="off" {{ $jobTypesKey == 0 ? 'checked' : '' }}>
@@ -33,7 +33,7 @@
 
         <!-- Job Location -->
         <div class="mb-4">
-            <label class="form-label fw-semibold mb-2">Job location</label>
+            <label class="form-label fw-semibold mb-2">{{ trans('employer.job_location') }}</label>
             <div class="pill-group" role="group" aria-label="Job location">
                 @foreach($jobLocations as $jobLocationKey => $jobLocation)
                     <input type="radio" class="btn-check" name="job_location_type_id" {{ $jobTask->job_location_type_id == $jobLocation->id ? 'checked' : '' }} id="editJobLocation{{ $jobLocationKey }}" value="{{ $jobLocation->id }}" {{ $jobLocationKey == 0 ? 'checked' : '' }} autocomplete="off">
@@ -44,8 +44,8 @@
 
         <!-- Footer Buttons -->
         <div class="d-flex justify-content-between align-items-center">
-            <button class="btn btn-outline-dark px-4 py-2 rounded-3" data-bs-dismiss="modal">Cancel</button>
-            <button id="continueToStep2" type="button" class="btn btn-warning text-dark fw-semibold px-4 py-2 rounded-3">Continue</button>
+            <button class="btn btn-outline-dark px-4 py-2 rounded-3" data-bs-dismiss="modal">{{ trans('common.cancel') }}</button>
+            <button id="continueToStep2" type="button" class="btn btn-warning text-dark fw-semibold px-4 py-2 rounded-3">{{ trans('common.next') }}</button>
         </div>
     </div>
 
@@ -56,7 +56,7 @@
             <div class="d-flex justify-content-between align-items-center">
                 <div class="d-flex align-items-center gap-2" id="backToStepOne" style="cursor:pointer">
                     <img src="{{ asset('/') }}frontend/employee/images/authentication images/leftArrow.png" alt="Back" style="width:20px; height:20px;">
-                    <h5 class="fw-bold mb-0">Edit job</h5>
+                    <h5 class="fw-bold mb-0">{{ trans('common.edit') }} {{ trans('employer.post_job') }}</h5>
                 </div>
                 <!-- Button triggers modal -->
 {{--                                                <button type="button" class="btn btn-warning text-dark fw-semibold px-4 py-2 rounded-3 show-review-btn" data-modal-id="editJobModal" --}}{{--data-bs-toggle="modal" data-bs-target="#jobDetailsModal"--}}{{-->--}}
@@ -83,7 +83,7 @@
                             </div>
                         </div>
                         <div>
-                            <a href="#" class="text-decoration-none text-muted return-to-first-part"><img src="{{ asset('/') }}frontend/employer/images/employersHome/Edit pencil.png" alt=""> Edit</a>
+                            <a href="#" class="text-decoration-none text-muted return-to-first-part"><img src="{{ asset('/') }}frontend/employer/images/employersHome/Edit pencil.png" alt=""> {{ trans('common.edit') }}</a>
                         </div>
                     </div>
                 </div>
@@ -91,22 +91,22 @@
             <!-- Experience Card -->
             <div class="container px-0 border-bottom">
                 <div style="border-radius: 0px" class="bg-white p-4 shadow-sm">
-                    <h6 class="fw-semibold mb-3">Required years of experience</h6>
+                    <h6 class="fw-semibold mb-3">{{ trans('employer.required_years_of_experience') }}</h6>
                     <div class="d-flex flex-wrap gap-2">
                         <input type="radio" class="btn-check" name="required_experience" id="edit-exp-any" value="Any" autocomplete="off" {{ $jobTask->required_experience == 'Any' ? 'checked' : '' }} >
-                        <label class="btn btn-outline-warning" style="color: black!important;" for="edit-exp-any">Any</label>
+                        <label class="btn btn-outline-warning" style="color: black!important;" for="edit-exp-any">{{ trans('employer.any') }}</label>
 
                         <input type="radio" class="btn-check" name="required_experience" id="edit-exp-1to3" value="1–3 yrs" autocomplete="off" {{ $jobTask->required_experience == '1–3 yrs' ? 'checked' : '' }} >
-                        <label class="btn btn-outline-warning" style="color: black!important;" for="edit-exp-1to3">1–3 yrs</label>
+                        <label class="btn btn-outline-warning" style="color: black!important;" for="edit-exp-1to3">1–3 {{ trans('employer.yrs') }}</label>
 
                         <input type="radio" class="btn-check" name="required_experience" id="edit-exp-0" value="0" autocomplete="off" {{ $jobTask->required_experience == '0' ? 'checked' : '' }} >
-                        <label class="btn btn-outline-warning" style="color: black!important;" for="edit-exp-0">N/A</label>
+                        <label class="btn btn-outline-warning" style="color: black!important;" for="edit-exp-0">{{ trans('employer.na') }}</label>
 
                         <input type="radio" class="btn-check" name="required_experience" id="custom" value="custom" {{ $jobTask->is_custom_exp == 1 ? 'checked' : '' }} autocomplete="off">
-                        <label id="editshowCustomExperienceField" style="color: black!important;" class="btn btn-outline-warning" for="custom">Custom</label>
+                        <label id="editshowCustomExperienceField" style="color: black!important;" class="btn btn-outline-warning" for="custom">{{ trans('common.custom') }}</label>
 
                         <span id="editcustomExperienceField" style="display: none">
-                                                            <input type="text" style="width: 60px; background-color: #f8ffbe; color: black!important;" class="btn btn-outline-primary " value="{{ $jobTask->is_custom_exp == 1 ? explode('-', $jobTask->required_experience)[0] : 0 }}" name="exp_range_start"> to <input type="text" style="width: 60px; background-color: #f8ffbe; color: black!important;" class="btn btn-outline-primary " value="{{ $jobTask->is_custom_exp == 1 ?explode('-', $jobTask->required_experience)[1] : 1 }}" name="exp_range_end"> Years
+                                                            <input type="text" style="width: 60px; background-color: #f8ffbe; color: black!important;" class="btn btn-outline-primary " value="{{ $jobTask->is_custom_exp == 1 ? explode('-', $jobTask->required_experience)[0] : 0 }}" name="exp_range_start"> {{ trans('employer.to') }} <input type="text" style="width: 60px; background-color: #f8ffbe; color: black!important;" class="btn btn-outline-primary " value="{{ $jobTask->is_custom_exp == 1 ?explode('-', $jobTask->required_experience)[1] : 1 }}" name="exp_range_end"> {{ trans('employer.years') }}
                                                         </span>
                     </div>
                 </div>
@@ -114,7 +114,7 @@
             <!-- Industry -->
             <div class="container px-0 border-bottom">
                 <div style="border-radius: 0px" class="bg-white p-4 shadow-sm">
-                    <h6 class="fw-semibold mb-3">Industry</h6>
+                    <h6 class="fw-semibold mb-3">{{ trans('common.industry') }}</h6>
                     <select name="industry_id" id="select2-div" class="form-control select2 industryId"  >
                         @foreach($industries as $industryKey => $industry)
                             <option value="{{ $industry->id }}" {{ $jobTask->industry_id == $industry->id ? 'selected' : '' }}>{{ $industry->name ?? 'un' }}</option>
@@ -125,7 +125,7 @@
             <!-- University Preference -->
             <div class="container px-0 border-bottom">
                 <div style="border-radius: 0px" class="bg-white p-4 shadow-sm">
-                    <h6 class="fw-semibold mb-3">University preference</h6>
+                    <h6 class="fw-semibold mb-3">{{ trans('employer.university_preference') }}</h6>
                     {{--                                    <input type="text" class="form-control mb-3" name="" placeholder="Search universities">--}}
                     <select name="university_preference[]" id="select2-div" class=" select2"  multiple="multiple">
                         @foreach($universityNames as $universityNameKey => $universityName)
@@ -137,7 +137,7 @@
             <!-- Field of Study -->
             <div class="container px-0 border-bottom">
                 <div style="border-radius: 0px" class="bg-white p-4 shadow-sm">
-                    <h6 class="fw-semibold mb-3">Field of study</h6>
+                    <h6 class="fw-semibold mb-3">{{ trans('employer.field_of_study') }}</h6>
                     {{--                                    <input type="text" class="form-control mb-3" placeholder="Search field of study">--}}
                     <select name="field_of_study_preference[]" id="" class=" select2" multiple="multiple">
                         @foreach($fieldOfStudies as $fieldOfStudyKey => $fieldOfStudy)
@@ -149,48 +149,48 @@
             <!-- CGPA Preference -->
             <div class="container px-0 border-bottom">
                 <div style="border-radius: 0px" class="bg-white p-4 shadow-sm">
-                    <h6 class="fw-semibold mb-3">CGPA preference</h6>
-                    <input type="text" name="cgpa" value="{{ $jobTask->cgpa ?? 0 }}" class="form-control" placeholder="EX: 3.50 to 3.90">
+                    <h6 class="fw-semibold mb-3">{{ trans('employer.cgpa_preference') }}</h6>
+                    <input type="text" name="cgpa" value="{{ $jobTask->cgpa ?? 0 }}" class="form-control" placeholder="{{ trans('employer.eg_350_to_390') }}">
                 </div>
             </div>
             <!-- Gender Preference -->
             <div class="container px-0 border-bottom">
                 <div style="border-radius: 0px" class="bg-white p-4 shadow-sm">
-                    <h6 class="fw-semibold mb-3">Gender preference</h6>
+                    <h6 class="fw-semibold mb-3">{{ trans('employer.gender_preference') }}</h6>
                     <select name="gender" id="" class="form-control select2">
-                        <option value="" disabled selected>Select a gender</option>
-                        <option value="male" {{ $jobTask->gender == 'male' ? 'selected' : '' }}>Male</option>
-                        <option value="female" {{ $jobTask->gender == 'female' ? 'selected' : '' }}>Female</option>
-                        <option value="all" {{ $jobTask->gender == 'all' ? 'selected' : '' }}>All</option>
+                        <option value="" disabled selected>{{ trans('employer.select_a_gender') }}</option>
+                        <option value="male" {{ $jobTask->gender == 'male' ? 'selected' : '' }}>{{ trans('employer.male') }}</option>
+                        <option value="female" {{ $jobTask->gender == 'female' ? 'selected' : '' }}>{{ trans('employer.female') }}</option>
+                        <option value="all" {{ $jobTask->gender == 'all' ? 'selected' : '' }}>{{ trans('employer.all') }}</option>
                     </select>
                 </div>
             </div>
             <!-- Salary Section -->
             <div class="container px-0 border-bottom">
                 <div style="border-radius: 0px" class="bg-white p-4 shadow-sm">
-                    <h6 class="fw-semibold mb-3">Salary</h6>
+                    <h6 class="fw-semibold mb-3">{{ trans('employer.salary') }}</h6>
                     <ul class="nav nav-tabs mb-3" id="salaryTab" role="tablist">
-                        <li class="nav-item"><a class="nav-link {{ $jobTask->job_pref_salary_payment_type == 'monthly' ? 'active' : '' }} salary-type" data-value="monthly" data-bs-toggle="tab" href="#">Monthly</a></li>
-                        <li class="nav-item"><a class="nav-link salary-type {{ $jobTask->job_pref_salary_payment_type == 'hourly' ? 'active' : '' }}" data-value="hourly" data-bs-toggle="tab" href="#">Hourly</a></li>
-                        <li class="nav-item"><a class="nav-link salary-type {{ $jobTask->job_pref_salary_payment_type == 'yearly' ? 'active' : '' }}" data-value="yearly" data-bs-toggle="tab" href="#">Yearly</a></li>
-                        <li class="nav-item"><a class="nav-link salary-type {{ $jobTask->job_pref_salary_payment_type == 'fixed' ? 'active' : '' }}" data-value="fixed" data-bs-toggle="tab" href="#">Fixed amount</a></li>
+                        <li class="nav-item"><a class="nav-link {{ $jobTask->job_pref_salary_payment_type == 'monthly' ? 'active' : '' }} salary-type" data-value="monthly" data-bs-toggle="tab" href="#">{{ trans('employer.monthly') }}</a></li>
+                        <li class="nav-item"><a class="nav-link salary-type {{ $jobTask->job_pref_salary_payment_type == 'hourly' ? 'active' : '' }}" data-value="hourly" data-bs-toggle="tab" href="#">{{ trans('employer.hourly') }}</a></li>
+                        <li class="nav-item"><a class="nav-link salary-type {{ $jobTask->job_pref_salary_payment_type == 'yearly' ? 'active' : '' }}" data-value="yearly" data-bs-toggle="tab" href="#">{{ trans('employer.yearly') }}</a></li>
+                        <li class="nav-item"><a class="nav-link salary-type {{ $jobTask->job_pref_salary_payment_type == 'fixed' ? 'active' : '' }}" data-value="fixed" data-bs-toggle="tab" href="#">{{ trans('employer.fixed_amount') }}</a></li>
                     </ul>
                     <input type="hidden" name="job_pref_salary_payment_type" class="job_pref_salary_payment_type" value="monthly">
-                    <input type="text" name="salary_amount" value="{{ $jobTask->salary_amount ?? 0 }}" class="form-control mb-2" placeholder="BDT 50,000">
+                    <input type="text" name="salary_amount" value="{{ $jobTask->salary_amount ?? 0 }}" class="form-control mb-2" placeholder="{{ trans('employer.bdt_50000') }}">
                 </div>
             </div>
             <!-- Job Description -->
             <div class="container px-0 border-bottom">
                 <div style="border-radius: 0px" class="bg-white p-4 shadow-sm">
-                    <h6 class="fw-semibold mb-3">Job description & Key responsibilities</h6>
-                    <textarea class="form-control summernote" id="summernote" name="description" rows="15" placeholder="Tell more about the job - specifications & responsibilities...">{!! $jobTask->description ?? '' !!}</textarea>
+                    <h6 class="fw-semibold mb-3">{{ trans('employer.job_description_key_responsibilities') }}</h6>
+                    <textarea class="form-control summernote" id="summernote" name="description" rows="15" placeholder="{{ trans('employer.tell_more_about_job') }}">{!! $jobTask->description ?? '' !!}</textarea>
                 </div>
             </div>
             <!-- Application Deadline -->
             <div class="container px-0 border-bottom">
                 <div style="border-radius: 0px" class="bg-white p-4 shadow-sm">
                     <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h6 class="fw-semibold mb-0">Application deadline</h6>
+                        <h6 class="fw-semibold mb-0">{{ trans('employer.application_deadline') }}</h6>
                     </div>
                     <div>
                         <div class="input-group rounded-3 border border-secondary-subtle">
@@ -202,7 +202,7 @@
             <!-- Skills Section -->
             <div class="container px-0 border-bottom">
                 <div style="border-radius: 0px" class="bg-white p-4 shadow-sm">
-                    <h6 class="fw-semibold mb-3">Skill requirements</h6>
+                    <h6 class="fw-semibold mb-3">{{ trans('employer.skill_requirements') }}</h6>
                     <div class="<!--d-flex flex-wrap gap-2-->">
 
                         <nav>
@@ -258,7 +258,7 @@
                 <div class="bg-white p-4 text-end shadow-sm" style="border-radius: 0px">
                     <!-- Button triggers modal -->
                     <button type="button" class="btn btn-warning text-dark fw-semibold px-4 py-2 rounded-3 show-review-btn" data-modal-id="editJobModal" {{--data-bs-toggle="modal" data-bs-target="#jobDetailsModal"--}}>
-                        Review & Post
+                        {{ trans('employer.review_and_post') }}
                     </button>
                 </div>
             </div>

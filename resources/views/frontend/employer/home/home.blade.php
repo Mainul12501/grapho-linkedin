@@ -10,8 +10,8 @@
                     <div class="float-end">
                         <form action="" method="get">
                             <div class="input-group mb-3" style="max-width: 400px">
-                                <input type="text" name="search_text" class="form-control" placeholder="Search Company">
-                                <button type="submit" class="input-group-text" id="basic-addon2">Search</button>
+                                <input type="text" name="search_text" class="form-control" placeholder="{{ trans('employer.search_company') }}">
+                                <button type="submit" class="input-group-text" id="basic-addon2">{{ trans('common.search') }}</button>
                             </div>
                         </form>
                     </div>
@@ -20,8 +20,8 @@
             <div class="row g-4">
                 <div class="col-md-8 ps-5" id="appendContentHere">
                     <div class="card card-body d-flex">
-                        <p class="d-inline-flex">Have Something New On mind?</p>
-                        <p class="d-inline-flex"><a href="{{ route('employer.posts.create') }}" class="btn btn-sm btn-success">Post</a></p>
+                        <p class="d-inline-flex">{{ trans('employer.have_something_new_on_mind') }}</p>
+                        <p class="d-inline-flex"><a href="{{ route('employer.posts.create') }}" class="btn btn-sm btn-success">{{ trans('employer.post') }}</a></p>
                     </div>
 {{--                    contents appends here--}}
                 </div>
@@ -82,11 +82,11 @@
                 {
                     if (response.follow_status == 1)
                     {
-                        $('#followBtn'+postId).text('Unfollow').attr('data-follow-history-status', 1);
+                        $('#followBtn'+postId).text("{{ trans('employer.unfollow') }}").attr('data-follow-history-status', 1);
 
                     } else if (response.follow_status == 0)
                     {
-                        $('#followBtn'+postId).text('Follow').attr('data-follow-history-status', 0);
+                        $('#followBtn'+postId).text("{{ trans('employer.follow') }}").attr('data-follow-history-status', 0);
                     }
                 } else {
                     alert('Please try again.')

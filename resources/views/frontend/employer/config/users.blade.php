@@ -36,7 +36,7 @@
 
                 <!-- Right main content -->
                 <section class="col-md-9 col-12 settingsRightContent">
-                    <h2 class="mb-4 settings-menu d-none d-md-block">Users Management</h2>
+                    <h2 class="mb-4 settings-menu d-none d-md-block">{{ trans('common.name') }} {{ trans('common.action') }}</h2>
 
 {{--                    <div class="card usermanagement-content p-3">--}}
 
@@ -208,7 +208,7 @@
                     <div class="mb-3">
                         <button class="add-user-btn btn flex-start btn-dark" data-bs-toggle="modal" data-bs-target="#addUserModal"{{-- style="background-color: #FFCB11"--}}>
                             <img src="{{ asset('/') }}frontend/employer/images/employersHome/addUser.png" alt="">
-                            <span class="d-none d-md-block text-white">Add User</span>
+                            <span class="d-none d-md-block text-white">{{ trans('common.add') }} {{ trans('common.name') }}</span>
                         </button>
                     </div>
 
@@ -218,12 +218,12 @@
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>Name</th>
-                                        <th>Email</th>
-                                        <th>Mobile</th>
-                                        <th>Role</th>
-                                        <th>Status</th>
-                                        <th>Action</th>
+                                        <th>{{ trans('common.name') }}</th>
+                                        <th>{{ trans('common.email') }}</th>
+                                        <th>{{ trans('employer.mobile') }}</th>
+                                        <th>{{ trans('common.action') }}</th>
+                                        <th>{{ trans('common.status') }}</th>
+                                        <th>{{ trans('common.action') }}</th>
                                     </tr>
                                 </thead>
                                 <tbody class="user-card">
@@ -234,7 +234,7 @@
                                             <td class="email">{{ $employerUser->email ?? 'User Email' }}</td>
                                             <td class="email">{{ $employerUser->mobile ?? '01500000000' }}</td>
                                             <td class="role">{{ $employerUser->user_type ?? 'User Type' }}</td>
-                                            <td><a href="{{ route('employer.change-sub-employer-status', ['user' => $employerUser->id, 'status' => $employerUser->employer_agent_active_status == 'active' ? 'inactive' : 'active']) }}"><span class="status badge {{ $employerUser->employer_agent_active_status == 'active' ? 'active bg-success' : 'invited bg-secondary' }}">{{ $employerUser->employer_agent_active_status == 'active' ? 'Active' : 'Inactive' }}</span></a></td>
+                                            <td><a href="{{ route('employer.change-sub-employer-status', ['user' => $employerUser->id, 'status' => $employerUser->employer_agent_active_status == 'active' ? 'inactive' : 'active']) }}"><span class="status badge {{ $employerUser->employer_agent_active_status == 'active' ? 'active bg-success' : 'invited bg-secondary' }}">{{ $employerUser->employer_agent_active_status == 'active' ? trans('common.status') : 'Inactive' }}</span></a></td>
                                             <td>
 {{--                                                <a href="" class="btn btn-sm btn-success mx-1"><i class="fa fa-eye text-white f-s-11"></i></a>--}}
                                                 <a href="" class="btn btn-sm btn-primary mx-1 user-edit" data-user-id="{{ $employerUser->id }}"><i class="fa fa-edit text-white f-s-11"></i></a>
@@ -268,26 +268,26 @@
                             <path fill-rule="evenodd" d="M15 8a.5.5 0 0 1-.5.5H3.707l3.147 3.146a.5.5 0 0 1-.708.708l-4-4a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L3.707 7.5H14.5A.5.5 0 0 1 15 8z"/>
                         </svg>
                     </button>
-                    <h5 class="modal-title fw-semibold">Add a user</h5>
+                    <h5 class="modal-title fw-semibold">{{ trans('common.add') }} {{ trans('common.name') }}</h5>
                 </div>
                 <div class="modal-body pt-0">
                     <form action="{{ route('employer.create-sub-user') }}" method="post" enctype="multipart/form-data">
                         @csrf
                         <div class="mb-3">
-                            <label for="userName" class="form-label">User Name</label>
-                            <input type="text" class="form-control rounded-3" id="userName" name="name" placeholder="Enter Your Name" required />
+                            <label for="userName" class="form-label">{{ trans('common.name') }}</label>
+                            <input type="text" class="form-control rounded-3" id="userName" name="name" placeholder="{{ trans('employer.enter_your_full_name') }}" required />
                         </div>
                         <div class="mb-3">
-                            <label for="userEmail" class="form-label">User email</label>
-                            <input type="email" class="form-control rounded-3" id="userEmail" name="email" placeholder="hello.world@gmail.com" >
+                            <label for="userEmail" class="form-label">{{ trans('common.email') }}</label>
+                            <input type="email" class="form-control rounded-3" id="userEmail" name="email" placeholder="{{ trans('employer.enter_your_email') }}" >
                         </div>
                         <div class="mb-3">
-                            <label for="userMobile" class="form-label">User Mobile</label>
-                            <input type="text" class="form-control rounded-3" name="mobile" id="userMobile" placeholder="01500000000" required />
+                            <label for="userMobile" class="form-label">{{ trans('employer.mobile') }}</label>
+                            <input type="text" class="form-control rounded-3" name="mobile" id="userMobile" placeholder="{{ trans('employer.mobile') }}" required />
                         </div>
                         <div class="mb-3">
-                            <label for="userPassword" class="form-label">User Password</label>
-                            <input type="text" class="form-control rounded-3" id="userPassword" name="password" placeholder="00000000" required />
+                            <label for="userPassword" class="form-label">{{ trans('employer.new_password') }}</label>
+                            <input type="text" class="form-control rounded-3" id="userPassword" name="password" placeholder="{{ trans('employer.new_password') }}" required />
                         </div>
 {{--                        <div class="mb-4">--}}
 {{--                            <label for="userRole" class="form-label">Role</label>--}}
@@ -298,8 +298,8 @@
 {{--                            </select>--}}
 {{--                        </div>--}}
                         <div class="d-flex justify-content-between">
-                            <button type="button" class="btn border border-2 rounded-3 px-4 py-2" data-bs-dismiss="modal" style="border-color:#ccc;">Cancel</button>
-                            <button type="submit" class="btn rounded-3 px-4 py-2 text-white fw-semibold" style="background-color: #FFD700;">Create User</button>
+                            <button type="button" class="btn border border-2 rounded-3 px-4 py-2" data-bs-dismiss="modal" style="border-color:#ccc;">{{ trans('common.cancel') }}</button>
+                            <button type="submit" class="btn rounded-3 px-4 py-2 text-white fw-semibold" style="background-color: #FFD700;">{{ trans('common.add') }} {{ trans('common.name') }}</button>
                         </div>
                     </form>
                 </div>
@@ -317,7 +317,7 @@
                             <path fill-rule="evenodd" d="M15 8a.5.5 0 0 1-.5.5H3.707l3.147 3.146a.5.5 0 0 1-.708.708l-4-4a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L3.707 7.5H14.5A.5.5 0 0 1 15 8z"/>
                         </svg>
                     </button>
-                    <h5 class="modal-title fw-semibold">Edit user</h5>
+                    <h5 class="modal-title fw-semibold">{{ trans('common.edit') }} {{ trans('common.name') }}</h5>
                 </div>
                 <div class="modal-body pt-0" id="employerUserEditForm">
 

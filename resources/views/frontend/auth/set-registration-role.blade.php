@@ -34,11 +34,11 @@
 <!-- Card Container -->
 <div class="card shadow signupCard">
     <a href="{{ route('/') }}"><img  src="{{ asset(isset($siteSetting->logo) ? $siteSetting->logo : '/frontend/employee/images/authentication images/Compnay logo.png') }}" alt="site-logo" style="width: 115px; height: 28px" class="signupLogo w-25"></a>
-    <h4>Sign up today</h4>
-    <p>Hiring talents for your company? or Looking for opportunities?</p>
+    <h4>{{ trans('auth.sign_up_today') }}</h4>
+    <p>{{ trans('auth.hiring_or_looking_opportunities') }}</p>
 
     <div class="userCard">
-        <span class="">Sign up as-</span>
+        <span class="">{{ trans('auth.sign_up_as') }}</span>
         <div>
             <a href="{{ route('auth.user-registration-page', ['user' => 'Employer']) }}" class="userSelectOption mb-3 mt-3">
                 <div class="row d-flex align-items-center w-100">
@@ -46,8 +46,8 @@
                         <img src="{{ asset('/') }}frontend/employee/images/authentication images/employeeIcon.png" alt="" class="userSelectOptionIcon">
                     </div>
                     <div class="col-9">
-                        <h5>Employer</h5>
-                        <p>Looking to scale your team.</p>
+                        <h5>{{ trans('auth.employer') }}</h5>
+                        <p>{{ trans('auth.looking_to_scale_team') }}</p>
                     </div>
                     <div class="col-1">
                         <img src="{{ asset('/') }}frontend/employee/images/authentication images/arrow-right 1.png" alt="" class="arrowIcon">
@@ -61,8 +61,8 @@
                         <img src="{{ asset('/') }}frontend/employee/images/authentication images/jobSeekerIcon.png" alt="" class="userSelectOptionIcon">
                     </div>
                     <div class="col-9">
-                        <h5>Job-seeker</h5>
-                        <p>Looking for job opportunities.</p>
+                        <h5>{{ trans('auth.job_seeker') }}</h5>
+                        <p>{{ trans('auth.looking_for_job_opportunities') }}</p>
                     </div>
                     <div class="col-1">
                         <img src="{{ asset('/') }}frontend/employee/images/authentication images/arrow-right 1.png" alt="" class="arrowIcon">
@@ -71,7 +71,7 @@
             </a>
         </div>
         <div class="mt-4">
-            <span class="">Already have an account? <a href="{{ route('auth.set-login-role') }}" class="fw-bold text-dark text-decoration-none">Log in</a></span>
+            <span class="">{{ trans('auth.already_have_account') }} <a href="{{ route('auth.set-login-role') }}" class="fw-bold text-dark text-decoration-none">{{ trans('auth.log_in') }}</a></span>
         </div>
 
     </div>

@@ -5,9 +5,9 @@
 @section('body')
 
     <div class="container-fluid p-4">
-        <h4 class="fw-bold mb-2 f-s-23">My talents</h4>
+        <h4 class="fw-bold mb-2 f-s-23">{{ trans('employer.my_jobs') }}</h4>
         <p class="text-secondary mb-4 small">
-            Here the applicants are grouped based on the jobs they applied for
+            {{ trans('employer.see_all_posted_jobs') }}
         </p>
 
         <div class="row g-4">
@@ -18,7 +18,7 @@
                             <h6 class="mb-1 fw-semibold">{{ $jobTask->job_title ?? 'Job Title' }}</h6>
                             <div class="d-flex align-items-center text-muted small">
                                 <img src="{{ asset('/') }}frontend/employer/images/employersHome/talentUserGroupIcon.png" alt="" class="me-1">
-                                <span class="text-decoration-underline">{{ count($jobTask->employeeAppliedJobs) ?? 0 }} Applicants</span>
+                                <span class="text-decoration-underline">{{ count($jobTask->employeeAppliedJobs) ?? 0 }} {{ trans('employer.applicants') }}</span>
                             </div>
                         </div>
                         <img src="{{ asset('/') }}frontend/employer/images/employersHome/arrow-right 1.png" alt="Go" class="icon-arrow" />
@@ -26,7 +26,7 @@
                 </div>
             @empty
                 <div class="col-12">
-                    <p class="f-s-26">No Active Jobs Available.</p>
+                    <p class="f-s-26">{{ trans('employer.no_available_job_found') }}</p>
                 </div>
             @endforelse
 

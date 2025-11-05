@@ -8,9 +8,9 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header pt-3">
-                        <h4 class="float-start">{{ auth()->user()->name ?? 'Employer Name' }} Posts</h4>
+                        <h4 class="float-start">{{ auth()->user()->name ?? 'Employer Name' }} {{ trans('employer.post') }}s</h4>
                         <p class="float-end">
-                            <a href="{{ route('employer.posts.create') }}" class="btn btn-sm btn-success">Create</a>
+                            <a href="{{ route('employer.posts.create') }}" class="btn btn-sm btn-success">{{ trans('common.add') }}</a>
                         </p>
                     </div>
                     <div class="card-body">
@@ -19,11 +19,11 @@
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>Images</th>
-                                        <th>Title</th>
-                                        <th>Content</th>
-                                        <th>Status</th>
-                                        <th>Action</th>
+                                        <th>{{ trans('common.title') }}s</th>
+                                        <th>{{ trans('common.title') }}</th>
+                                        <th>{{ trans('common.title') }}</th>
+                                        <th>{{ trans('common.status') }}</th>
+                                        <th>{{ trans('common.action') }}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -41,7 +41,7 @@
                                             </td>
                                             <td>{{ $post->title ?? '' }}</td>
                                             <td>{!! str()->words($post->description, 30) ?? '' !!}</td>
-                                            <td>{{ $post->status == 1 ? 'Published' : 'Unpublished' }}</td>
+                                            <td>{{ $post->status == 1 ? trans('common.status') : trans('common.unpublished') }}</td>
                                             <td class="">
                                                 <a href="{{ route('employer.posts.show', $post->id) }}" class="btn btn-sm btn-primary">
                                                     <i class="fa-solid fa-eye text-white"></i>
@@ -84,7 +84,7 @@
         function deletePost(formElement) {
             event.preventDefault();
             Swal.fire({
-                title: "Are you sure?",
+                title: "{{ trans('common.are_you_sure') }}",
                 text: "You won't be able to revert this!",
                 icon: "warning",
                 showCancelButton: true,

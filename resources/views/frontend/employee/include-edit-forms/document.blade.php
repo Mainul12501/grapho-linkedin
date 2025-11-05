@@ -5,7 +5,7 @@
         <!-- Form for adding document -->
 
         <div class="mb-3">
-            <label for="documentFileTitleInput" class="form-label">Document Title</label>
+            <label for="documentFileTitleInput" class="form-label">{{ trans('employee.document_title') }}</label>
             <div class="d-flex align-items-center">
 {{--                <input type="text" name="title" value="{{ $data->title ?? '' }}" class="form-control" id="documentFileTitleInput" />--}}
                 <select name="title" class="form-control select2" id="">
@@ -17,7 +17,7 @@
         </div>
 
         <div class="mb-4">
-            <label for="documentFileInput" class="form-label">Document File</label>
+            <label for="documentFileInput" class="form-label">{{ trans('employee.document_file') }}</label>
             <div class="d-flex align-items-center">
                 <input type="file" name="file" class="form-control" id="documentFileInput" />
                 {{--                                    <span class="ms-2">cv.pdf <small>(PDF - 325 KB)</small></span>--}}
@@ -45,10 +45,10 @@
     </div>
     <div class="modal-footer justify-content-between">
         <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-            Close
+            {{ trans('common.close') }}
         </button>
         <button type="submit" class="btn btn-primary">
-            Upload Document
+            {{ trans('employee.upload_document') }}
         </button>
     </div>
 </form>

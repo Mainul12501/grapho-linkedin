@@ -8,8 +8,8 @@
     <!-- Main Content -->
     <section class="notificationContent">
         <div class="container">
-            <h2>Notifications</h2>
-            <h6>You have {{$newNotifications ?? 0 }} new notifications.</h6>
+            <h2>{{ trans('common.title') }}</h2>
+            <h6>{{ trans('common.you') }} {{ trans('common.have') }} {{$newNotifications ?? 0 }} {{ trans('common.new') }} {{ trans('common.title') }}.</h6>
             <div class="notification-list">
                 <!-- Notification Item -->
                 @forelse($notifications as $notification)
@@ -31,7 +31,7 @@
 {{--                            <img src="{{ asset('/') }}frontend/employee/images/notification/notificationLogo3.png" alt="Notification Icon" />--}}
 {{--                        </div>--}}
                         <div class="notification-content">
-                            <p class="text-center"> No notification available yet.</p>
+                            <p class="text-center"> {{ trans('common.no') }} {{ trans('common.title') }} {{ trans('common.available') }} {{ trans('common.yet') }}.</p>
 {{--                            <span class="time">8h ago</span>--}}
                         </div>
 {{--                        <div class="more-options"><img src="{{ asset('/') }}frontend/employee/images/contentImages/inboxThreeDotIcon.png" alt=""></div>--}}

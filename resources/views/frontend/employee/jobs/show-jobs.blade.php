@@ -42,38 +42,38 @@
             <div class="fielterIcon me-2">
                 <div>
                     <img src="{{ asset('/') }}frontend/employee/images/contentImages/Filter.png" alt="" class="me-1" />
-                    <span>Filters:</span>
+                    <span>{{ trans('common.filters') }}</span>
                 </div>
             </div>
 
             <!-- ===== Filter #1: Date posted ===== -->
-            <div class="custom-select" data-filter-key="date_posted" style="max-width: 145px!important;" data-placeholder="Most Recent">
+            <div class="custom-select" data-filter-key="date_posted" style="max-width: 145px!important;" data-placeholder="{{ trans('common.most_recent') }}">
 {{--                <label class="custom-select-label">Date</label>--}}
-                <input type="text" class="form-control select-box locationSearch" placeholder="Select..." readonly />
+                <input type="text" class="form-control select-box locationSearch" placeholder="{{ trans('common.search') }}" readonly />
                 <div class="dropdown-menu locationDropdown">
-                    <input type="text" class="form-control search-box searchBar" placeholder="Search..." />
+                    <input type="text" class="form-control search-box searchBar" placeholder="{{ trans('common.search') }}" />
                     <div class="checkbox-item">
                         <input type="checkbox" class="locationCheckbox" id="date24h" value="7"  {{ in_array("7", getSelectedFilters('date_posted')) ? 'checked' : '' }} />
-                        <label for="date24h">Most Recent</label>
+                        <label for="date24h">{{ trans('common.most_recent') }}</label>
                     </div>
                     <div class="checkbox-item">
                         <input type="checkbox" class="locationCheckbox" id="date15d" value="15"  {{ in_array("15", getSelectedFilters('date_posted')) ? 'checked' : '' }} />
-                        <label for="date15d">Last 15 days</label>
+                        <label for="date15d">{{ trans('common.last_15_days') }}</label>
                     </div>
                     <div class="checkbox-item">
                         <input type="checkbox" class="locationCheckbox" id="date30d" value="30" {{ in_array("30", getSelectedFilters('date_posted')) ? 'checked' : '' }} />
-                        <label for="date30d">Last 30 days</label>
+                        <label for="date30d">{{ trans('common.last_30_days') }}</label>
                     </div>
                 </div>
                 <input type="hidden" class="filter-payload" name="filters[date_posted]" value="[]">
             </div>
 
             <!-- ===== Filter #2: Job type ===== -->
-            <div class="custom-select" data-filter-key="company_type" style="max-width: 115px!important;" data-placeholder="Job type">
+            <div class="custom-select" data-filter-key="company_type" style="max-width: 115px!important;" data-placeholder="{{ trans('common.job_type') }}">
 {{--                <label class="custom-select-label">Job type</label>--}}
-                <input type="text" class="form-control select-box locationSearch" placeholder="Select..." readonly />
+                <input type="text" class="form-control select-box locationSearch" placeholder="{{ trans('common.search') }}" readonly />
                 <div class="dropdown-menu locationDropdown">
-                    <input type="text" class="form-control search-box searchBar" placeholder="Search..." />
+                    <input type="text" class="form-control search-box searchBar" placeholder="{{ trans('common.search') }}" />
                     @foreach($JobTypes as $JobType)
                         <div class="checkbox-item">
                             <input type="checkbox" class="locationCheckbox" id="ctype-{{ $JobType->slug }}" value="{{ $JobType->slug }}" {{ in_array($JobType->slug, getSelectedFilters('job_type')) ? 'checked' : '' }} />
@@ -85,11 +85,11 @@
             </div>
 
             <!-- ===== Filter #3: Location ===== -->
-            <div class="custom-select" data-filter-key="location" style="max-width: 112px!important;" data-placeholder="Location">
+            <div class="custom-select" data-filter-key="location" style="max-width: 112px!important;" data-placeholder="{{ trans('common.location') }}">
 {{--                <label class="custom-select-label">Location</label>--}}
-                <input type="text" class="form-control select-box locationSearch" placeholder="Select..." readonly />
+                <input type="text" class="form-control select-box locationSearch" placeholder="{{ trans('common.search') }}" readonly />
                 <div class="dropdown-menu locationDropdown">
-                    <input type="text" class="form-control search-box searchBar" placeholder="Search..." />
+                    <input type="text" class="form-control search-box searchBar" placeholder="{{ trans('common.search') }}" />
 
                     <div class="checkbox-item"><input type="checkbox" value="Bagerhat" {{ in_array("Bagerhat", getSelectedFilters('district')) ? 'checked' : '' }} class="locationCheckbox" id="loc-Bagerhat" /> <label for="loc-Bagerhat">Bagerhat</label></div>
                     <div class="checkbox-item"><input type="checkbox" value="Bandarban" {{ in_array("Bandarban", getSelectedFilters('district')) ? 'checked' : '' }} class="locationCheckbox" id="loc-Bandarban" /> <label for="loc-Bandarban">Bandarban</label></div>
@@ -161,11 +161,11 @@
             </div>
 
             <!-- ===== Filter #4: Industry ===== -->
-            <div class="custom-select" data-filter-key="industry" style="max-width: 110px!important;" data-placeholder="industry">
+            <div class="custom-select" data-filter-key="industry" style="max-width: 110px!important;" data-placeholder="{{ trans('common.industry') }}">
 {{--                <label class="custom-select-label">Industry</label>--}}
-                <input type="text" class="form-control select-box locationSearch" placeholder="Select..." readonly />
+                <input type="text" class="form-control select-box locationSearch" placeholder="{{ trans('common.search') }}" readonly />
                 <div class="dropdown-menu locationDropdown">
-                    <input type="text" class="form-control search-box searchBar" placeholder="Search..." />
+                    <input type="text" class="form-control search-box searchBar" placeholder="{{ trans('common.search') }}" />
                     @foreach($industries as $industry)
                         <div class="checkbox-item">
                             <input type="checkbox" class="locationCheckbox" id="ind-{{ $industry->slug }}" {{ in_array($industry->slug, getSelectedFilters('industry')) ? 'checked' : '' }} value="{{ $industry->slug }}" />
@@ -178,11 +178,11 @@
             </div>
 
             <!-- ===== Filter #6: Job Workplace type ===== -->
-            <div class="custom-select" data-filter-key="salary" style="max-width: 132px!important;" data-placeholder="Job Nature">
+            <div class="custom-select" data-filter-key="salary" style="max-width: 132px!important;" data-placeholder="{{ trans('common.job_nature') }}">
 {{--                <label class="custom-select-label">Job Nature</label>--}}
-                <input type="text" class="form-control select-box locationSearch" placeholder="Select..." readonly />
+                <input type="text" class="form-control select-box locationSearch" placeholder="{{ trans('common.search') }}" readonly />
                 <div class="dropdown-menu locationDropdown">
-                    <input type="text" class="form-control search-box searchBar" placeholder="Search..." />
+                    <input type="text" class="form-control search-box searchBar" placeholder="{{ trans('common.search') }}" />
                     @foreach($jobLocationTypes as $jobLocationType)
                         <div class="checkbox-item">
                             <input type="checkbox" class="locationCheckbox" {{ in_array($jobLocationType->slug, getSelectedFilters('job_location_type')) ? 'checked' : '' }} id="jlt-{{ $jobLocationType->slug }}" value="{{ $jobLocationType->slug }}" />
@@ -196,8 +196,8 @@
 
             <!-- Clear All button (resets the filter selections) -->
                 <div>
-                    <button type="submit" class="clear-all-btn btn btn-sm border px-2 " style="border: 1px solid lightgrey!important;" id="clearAllBtn">Search</button>
-                    <button type="button" class="clear-all-btn btn btn-sm border px-2" style="border: 1px solid lightgrey!important;" id="clearAllBtn">Clear All</button>
+                    <button type="submit" class="clear-all-btn btn btn-sm border px-2 " style="border: 1px solid lightgrey!important;" id="clearAllBtn">{{ trans('common.search') }}</button>
+                    <button type="button" class="clear-all-btn btn btn-sm border px-2" style="border: 1px solid lightgrey!important;" id="clearAllBtn">{{ trans('common.clear_all') }}</button>
                 </div>
 
             </form>
@@ -218,7 +218,7 @@
                 <div class="job-options">
                     <!-- Header above results -->
                     <div class="search-header card border-0 py-3 jobSearchResultText border-end" style="">
-                        <h5 class="p-l-20">Showing {{ count($jobTasks) ?? 0 }} results</h5>
+                        <h5 class="p-l-20">{{ trans('common.showing_results', ['count' => count($jobTasks) ?? 0]) }}</h5>
                     </div>
                     <!-- Job card #1 -->
                     @forelse($jobTasks as $key => $jobTask)
@@ -230,16 +230,16 @@
                                     </a>
                                 </div>
                                 <div class="col-10">
-                                    <h5 class="mb-0 ">{{ $jobTask->job_title ?? 'Job Title' }}</h5>
+                                    <h5 class="mb-0 ">{{ $jobTask->job_title ?? trans('common.job_title') }}</h5>
                                     <p class="text-muted">
-                                        <a href="{{ route('view-company-profile', $jobTask->employer_company_id) }}" class="text-muted nav-link">{{ $jobTask?->employerCompany?->name ?? 'Company Name' }}</a>
+                                        <a href="{{ route('view-company-profile', $jobTask->employer_company_id) }}" class="text-muted nav-link">{{ $jobTask?->employerCompany?->name ?? trans('common.company_name') }}</a>
                                     </p>
                                     <div class="job-type d-flex text-muted">
-                                        <span class="badge" style="background-color: #EDEFF2">{{ $jobTask?->jobType?->name ?? 'Full x Time' }}</span>
-                                        <span class="badge" style="background-color: #EDEFF2">{{ $jobTask?->jobLocationType?->name ?? 'On-Site' }}</span>
+                                        <span class="badge" style="background-color: #EDEFF2">{{ $jobTask?->jobType?->name ?? trans('common.full_time') }}</span>
+                                        <span class="badge" style="background-color: #EDEFF2">{{ $jobTask?->jobLocationType?->name ?? trans('common.on_site') }}</span>
                                         {{--                                        <span class="badge">Day Shift</span>--}}
                                     </div>
-                                    <p class="job-location mt-2 mb-0 text-muted">{{ $jobTask?->employerCompany?->address ?? 'Dhaka' }}</p>
+                                    <p class="job-location mt-2 mb-0 text-muted">{{ $jobTask?->employerCompany?->address ?? trans('common.company_address') }}</p>
                                 </div>
                             </div>
                         </div>
@@ -253,7 +253,7 @@
                                                 <img src="{{ asset('/frontend/think.svg') }}" alt="empty-img" class="" style="max-height: 300px; min-width: 300px">
                                             </p>
                                         </div>
-                                        <p class="text-danger text-center f-s-20 fw-bold p-5" style="margin-top: 10px">Sorry!! No job found.</p>
+                                        <p class="text-danger text-center f-s-20 fw-bold p-5" style="margin-top: 10px">{{ trans('common.sorry_no_job_found') }}</p>
 
                                     </div>
                                 </div>
@@ -272,20 +272,20 @@
                             </a>
                             <div class="company-details d-flex pt-2" style="padding-top: 14px;">
                                 <h3 class="p-t-5">
-                                    <a href="{{ route('view-company-profile', $singleJobTask->employer_company_id) }}" class="text-muted nav-link">{{ $singleJobTask?->employerCompany?->name ?? 'company name' }}</a>
+                                    <a href="{{ route('view-company-profile', $singleJobTask->employer_company_id) }}" class="text-muted nav-link">{{ $singleJobTask?->employerCompany?->name ?? trans('common.company_name') }}</a>
                                 </h3>
                                 <span class="mx-1 p-t-5">,</span>
-                                <p class="p-t-5">{{ $singleJobTask?->employerCompany?->address ?? 'company address' }}</p>
+                                <p class="p-t-5">{{ $singleJobTask?->employerCompany?->address ?? trans('common.company_address') }}</p>
                             </div>
                         </div>
                         <h4 class="job-title mb-2 f-s-19">{{ $singleJobTask->job_title }}</h4>
-                        <div class="job-type"><span class="badge">{{ $singleJobTask?->jobType?->name ?? 'job type' }}</span> <span class="badge">{{ $singleJobTask?->jobLocationType?->name ?? 'job location' }}</span> </div>
+                        <div class="job-type"><span class="badge">{{ $singleJobTask?->jobType?->name ?? trans('common.job_type') }}</span> <span class="badge">{{ $singleJobTask?->jobLocationType?->name ?? trans('common.job_location') }}</span> </div>
                         <div class="d-flex gap-2 mt-1 mb-2">
                             @if(!$isApplied)
                                 <form action="" method="post" class="apply-form">
                                     @csrf
                                     <div class="">
-                                        <button style="padding: 8px 20px;" type="submit" class="apply-btn show-apply-model"  data-job-id="{{ $singleJobTask->id }}" data-job-company-logo="{{ asset($singleJobTask?->employerCompany?->logo) ?? '' }}">Easy Apply</button>
+                                        <button style="padding: 8px 20px;" type="submit" class="apply-btn show-apply-model"  data-job-id="{{ $singleJobTask->id }}" data-job-company-logo="{{ asset($singleJobTask?->employerCompany?->logo) ?? '' }}">{{ trans('employee.easy_apply') }}</button>
 
                                     </div>
                                 </form>
@@ -293,24 +293,24 @@
                             @else
                                 <form action="" method="post" class="apply-form">
                                     <div class="">
-                                        <button style="padding: 8px 20px;" type="submit" class="apply-btn " disabled >Applied</button>
+                                        <button style="padding: 8px 20px;" type="submit" class="apply-btn " disabled >{{ trans('employee.applied') }}</button>
 
                                     </div>
                                 </form>
                             @endif
                                 @if(!$isSaved)
-                                    <button style="padding: 6px 20px;" is-saved="no" class="save-btn" data-job-id="{{ $singleJobTask->id }}"><img id="saveBtnImg{{ $singleJobTask->id }}" src="{{ asset('/') }}frontend/employee/images/contentImages/saveIcon.png" alt="Save Icon" class="save-icon"> <span id="saveBtnTxt{{ $singleJobTask->id }}">Save</span></button>
+                                    <button style="padding: 6px 20px;" is-saved="no" class="save-btn" data-job-id="{{ $singleJobTask->id }}"><img id="saveBtnImg{{ $singleJobTask->id }}" src="{{ asset('/') }}frontend/employee/images/contentImages/saveIcon.png" alt="Save Icon" class="save-icon"> <span id="saveBtnTxt{{ $singleJobTask->id }}">{{ trans('common.save') }}</span></button>
                                 @else
-                                    <button style="padding: 6px 20px;" is-saved="yes" class="save-btn" data-job-id="{{ $singleJobTask->id }}"><img id="saveBtnImg{{ $singleJobTask->id }}" src="{{ asset('/frontend/bookmark-circle.png') }}" style="height: 20px; width: 20px" alt="Save Icon" class=""> <span id="saveBtnTxt{{ $singleJobTask->id }}">Saved</span></button>
+                                    <button style="padding: 6px 20px;" is-saved="yes" class="save-btn" data-job-id="{{ $singleJobTask->id }}"><img id="saveBtnImg{{ $singleJobTask->id }}" src="{{ asset('/frontend/bookmark-circle.png') }}" style="height: 20px; width: 20px" alt="Save Icon" class=""> <span id="saveBtnTxt{{ $singleJobTask->id }}">{{ trans('common.saved') }}</span></button>
                                 @endif
                         </div>
 
 
-                        <h5 style="" class="fw-bold">About {{ $singleJobTask?->employerCompany?->name ?? 'company Name' }}</h5>
-                        <p class="text-muted">{{ $singleJobTask?->employerCompany?->company_overview ?? 'company overview' }}</p>
-                        <h5 class="fw-bold">Job Requirements</h5>
+                        <h5 style="" class="fw-bold">{{ trans('employer.about') }} {{ $singleJobTask?->employerCompany?->name ?? trans('common.company_name') }}</h5>
+                        <p class="text-muted">{{ $singleJobTask?->employerCompany?->company_overview ?? trans('employer.company_overview') }}</p>
+                        <h5 class="fw-bold">{{ trans('employer.job_requirements') }}</h5>
                         <div class="job-requirements ms-0 text-muted" style="color: gray">
-                            {!! $singleJobTask->description ?? 'job description here' !!}
+                            {!! $singleJobTask->description ?? trans('employer.job_description_key_responsibilities') !!}
                         </div>
                     </div>
                 @else
@@ -322,7 +322,7 @@
                                         <p>
                                             <img src="{{ asset('/frontend/think.svg') }}" alt="empty-img" class="" style="max-height: 300px; min-width: 300px">
                                         </p>
-                                        <p class="text-danger text-center f-s-20 fw-bold p-5" style="margin-top: 75px">Sorry!! No job found.</p>
+                                        <p class="text-danger text-center f-s-20 fw-bold p-5" style="margin-top: 75px">{{ trans('common.sorry_no_job_found') }}</p>
                                     </div>
 
                                 </div>
@@ -356,15 +356,15 @@
                             <img src="https://img.freepik.com/free-photo/horizontal-shot-handsome-young-guy-with-blue-eyes-bristle-has-positive-expression_273609-2960.jpg" alt="Company Logo" class="company-image" />
                         </div>
                     </div>
-                    <h2>Share your profile?</h2>
+                    <h2>{{ trans('common.share_your_profile') }}</h2>
                 </div>
-                <p class="modal-description">To apply, you need to share your profile with the company.</p>
+                <p class="modal-description">{{ trans('common.to_apply_share_profile') }}</p>
                 <div class="modal-buttons">
                     <form action="" method="post" id="applyShareForm">
                         @csrf
-                        <button class="share-profile-btn w-100 mb-2" {{-- onclick="shareProfile()"--}} type="submit">Share My Profile</button>
+                        <button class="share-profile-btn w-100 mb-2" {{-- onclick="shareProfile()"--}} type="submit">{{ trans('common.share_my_profile') }}</button>
                     </form>
-                    <button class="cancel-btn w-100" onclick="closeEasyApplyModal()">Cancel</button>
+                    <button class="cancel-btn w-100" onclick="closeEasyApplyModal()">{{ trans('common.cancel') }}</button>
                 </div>
             </div>
         </div>
@@ -378,7 +378,7 @@
         <span class="checkmark">
           <img src="{{ asset('/') }}frontend/employee/images/contentImages/easyApplyNotificationIcon.png" alt="" />
         </span>
-                You applied for the job:
+                {{ trans('employee.you_applied_for_job') }}
                 <span id="appliedJobTitle">Senior Officer, Corporate Banking</span>
                 <span class="close-btn" onclick="closeNotification()">
           <img src="{{ asset('/') }}frontend/employee/images/contentImages/easyApplynotificationCloseIcon.png" alt="" />
@@ -567,7 +567,7 @@
             var isSaved = $(this).attr('is-saved');
             if (isSaved == 'yes')
             {
-                toastr.info('You have already saved this job.');
+                toastr.info('{{ trans('common.saved') }}');
                 return;
             }
             sendAjaxRequest('employee/save-job/'+jobId, 'GET').then(function (response) {
@@ -576,7 +576,7 @@
                 {
                     $(this).attr('disabled', true);
                     $('#saveBtnImg'+jobId).attr('src', "{{ asset('/frontend/bookmark-circle.png') }}");
-                    $('#saveBtnTxt'+jobId).text('Saved');
+                    $('#saveBtnTxt'+jobId).text('{{ trans('common.saved') }}');
                     toastr.success(response.msg);
                 }
                 else if (response.status == 'error')

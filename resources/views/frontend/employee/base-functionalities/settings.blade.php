@@ -6,7 +6,7 @@
 
 
     <section class="bg-white forSmall smallTop">
-        <a href=""><img src="{{ asset('/') }}frontend/employee/images/profile/leftArrowDark.png" alt="" class="me-2"> Settings</a>
+        <a href=""><img src="{{ asset('/') }}frontend/employee/images/profile/leftArrowDark.png" alt="" class="me-2"> {{ trans('employee.settings') }}</a>
     </section>
 
     <!-- Main Content -->
@@ -16,7 +16,7 @@
 
         <!-- Right Scrollable Jobs -->
         <section class="w-100 profileOptionRight">
-            <h1 class="forLarge">Settings</h1>
+            <h1 class="forLarge">{{ trans('employee.settings') }}</h1>
 
             <div class="right-panel w-100 settings py-4 rounded">
 
@@ -36,7 +36,7 @@
                 <div class="settings-row d-flex justify-content-between p-4 border-bottom">
                     <div class="icon">
                         <img src="{{ asset('/') }}frontend/employee/images/profile/Change password.png" alt="Password Icon" class="me-2"/>
-                        <span>Change password</span>
+                        <span>{{ trans('employee.change_password') }}</span>
                     </div>
                     <div class="option">
                         <span>********</span>
@@ -49,7 +49,7 @@
                 <div class="settings-row d-flex justify-content-between p-4 border-bottom">
                     <div class="icon">
                         <img src="{{ asset('/') }}frontend/employee/images/profile/Change Email.png" alt="Email Icon" class="me-2"/>
-                        <span>Change Email</span>
+                        <span>{{ trans('employee.change_email') }}</span>
                     </div>
                     <div class="option">
                         <span>{{ auth()->user()->email ?? 'demo@email.com' }}</span>
@@ -62,7 +62,7 @@
                 <div class="settings-row d-flex justify-content-between p-4">
                     <div class="icon">
                         <img src="{{ asset('/') }}frontend/employee/images/profile/Log out.png" alt="Logout Icon" class="me-2"/>
-                        <span>Log out</span>
+                        <span>{{ trans('employee.log_out') }}</span>
                     </div>
                     <div class="option">
                         <img src="{{ asset('/') }}frontend/employee/images/profile/arrowRightLight.png" onclick="document.getElementById('logoutForm').submit()" alt="Right Arrow" />
@@ -82,30 +82,30 @@
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">Change Password</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">{{ trans('employee.change_password') }}</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{{ trans('common.close') }}"></button>
                 </div>
                 <form action="{{ route('employee.update-profile', auth()->id()) }}" method="post" enctype="multipart/form-data">
                     @csrf
                     <div class="modal-body">
 
                         <div class="row mt-2">
-                            <label for="prevPass" class="col-md-3">Previous Password</label>
+                            <label for="prevPass" class="col-md-3">{{ trans('employee.previous_password') }}</label>
                             <div class="col-md-9">
-                                <input type="password" id="prevPass" name="prev_password" class="form-control" />
+                                <input type="password" id="prevPass" name="prev_password" class="form-control" placeholder="{{ trans('auth.type_here') }}" />
                             </div>
                         </div>
                         <div class="row mt-2">
-                            <label for="newPass" class="col-md-3">New Password</label>
+                            <label for="newPass" class="col-md-3">{{ trans('auth.new_password') }}</label>
                             <div class="col-md-9">
-                                <input type="password" name="new_password" id="newPass" class="form-control" />
+                                <input type="password" name="new_password" id="newPass" class="form-control" placeholder="{{ trans('auth.type_here') }}" />
                             </div>
                         </div>
 
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Save changes</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ trans('common.close') }}</button>
+                        <button type="submit" class="btn btn-primary">{{ trans('common.save_changes') }}</button>
                     </div>
                 </form>
             </div>
@@ -116,24 +116,24 @@
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">Change Email</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">{{ trans('employee.change_email') }}</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{{ trans('common.close') }}"></button>
                 </div>
                 <form action="{{ route('employee.update-profile', auth()->id()) }}" method="post" enctype="multipart/form-data">
                     @csrf
                     <div class="modal-body">
 
                         <div class="row mt-2">
-                            <label for="email" class="col-md-3">Email</label>
+                            <label for="email" class="col-md-3">{{ trans('common.email') }}</label>
                             <div class="col-md-9">
-                                <input type="email" id="email" name="email" class="form-control" value="{{ auth()->user()->email ?? '' }}" />
+                                <input type="email" id="email" name="email" class="form-control" value="{{ auth()->user()->email ?? '' }}" placeholder="{{ trans('auth.type_here') }}" />
                             </div>
                         </div>
 
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Save changes</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ trans('common.close') }}</button>
+                        <button type="submit" class="btn btn-primary">{{ trans('common.save_changes') }}</button>
                     </div>
                 </form>
             </div>

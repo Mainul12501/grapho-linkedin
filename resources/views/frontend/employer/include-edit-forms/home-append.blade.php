@@ -6,7 +6,7 @@
                 <span class="fw-bolder">{{ $post?->employer?->employerCompany?->name ?? 'Employer Name' }}</span>
             </a>
             <span class="float-end">
-                    <button type="button" data-employer-id="{{ $post->user_id }}" data-follow-history-status="{{ $post->follow_history_status == 1 ? 1 : 0 }}" data-post-id="{{ $post->id }}" id="followBtn{{ $post->id }}" class="btn btn-primary btn-sm follow-btn text-dark border-0" style="background-color: #FFD600">{{ $post->follow_history_status == 1 ? 'Unfollow' : 'Follow' }}</button>
+                    <button type="button" data-employer-id="{{ $post->user_id }}" data-follow-history-status="{{ $post->follow_history_status == 1 ? 1 : 0 }}" data-post-id="{{ $post->id }}" id="followBtn{{ $post->id }}" class="btn btn-primary btn-sm follow-btn text-dark border-0" style="background-color: #FFD600">{{ $post->follow_history_status == 1 ? trans('employer.unfollow') : trans('employer.follow') }}</button>
             </span>
         </div>
         <div class="mt-2 row">

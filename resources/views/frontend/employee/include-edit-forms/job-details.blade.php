@@ -16,7 +16,7 @@
             <form action="" method="post" class="apply-form">
                 @csrf
                 <div class="">
-                    <button style="padding: 8px 20px;" type="submit" class="apply-btn show-apply-model"  data-job-id="{{ $singleJobTask->id }}" data-job-company-logo="{{ asset($singleJobTask?->employerCompany?->logo) ?? '' }}">Easy Apply</button>
+                    <button style="padding: 8px 20px;" type="submit" class="apply-btn show-apply-model"  data-job-id="{{ $singleJobTask->id }}" data-job-company-logo="{{ asset($singleJobTask?->employerCompany?->logo) ?? '' }}">{{ trans('employee.easy_apply') }}</button>
 
                 </div>
             </form>
@@ -24,24 +24,24 @@
         @else
             <form action="" method="post" class="apply-form">
                 <div class="">
-                    <button style="padding: 8px 20px;" type="submit" class="apply-btn " disabled >Applied</button>
+                    <button style="padding: 8px 20px;" type="submit" class="apply-btn " disabled >{{ trans('employee.applied') }}</button>
 
                 </div>
             </form>
         @endif
         @if(!$isSaved)
-            <button style="padding: 6px 20px;" is-saved="no" class="save-btn" data-job-id="{{ $singleJobTask->id }}"><img id="saveBtnImg{{ $singleJobTask->id }}" src="{{ asset('/') }}frontend/employee/images/contentImages/saveIcon.png" alt="Save Icon" class="save-icon"> <span id="saveBtnTxt{{ $singleJobTask->id }}">Save</span></button>
+            <button style="padding: 6px 20px;" is-saved="no" class="save-btn" data-job-id="{{ $singleJobTask->id }}"><img id="saveBtnImg{{ $singleJobTask->id }}" src="{{ asset('/') }}frontend/employee/images/contentImages/saveIcon.png" alt="Save Icon" class="save-icon"> <span id="saveBtnTxt{{ $singleJobTask->id }}">{{ trans('common.save') }}</span></button>
         @else
-            <button style="padding: 6px 20px;" is-saved="yes" class="save-btn" data-job-id="{{ $singleJobTask->id }}"><img id="saveBtnImg{{ $singleJobTask->id }}" src="{{ asset('/frontend/bookmark-circle.png') }}" style="height: 20px; width: 20px" alt="Save Icon" class=""> <span id="saveBtnTxt{{ $singleJobTask->id }}">Saved</span></button>
+            <button style="padding: 6px 20px;" is-saved="yes" class="save-btn" data-job-id="{{ $singleJobTask->id }}"><img id="saveBtnImg{{ $singleJobTask->id }}" src="{{ asset('/frontend/bookmark-circle.png') }}" style="height: 20px; width: 20px" alt="Save Icon" class=""> <span id="saveBtnTxt{{ $singleJobTask->id }}">{{ trans('common.saved') }}</span></button>
         @endif
     </div>
 @endif
 
 
 
-<h5 style="" class="fw-bold about-company-name">About {{ $singleJobTask?->employerCompany?->name ?? 'company Name' }}</h5>
+<h5 style="" class="fw-bold about-company-name">{{ trans('employer.about') }} {{ $singleJobTask?->employerCompany?->name ?? 'company Name' }}</h5>
 <p class="text-muted">{{ $singleJobTask?->employerCompany?->company_overview ?? 'company overview' }}</p>
-<h5 class="fw-bold">Job Requirements</h5>
+<h5 class="fw-bold">{{ trans('employer.job_requirements') }}</h5>
 <div class="job-requirements ms-0 text-muted" style="color: gray;">
     {!! $singleJobTask->description ?? 'job description here' !!}
 </div>

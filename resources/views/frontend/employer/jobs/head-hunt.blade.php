@@ -27,8 +27,8 @@
     </div>
     <!-- head hunt -->
     <div class="headHunt p-4">
-        <h2 class="mb-1 fw-bold f-s-23">Head Hunt</h2>
-        <p class="text-muted mb-3">Browse talents & find the perfect match for your company.</p>
+        <h2 class="mb-1 fw-bold f-s-23">{{ trans('employer.head_hunt') }}</h2>
+        <p class="text-muted mb-3">{{ trans('employer.browse_talents_find_match') }}</p>
 
         <section class="bg-white">
             <div class="container">
@@ -38,16 +38,16 @@
                 <div class="fielterIcon me-2">
                     <div>
                         <img src="{{ asset('/') }}frontend/employee/images/contentImages/Filter.png" alt="" class="me-1">
-                        <span>Filters:</span>
+                        <span>{{ trans('common.filters') }}</span>
                     </div>
                 </div>
 
                 <!-- ===== Filter #1: Date posted ===== -->
-                <div class="custom-select" data-filter-key="job_type" style="max-width: 120px!important;" data-placeholder="Job Type">
+                <div class="custom-select" data-filter-key="job_type" style="max-width: 120px!important;" data-placeholder="{{ trans('common.job_type') }}">
 {{--                    <label class="custom-select-label">Workplace Type</label>--}}
-                    <input type="text" class="form-control select-box locationSearch" placeholder="Select Workplace Type" readonly="">
+                    <input type="text" class="form-control select-box locationSearch" placeholder="{{ trans('employer.workplace_type') }}" readonly="">
                     <div class="dropdown-menu locationDropdown" style="max-height: none;">
-                        <input type="text" class="form-control search-box searchBar" placeholder="Search...">
+                        <input type="text" class="form-control search-box searchBar" placeholder="{{ trans('common.search') }}">
                         @foreach($jobTypes  as $jobType)
                             <div class="checkbox-item">
                                 <input type="checkbox" class="locationCheckbox" {{ in_array($jobType->slug, getSelectedFilters('job_type')) ? 'checked' : '' }} id="workplace-{{ $jobType->id }}" value="{{ $jobType->slug }}">
@@ -263,14 +263,14 @@
                     </div>
 
                 <!-- Clear All button (resets the filter selections) -->
-                    <button type="submit" class="clear-all-btn border btn d-flex" style="border: 1px solid gray" id="saveBtn">Search</button>
-                    <button type="button" class="clear-all-btn border btn d-flex" style="border: 1px solid gray" id="clearAllBtn">Clear All</button>
+                    <button type="submit" class="clear-all-btn border btn d-flex" style="border: 1px solid gray" id="saveBtn">{{ trans('common.search') }}</button>
+                    <button type="button" class="clear-all-btn border btn d-flex" style="border: 1px solid gray" id="clearAllBtn">{{ trans('common.clear_all') }}</button>
                 </form>
             </div>
         </section>
 
         <div class="d-flex justify-content-between mb-3 mt-3" style="font-size: 14px; cursor: pointer;">
-            <p class="text-muted">Showing {{ count($employees) ?? 0 }} results.</p>
+            <p class="text-muted">{{ trans('common.showing_results', ['count' => count($employees) ?? 0]) }}</p>
 
         </div>
 
@@ -288,17 +288,17 @@
                                         <span class="badge   ms-auto fullTime d-flex align-items-center"><img src="{{ asset('/frontend/employer/images/employersHome/fulltime-dot.png') }}" alt="" class="me-1">{{ $employee?->jobTypes[0]?->name ?? '' }}</span>
                                     @endif
                                 </div>
-                                <h5 class="card-title fw-bold mb-1">{{ $employee->name ?? 'Employee Name' }}</h5>
+                                <h5 class="card-title fw-bold mb-1">{{ $employee->name ?? trans('common.employee_name') }}</h5>
                                 <p class="card-text mb-2" style="font-size: 14px;">
-                                    {{ $employee->profile_title ?? 'Employee Profile Title' }}
+                                    {{ $employee->profile_title ?? trans('employee.profile_title') }}
                                 </p>
                                 <p class="text-muted mb-1" style="font-size: 13px;">
                                     <img src="{{ asset('/') }}frontend/employer/images/employersHome/profile location.png" alt="Location" style="width: 20px;" />
-                                    {!! $employee->address ?? 'Employee Address' !!}
+                                    {!! $employee->address ?? trans('common.user_address') !!}
                                 </p>
                                 <div class="d-flex flex-wrap gap-2 mt-3">
-                                    <span class="badge bg-light text-dark">{{ $employee?->employeeWorkExperiences[0]?->duration ?? 0 }} yrs</span>
-                                    <span class="badge bg-light text-dark">{{ $employee?->employeeEducations[0]?->cgpa ?? 0 }} CGPA</span>
+                                    <span class="badge bg-light text-dark">{{ $employee?->employeeWorkExperiences[0]?->duration ?? 0 }} {{ trans('employer.yrs') }}</span>
+                                    <span class="badge bg-light text-dark">{{ $employee?->employeeEducations[0]?->cgpa ?? 0 }} {{ trans('employee.cgpa') }}</span>
                                     {{--                                <span class="badge bg-light text-dark">Developer</span>--}}
                                 </div>
                             </div>
@@ -312,7 +312,7 @@
                             <p>
                                 <img src="{{ asset('/frontend/think.svg') }}" alt="empty-img" class="" style="max-height: 300px; min-width: 300px">
                             </p>
-                            <p class="text-danger text-center f-s-20 fw-bold p-5" style="margin-top: 75px">Sorry!! No Employee found.</p>
+                            <p class="text-danger text-center f-s-20 fw-bold p-5" style="margin-top: 75px">{{ trans('employer.sorry_no_employee_found') }}</p>
                         </div>
 
                     </div>

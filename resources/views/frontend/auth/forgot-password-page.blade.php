@@ -53,8 +53,8 @@
         <img src="{{ asset(isset($siteSetting->logo) ? $siteSetting->logo : '/frontend/employee/images/authentication images/Compnay logo.png') }}" alt="site logo" class="w-25" style="width: 115px; height: 28px">
     </a>
 
-    <h1>Recover your account</h1>
-    <p>Welcome back! Please enter your Email or Mobile Number</p>
+    <h1>{{ trans('auth.recover_your_account') }}</h1>
+    <p>{{ trans('auth.welcome_back_enter_email_mobile') }}</p>
 
 
     <div class="p-2 email-div">
@@ -65,7 +65,7 @@
 
         <a href="javascript:void(0)" class="signupBtn mobileBtn">
             <img src="{{ asset('/') }}frontend/employee/images/authentication images/smartphone 1.png" alt="recover with mobile" class="me-2">
-            <span>Recover With mobile number</span>
+            <span>{{ trans('auth.recover_with_mobile_number') }}</span>
         </a>
 
 {{--        <div class="signUpOr text-center pt-2">--}}
@@ -76,11 +76,11 @@
             @csrf
             <input type="hidden" name="recover_method" value="email">
             <div id="signInWithEmail" class="mt-3">
-                <label for="signUpMail">Email address</label>
+                <label for="signUpMail">{{ trans('auth.email_address') }}</label>
                 <div>
-                    <input type="text" name="email" id="signUpMail" placeholder="Type here" class="w-100">
+                    <input type="text" name="email" id="signUpMail" placeholder="{{ trans('auth.type_here') }}" class="w-100">
                 </div>
-                <a href=""> <button type="button" id="recoverWithEmailSubmitBtn">Send OTP</button></a>
+                <a href=""> <button type="button" id="recoverWithEmailSubmitBtn">{{ trans('auth.send_otp') }}</button></a>
             </div>
         </form>
 
@@ -89,7 +89,7 @@
     <div class="p-2 mobile-div d-none">
         <a href="javascript:void(0)" class="signupArrow text-decoration-none mb-4">
             <img src="{{ asset('/') }}frontend/employee/images/authentication images/leftArrow.png" alt="" class="me-2">
-            <span>Recover with mobile number</span>
+            <span>{{ trans('auth.recover_with_mobile') }}</span>
         </a>
 
         <form action="{{ route('auth.send-forgot-password-otp') }}" method="post" id="mobileNumberForm">
@@ -98,8 +98,8 @@
             <div class="beforeContinue">
                 <div class="loginbyMobile text-center mb-4 mt-3">
                     <img src="{{ asset('/') }}frontend/employee/images/authentication images/loginwithmobile.png" alt="">
-                    <h3>Enter your mobile number</h3>
-                    <p>We will send you a verification code in this number.</p>
+                    <h3>{{ trans('auth.enter_your_mobile_number') }}</h3>
+                    <p>{{ trans('auth.we_will_send_verification_code') }}</p>
                 </div>
 
                 <div class="p-2">
@@ -116,7 +116,7 @@
                         <input type="tel" id="phoneInput" name="mobile" value="" class="phone-input">
                     </div>
 
-                    <button type="button" id="continueBtn">Send OTP</button>
+                    <button type="button" id="continueBtn">{{ trans('auth.send_otp') }}</button>
                 </div>
             </div>
 
@@ -131,9 +131,9 @@
             <div class="afterContinuex ">
                 <div class="loginbyMobile text-center mb-4 mt-3">
                     <img src="{{ asset('/') }}frontend/employee/images/authentication images/loginwithmobile.png" alt="">
-                    <h3>Enter verification code</h3>
-                    <p class="mb-0">OTP has been sent to <span id="otpMobile">+8801653523779</span></p>
-                    {{--                    <a href="" class="">Change number</a>--}}
+                    <h3>{{ trans('auth.enter_verification_code') }}</h3>
+                    <p class="mb-0">{{ trans('auth.otp_has_been_sent') }} <span id="otpMobile">+8801653523779</span></p>
+                    {{--                    <a href="" class="">{{ trans('auth.change_number') }}</a>--}}
                 </div>
 
                 <div class="otp-container">
@@ -145,7 +145,7 @@
                 </div>
 
                 <div class="p-2">
-                    <button type="submit">Recover</button>
+                    <button type="submit">{{ trans('auth.recover') }}</button>
                 </div>
             </div>
         </form>
@@ -157,33 +157,33 @@
             <div class="afterContinuex ">
                 <div class="loginbyMobile text-center mb-4 mt-3">
                     <img src="{{ asset('/') }}frontend/employee/images/authentication images/loginwithmobile.png" alt="">
-                    <h3>Set your new password</h3>
-                    {{--                    <a href="" class="">Change number</a>--}}
+                    <h3>{{ trans('auth.set_your_new_password') }}</h3>
+                    {{--                    <a href="" class="">{{ trans('auth.change_number') }}</a>--}}
                 </div>
 
                 <div class="otp-containerx">
                     <input type="hidden" name="recover_value" value="" id="passRecoverValue">
                     <input type="hidden" name="recover_method" value="" id="passRecoverMethod">
                     <div>
-                        <label for="newPass">New Password</label>
+                        <label for="newPass">{{ trans('auth.new_password') }}</label>
                         <input type="text" name="new_password" id="newPass" value="" class="form-control px-2 py-3">
                     </div>
                     <div>
-                        <label for="newPass" class="mt-2">Confirm Password</label>
+                        <label for="newPass" class="mt-2">{{ trans('auth.confirm_password') }}</label>
                         <input type="text" name="confirm_password" id="newPass" value="" class="form-control px-2 py-3">
                     </div>
 
                 </div>
 
                 <div class="p-2">
-                    <button type="submit">Update Password</button>
+                    <button type="submit">{{ trans('auth.update_password') }}</button>
                 </div>
             </div>
         </form>
     </div>
 
     <div class="mt-4">
-        <span class="">Don't have an account? <a href="{{ route('auth.set-registration-role') }}" class="fw-bold text-dark text-decoration-none">Sign Up</a></span>
+        <span class="">{{ trans('auth.dont_have_account') }} <a href="{{ route('auth.set-registration-role') }}" class="fw-bold text-dark text-decoration-none">{{ trans('auth.sign_up') }}</a></span>
     </div>
 
 

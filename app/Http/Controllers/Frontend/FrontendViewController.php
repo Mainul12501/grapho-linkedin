@@ -50,4 +50,20 @@ class FrontendViewController extends Controller
 //            return ViewHelper::returEexceptionError('Unauthenticated user');
 //        }
     }
+
+    public function changeLocalLanguage($lang)
+    {
+        $locales = [
+            'English' => 'en',
+            'Bangla' => 'bn'
+        ];
+        if (array_key_exists($lang, $locales)) {
+//            session(['locale' => $locales[$lang]]); // Store 'en' or 'bn', not 'English' or 'Bangla'
+            session()->put('locale', $locales[$lang]);
+            app()->setLocale($locales[$lang]);
+        }
+//        return session('locale');
+//        return app()->getLocale();
+        return back();
+    }
 }

@@ -37,7 +37,7 @@
 
                             <div class="d-flex gap-2 mb-4">
                                 <a href="{{ url("/chat/$employeeDetails->id" ) }}" target="_blank" class="btn btn-dark flex-grow-1 d-flex align-items-center justify-content-center gap-2">
-                                    <img src="{{ asset('/') }}frontend/employer/images/employersHome/messengerIcon.png" alt=""> Message
+                                    <img src="{{ asset('/') }}frontend/employer/images/employersHome/messengerIcon.png" alt=""> {{ trans('common.message') }}
                                 </a>
                                 <a href="tel:{{ $employeeDetails->mobile }}" class="btn btn-outline-dark flex-grow-1 d-flex align-items-center justify-content-center gap-2">
                                     <img src="{{ asset('/') }}frontend/employer/images/employersHome/profileCallIcon.png" alt=""> Call
@@ -48,21 +48,21 @@
                                 <li class="mb-3 d-flex align-items-center gap-3">
                                     <img src="{{ asset('/') }}frontend/employer/images/employersHome/profile location.png" alt="">
                                     <div>
-                                        <small class="fw-bold d-block">Location</small>
+                                        <small class="fw-bold d-block">{{ trans('common.location') }}</small>
                                         {{ $employeeDetails->location ?? 'Ex: Dhaka, Bangladesh' }}
                                     </div>
                                 </li>
                                 <li class="mb-3 d-flex align-items-center gap-3">
                                     <img src="{{ asset('/') }}frontend/employer/images/employersHome/profile mail.png" alt="">
                                     <div>
-                                        <small class="fw-bold d-block">Email</small>
+                                        <small class="fw-bold d-block">{{ trans('common.email') }}</small>
                                         <a href="mailto:md.pranto@gmail.com" class="text-decoration-none">{{ $employeeDetails->email ?? 'email@gmail.com' }}</a>
                                     </div>
                                 </li>
                                 <li class="mb-3 d-flex align-items-center gap-3">
                                     <img src="{{ asset('/') }}frontend/employer/images/employersHome/profile phone.png" alt="">
                                     <div>
-                                        <small class="fw-bold d-block">Phone</small>
+                                        <small class="fw-bold d-block">{{ trans('common.phone') }}</small>
                                         {{ $employeeDetails->mobile ?? 'Ex: +880 123 456 7890' }}
                                     </div>
                                 </li>
@@ -81,7 +81,7 @@
                     <div class="col-lg-9">
                         <!-- Work Experiences -->
                         <section class="mb-5">
-                            <h5 class="card mb-0 p-4 fw-semibold " style="border-radius: 0px!important;">Work experiences</h5>
+                            <h5 class="card mb-0 p-4 fw-semibold " style="border-radius: 0px!important;">{{ trans('employee.work_experiences') }}</h5>
                             @forelse($employeeDetails->employeeWorkExperiences as $workExperience)
                                 <div class="card p-4 shadow-sm rounded-3" style="border-radius: 0px!important;">
                                     <div class="d-flex align-items-center mb-3 gap-3">
@@ -129,7 +129,7 @@
 
                         <!-- Education -->
                         <section class="mb-5">
-                            <h5 class="card mb-0 fw-semibold p-4 f-s-23" style="border-radius: 0px!important">Education</h5>
+                            <h5 class="card mb-0 fw-semibold p-4 f-s-23" style="border-radius: 0px!important">{{ trans('employee.education') }}</h5>
                             @forelse($employeeDetails->employeeEducations as $education)
                                 <div class="card p-4 shadow-sm rounded-3" style="border-radius: 0px!important;">
                                     <div class="d-flex align-items-center mb-3 gap-3">
@@ -165,7 +165,7 @@
                         <!-- documents -->
                         <!-- Education -->
                         <section class="mb-5">
-                            <h5 class="card mb-0 fw-semibold p-4 f-s-23">Documents</h5>
+                            <h5 class="card mb-0 fw-semibold p-4 f-s-23">{{ trans('employee.documents') }}</h5>
                             @forelse($employeeDetails->employeeDocuments as $document)
                                 <div class="card p-4 shadow-sm rounded-3" style="border-radius: 0px!important;">
                                     <div class="d-flex align-items-center mb-3 gap-3">

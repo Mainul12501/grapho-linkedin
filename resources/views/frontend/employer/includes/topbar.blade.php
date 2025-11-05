@@ -26,15 +26,15 @@
 
             <div class="ms-2 dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 <div class="d-flex align-items-center gap-1">
-                    <span>{{ auth()->user()->user_type == 'employer' ? (auth()->user()->employerCompanies[0]?->name ?? 'company Name') : (auth()->user()->user_type == 'sub_employer' ? (auth()->user()?->user?->employerCompanies[0]?->name ?? 'company Name') :auth()->user()->name ?? 'User Name') }}</span>
+                    <span>{{ auth()->user()->user_type == 'employer' ? (auth()->user()->employerCompanies[0]?->name ?? trans('common.company_name')) : (auth()->user()->user_type == 'sub_employer' ? (auth()->user()?->user?->employerCompanies[0]?->name ?? trans('common.company_name')) :auth()->user()->name ?? trans('common.user_name')) }}</span>
                     <img src="{{ asset('/') }}frontend/employer/images/employersHome/chevron-down 1.png" alt="" />
                 </div>
-                <small class="d-block text-muted" style="font-size: 10px">{{ auth()->user()->user_type == 'employer' ? (auth()->user()?->employerCompanies[0]?->name ?? 'Company Name') : (auth()->user()->user_type == 'sub_employer' ? auth()->user()?->user?->employerCompanies[0]?->name : 'Company Name') }}.</small>
+                <small class="d-block text-muted" style="font-size: 10px">{{ auth()->user()->user_type == 'employer' ? (auth()->user()?->employerCompanies[0]?->name ?? trans('common.company_name')) : (auth()->user()->user_type == 'sub_employer' ? auth()->user()?->user?->employerCompanies[0]?->name : trans('common.company_name')) }}.</small>
             </div>
 
             <ul class="dropdown-menu dropdown-menu-end">
-                <li><a class="dropdown-item" href="{{ route('employer.company-profile') }}">Profile</a></li>
-                <li><a class="dropdown-item" href="#" onclick="event.preventDefault(); document.getElementById('logoutForm').submit();">Logout</a></li>
+                <li><a class="dropdown-item" href="{{ route('employer.company-profile') }}">{{ trans('employer.profile') }}</a></li>
+                <li><a class="dropdown-item" href="#" onclick="event.preventDefault(); document.getElementById('logoutForm').submit();">{{ trans('employee.log_out') }}</a></li>
                 <form action="{{ route('logout') }}" method="post" id="logoutForm">
                     @csrf
                 </form>

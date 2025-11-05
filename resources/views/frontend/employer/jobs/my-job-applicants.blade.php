@@ -11,7 +11,7 @@
             </a>
             {{ $jobTask->job_title ?? 'Job Title' }}
         </h4>
-        <small class="text-muted mb-3 d-block">{{ count($jobTask->employeeAppliedJobs) ?? 0 }} Applicants</small>
+        <small class="text-muted mb-3 d-block">{{ count($jobTask->employeeAppliedJobs) ?? 0 }} {{ trans('employer.applicants') }}</small>
 
         <!-- Bootstrap Tabs -->
         <div class="talentMobileTop">
@@ -19,25 +19,25 @@
                 <li class="nav-item mx-1" role="presentation">
                     <button class="nav-link active rounded-pill px-4 tab-btn-bg" id="pending-tab" data-bs-toggle="tab"
                             data-bs-target="#pending" type="button" role="tab" aria-controls="pending" aria-selected="true">
-                        Pending
+                        {{ trans('employee.pending') }}
                     </button>
                 </li>
                 <li class="nav-item mx-1" role="presentation">
                     <button class="nav-link rounded-pill px-4 tab-btn-bg" id="shortlisted-tab" data-bs-toggle="tab"
                             data-bs-target="#shortlisted" type="button" role="tab" aria-controls="shortlisted" aria-selected="false">
-                        Shortlisted
+                        {{ trans('employee.pending') }}
                     </button>
                 </li>
                 <li class="nav-item mx-1" role="presentation">
                     <button class="nav-link rounded-pill px-4 tab-btn-bg" id="rejected-tab" data-bs-toggle="tab" data-bs-target="#rejected"
                             type="button" role="tab" aria-controls="rejected" aria-selected="false">
-                        Rejected
+                        {{ trans('employee.rejected') }}
                     </button>
                 </li>
                 <li class="nav-item mx-1" role="presentation">
                     <button class="nav-link rounded-pill px-4 tab-btn-bg" id="rejected-tab" data-bs-toggle="tab" data-bs-target="#approved"
                             type="button" role="tab" aria-controls="rejected" aria-selected="false">
-                        Approved
+                        {{ trans('employee.approved') }}
                     </button>
                 </li>
             </ul>
@@ -93,7 +93,7 @@
                                                 <img src="{{ asset('/') }}frontend/employer/images/employersHome/three dot.png" alt="More options" style="width: 20px; height: 20px;" />
                                             </button>
                                             <ul class="dropdown-menu dropdown-menu-end">
-                                                <li><a class="dropdown-item" href="{{ route('user', $pendingApplicant?->user?->id) }}" target="_blank">Send message</a></li>
+                                                <li><a class="dropdown-item" href="{{ route('user', $pendingApplicant?->user?->id) }}" target="_blank">{{ trans('common.message') }}</a></li>
 {{--                                                <li><a class="dropdown-item text-danger" href="#">Remove</a></li>--}}
                                             </ul>
                                         </div>
@@ -125,9 +125,9 @@
                                 </div>
                             </div>
                             <div class="mt-3 d-flex gap-2 justify-content-between">
-                                <a href="{{ route('employee-profile', ['employeeId' => $pendingApplicant?->user?->id]) }}" class="btn btn-outline-primary btn-sm flex-fill me-1">View Profile</a>
-                                <a href="{{ route('employer.change-employee-job-application-status', ['jobTask' => $pendingApplicant?->job_task_id, 'user' => $pendingApplicant?->user?->id, 'status' => 'shortlisted']) }}" class="btn btn-outline-success btn-sm flex-fill me-1">Shortlist</a>
-                                <a href="{{ route('employer.change-employee-job-application-status', ['jobTask' => $pendingApplicant?->job_task_id, 'user' => $pendingApplicant?->user?->id, 'status' => 'rejected']) }}" class="btn btn-outline-danger btn-sm flex-fill mx-1">Reject</a>
+                                <a href="{{ route('employee-profile', ['employeeId' => $pendingApplicant?->user?->id]) }}" class="btn btn-outline-primary btn-sm flex-fill me-1">{{ trans('employee.view_profile_details') }}</a>
+                                <a href="{{ route('employer.change-employee-job-application-status', ['jobTask' => $pendingApplicant?->job_task_id, 'user' => $pendingApplicant?->user?->id, 'status' => 'shortlisted']) }}" class="btn btn-outline-success btn-sm flex-fill me-1">{{ trans('employee.pending') }}</a>
+                                <a href="{{ route('employer.change-employee-job-application-status', ['jobTask' => $pendingApplicant?->job_task_id, 'user' => $pendingApplicant?->user?->id, 'status' => 'rejected']) }}" class="btn btn-outline-danger btn-sm flex-fill mx-1">{{ trans('employee.rejected') }}</a>
                                 <img src="{{ asset('/') }}frontend/employer/images/employersHome/talentMobileCrossIcon.png" alt="">
                             </div>
                         </div>

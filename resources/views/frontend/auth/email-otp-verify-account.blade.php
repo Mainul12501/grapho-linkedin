@@ -271,14 +271,14 @@
         <div class="logo-container">
             <div class="logo-icon">✓</div>
             <div class="logo">LikewiseBD</div>
-            <div class="header-subtitle">Email Verification</div>
+            <div class="header-subtitle">{{ trans('auth.email_verification') }}</div>
             <div class="header-decoration"></div>
         </div>
     </div>
 
     <!-- Main Content -->
     <div class="content">
-        <h1 class="greeting">{{ $purpose == 'recovery' ? 'Recover Your Account' : 'Verify Your Email Address' }}</h1>
+        <h1 class="greeting">{{ $purpose == 'recovery' ? trans('auth.recover_your_account') : trans('auth.verify_your_email_address') }}</h1>
 
         <p class="message">
             {{ isset($user) ? "Dear $user->name, " : '' }}Thank you for {{ $purpose == 'recovery' ? 'staying' : 'signing up' }} with LikewiseBD! To complete your registration and activate your account, please use the One-Time Password (OTP) below:
@@ -286,24 +286,24 @@
 
         <!-- OTP Box -->
         <div class="otp-container">
-            <div class="otp-label">Your Verification Code</div>
+            <div class="otp-label">{{ trans('auth.your_verification_code') }}</div>
             <div class="otp-code">{{ $otp ?? '00000' }}</div>
-            <div class="otp-expiry">This code will expire in 10 minutes</div>
+            <div class="otp-expiry">{{ trans('auth.code_expires_in_10_minutes') }}</div>
         </div>
 
         <!-- Warning Box -->
         <div class="warning-box">
-            <p><strong>Security Note:</strong> Never share this code with anyone. LikewiseBD staff will never ask for your verification code.</p>
+            <p><strong>{{ trans('auth.security_note') }}</strong> {{ trans('auth.never_share_code') }}</p>
         </div>
 
         <div class="divider"></div>
 
         <p class="info-text">
-            If you didn't request this verification code, please ignore this email. Your account will remain secure and no changes will be made.
+            {{ trans('auth.didnt_request_code') }}
         </p>
 
         <p class="info-text">
-            Need help? Contact our support team at <a href="mailto:support@likewisebd.com" class="footer-link">support@likewisebd.com</a>
+            {{ trans('auth.need_help_contact') }} <a href="mailto:support@likewisebd.com" class="footer-link">support@likewisebd.com</a>
         </p>
     </div>
 

@@ -17,14 +17,14 @@
                             <div class="d-flex justify-content-between align-items-start flex-wrap gap-2 mb-2">
                                 <!-- Heading -->
                                 <div>
-                                    <h5 class="fw-bold mb-1 f-s-28">My Jobs</h5>
-                                    <p class="text-muted small mb-0">See all your posted jobs here</p>
+                                    <h5 class="fw-bold mb-1 f-s-28">{{ trans('employer.my_jobs') }}</h5>
+                                    <p class="text-muted small mb-0">{{ trans('employer.see_all_posted_jobs') }}</p>
                                 </div>
                                 <!-- Post a job button -->
                                 <!-- Post a job button -->
                                 <button class="btn btn-warning text-dark fw-semibold rounded-3 px-4 py-2"
                                         data-bs-toggle="modal" data-bs-target="#createJobModal">
-                                    Post a job
+                                    {{ trans('employer.post_a_job') }}
                                 </button>
 {{--                                <a href="{{ route('employer.job-tasks.create') }}"  class="btn btn-warning text-dark fw-semibold rounded-3 px-4 py-2">Post a job</a>--}}
 
@@ -44,8 +44,8 @@
                             <div class="d-none d-md-flex justify-content-between align-items-center gap-3 mb-3 flex-wrap">
                                 <!-- Filter Buttons (Left Side) -->
                                 <div id="t2" class="d-flex flex-wrap gap-2">
-                                    <a href="{{ route('employer.my-jobs', ['job_status' => 'open']) }}"><button class="btn {{  request('job_status') != 'closed' ? 'btn-dark' : 'btn-light' }} btn-sm rounded-pill px-3">Open Jobs</button></a>
-                                    <a href="{{ route('employer.my-jobs', ['job_status' => 'closed']) }}"><button class="btn  {{ request('job_status') && request('job_status') == 'closed' ? 'btn-dark text-white' : 'btn-light text-muted' }} btn-sm rounded-pill px-3 ">Closed Jobs</button></a>
+                                    <a href="{{ route('employer.my-jobs', ['job_status' => 'open']) }}"><button class="btn {{  request('job_status') != 'closed' ? 'btn-dark' : 'btn-light' }} btn-sm rounded-pill px-3">{{ trans('employer.open_jobs') }}</button></a>
+                                    <a href="{{ route('employer.my-jobs', ['job_status' => 'closed']) }}"><button class="btn  {{ request('job_status') && request('job_status') == 'closed' ? 'btn-dark text-white' : 'btn-light text-muted' }} btn-sm rounded-pill px-3 ">{{ trans('employer.closed_jobs') }}</button></a>
                                 </div>
 
                                 <!-- Desktop Search (Right Side) -->
@@ -55,7 +55,7 @@
                                           <span class="input-group-text bg-white border-end-0" onclick="document.getElementById('searchForm').submit();">
                                             <img src="{{ asset('/') }}frontend/employer/images/employersHome/search 1.png" alt="">
                                           </span>
-                                            <input type="text" class="form-control border-start-0" name="search_text" placeholder="Search jobs " />
+                                            <input type="text" class="form-control border-start-0" name="search_text" placeholder="{{ trans('employer.search_jobs') }}" />
                                         </div>
                                     </form>
                                 </div>
@@ -81,10 +81,10 @@
                                     <!-- ✅ Modal Trigger Area -->
                                     <div class="job-main clickable-area  show-job-details" data-job-id="{{ $publishedJob->id }}" {{--data-bs-toggle="modal" data-bs-target="#jobDetailsModal"--}} style="cursor: pointer;">
                                         <div class="job-details">
-                                            <h6 class="job-title fw-semibold mb-2">{{ $publishedJob->job_title ?? 'Job Title' }}</h6>
+                                            <h6 class="job-title fw-semibold mb-2">{{ $publishedJob->job_title ?? trans('common.job_title') }}</h6>
                                             <div class="job-badges d-flex flex-wrap gap-2 mb-2">
-                                                <span class="badge bg-light text-secondary">{{ $publishedJob?->jobType?->name ?? 'Job Type' }}</span>
-                                                <span class="badge bg-light text-secondary">{{ $publishedJob?->jobLocationType?->name ?? 'JobLocationType' }}</span>
+                                                <span class="badge bg-light text-secondary">{{ $publishedJob?->jobType?->name ?? trans('common.job_type') }}</span>
+                                                <span class="badge bg-light text-secondary">{{ $publishedJob?->jobLocationType?->name ?? trans('common.job_location') }}</span>
 {{--                                                <span class="badge bg-light text-secondary">Day Shift</span>--}}
                                             </div>
                                         </div>
@@ -93,14 +93,14 @@
 
                                     <div class="job-info text-muted small">
                                         <div class="mb-1">
-                                            <img src="{{ asset('/') }}frontend/employer/images/employersHome/postdOn.png" class="me-1" alt=""> Posted on: {{ $publishedJob->created_at->format('d M, Y') ?? '16 Feb, 2025' }}
+                                            <img src="{{ asset('/') }}frontend/employer/images/employersHome/postdOn.png" class="me-1" alt=""> {{ trans('employer.posted_on') }} {{ $publishedJob->created_at->format('d M, Y') ?? '16 Feb, 2025' }}
                                         </div>
                                         <div class="mb-1">
-                                            <img src="{{ asset('/') }}frontend/employer/images/employersHome/Dedline.png" class="me-1" alt=""> Deadline: {{ \Illuminate\Support\Carbon::parse($publishedJob->deadline)->format('d M, Y') ?? '16 Feb, 2025' }}
+                                            <img src="{{ asset('/') }}frontend/employer/images/employersHome/Dedline.png" class="me-1" alt=""> {{ trans('employer.deadline') }} {{ \Illuminate\Support\Carbon::parse($publishedJob->deadline)->format('d M, Y') ?? '16 Feb, 2025' }}
                                         </div>
                                         <div>
                                             <img src="{{ asset('/') }}frontend/employer/images/employersHome/24application.png" class="me-1" alt="">
-                                            <a href="{{ route('employer.my-job-applicants', ['jobTask' => $publishedJob->id]) }}" class="text-decoration-underline">{{ $publishedJob->employeeAppliedJobs->count() ?? 0 }} Applicants</a>
+                                            <a href="{{ route('employer.my-job-applicants', ['jobTask' => $publishedJob->id]) }}" class="text-decoration-underline">{{ $publishedJob->employeeAppliedJobs->count() ?? 0 }} {{ trans('employer.applicants') }}</a>
                                         </div>
                                     </div>
 
@@ -111,13 +111,13 @@
                                             <img src="{{ asset('/') }}frontend/employer/images/employersHome/three dot.png" alt="">
                                         </button>
                                         <ul class="dropdown-menu dropdown-menu-end">
-                                            <li><a class="dropdown-item edit-job" href="javascript:void(0)" data-job-id="{{ $publishedJob->id }}">Edit</a></li>
+                                            <li><a class="dropdown-item edit-job" href="javascript:void(0)" data-job-id="{{ $publishedJob->id }}">{{ trans('common.edit') }}</a></li>
 {{--                                            <li><a class="dropdown-item " href="{{ route('employer.job-tasks.edit', $publishedJob->id) }}" data-job-id="{{ $publishedJob->id }}">Edit</a></li>--}}
                                             <li>
                                                 <form action="{{ route('employer.job-tasks.destroy', $publishedJob->id) }}" method="post">
                                                     @csrf
                                                     @method('delete')
-                                                    <button class="dropdown-item" type="submit">Delete</button>
+                                                    <button class="dropdown-item" type="submit">{{ trans('common.delete') }}</button>
                                                 </form>
                                             </li>
                                         </ul>
@@ -133,8 +133,7 @@
                                                 <p>
                                                     <img src="{{ asset('/frontend/think.svg') }}" alt="empty-img" class="" style="max-height: 300px; min-width: 300px">
                                                 </p>
-                                                <p class="text-danger text-center f-s-20 fw-bold p-5" style="margin-top: 10px">Sorry!!
-                                                    <br> No Available job Found.</p>
+                                                <p class="text-danger text-center f-s-20 fw-bold p-5" style="margin-top: 10px">{{ trans('employer.no_available_job_found') }}</p>
                                             </div>
 
                                         </div>

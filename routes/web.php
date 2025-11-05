@@ -17,6 +17,8 @@ use App\Http\Controllers\Frontend\Crud\FollowerHistroyController;
 use App\Http\Controllers\Frontend\Twilio\TwilioVideoController;
 use Illuminate\Support\Facades\Artisan;
 
+Route::get('change-local-language/{local}', [FrontendViewController::class, 'changeLocalLanguage'])->name('change-local-language');
+
 Route::get('/', [FrontendViewController::class, 'homePage'])->name('/');
 Route::get('/page/{slug?}', [FrontendViewController::class, 'showCommonPage'])->name('show-common-page');
 
@@ -134,6 +136,10 @@ Route::middleware([
         ]);
     });
 });
+
+
+
+
 
 /* create symbolic link */
 Route::get('/symlink', function () {

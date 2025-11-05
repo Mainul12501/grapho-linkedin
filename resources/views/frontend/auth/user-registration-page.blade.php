@@ -72,22 +72,22 @@
 
     <a href="{{ route('auth.set-registration-role') }}" class="signupArrow text-decoration-none mb-4">
         <img src="{{ asset('/') }}frontend/employee/images/authentication images/leftArrow.png" alt="" class="me-2">
-        <span>Sign up as {{ $userType ?? 'employer' }}</span>
+        <span>{{ trans('auth.sign_up_as') }} {{ $userType ?? 'employer' }}</span>
     </a>
 
     <div class="p-2">
         <a href="{{ route('auth.socialite.redirect', ['provider' => 'google', 'user' => $userType]) }}" class="signupBtn mb-3 hide-during-form">
             <img src="{{ asset('/') }}frontend/employee/images/authentication images/googleIcon.png" alt="google icon" class="me-2">
-            <span>Sign up with Google</span>
+            <span>{{ trans('auth.sign_up_with_google') }}</span>
         </a>
 
         <a href="javascript:void(0)" class="signupBtn hide-during-form" id="signUpWithMobileBtn">
             <img src="{{ asset('/') }}frontend/employee/images/authentication images/smartphone 1.png" alt="phone" class="me-2">
-            <span>Use mobile number</span>
+            <span>{{ trans('auth.use_mobile_number') }}</span>
         </a>
 
         <div class="signUpOr text-center pt-2 hide-during-form">
-            <span>OR</span>
+            <span>{{ trans('auth.or') }}</span>
         </div>
 
         <form action="{{ route('auth.custom-registration') }}" method="post">
@@ -102,44 +102,44 @@
 {{--                </ul>--}}
 {{--            @endif--}}
             <div id="signUpEmailDiv1">
-                <label for="signUpMail">Email address</label>
+                <label for="signUpMail">{{ trans('auth.email_address') }}</label>
                 <div class="input-group">
-                    <input type="text" id="signUpMail" placeholder="Type here" class=" signUpMail form-control" style="border-radius: 16px 0px 0px 16px">
-                    <span class="input-group-text signUpMail" id="sendOtpForEmailBtn" style="cursor: pointer; border-radius: 0px 16px 16px 0px">Send OTP</span>
+                    <input type="text" id="signUpMail" placeholder="{{ trans('auth.type_here') }}" class=" signUpMail form-control" style="border-radius: 16px 0px 0px 16px">
+                    <span class="input-group-text signUpMail" id="sendOtpForEmailBtn" style="cursor: pointer; border-radius: 0px 16px 16px 0px">{{ trans('auth.send_otp') }}</span>
                     <span class="text-danger" id="signUpMailError"></span>
                 </div>
 
                 <div id="emailOtpDiv" class="d-none">
-                    <label for="signUpOtp">OTP</label>
+                    <label for="signUpOtp">{{ trans('auth.otp') }}</label>
                     <div class="input-group mb-3">
-                        <input type="text" class="form-control py-3 signUpMail" name="otp" placeholder="OTP Number" id="emailOtp">
-                        <span class="input-group-text signUpMail" id="checkEmailOtpBtn" style="cursor: pointer">Verify</span>
+                        <input type="text" class="form-control py-3 signUpMail" name="otp" placeholder="{{ trans('auth.otp') }}" id="emailOtp">
+                        <span class="input-group-text signUpMail" id="checkEmailOtpBtn" style="cursor: pointer">{{ trans('auth.verify') }}</span>
                     </div>
                 </div>
 
-                <a href="javascript:void(0)"><button type="button" id="emailContinueBtn" class="d-none">Continue</button></a>
+                <a href="javascript:void(0)"><button type="button" id="emailContinueBtn" class="d-none">{{ trans('auth.continue') }}</button></a>
             </div>
             <div id="signUpMobileDiv1" class="d-none">
-                <label for="signUpMail">Phone Number</label>
+                <label for="signUpMail">{{ trans('auth.phone_number') }}</label>
                 <div class="input-group mb-3">
-                    <input type="text" class="form-control py-3 signUpMail" name="phone" placeholder="Recipient’s Phone Number" id="phoneNumber">
-                    <span class="input-group-text otp-send-btn" id="sendOtpBtn" style="cursor: pointer">Send OTP</span>
+                    <input type="text" class="form-control py-3 signUpMail" name="phone" placeholder="{{ trans('auth.phone_number') }}" id="phoneNumber">
+                    <span class="input-group-text otp-send-btn" id="sendOtpBtn" style="cursor: pointer">{{ trans('auth.send_otp') }}</span>
                 </div>
                 <div id="otpDiv" class="d-none">
-                    <label for="signUpOtp">OTP</label>
+                    <label for="signUpOtp">{{ trans('auth.otp') }}</label>
                     <div class="input-group mb-3">
-                        <input type="text" class="form-control py-3 signUpMail" name="otp" placeholder="OTP Number" id="otp">
-                        <span class="input-group-text otp-send-btn" id="checkOtpBtn" style="cursor: pointer">Verify</span>
+                        <input type="text" class="form-control py-3 signUpMail" name="otp" placeholder="{{ trans('auth.otp') }}" id="otp">
+                        <span class="input-group-text otp-send-btn" id="checkOtpBtn" style="cursor: pointer">{{ trans('auth.verify') }}</span>
                     </div>
                 </div>
                 <div id="phoneContinueBtnDiv" class="d-none">
-                    <a href="javascript:void(0)"><button type="button" id="phoneContinueBtn">Continue</button></a>
+                    <a href="javascript:void(0)"><button type="button" id="phoneContinueBtn">{{ trans('auth.continue') }}</button></a>
                 </div>
             </div>
             <div id="signUpEmailDiv2" class="d-none"  style="overflow-y: scroll; max-height: 400px">
                 <div class="p-2">
 
-                    <label for="signUpMail">Email address</label>
+                    <label for="signUpMail">{{ trans('auth.email_address') }}</label>
                     <div class="">
                         <input type="email" id="signUpMail" name="email" value="" class="printSignUpMail w-100">
 
@@ -154,7 +154,7 @@
 {{--                    @endif--}}
 
 
-                    <label for="phoneInput">Phone number</label>
+                    <label for="phoneInput">{{ trans('auth.phone_number') }}</label>
                     <div class="phone-wrapper" style="margin-bottom: 0px!important;">
 {{--                        <div class="country-select">--}}
 {{--                            <img id="flagIcon" src="https://flagcdn.com/w40/bd.png" alt="Flag">--}}
@@ -165,7 +165,7 @@
 {{--                                <option value="+44" data-flag="gb">+44</option>--}}
 {{--                            </select>--}}
 {{--                        </div>--}}
-                        <input type="tel" id="phoneInput" placeholder="Type here" class="phone-input" name="mobile">
+                        <input type="tel" id="phoneInput" placeholder="{{ trans('auth.type_here') }}" class="phone-input" name="mobile">
                         @error('mobile') <span class="text-danger">{{ $errors->first('mobile') }}</span> @enderror
                     </div>
 
@@ -190,24 +190,24 @@
 {{--                            </select>--}}
 {{--                            @error('employer_company_category_id') <span class="text-danger">{{ $errors->first('employer_company_category_id') }}</span> @enderror--}}
 {{--                        </div>--}}
-                        <label for="organizationName" class="mt-3">Organization name</label>
+                        <label for="organizationName" class="mt-3">{{ trans('auth.organization_name') }}</label>
                         <div>
-                            <input type="text" name="organization_name" id="organizationName" placeholder="Type here" class="w-100" style="margin-bottom: 0px!important;" />
+                            <input type="text" name="organization_name" id="organizationName" placeholder="{{ trans('auth.type_here') }}" class="w-100" style="margin-bottom: 0px!important;" />
                             @error('organization_name') <span class="text-danger">{{ $errors->first('organization_name') }}</span> @enderror
                         </div>
                     @endif
                     @if(isset($_GET['user']) && $_GET['user'] == 'Employer')
                         <div class="">
-                            <label for="binNumber" class="mt-3">Bin Number</label>
+                            <label for="binNumber" class="mt-3">{{ trans('auth.bin_number') }}</label>
                             <div>
-                                <input type="text" name="bin_number" id="binNumber" placeholder="Enter Bin Number" class="w-100 form-control input-text-box">
+                                <input type="text" name="bin_number" id="binNumber" placeholder="{{ trans('auth.bin_number') }}" class="w-100 form-control input-text-box">
                                 @error('bin_number') <span class="text-danger">{{ $errors->first('bin_number') }}</span> @enderror
                             </div>
                         </div>
                         <div class="mb-3">
-                            <label for="tradeLicenseNumber" class="mt-3">Trade License number</label>
+                            <label for="tradeLicenseNumber" class="mt-3">{{ trans('auth.trade_license_number') }}</label>
                             <div>
-                                <input type="text" name="trade_license_number" id="tradeLicenseNumber" placeholder="Enter Trade License number" class="w-100 form-control input-text-box">
+                                <input type="text" name="trade_license_number" id="tradeLicenseNumber" placeholder="{{ trans('auth.trade_license_number') }}" class="w-100 form-control input-text-box">
                                 @error('trade_license_number') <span class="text-danger">{{ $errors->first('trade_license_number') }}</span> @enderror
                             </div>
                         </div>
@@ -227,9 +227,9 @@
 {{--                    @endif--}}
 
 
-                    <label for="supPassword">Password</label>
+                    <label for="supPassword">{{ trans('auth.password') }}</label>
                     <div class="input-wrapper">
-                        <input type="password" id="supPassword" name="password" placeholder="Type here" class="w-100">
+                        <input type="password" id="supPassword" name="password" placeholder="{{ trans('auth.type_here') }}" class="w-100">
                         <span class="toggle-icon">
                             <img id="show" class="" src="{{ asset('/') }}frontend/employee/images/authentication images/eye.png" alt="">
                             <span id="hide" class="d-none">👁</span>
@@ -243,14 +243,14 @@
 {{--                    </div>--}}
 
 
-                    <button type="submit" class="mt-2">Create account</button>
+                    <button type="submit" class="mt-2">{{ trans('auth.create_account') }}</button>
                 </div>
             </div>
         </form>
     </div>
 
     <div class="mt-4">
-        <span class="">Already have an account? <a href="{{ route('auth.set-login-role') }}" class="fw-bold text-dark text-decoration-none">Log in</a></span>
+        <span class="">{{ trans('auth.already_have_account') }} <a href="{{ route('auth.set-login-role') }}" class="fw-bold text-dark text-decoration-none">{{ trans('auth.log_in') }}</a></span>
     </div>
 
 

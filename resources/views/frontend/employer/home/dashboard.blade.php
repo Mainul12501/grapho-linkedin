@@ -13,10 +13,10 @@
                         <div class="sidebar-icon hire">
                             <img src="{{ asset('/') }}frontend/employer/images/employersHome/findYour next Hire.png" alt="">
                         </div>
-                        <h5 class="fw-bold">Find your next hire</h5>
+                        <h5 class="fw-bold">{{ trans('employer.head_hunt') }}</h5>
                         <p class="small mb-3">More than {{ \App\Models\User::where('user_type', 'employee')->count() ?? 0 }} talents are on the network waiting for your call
                         </p>
-                        <a href="{{ route('employer.my-jobs', ['show_modal' => 'create']) }}" class="btn btn-dark btn-sm px-3 py-2" style="border-radius: 10px;">Post a job</a>
+                        <a href="{{ route('employer.my-jobs', ['show_modal' => 'create']) }}" class="btn btn-dark btn-sm px-3 py-2" style="border-radius: 10px;">{{ trans('employer.post_a_job') }}</a>
                     </div>
 
 
@@ -40,9 +40,9 @@
                 <section class="col-lg-9 col-md-8">
                     <!-- Open Jobs Header -->
                     <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
-                        <h5 class="fw-bold mb-0">Open jobs</h5>
+                        <h5 class="fw-bold mb-0">{{ trans('employer.open_jobs') }}</h5>
                         <a href="{{ route('employer.my-jobs') }}" class="text-decoration-none small fw-semibold d-flex align-items-center showall">
-                            Show All <img src="{{ asset('/') }}frontend/employer/images/employersHome/arrow-right 1.png" alt="" class="ms-2">
+                            {{ trans('employee.show_all') }} <img src="{{ asset('/') }}frontend/employer/images/employersHome/arrow-right 1.png" alt="" class="ms-2">
                         </a>
                     </div>
 
@@ -53,18 +53,18 @@
                             <div class="col-12">
                                 <article class="job-card">
                                     <div class="job-details <!--flex-grow-1-->">
-                                        <h6 class="job-title" onclick="showJobDetails({{ $jobTask->id }}, `{{ $jobTask->job_title }}`)" style="cursor: pointer;">{{ $jobTask->job_title ?? 'Job Title' }}</h6>
+                                        <h6 class="job-title" onclick="showJobDetails({{ $jobTask->id }}, `{{ $jobTask->job_title }}`)" style="cursor: pointer;">{{ $jobTask->job_title ?? trans('common.job_title') }}</h6>
                                         <div class="job-badges d-flex flex-wrap gap-2">
-                                            <span class="badge bg-light text-secondary">{{ $jobTask?->jobType?->name ?? 'Full Time' }}</span>
-                                            <span class="badge bg-light text-secondary">{{ $jobTask?->jobLocationType?->name ?? 'On-site' }}</span>
+                                            <span class="badge bg-light text-secondary">{{ $jobTask?->jobType?->name ?? trans('common.full_time') }}</span>
+                                            <span class="badge bg-light text-secondary">{{ $jobTask?->jobLocationType?->name ?? trans('common.on_site') }}</span>
 {{--                                            <span class="badge bg-light text-secondary">Day Shift</span>--}}
                                         </div>
                                     </div>
 
                                     <div class="job-info">
-                                        <div class="mb-2"><img src="{{ asset('/') }}frontend/employer/images/employersHome/postdOn.png" alt="" class="me-2">Posted on: {{ $jobTask->created_at->format('d M, Y') ?? '16 Feb, 2025' }}</div>
-                                        <div class="mb-2"><img src="{{ asset('/') }}frontend/employer/images/employersHome/Dedline.png" alt="" class="me-2">Deadline: {{ \Illuminate\Support\Carbon::parse($jobTask->deadline)->format('d M, Y') ?? '16 Feb, 2025' }}</div>
-                                        <div><img src="{{ asset('/') }}frontend/employer/images/employersHome/24application.png" alt="" class="me-2"><a href="{{ route('employer.my-job-applicants', $jobTask->id) }}" class="text-decoration-underline">{{ $jobTask->employeeAppliedJobs->count() ?? 0 }} Applicants</a></div>
+                                        <div class="mb-2"><img src="{{ asset('/') }}frontend/employer/images/employersHome/postdOn.png" alt="" class="me-2">{{ trans('employer.posted_on') }} {{ $jobTask->created_at->format('d M, Y') ?? '16 Feb, 2025' }}</div>
+                                        <div class="mb-2"><img src="{{ asset('/') }}frontend/employer/images/employersHome/Dedline.png" alt="" class="me-2">{{ trans('employer.deadline') }} {{ \Illuminate\Support\Carbon::parse($jobTask->deadline)->format('d M, Y') ?? '16 Feb, 2025' }}</div>
+                                        <div><img src="{{ asset('/') }}frontend/employer/images/employersHome/24application.png" alt="" class="me-2"><a href="{{ route('employer.my-job-applicants', $jobTask->id) }}" class="text-decoration-underline">{{ $jobTask->employeeAppliedJobs->count() ?? 0 }} {{ trans('employer.applicants') }}</a></div>
                                     </div>
 
                                     <div class="job-actions dropdown">
@@ -73,12 +73,12 @@
                                             <img src="{{ asset('/') }}frontend/employer/images/employersHome/three dot.png" alt="">
                                         </button>
                                         <ul class="dropdown-menu dropdown-menu-end">
-                                            <li><a class="dropdown-item" href="{{ route('employer.job-tasks.edit', $jobTask->id) }}">Edit</a></li>
+                                            <li><a class="dropdown-item" href="{{ route('employer.job-tasks.edit', $jobTask->id) }}">{{ trans('common.edit') }}</a></li>
                                             <li>
                                                 <form action="{{ route('employer.job-tasks.destroy', $jobTask->id) }}" method="post">
                                                     @csrf
                                                     @method('delete')
-                                                    <button class="dropdown-item" type="submit">Delete</button>
+                                                    <button class="dropdown-item" type="submit">{{ trans('common.delete') }}</button>
                                                 </form>
                                             </li>
                                         </ul>
@@ -87,7 +87,7 @@
                             </div>
                         @empty
                             <div class="col-12">
-                                <p style="font-size: 36px;">No Published Job yet</p>
+                                <p style="font-size: 36px;">{{ trans('employer.no_published_job_yet') }}</p>
                             </div>
                         @endforelse
                         <div class="col-12 text-center align-content-center">
@@ -165,9 +165,9 @@
 
                     <!-- Top talent picks -->
                     <div class="d-flex justify-content-between align-items-center mt-5 mb-3 flex-wrap">
-                        <h5 class="fw-bold mb-0">Top talent picks for you</h5>
+                        <h5 class="fw-bold mb-0">{{ trans('employer.browse_talents_find_match') }}</h5>
                         <a href="{{ route('employer.head-hunt') }}" class="text-decoration-none small fw-semibold d-flex align-items-center showall">
-                            Explore <img src="{{ asset('/') }}frontend/employer/images/employersHome/arrow-right 1.png" alt="" class="ms-2">
+                            {{ trans('employer.head_hunt') }} <img src="{{ asset('/') }}frontend/employer/images/employersHome/arrow-right 1.png" alt="" class="ms-2">
                         </a>
                     </div>
 
@@ -180,19 +180,19 @@
                                         <img src="{{ asset($employee->profile_image ?? '/frontend/user-vector-img.jpg') }}"
                                              alt="Mohammed Pranto" class="talent-img" />
                                         <div class="talent-details mt-2">
-                                            <h6>{{ $employee->name ?? 'Employee Name' }}</h6>
-                                            <p>{{ $employee->profile_title ?? 'Employee Profile Title' }}</p>
+                                            <h6>{{ $employee->name ?? trans('common.employee_name') }}</h6>
+                                            <p>{{ $employee->profile_title ?? trans('employee.profile_title') }}</p>
                                             <span>
                                                     <i class="bi bi-geo-alt"></i>
 {{--                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-geo-alt-fill" viewBox="0 0 16 16">--}}
 {{--                                                        <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10m0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6"/>--}}
 {{--                                                    </svg>--}}
-                                                    <span class="ms-1" style="text-decoration: none">{!! $employee->address ?? 'Employee Address' !!}</span>
+                                                    <span class="ms-1" style="text-decoration: none">{!! $employee->address ?? trans('common.user_address') !!}</span>
                                                 </span>
                                             <div class="talent-meta mt-2">
 
-                                                <span class="p-1">{{ $employee?->employeeWorkExperiences[0]?->duration ?? 0 }}+ yrs</span>
-                                                <span class="p-1">{{ $employee?->employeeEducations[$employee->employeeEducations()->count() - 1]?->cgpa ?? 0.0 }} CGPA</span>
+                                                <span class="p-1">{{ $employee?->employeeWorkExperiences[0]?->duration ?? 0 }}+ {{ trans('common.yrs') }}</span>
+                                                <span class="p-1">{{ $employee?->employeeEducations[$employee->employeeEducations()->count() - 1]?->cgpa ?? 0.0 }} {{ trans('common.cgpa') }}</span>
                                             </div>
                                         </div>
                                     </article>
@@ -247,14 +247,14 @@
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="viewJobModalTitle">View Job</h5>
+                    <h5 class="modal-title" id="viewJobModalTitle">{{ trans('common.view_job_post') }}</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body" id="viewJobModalBody">
                     <p>Modal body text goes here.</p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ trans('common.close') }}</button>
                 </div>
             </div>
         </div>

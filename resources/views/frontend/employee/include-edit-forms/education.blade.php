@@ -5,7 +5,7 @@
         <!-- Form for adding education -->
 
         <div class="mb-4">
-            <label for="degreeInput" class="form-label">Program Name</label>
+            <label for="degreeInput" class="form-label">{{ trans('employee.program_name') }}</label>
             {{--                            <input type="text" class="form-control" id="degreeInput" placeholder="Type here" />--}}
             <select name="education_degree_name_id" class="form-control select2" id="">
                 @foreach($educationDegreeNames as $educationDegreeName)
@@ -16,33 +16,33 @@
 
         <div id="universityDiv" >
             <div class="mb-4">
-                <label for="universityInput" class="form-label">Name of Institution</label>
-                                            <input type="text" class="form-control" id="universityInput" value="{{ $data->institute_name }}" name="institute_name" placeholder="Type here" />
+                <label for="universityInput" class="form-label">{{ trans('employee.name_of_institution') }}</label>
+                                            <input type="text" class="form-control" id="universityInput" value="{{ $data->institute_name }}" name="institute_name" placeholder="{{ trans('employer.type_here') }}" />
             </div>
 
             <div class="mb-4">
-                <label for="fieldOfStudyInput" class="form-label">Background / Field of study</label>
-                            <input type="text" class="form-control" id="fieldOfStudyInput" value="{{ $data->field_of_study }}" name="field_of_study" placeholder="Type here" />
+                <label for="fieldOfStudyInput" class="form-label">{{ trans('employee.background_field_of_study') }}</label>
+                            <input type="text" class="form-control" id="fieldOfStudyInput" value="{{ $data->field_of_study }}" name="field_of_study" placeholder="{{ trans('employer.type_here') }}" />
             </div>
         </div>
 
         <div class="mb-4">
-            <label for="passingYear" class="form-label">Passing Year</label>
-            <input type="text" class="form-control" value="{{ $data->passing_year }}" name="passing_year" id="passingYear" placeholder="Type here" />
+            <label for="passingYear" class="form-label">{{ trans('employee.passing_year') }}</label>
+            <input type="text" class="form-control" value="{{ $data->passing_year }}" name="passing_year" id="passingYear" placeholder="{{ trans('employer.type_here') }}" />
         </div>
 
         <div class="mb-4">
-            <label for="cgpaInput" class="form-label">CGPA</label>
-            <input type="text" name="cgpa" value="{{ $data->cgpa }}" class="form-control" id="cgpaInput" placeholder="Type here" />
+            <label for="cgpaInput" class="form-label">{{ trans('employee.cgpa') }}</label>
+            <input type="text" name="cgpa" value="{{ $data->cgpa }}" class="form-control" id="cgpaInput" placeholder="{{ trans('employer.type_here') }}" />
         </div>
 
     </div>
     <div class="modal-footer justify-content-between">
         <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-            Close
+            {{ trans('common.close') }}
         </button>
         <button type="submit" class="btn btn-primary">
-            Update Education
+            {{ trans('employee.edit_education') }}
         </button>
     </div>
 </form>

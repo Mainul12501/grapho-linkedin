@@ -15,12 +15,12 @@
 
         <!-- Right Scrollable Jobs -->
         <section class="w-100 profileOptionRight">
-            <h1 class="forLarge">Subscription</h1>
+            <h1 class="forLarge">{{ trans('employee.subscription') }}</h1>
             @if(isset($loggedUser?->subscriptionPlan?->title))
                 <div class="right-panel w-100 subscription">
                     <div class="subscription-card">
                         <div class="subscription-info">
-                            <h3>Current plan</h3>
+                            <h3>{{ trans('employee.subscription') }}</h3>
                             <p>{{ $loggedUser?->subscriptionPlan?->title ?? 'Plan Title' }}, expires on {{ \Illuminate\Support\Carbon::parse($loggedUser->subscription_end_date)->format('d M, Y') }}</p>
                         </div>
 {{--                        <button class="view-invoice">View invoice</button>--}}
@@ -44,7 +44,7 @@
                             @if($subscriptionPlan->id != $loggedUser->subscription_plan_id)
                                 <form id="subsForm{{$key}}" action="{{ route('buy-subscription', $subscriptionPlan->id) }}" method="post">
                                     @csrf
-                                    <button type="submit" onsubmit="return confirm('Are you sure to Purchase this plan. Your previous plan will be replaced if exists.')" class="btn w-100 bg-dark text-white my-3">Subscribe</button>
+                                    <button type="submit" onsubmit="return confirm('Are you sure to Purchase this plan. Your previous plan will be replaced if exists.')" class="btn w-100 bg-dark text-white my-3">{{ trans('employee.subscription') }}</button>
                                 </form>
                             @else
                                 <button type="button" disabled class="btn w-100 bg-dark text-white my-3">Already Purchased</button>

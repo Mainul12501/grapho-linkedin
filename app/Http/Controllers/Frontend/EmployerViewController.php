@@ -85,20 +85,25 @@ class EmployerViewController extends Controller
 
     public function myJobs(Request $request)
     {
+        $loggedUser = ViewHelper::loggedUser();
+        if ($loggedUser->user_type == 'employer')
+            $jobUserId = $loggedUser->id;
+        elseif ($loggedUser->user_type == 'sub_employer')
+            $jobUserId = $loggedUser->user_id;
         if ($request->has('job_status')) {
             if ($request->job_status == 'closed') {
-                $jobs = JobTask::where(['user_id' => ViewHelper::loggedUser()->id, 'status' => 0])->paginate(10);
+                $jobs = JobTask::where(['user_id' => $jobUserId, 'status' => 0])->paginate(10);
             } else {
-                $jobs = JobTask::where(['user_id' => ViewHelper::loggedUser()->id, 'status' => 1])->paginate(10);
+                $jobs = JobTask::where(['user_id' => $jobUserId, 'status' => 1])->paginate(10);
             }
         } elseif (isset($request->search_text)) {
             $jobs = JobTask::where([
-                'user_id' => ViewHelper::loggedUser()->id,
+                'user_id' => $jobUserId,
                 'status' => 1,
 
             ])->where('job_title', 'LIKE', "%{$request->search_text}%")->paginate(10);
         } else {
-            $jobs = JobTask::where(['user_id' => ViewHelper::loggedUser()->id, 'status' => 1])->paginate(10);
+            $jobs = JobTask::where(['user_id' => $jobUserId, 'status' => 1])->paginate(10);
         }
         if (ViewHelper::checkIfRequestFromApi()) {
             foreach ($jobs as $job) {

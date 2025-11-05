@@ -8,9 +8,9 @@
             <div class="col-md-8 mx-auto">
                 <div class="card">
                     <div class="card-header pt-3">
-                        <h4 class="float-start">{{ isset($post) ? 'Update' : 'Create' }} Posts</h4>
+                        <h4 class="float-start">{{ isset($post) ? trans('common.update') : trans('common.add') }} {{ trans('employer.post') }}</h4>
                         <p class="float-end">
-                            <a href="{{ route('employer.posts.index') }}" class="btn btn-sm btn-success">Back</a>
+                            <a href="{{ route('employer.posts.index') }}" class="btn btn-sm btn-success">{{ trans('common.previous') }}</a>
                         </p>
                     </div>
                     <div class="card-body">
@@ -21,15 +21,15 @@
                                     @method('put')
                                 @endif
                                 <div>
-                                    <label for="">Post Title</label>
+                                    <label for="">{{ trans('employer.post') }} {{ trans('common.title') }}</label>
                                     <input type="text" name="title" {{ $isShown ? 'disabled' : '' }} class="form-control" value="{{ isset($post) ? $post->title : '' }}" />
                                 </div>
                                 <div class="mt-2">
-                                    <label for="">Post Content</label>
+                                    <label for="">{{ trans('employer.post') }} {{ trans('common.title') }}</label>
                                     <textarea name="description" class="form-control summernote" {{ $isShown ? 'disabled' : '' }} id="" cols="30" rows="2">{!! isset($post) ? $post->description : '' !!}</textarea>
                                 </div>
                                 <div class="mt-2">
-                                    <label for="">Post Images</label> <br>
+                                    <label for="">{{ trans('employer.post') }} {{ trans('common.images') }}</label> <br>
                                     @if(!$isShown)
                                         <input type="file" name="images[]" accept="images/*" multiple />
                                     @endif
@@ -52,7 +52,7 @@
 {{--                                                <label for="someSwitchOptionInfo" class="label-info"></label>--}}
 {{--                                            </div>--}}
 
-                                            <label for="flexSwitchCheckChecked" class="d-inline-flex" id="form-check-label">Is Published</label>
+                                            <label for="flexSwitchCheckChecked" class="d-inline-flex" id="form-check-label">{{ trans('common.status') }}</label>
                                             <br>
                                             <div class="form-check form-switch d-inline-flex">
                                                 <input class="form-check-input" name="status" type="checkbox" role="switch" id="flexSwitchCheckChecked" {{ isset($post) && $post->status == 0 ? '' : 'checked' }}>
@@ -64,7 +64,7 @@
                                 </div>
                                 @if(!$isShown)
                                     <div>
-                                        <input type="submit" class="btn btn-success btn-sm float-end" value="{{ isset($post) ? 'Update' : 'Create' }} Post" />
+                                        <input type="submit" class="btn btn-success btn-sm float-end" value="{{ isset($post) ? trans('common.update') : trans('common.add') }} {{ trans('employer.post') }}" />
                                     </div>
                                 @endif
                             </form>
