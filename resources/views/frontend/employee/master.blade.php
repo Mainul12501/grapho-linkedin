@@ -43,7 +43,10 @@
             font-weight: 400;
             font-size: 13px;
         }
+
+
     </style>
+
     @yield('style')
     @stack('style')
 </head>
@@ -56,27 +59,46 @@
 @yield('body')
 
 <!-- Mobile Bottom Navigation -->
-{{--<div class="bottom-nav d-md-none d-flex justify-content-around py-4">--}}
-{{--    <div class="text-center mobileHome active">--}}
-{{--        <a href="home.html"><img src="{{ asset('/') }}frontend/employee/images/header images/mobileHomeIcon.png" alt="" /> <br />--}}
-{{--            Home</a>--}}
-{{--    </div>--}}
+<div class="bottom-nav d-md-none d-flex justify-content-around py-4" style="position: sticky;">
+    <div class="text-center mobileHome active">
+        <a href="{{ route('employee.home') }}"><img src="{{ asset('/') }}frontend/employee/images/header images/mobileHomeIcon.png" alt="" /> <br />
+            Home</a>
+    </div>
 
-{{--    <div class="text-center mobileJobs">--}}
-{{--        <a href="jobs.html"><img src="{{ asset('/') }}frontend/employee/images/header images/mobileJobIcon.png" alt="" /> <br />--}}
-{{--            Jobs</a>--}}
-{{--    </div>--}}
-{{--    <div class="text-center mobileInbox">--}}
-{{--        <a href=""><img src="{{ asset('/') }}frontend/employee/images/header images/MobileMessageIcon.png" alt="" />--}}
-{{--            <br />--}}
-{{--            Inbox</a>--}}
-{{--    </div>--}}
-{{--    <div class="text-center mobileProfile">--}}
-{{--        <a href=""><img src="{{ asset('/') }}frontend/employee/images/header images/mobileProfielIcon.png" alt="" />--}}
-{{--            <br />--}}
-{{--            Profile</a>--}}
-{{--    </div>--}}
-{{--</div>--}}
+    <div class="text-center mobileJobs">
+        <a href="{{ route('employee.show-jobs') }}"><img src="{{ asset('/') }}frontend/employee/images/header images/mobileJobIcon.png" alt="" /> <br />
+            Jobs</a>
+    </div>
+    <div class="text-center mobileProfile">
+        <a href="{{ route('employee.my-profile') }}"><img src="{{ asset('/') }}frontend/employee/images/header images/mobileProfielIcon.png" alt="" />
+            <br />
+            Profile</a>
+    </div>
+    <div class="text-center mobileInbox dropdown">
+
+        <a class="btn btn-secondary  dropdown-toggle bg-transparent border-0" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+            <img src="{{ asset('/') }}frontend/employee/images/header images/MobileMessageIcon.png" alt="" />
+            <br>
+            Options
+        </a>
+
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+            <li><a class="dropdown-item" href="{{ route('employee.my-notifications') }}">Notifications</a></li>
+            <li><a class="dropdown-item" href="{{ url('/chat') }}">chat</a></li>
+            <li><a class="dropdown-item" href="{{ route('employee.settings') }}">Settings</a></li>
+            <li><a class="dropdown-item" href="{{ route('employee.my-subscriptions') }}">Subscription</a></li>
+            <li><a class="dropdown-item" href="{{ route('employee.my-profile-viewers') }}">Profile Viewers</a></li>
+            <li><a class="dropdown-item" href="{{ route('employee.my-applications') }}">My Applications</a></li>
+            <li><a class="dropdown-item" href="{{ route('employee.my-saved-jobs') }}">Saved Jobs</a></li>
+            <li><a class="dropdown-item" href="#" onclick="event.preventDefault(); document.getElementById('employeeMobileMenuLogout').submit()">Logout</a></li>
+            <form action="{{ route('logout') }}" method="post" id="employeeMobileMenuLogout">
+                @csrf
+            </form>
+        </ul>
+    </div>
+
+</div>
+
 
 @yield('modal')
 
@@ -153,6 +175,7 @@
     //     return response;
     // }
 </script>
+
 
 @yield('script')
 @stack('script')

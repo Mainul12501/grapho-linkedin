@@ -105,4 +105,5 @@ return [
     'my_profile' => 'আমার প্রোফাইল',
     'show_jobs' => 'চাকরি দেখুন',
     'profile_title' => 'প্রোফাইল শিরোনাম',
+    'options' => 'অপশন',
 ];

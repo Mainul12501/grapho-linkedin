@@ -20,18 +20,18 @@
 
             <div class="right-panel w-100 settings py-4 rounded">
 
-{{--                <div class="settings-row d-flex justify-content-between p-4 border-bottom">--}}
-{{--                    <div class="icon">--}}
-{{--                        <img src="{{ asset('/') }}frontend/employee/images/profile/languageSElect.png" alt="Language Icon" class="me-2"/>--}}
-{{--                        <span>Language</span>--}}
-{{--                    </div>--}}
-{{--                    <div class="option">--}}
-{{--                        <select>--}}
-{{--                            <option>English</option>--}}
-{{--                            <option>Bangla</option>--}}
-{{--                        </select>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
+                <div class="settings-row d-flex justify-content-between p-4 border-bottom">
+                    <div class="icon">
+                        <img src="{{ asset('/') }}frontend/employee/images/profile/languageSElect.png" alt="Language Icon" class="me-2"/>
+                        <span>{{ trans('index.language') }}</span>
+                    </div>
+                    <div class="option">
+                        <select id="changeLocalLangOption">
+                            <option {{ session('locale') == 'en' ? 'selected' : '' }} data-url="{{ route('change-local-language', ['local' => 'English']) }}">English</option>
+                            <option {{ session('locale') == 'bn' ? 'selected' : '' }} data-url="{{ route('change-local-language', ['local' => 'Bangla']) }}">Bangla</option>
+                        </select>
+                    </div>
+                </div>
 
                 <div class="settings-row d-flex justify-content-between p-4 border-bottom">
                     <div class="icon">
@@ -140,4 +140,13 @@
         </div>
     </div>
 @endsection
+
+@push('script')
+    <script>
+        $(document).on('change', '#changeLocalLangOption', function () {
+            var url = $(this).find('option:selected').attr('data-url');
+            window.location = url;
+        })
+    </script>
+@endpush
 

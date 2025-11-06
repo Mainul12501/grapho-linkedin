@@ -105,4 +105,5 @@ return [
     'my_profile' => 'My profile',
     'show_jobs' => 'Show Jobs',
     'profile_title' => 'Profile Title',
+    'options' => 'Options',
 ];
