@@ -69,9 +69,9 @@
         <!-- Mobile notification bell and hamburger grouped -->
         <div class="d-flex align-items-center gap-2 d-lg-none">
             <!-- Notification Bell -->
-            <button class="btn btn-link p-0">
-                <img src="{{ asset('/') }}frontend/home-landing/images/notificationbell.png" alt="Notifications" width="30px">
-            </button>
+{{--            <a href="#" class="btn btn-link p-0">--}}
+{{--                <img src="{{ asset('/') }}frontend/home-landing/images/notificationbell.png" alt="Notifications" width="30px">--}}
+{{--            </a>--}}
             <!-- Hamburger -->
             <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
                 <span class="navbar-toggler-icon"></span>

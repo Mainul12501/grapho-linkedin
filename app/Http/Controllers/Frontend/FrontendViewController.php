@@ -23,10 +23,11 @@ class FrontendViewController extends Controller
     public function showCommonPage($slug = null)
     {
         $data = [
-            'page'   => CommonPage::where(['slug' => $slug])->first()
+            'page'   => CommonPage::where(['slug' => $slug])->first(),
+            'commonPages'   => CommonPage::where(['status' => 1])->get()
         ];
         return ViewHelper::checkViewForApi($data, 'frontend.common-page');
-        return view('frontend.home-landing');
+        return view('frontend.common-page');
     }
 
     public function buySubscription(SubscriptionPlan $subscriptionPlan, Request $request)

@@ -303,7 +303,7 @@
                 <h6 class="fw-semibold">{{ trans('home.pages') }}</h6>
                 <ul class="list-unstyled small">
                     @foreach($commonPages as $commonPage)
-                        <li><a href="#" class="text-decoration-none text-dark">{{ $commonPage->title ?? 'page name' }}</a></li>
+                        <li><a href="{{ route('show-common-page', ['slug' => $commonPage->slug]) }}" class="text-decoration-none text-dark">{{ $commonPage->title ?? 'page name' }}</a></li>
                     @endforeach
 {{--                    <li><a href="#" class="text-decoration-none text-dark">Guidelines</a></li>--}}
 {{--                    <li><a href="#" class="text-decoration-none text-dark">Terms of Use</a></li>--}}

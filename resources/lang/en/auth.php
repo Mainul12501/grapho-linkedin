@@ -56,4 +56,5 @@ return [
     'never_share_code' => 'Never share this code with anyone. LikewiseBD staff will never ask for your verification code.',
     'didnt_request_code' => "If you didn't request this verification code, please ignore this email. Your account will remain secure and no changes will be made.",
     'need_help_contact' => 'Need help? Contact our support team at',
+    'logout' => 'Logout',
 ];
