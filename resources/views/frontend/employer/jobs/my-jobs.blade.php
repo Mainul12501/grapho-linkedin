@@ -282,7 +282,7 @@
 
 
     <!-- Job Details Modal -->
-    <div class="modal fade" id="jobDetailsModal" tabindex="-1" aria-labelledby="jobDetailsModalLabel" aria-hidden="true">
+    <div class="modal fade" id="jobDetailsModal"  aria-labelledby="jobDetailsModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl modal-dialog-centered">
             <div class="modal-content rounded-4 p-4">
                 <div class="d-flex justify-content-between align-items-center mb-3">
@@ -338,7 +338,7 @@
 
 
     <!-- Create Job Modal -->
-    <div class="modal fade" id="createJobModal" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal fade" id="createJobModal" data-bs-backdrop="static">
         <div class="modal-dialog modal-dialog-centered modal-md">
             <div class="modal-content p-4 rounded-4">
                 <div style="display: none">
@@ -389,7 +389,7 @@
                         <!-- Footer Buttons -->
                         <div class="d-flex justify-content-between align-items-center mt-4">
                             <button class="btn btn-outline-dark px-4 py-2 rounded-3" type="button" data-bs-dismiss="modal">Cancel</button>
-                            <button id="continueToStep2" type="button" class="btn btn-warning text-dark fw-semibold px-4 py-2 rounded-3">Continue</button>
+                            <button id="continueToStep2" data-continue-btn-parent-form="jobCreateForm" type="button" class="btn btn-warning text-dark fw-semibold px-4 py-2 rounded-3">Continue</button>
                         </div>
                     </div>
 
@@ -479,7 +479,7 @@
                                 <div class="bg-white  p-4 shadow-sm" style="border-radius: 0px">
                                     <h6 class="fw-semibold mb-3">University preference</h6>
 {{--                                    <input type="text" class="form-control mb-3" name="" placeholder="Search universities">--}}
-                                    <select name="university_preference[]" id="select2-div" class=" select2"  multiple="multiple">
+                                    <select name="university_preference[]" id="select2-div" class=" select2"  multiple="multiple" data-placeholder="Select Universities">
 
                                         @foreach($universityNames as $universityNameKey => $universityName)
                                             <option value="{{ $universityName->id }}">{{ $universityName->name ?? 'un' }}</option>
@@ -493,7 +493,7 @@
                                 <div class="bg-white  p-4 shadow-sm" style="border-radius: 0px">
                                     <h6 class="fw-semibold mb-3">Field of study preference</h6>
 {{--                                    <input type="text" class="form-control mb-3" placeholder="Search field of study">--}}
-                                    <select name="field_of_study_preference[]" id="" class=" select2" multiple="multiple">
+                                    <select name="field_of_study_preference[]" id="" class=" select2" multiple="multiple" data-placeholder="Select Field Of Studies">
                                         @foreach($fieldOfStudies as $fieldOfStudyKey => $fieldOfStudy)
                                             <option value="{{ $fieldOfStudy->id }}">{{ $fieldOfStudy->field_name ?? 'un' }}</option>
                                         @endforeach
@@ -505,7 +505,7 @@
                             <div class="container px-0 border-bottom">
                                 <div class="bg-white  p-4 shadow-sm" style="border-radius: 0px">
                                     <h6 class="fw-semibold mb-3">CGPA preference</h6>
-                                    <input type="text" name="cgpa" class="form-control" placeholder="e.g. 3.50 to 3.90">
+                                    <input type="number" min="0" name="cgpa" class="form-control" placeholder="e.g. 3.50 to 3.90">
                                 </div>
                             </div>
 
@@ -533,7 +533,7 @@
                                         <li class="nav-item"><a class="nav-link salary-type" data-value="fixed" data-bs-toggle="tab" href="#">Fixed amount</a></li>
                                     </ul>
                                     <input type="hidden" name="job_pref_salary_payment_type" class="job_pref_salary_payment_type" value="monthly">
-                                    <input type="text" name="salary_amount" class="form-control mb-2" placeholder="BDT 50,000">
+                                    <input type="number" min="0" name="salary_amount" class="form-control mb-2" placeholder="BDT 50,000">
 {{--                                    <div class="form-check">--}}
 {{--                                        <input class="form-check-input" type="checkbox" id="rangeCheck">--}}
 {{--                                        <label class="form-check-label text-muted" for="rangeCheck">Use salary range</label>--}}
@@ -734,7 +734,7 @@
         .select2-container--default .select2-selection--multiple .select2-selection__choice {
             background-color: #FFCB11!important;
         }
-        .select2-search__field {display: none!important;}
+        /*.select2-search__field {display: none!important;}*/
         .selected-skill {
             color: black!important;
             background-color: #FFCB11!important;
@@ -776,8 +776,17 @@
 
 @push('script')
 
-    @include('common-resource-files.sim-select')
-    @include('common-resource-files.summernote')
+    @include('common-resource-files.select2')
+{{--    @include('common-resource-files.')--}}
+{{--    @include('common-resource-files.summernote')--}}
+    <script src="//cdn.ckeditor.com/4.22.1/full/ckeditor.js"></script>
+    <script>
+        $(document).ready(function () {
+            CKEDITOR.replace( 'summernote', {
+                versionCheck: false
+            } );
+        })
+    </script>
 
     @if(isset($_GET['show_modal']) && $_GET['show_modal'] == 'create')
         <script>
@@ -797,20 +806,37 @@
             sendAjaxRequest('employer/job-tasks/'+jobId+'/edit', 'GET').then(function (response) {
                 // console.log(response);
                 $('#editJobForm').empty().append(response);
-                $('.summernote').summernote({
-                    height: 300
+                // $('.summernote').summernote({
+                //     height: 300
+                // });
+                CKEDITOR.replace( 'summernote2', {
+                    versionCheck: false
+                } );
+                $('.select2').select2({
+                    // theme: 'bootstrap-5',
+                    width: '100%',
+                    // minimumResultsForSearch: 0,
+                    // dropdownParent: $('#editJobModal')// Always show search box and make it functional
                 });
+                // $('.modal').on('shown.bs.modal', function () {
+                //     $(this).find('.select2').select2({
+                //         theme: 'bootstrap-5',
+                //         width: '100%',
+                //         minimumResultsForSearch: 0,
+                //         dropdownParent: $(this)
+                //     });
+                // });
                 // $('.select2').selectize();
-                document.querySelectorAll('.select2').forEach(function (el) {
-                    new SlimSelect({
-                        select: el,
-                        events: {
-                            searchFilter: (option, search) => {
-                                return option.text.toLowerCase().indexOf(search.toLowerCase()) !== -1;
-                            }
-                        }
-                    });
-                });
+                // document.querySelectorAll('.select2').forEach(function (el) {
+                //     new SlimSelect({
+                //         select: el,
+                //         events: {
+                //             searchFilter: (option, search) => {
+                //                 return option.text.toLowerCase().indexOf(search.toLowerCase()) !== -1;
+                //             }
+                //         }
+                //     });
+                // });
                 $('#editJobModal').modal('show');
             })
         })
@@ -819,9 +845,9 @@
 {{--    </style>--}}
     <script >
         $(document).ready(function() {
-            $('#summernote').summernote({
-                height: 200
-            });
+            // $('#summernote').summernote({
+            //     height: 200
+            // });
 
         });
         $(document).on('click', '.salary-type', function () {
@@ -832,9 +858,11 @@
             $('.stepOne').removeClass('d-none');
         })
         $(document).on('click', '#continueToStep2', function () {
-            $('#formJobTitle').text($('input[name="job_title"]').val());
-            $('#jobJobType').text($('label[for="'+$('input[name="job_type_id"]').attr('id')+'"]').text());
-            $('#jobjobLocationType').text($('label[for="'+$('input[name="job_location_type_id"]').attr('id')+'"]').text());
+            var btnParentForm = $(this).attr('data-continue-btn-parent-form');
+
+            $('#formJobTitle').text($('#'+btnParentForm+' input[name="job_title"]').val());
+            $('#jobJobType').text($('#'+btnParentForm+' label[for="'+$('#'+btnParentForm+' input[name="job_type_id"]:checked').attr('id')+'"]').text());
+            $('#jobjobLocationType').text($('#'+btnParentForm+' label[for="'+$('#'+btnParentForm+' input[name="job_location_type_id"]:checked').attr('id')+'"]').text());
             // document.querySelector('#createJobModal .stepOne').classList.add('d-none');
             $('.stepOne').addClass('d-none');
             // document.querySelector('#createJobModal .jobModalForPost').classList.remove('d-none');

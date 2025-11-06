@@ -1,4 +1,4 @@
-sess<?php
+<?php
 
 use Illuminate\Support\Str;
 

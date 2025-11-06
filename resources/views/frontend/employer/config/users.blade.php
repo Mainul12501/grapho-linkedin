@@ -208,7 +208,7 @@
                     <div class="mb-3">
                         <button class="add-user-btn btn flex-start btn-dark" data-bs-toggle="modal" data-bs-target="#addUserModal"{{-- style="background-color: #FFCB11"--}}>
                             <img src="{{ asset('/') }}frontend/employer/images/employersHome/addUser.png" alt="">
-                            <span class="d-none d-md-block text-white">{{ trans('common.add') }} {{ trans('common.name') }}</span>
+                            <span class="d-none d-md-block text-white">{{ trans('common.add') }} {{ trans('common.user') }}</span>
                         </button>
                     </div>
 
@@ -234,7 +234,7 @@
                                             <td class="email">{{ $employerUser->email ?? 'User Email' }}</td>
                                             <td class="email">{{ $employerUser->mobile ?? '01500000000' }}</td>
                                             <td class="role">{{ $employerUser->user_type ?? 'User Type' }}</td>
-                                            <td><a href="{{ route('employer.change-sub-employer-status', ['user' => $employerUser->id, 'status' => $employerUser->employer_agent_active_status == 'active' ? 'inactive' : 'active']) }}"><span class="status badge {{ $employerUser->employer_agent_active_status == 'active' ? 'active bg-success' : 'invited bg-secondary' }}">{{ $employerUser->employer_agent_active_status == 'active' ? trans('common.status') : 'Inactive' }}</span></a></td>
+                                            <td><a href="{{ route('employer.change-sub-employer-status', ['user' => $employerUser->id, 'status' => $employerUser->employer_agent_active_status == 'active' ? 'inactive' : 'active']) }}"><span class="status badge {{ $employerUser->employer_agent_active_status == 'active' ? 'active bg-success' : 'invited bg-secondary' }}">{{ $employerUser->employer_agent_active_status == 'active' ? trans('admin.active') : trans('admin.inactive') }}</span></a></td>
                                             <td>
 {{--                                                <a href="" class="btn btn-sm btn-success mx-1"><i class="fa fa-eye text-white f-s-11"></i></a>--}}
                                                 <a href="" class="btn btn-sm btn-primary mx-1 user-edit" data-user-id="{{ $employerUser->id }}"><i class="fa fa-edit text-white f-s-11"></i></a>
@@ -268,7 +268,7 @@
                             <path fill-rule="evenodd" d="M15 8a.5.5 0 0 1-.5.5H3.707l3.147 3.146a.5.5 0 0 1-.708.708l-4-4a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L3.707 7.5H14.5A.5.5 0 0 1 15 8z"/>
                         </svg>
                     </button>
-                    <h5 class="modal-title fw-semibold">{{ trans('common.add') }} {{ trans('common.name') }}</h5>
+                    <h5 class="modal-title fw-semibold">{{ trans('common.add') }} {{ trans('common.user') }}</h5>
                 </div>
                 <div class="modal-body pt-0">
                     <form action="{{ route('employer.create-sub-user') }}" method="post" enctype="multipart/form-data">
@@ -299,7 +299,7 @@
 {{--                        </div>--}}
                         <div class="d-flex justify-content-between">
                             <button type="button" class="btn border border-2 rounded-3 px-4 py-2" data-bs-dismiss="modal" style="border-color:#ccc;">{{ trans('common.cancel') }}</button>
-                            <button type="submit" class="btn rounded-3 px-4 py-2 text-white fw-semibold" style="background-color: #FFD700;">{{ trans('common.add') }} {{ trans('common.name') }}</button>
+                            <button type="submit" class="btn rounded-3 px-4 py-2 text-white fw-semibold" style="background-color: #FFD700; color: black!important;">{{ trans('common.add') }} {{ trans('common.user') }}</button>
                         </div>
                     </form>
                 </div>
@@ -335,14 +335,14 @@
     @push('script')
 {{--        @include('backend.includes.assets.plugin-files.datatable')--}}
         <script>
-            $(document).ready(function() {
-                $('#datatable').DataTable({
-                    responsive: true,
-                    lengthChange: false,
-                    autoWidth: false,
-                    buttons: ['copy', 'csv', 'excel', 'pdf', 'print']
-                }).buttons().container().appendTo('#datatable-buttons_wrapper .col-md-6:eq(0)');
-            });
+            // $(document).ready(function() {
+            //     $('#datatable').DataTable({
+            //         responsive: true,
+            //         lengthChange: false,
+            //         autoWidth: false,
+            //         buttons: ['copy', 'csv', 'excel', 'pdf', 'print']
+            //     }).buttons().container().appendTo('#datatable-buttons_wrapper .col-md-6:eq(0)');
+            // });
             $(document).on('click', '.user-edit', function () {
                 event.preventDefault();
                 var userId = $(this).attr('data-user-id');

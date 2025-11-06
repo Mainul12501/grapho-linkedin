@@ -37,11 +37,48 @@
     </div>
 @endif
 
+<div class="row my-4">
+    <div class="col-md-4">
+        <p class="mb-1"><b>Required Experience</b></p>
+        <p id="reviewExperience">{{ $singleJobTask->required_experience ?? 0 }} Years</p>
+    </div>
+    <div class="col-md-4">
+        <p class="mb-1"><b>Application Deadline</b></p>
+        <p id="reviewDeadline">{{ \Illuminate\Support\Carbon::parse($singleJobTask->deadline)->format('d-M-Y') }}</p>
+    </div>
+    <div class="col-md-4">
+        <p class="mb-1"><b>Salary</b></p>
+        <p id="reviewSalary">BDT {{ $singleJobTask->salary_amount.' / '. $singleJobTask->job_pref_salary_payment_type }}</p>
+    </div>
+</div>
 
+<h5 style="" class="fw-bold  about-company-name">{{ trans('employer.about') }} {{ $singleJobTask?->employerCompany?->name ?? 'company Name' }}</h5>
 
-<h5 style="" class="fw-bold about-company-name">{{ trans('employer.about') }} {{ $singleJobTask?->employerCompany?->name ?? 'company Name' }}</h5>
 <p class="text-muted">{{ $singleJobTask?->employerCompany?->company_overview ?? 'company overview' }}</p>
 <h5 class="fw-bold">{{ trans('employer.job_requirements') }}</h5>
 <div class="job-requirements ms-0 text-muted" style="color: gray;">
     {!! $singleJobTask->description ?? 'job description here' !!}
+</div>
+
+<h6 class="fw-semibold mt-4 mb-2">Field Of Study Preference</h6>
+<span>
+                    <ul id="printFieldOfStudy" class="mb-0">
+                        @foreach($singleJobTask->employerPrefferableFieldOfStudyNames as $fieldOfStudy)
+                            <li>{{ $fieldOfStudy->field_name }}</li>
+                        @endforeach
+                    </ul>
+                </span>
+<!-- University -->
+<h6 class="fw-semibold mt-4 mb-2">University Preference</h6>
+<span>
+                    <ul id="printUniversity" class="mb-0">
+                       @foreach($singleJobTask->employerPrefferableUniversityNames as $versityName)
+                            <li>{{ $versityName->name }}</li>
+                        @endforeach
+                    </ul>
+                </span>
+
+<h5 class="fw-bold mt-3">{{ trans('employer.gender_preference') }}</h5>
+<div class="job-requirements ms-0 text-muted" style="color: gray;">
+    {{ $singleJobTask->gender ?? '' }}
 </div>

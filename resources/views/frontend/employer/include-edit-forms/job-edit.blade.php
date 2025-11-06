@@ -1,4 +1,4 @@
-<form action="{{ route('employer.job-tasks.update', $jobTask->id) }}" method="post" enctype="multipart/form-data">
+<form action="{{ route('employer.job-tasks.update', $jobTask->id) }}" method="post" id="jobEditFormAppend" enctype="multipart/form-data">
     @csrf
     @method('put')
     <input type="hidden" name="req" value="edit">
@@ -45,7 +45,7 @@
         <!-- Footer Buttons -->
         <div class="d-flex justify-content-between align-items-center">
             <button class="btn btn-outline-dark px-4 py-2 rounded-3" data-bs-dismiss="modal">{{ trans('common.cancel') }}</button>
-            <button id="continueToStep2" type="button" class="btn btn-warning text-dark fw-semibold px-4 py-2 rounded-3">{{ trans('common.next') }}</button>
+            <button id="continueToStep2" data-continue-btn-parent-form="jobEditFormAppend" type="button" class="btn btn-warning text-dark fw-semibold px-4 py-2 rounded-3">{{ trans('common.next') }}</button>
         </div>
     </div>
 
@@ -150,7 +150,7 @@
             <div class="container px-0 border-bottom">
                 <div style="border-radius: 0px" class="bg-white p-4 shadow-sm">
                     <h6 class="fw-semibold mb-3">{{ trans('employer.cgpa_preference') }}</h6>
-                    <input type="text" name="cgpa" value="{{ $jobTask->cgpa ?? 0 }}" class="form-control" placeholder="{{ trans('employer.eg_350_to_390') }}">
+                    <input type="number" min="0" name="cgpa" value="{{ $jobTask->cgpa ?? 0 }}" class="form-control" placeholder="{{ trans('employer.eg_350_to_390') }}">
                 </div>
             </div>
             <!-- Gender Preference -->
@@ -176,14 +176,14 @@
                         <li class="nav-item"><a class="nav-link salary-type {{ $jobTask->job_pref_salary_payment_type == 'fixed' ? 'active' : '' }}" data-value="fixed" data-bs-toggle="tab" href="#">{{ trans('employer.fixed_amount') }}</a></li>
                     </ul>
                     <input type="hidden" name="job_pref_salary_payment_type" class="job_pref_salary_payment_type" value="monthly">
-                    <input type="text" name="salary_amount" value="{{ $jobTask->salary_amount ?? 0 }}" class="form-control mb-2" placeholder="{{ trans('employer.bdt_50000') }}">
+                    <input type="number" min="0" name="salary_amount" value="{{ $jobTask->salary_amount ?? 0 }}" class="form-control mb-2" placeholder="{{ trans('employer.bdt_50000') }}">
                 </div>
             </div>
             <!-- Job Description -->
             <div class="container px-0 border-bottom">
                 <div style="border-radius: 0px" class="bg-white p-4 shadow-sm">
                     <h6 class="fw-semibold mb-3">{{ trans('employer.job_description_key_responsibilities') }}</h6>
-                    <textarea class="form-control summernote" id="summernote" name="description" rows="15" placeholder="{{ trans('employer.tell_more_about_job') }}">{!! $jobTask->description ?? '' !!}</textarea>
+                    <textarea class="form-control summernote" id="summernote2" name="description" rows="15" placeholder="{{ trans('employer.tell_more_about_job') }}">{!! $jobTask->description ?? '' !!}</textarea>
                 </div>
             </div>
             <!-- Application Deadline -->

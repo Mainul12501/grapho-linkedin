@@ -18,26 +18,29 @@
                 </div>
             </div>
             <div class="row g-4">
-                <div class="col-md-8 ps-5" id="appendContentHere">
+                <div class=" ps-5 {{ count($advertisements) > 0 ? 'col-md-9 mx-auto' : 'col-md-8' }}" id="appendContentHere">
                     <div class="card card-body d-flex">
                         <p class="d-inline-flex">{{ trans('employer.have_something_new_on_mind') }}</p>
                         <p class="d-inline-flex"><a href="{{ route('employer.posts.create') }}" class="btn btn-sm btn-success">{{ trans('employer.post') }}</a></p>
                     </div>
 {{--                    contents appends here--}}
                 </div>
-                <div class="col-md-4">
-                    @if(count($advertisements) > 0)
-                        <div>
-                            @foreach($advertisements as $advertisement)
-                                <div class="py-1">
-                                    <a href="{{ url(`/`.$advertisement->redirect_url) }}">
-                                        <img style="max-height: 300px" src="{{ asset($advertisement->banner) }}" alt="" class="img-fluid ">
-                                    </a>
-                                </div>
-                            @endforeach
-                        </div>
-                    @endif
-                </div>
+                @if(count($advertisements) > 0)
+                    <div class="col-md-4">
+                        @if(count($advertisements) > 0)
+                            <div>
+                                @foreach($advertisements as $advertisement)
+                                    <div class="py-1">
+                                        <a href="{{ url(`/`.$advertisement->redirect_url) }}">
+                                            <img style="max-height: 300px" src="{{ asset($advertisement->banner) }}" alt="" class="img-fluid ">
+                                        </a>
+                                    </div>
+                                @endforeach
+                            </div>
+                        @endif
+                    </div>
+                @endif
+
             </div>
         </div>
 

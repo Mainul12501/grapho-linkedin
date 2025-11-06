@@ -2,7 +2,7 @@
     <div class="card card-body mt-2">
         <div>
             <a href="{{ route('employer.company-profile', ['view' => 'employer', 'company_id' => $post?->employer?->employerCompany?->id ]) }}" style="text-decoration: none">
-                <span style="" class="mr-2"><img src="{{ asset($post?->employer?->employerCompany?->logo ?? 'frontend/employee/images/authentication images/Compnay logo.png') }}" style="height: 60px; border-radius: 50%; width: 60px " alt=""></span>
+                <span style="" class="mr-2"><img src="{{ asset($post?->employer?->employerCompany?->logo ?? 'frontend/employee/images/authentication images/Compnay logo.png') }}" style="height: 60px; width: 60px " alt=""></span>
                 <span class="fw-bolder">{{ $post?->employer?->employerCompany?->name ?? 'Employer Name' }}</span>
             </a>
             <span class="float-end">
@@ -26,7 +26,7 @@
         </div>
         <div class="mt-2 " style="text-align: justify">
             <p>
-                {!! str()->words($post->description, 40, ' <a href="'. route('employer.view-post', $post->id)  .'">See More...</a>') !!}
+                {!! str()->words($post->description, 40, ` <a href="`. route('employer.view-post', $post->id)  .`">See More...</a>`) !!}
             </p>
         </div>
     </div>

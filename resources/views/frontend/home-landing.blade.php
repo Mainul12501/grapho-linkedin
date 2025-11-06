@@ -295,8 +295,15 @@
             <div class="col-md-2 mb-3">
                 <h6 class="fw-semibold">{{ trans('home.employers') }}</h6>
                 <ul class="list-unstyled small">
-                    <li><a href="{{ url('auth/user-registration-page?user=Employer') }}" class="text-decoration-none text-dark">{{ trans('home.get_free_employer_account') }}</a></li>
-                    <li><a href="{{ url('auth/user-registration-page?user=Employer') }}" class="text-decoration-none text-dark">{{ trans('home.employer_center') }}</a></li>
+                    @if(!auth()->check())
+                        <li><a href="{{ url('auth/user-registration-page?user=Employer') }}" class="text-decoration-none text-dark">{{ trans('home.get_free_employer_account') }}</a></li>
+                        <li><a href="{{ url('auth/user-registration-page?user=Employer') }}" class="text-decoration-none text-dark">{{ trans('home.employer_center') }}</a></li>
+                    @elseif(auth()->user()->user_type == 'employer')
+                        <li><a href="{{ route('employer.dashboard') }}" class="text-decoration-none text-dark">{{ trans('home.dashboard') }}</a></li>
+                        <li><a href="{{ route('employer.my-jobs') }}" class="text-decoration-none text-dark">{{ trans('home.jobs') }}</a></li>
+                    @else
+                        <li><a href="{{ url('/') }}" class="text-decoration-none text-dark">{{ trans('home.home') }}</a></li>
+                    @endif
                 </ul>
             </div>
             <div class="col-md-3 mb-3">
@@ -355,9 +362,9 @@
                     </a>
                 </div>
 
-                <select class="form-select form-select-sm w-auto" aria-label="Select country">
-                    <option value="en">English</option>
-                    <option value="bn">Bangla</option>
+                <select class="form-select form-select-sm w-auto" aria-label="Select country" id="changeLocalLangOption">
+                    <option value="en" {{ session('locale') == 'en' ? 'selected' : '' }} data-url="{{ route('change-local-language', ['local' => 'English']) }}">{{ trans('home.english') }}</option>
+                    <option value="bn" {{ session('locale') == 'bn' ? 'selected' : '' }} data-url="{{ route('change-local-language', ['local' => 'Bangla']) }}">{{ trans('home.bangla') }}</option>
                 </select>
             </div>
         </div>

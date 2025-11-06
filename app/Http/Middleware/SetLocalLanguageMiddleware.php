@@ -15,14 +15,11 @@ class SetLocalLanguageMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-//        if(is_null(session('locale')))
-//            session(['locale'=> 'en']); // set language english if language is not set in session
         if (!session()->has('locale')) {
-//            session(['locale' => 'en']);
             session()->put('locale','en');
         }
 
-        app()->setLocale(session('locale')); // set the session's language to our application
+        app()->setLocale(session('locale'));
 
         return $next($request);
     }

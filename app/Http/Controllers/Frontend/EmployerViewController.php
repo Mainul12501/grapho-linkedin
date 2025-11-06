@@ -744,8 +744,8 @@ class EmployerViewController extends Controller
         $user = ViewHelper::loggedUser();
         $validator = Validator::make($request->all(), [
             'name' => 'required',
-            'email' => ['email', 'unique:users'],
-            'mobile' => ['required', 'unique:users'],
+            'email' => ['email', 'unique:users,email'],
+            'mobile' => ['required', 'regex:/^01[3-9]\d{8}$/', 'unique:users,mobile'],
             'password' => 'required|min:6',
         ]);
         if ($validator->fails()) {
