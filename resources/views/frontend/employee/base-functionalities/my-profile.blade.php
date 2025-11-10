@@ -114,7 +114,7 @@
                                         </h5>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{{ trans('common.close') }}"></button>
                                     </div>
-                                    <form action="{{ route('employee.update-profile', auth()->id()) }}" method="post" enctype="multipart/form-data">
+                                    <form action="{{ route('employee.update-profile', auth()->id()) }}" method="post" enctype="multipart/form-data" id="employeeUpdateProfile">
                                         @csrf
                                         <div class="modal-body">
                                             <!-- Form for editing contact info -->
@@ -133,7 +133,7 @@
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="phoneInput" class="form-label">{{ trans('employee.gender') }}</label>
-                                                    <select name="gender" class="form-control select2" id="">
+                                                    <select name="gender" class=" select2" id="">
                                                         <option value="male" {{ auth()->user()->gender == 'male' ? 'selected' : '' }}>{{ trans('employee.male') }}</option>
                                                         <option value="female" {{ auth()->user()->gender == 'female' ? 'selected' : '' }}>{{ trans('employee.female') }}</option>
                                                     </select>
@@ -441,7 +441,7 @@
                                                 <form action="{{ route('employee.employee-work-experiences.destroy', $workExperience->id) }}" method="post">
                                                     @csrf
                                                     @method('delete')
-                                                    <button class="dropdown-item" type="submit">{{ trans('common.delete') }}</button>
+                                                    <button class="dropdown-item data-delete-form" type="submit">{{ trans('common.delete') }}</button>
                                                 </form>
                                             </li>
                                         </ul>
@@ -507,7 +507,7 @@
                                                 <form action="{{ route('employee.employee-educations.destroy', $employeeEducation->id) }}" method="post">
                                                     @csrf
                                                     @method('delete')
-                                                    <button class="dropdown-item" type="submit">{{ trans('common.delete') }}</button>
+                                                    <button class="dropdown-item data-delete-form" type="submit">{{ trans('common.delete') }}</button>
                                                 </form>
                                             </li>
                                         </ul>
@@ -588,7 +588,7 @@
                                                 <form action="{{ route('employee.employee-documents.destroy', $employeeDocument->id) }}" method="post">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button class="dropdown-item" type="submit">{{ trans('common.delete') }}</button>
+                                                    <button class="dropdown-item data-delete-form" type="submit">{{ trans('common.delete') }}</button>
                                                 </form>
                                             </li>
                                         </ul>
@@ -665,14 +665,14 @@
                     </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{{ trans('common.close') }}"></button>
                 </div>
-                <form action="{{ route('employee.employee-work-experiences.store') }}" method="post" enctype="multipart/form-data">
+                <form action="{{ route('employee.employee-work-experiences.store') }}" method="post" enctype="multipart/form-data" id="createEmployeeWorkExperienceForm">
                     <div class="modal-body">
                         <!-- Form for adding work experience -->
 
                             @csrf
                             <div class="mb-4">
                                 <label for="jobTitleInput" class="form-label">{{ trans('employee.position') }}</label>
-                                <input type="text" class="form-control" name="title" id="jobTitleInput" placeholder="{{ trans('auth.type_here') }}" />
+                                <input type="text" class="form-control" required name="title" id="jobTitleInput" placeholder="{{ trans('auth.type_here') }}" />
                             </div>
 
                             <div class="mb-4">
@@ -687,7 +687,7 @@
 
                             <div class="mb-4">
                                 <label for="companyInput" class="form-label">{{ trans('employee.company_organization') }}</label>
-                                <input type="text" class="form-control" list="companyDatalist" name="company_name" id="companyInput" placeholder="{{ trans('auth.type_here') }}" />
+                                <input type="text" class="form-control" required list="companyDatalist" name="company_name" id="companyInput" placeholder="{{ trans('auth.type_here') }}" />
 
 {{--                                <label for="companyLogo" class="form-label mt-3">Company/Organization Logo</label>--}}
 {{--                                <input type="file" class="form-control" name="company_logo" id="companyLogo" accept="image/*" />--}}
@@ -782,7 +782,7 @@
                     </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{{ trans('common.close') }}"></button>
                 </div>
-                <form action="{{ route('employee.employee-educations.store') }}" method="post" enctype="multipart/form-data">
+                <form action="{{ route('employee.employee-educations.store') }}" method="post" enctype="multipart/form-data" id="addEducationForm">
                     @csrf
                     <div class="modal-body">
                         <!-- Form for adding education -->
@@ -790,7 +790,7 @@
                         <div class="mb-4">
                             <label for="degreeInput" class="form-label">{{ trans('employee.program_name') }}</label>
 {{--                            <input type="text" class="form-control" id="degreeInput" placeholder="{{ trans('auth.type_here') }}" />--}}
-                            <select name="education_degree_name_id" class="form-control " id="">
+                            <select name="education_degree_name_id" class="form-control " required id="">
 {{--                                <option  disabled>Select Education Program</option>--}}
                                 @foreach($educationDegreeNames as $educationDegreeName)
                                     <option value="{{ $educationDegreeName->id }}" has-institute-name="{{ $educationDegreeName->need_institute_field }}">{{ $educationDegreeName->degree_name }}</option>
@@ -801,7 +801,7 @@
                         <div id="universityDiv">
                             <div class="mb-4">
                                 <label for="universityInput" class="form-label">{{ trans('employee.name_of_institution') }}</label>
-                                                            <input type="text" class="form-control" name="institute_name" id="universityInput" placeholder="{{ trans('auth.type_here') }}" />
+                                                            <input type="text" required class="form-control" name="institute_name" id="universityInput" placeholder="{{ trans('auth.type_here') }}" />
 {{--                                <select name="university_name_id" class="form-control select2" id="">--}}
 {{--                                    <option  disabled>Select University</option>--}}
 {{--                                    @foreach($universityNames as $universityName)--}}
@@ -812,7 +812,7 @@
 
                             <div class="mb-4">
                                 <label for="fieldOfStudyInput" class="form-label">{{ trans('employee.background_field_of_study') }}</label>
-                                                            <input type="text" class="form-control" name="field_of_study" id="fieldOfStudyInput" placeholder="{{ trans('auth.type_here') }}" />
+                                                            <input required type="text" class="form-control" name="field_of_study" id="fieldOfStudyInput" placeholder="{{ trans('auth.type_here') }}" />
 {{--                                <select name="field_of_study_id" class="form-control select2" id="">--}}
 {{--                                    <option selected disabled>Select Field of Study</option>--}}
 {{--                                    @foreach($fieldOfStudies as $fieldOfStudy)--}}
@@ -841,7 +841,7 @@
 
                         <div class="mb-4">
                             <label for="passingYear" class="form-label">{{ trans('employee.passing_year') }}</label>
-                            <input type="text" class="form-control" name="passing_year" id="passingYear" placeholder="{{ trans('auth.type_here') }}" />
+                            <input type="text" required class="form-control" name="passing_year" id="passingYear" placeholder="{{ trans('auth.type_here') }}" />
                         </div>
 
 
@@ -888,7 +888,7 @@
 
                         <div class="mb-4">
                             <label for="cgpaInput" class="form-label">{{ trans('employee.cgpa') }}</label>
-                            <input type="text" name="cgpa" class="form-control" id="cgpaInput" placeholder="{{ trans('auth.type_here') }}" />
+                            <input type="text" required name="cgpa" class="form-control" id="cgpaInput" placeholder="{{ trans('auth.type_here') }}" />
                         </div>
 
 {{--                        <div class="mb-4">--}}
@@ -946,7 +946,7 @@
                     </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{{ trans('common.close') }}"></button>
                 </div>
-                <form action="{{ route('employee.employee-documents.store') }}" method="post" enctype="multipart/form-data">
+                <form action="{{ route('employee.employee-documents.store') }}" id="createEmployeeDocuments" method="post" enctype="multipart/form-data">
                     @csrf
                     <div class="modal-body">
                         <!-- Form for adding document -->
@@ -955,7 +955,7 @@
                                 <label for="documentFileTitleInput" class="form-label">{{ trans('employee.document_title') }}</label>
                                 <div class="d-flex align-items-center">
 {{--                                    <input type="text" name="title" class="form-control" id="documentFileTitleInput" />--}}
-                                    <select name="title" class="form-control select2" id="">
+                                    <select name="title" required class=" select2" id="" style="width: 100%;">
                                         <option value="CV">CV</option>
                                         <option value="NID">NID</option>
                                         <option value="Certificate">Certificate</option>
@@ -966,7 +966,7 @@
                             <div class="mb-4">
                                 <label for="documentFileInput" class="form-label">{{ trans('employee.document_file') }}</label>
                                 <div class="d-flex align-items-center">
-                                    <input type="file" name="file" class="form-control" id="documentFileInput" />
+                                    <input type="file" required name="file" class="form-control" id="documentFileInput" />
 {{--                                    <span class="ms-2">cv.pdf <small>(PDF - 325 KB)</small></span>--}}
                                 </div>
                             </div>
@@ -1040,8 +1040,8 @@
 @endsection
 @push('style')
     <style>
-        .form-control {border-radius: 15px}
-
+        .form-control {border-radius: 0px}
+        .selectize-input {padding: 15px!important;}
     </style>
 @endpush
 @push('script')
@@ -1408,4 +1408,350 @@
         });
 
     </script>
+
+
+{{--    form validation start--}}
+    <script>
+        // ============================================
+        // COMMON VALIDATION FUNCTIONS
+        // ============================================
+
+        /**
+         * Validate required fields
+         */
+        function validateRequired(value, fieldName) {
+            if (!value || value.trim() === '') {
+                toastr.error(`${fieldName} is required`);
+                return false;
+            }
+            return true;
+        }
+
+        /**
+         * Validate email format
+         */
+        function validateEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                toastr.error('Please enter a valid email address');
+                return false;
+            }
+            return true;
+        }
+
+        /**
+         * Validate Bangladeshi phone number
+         * Must start with 0 and be exactly 11 digits
+         */
+        function validateBDPhone(phone) {
+            const phoneRegex = /^0\d{10}$/;
+            if (!phoneRegex.test(phone)) {
+                toastr.error('Invalid Phone Number.');
+                return false;
+            }
+            return true;
+        }
+
+        /**
+         * Get field label text or name
+         */
+        function getFieldLabel($field) {
+            const $label = $('label[for="' + $field.attr('id') + '"]');
+            return $label.length ? $label.text().replace('*', '').trim() : $field.attr('name');
+        }
+
+        // ============================================
+        // EMPLOYEE PROFILE UPDATE FORM VALIDATION
+        // ============================================
+
+        function validateEmployeeProfileForm() {
+            let isValid = true;
+            const $form = $('#employeeUpdateProfile');
+
+            // Validate all required fields
+            $form.find('[required]').each(function() {
+                const $field = $(this);
+                const value = $field.val();
+                const fieldLabel = getFieldLabel($field);
+
+                if (!validateRequired(value, fieldLabel)) {
+                    isValid = false;
+                    $field.addClass('is-invalid');
+                    return false; // Break loop on first error
+                } else {
+                    $field.removeClass('is-invalid');
+                }
+            });
+
+            if (!isValid) return false;
+
+            // Validate email
+            const email = $form.find('input[name="email"]').val();
+            if (email && !validateEmail(email)) {
+                $form.find('input[name="email"]').addClass('is-invalid');
+                return false;
+            } else {
+                $form.find('input[name="email"]').removeClass('is-invalid');
+            }
+
+            // Validate phone
+            const phone = $form.find('input[name="mobile"]').val();
+            if (phone && !validateBDPhone(phone)) {
+                $form.find('input[name="mobile"]').addClass('is-invalid');
+                return false;
+            } else {
+                $form.find('input[name="mobile"]').removeClass('is-invalid');
+            }
+
+            return true;
+        }
+
+
+        // ============================================
+        // WORK EXPERIENCE FORM VALIDATION LOGIC
+        // ============================================
+        function validateWorkExperienceForm($form) {
+            let valid = true;
+
+            // title required
+            const title = $form.find('input[name="title"]').val();
+            if (!title.trim()) {
+                toastr.error('Position title is required');
+                valid = false;
+            }
+
+            // start date required
+            const startDate = $form.find('input[name="start_date"]').val();
+            if (!startDate) {
+                toastr.error('Start date is required');
+                valid = false;
+            }
+
+            // end date check
+            const isCurrent = $form.find('input[name="is_working_currently"]').is(':checked');
+            const endDate = $form.find('input[name="end_date"]').val();
+
+            if (!isCurrent && !endDate) {
+                toastr.error('End date is required if not currently working');
+                valid = false;
+            }
+
+            if (startDate && endDate && new Date(endDate) < new Date(startDate)) {
+                toastr.error('End date cannot be earlier than start date');
+                valid = false;
+            }
+
+            return valid;
+        }
+
+        // ===================== COMMON VALIDATION FUNCTION =====================
+        function validateEducationForm($form) {
+            let valid = true;
+
+            const degree = $form.find('[name="education_degree_name_id"]').val();
+            const institute = $form.find('[name="institute_name"]').val()?.trim();
+            const field = $form.find('[name="field_of_study"]').val()?.trim();
+            const year = $form.find('[name="passing_year"]').val()?.trim();
+            const cgpa = $form.find('[name="cgpa"]').val()?.trim();
+
+            // 1️⃣ Education degree
+            if (!degree) {
+                toastr.error('Education program is required');
+                valid = false;
+            }
+
+            // 2️⃣ Institute name - required, no digits allowed
+            if (!institute) {
+                toastr.error('Institute name is required');
+                valid = false;
+            } else if (/\d/.test(institute)) {
+                toastr.error('Institute name cannot contain numbers');
+                valid = false;
+            }
+
+            // 3️⃣ Field of study - required, no digits allowed
+            if (!field) {
+                toastr.error('Field of study is required');
+                valid = false;
+            } else if (/\d/.test(field)) {
+                toastr.error('Field of study cannot contain numbers');
+                valid = false;
+            }
+
+            // 4️⃣ Passing year - required, must be 4-digit number
+            if (!year) {
+                toastr.error('Passing year is required');
+                valid = false;
+            } else if (!/^\d{4}$/.test(year)) {
+                toastr.error('Passing year must be a valid year (e.g., 2022)');
+                valid = false;
+            }
+
+            // 5️⃣ CGPA - required, numeric, allows decimal
+            if (!cgpa) {
+                toastr.error('CGPA is required');
+                valid = false;
+            } else if (!/^\d+(\.\d+)?$/.test(cgpa)) {
+                toastr.error('CGPA must be a number (e.g., 3.75)');
+                valid = false;
+            }
+
+            return valid;
+        }
+
+
+        // ============================================
+        // FORM SUBMIT HANDLERS
+        // ============================================
+
+        $(document).ready(function() {
+
+            // Employee Profile Update Form
+            $('#employeeUpdateProfile').on('submit', function(e) {
+                e.preventDefault();
+
+                if (validateEmployeeProfileForm()) {
+                    // All validations passed - submit the form
+                    $(this).off('submit').submit();
+                }
+            });
+
+            // ===================================================
+            // WORK EXPERIENCE FORM VALIDATION (STATIC + DYNAMIC)
+            // ===================================================
+
+            // Handle static create form
+            $('#createEmployeeWorkExperienceForm').on('submit', function(e) {
+                e.preventDefault();
+                const $form = $(this);
+                if (validateWorkExperienceForm($form)) {
+                    this.submit();
+                }
+            });
+
+            // Handle dynamic edit form (when modal is shown)
+            $(document).on('shown.bs.modal', '#editWorkExperienceModal', function() {
+                const $form = $(this).find('form#editEmployeeWorkExperienceForm');
+
+                // Unbind any duplicate handler first (in case modal is opened multiple times)
+                $form.off('submit.validate');
+
+                // Then reattach
+                $form.on('submit.validate', function(e) {
+                    e.preventDefault();
+                    if (validateWorkExperienceForm($form)) {
+                        this.submit();
+                    }
+                });
+            });
+
+           // documents
+// Helper: allowed extensions
+            const allowedExt = ['pdf','jpg','jpeg','png'];
+
+            // Validation function that runs on submit only
+            function validateDocumentForm($form) {
+                // trim helper
+                const val = (selector) => ($form.find(selector).val() || '').toString().trim();
+
+                const title = val('[name="title"]');
+                const fileInput = $form.find('[name="file"]');
+                const fileVal = fileInput.val();
+
+                // clear previous invalid states
+                $form.find('.is-invalid').removeClass('is-invalid');
+
+                // title required
+                if (!title) {
+                    toastr.error('Please select or enter a document title');
+                    // try to mark field (select or input)
+                    const $titleField = $form.find('[name="title"]').first();
+                    if ($titleField.length) $titleField.addClass('is-invalid');
+                    return false;
+                }
+
+                // file required
+                if (!fileVal) {
+                    toastr.error('Please upload a file');
+                    fileInput.addClass('is-invalid');
+                    return false;
+                }
+
+                // extension check
+                // fileVal could be C:\fakepath\file.pdf or just file.pdf
+                const fileName = fileVal.split('\\').pop().split('/').pop();
+                const ext = (fileName.split('.').pop() || '').toLowerCase();
+                if (allowedExt.indexOf(ext) === -1) {
+                    toastr.error('Only PDF, JPG, JPEG or PNG files are allowed');
+                    fileInput.addClass('is-invalid');
+                    return false;
+                }
+
+                // All good
+                return true;
+            }
+
+            // ===================== ADD FORM VALIDATION (STATIC) =====================
+            $('#addEducationForm').on('submit', function(e) {
+                e.preventDefault();
+                const $form = $(this);
+                if (validateEducationForm($form)) {
+                    this.submit();
+                }
+            });
+
+            // ===================== EDIT FORM VALIDATION (DYNAMIC MODAL) =====================
+            $(document).on('shown.bs.modal', '#editEducationModal', function() {
+                const $form = $(this).find('form#editEducationForm');
+
+                // remove old handler first to prevent duplicates
+                $form.off('submit.validateEducation');
+
+                $form.on('submit.validateEducation', function(e) {
+                    e.preventDefault();
+                    if (validateEducationForm($form)) {
+                        this.submit();
+                    }
+                });
+            });
+
+            // documents
+// Delegated handler for both create + edit forms, runs only on submit
+            $(document).on('submit', '#createEmployeeDocuments, #editEmployeeDocuments', function (e) {
+                e.preventDefault(); // always prevent and decide manually
+                const $form = $(this);
+
+                // If we are in the middle of programmatic submit, allow native submit to pass through
+                if ($form.data('submitting')) {
+                    // cleanup the flag immediately (optional)
+                    $form.removeData('submitting');
+                    return true; // allow native submit to continue
+                }
+
+                // Run validations (only when actual user submits)
+                if (!validateDocumentForm($form)) {
+                    // invalid -> stop submission (we already prevented default)
+                    return false;
+                }
+
+                // Valid -> set a flag and submit natively (so browser performs file upload/normal submit)
+                $form.data('submitting', true);
+                $form[0].submit(); // native submit (will trigger this handler again, but flag will let it pass)
+            });
+
+            // Remove invalid state dynamically
+            $(document).on('input change', 'input, select, textarea', function () {
+                $(this).removeClass('is-invalid');
+            });
+
+            // Remove validation error class on input
+            // $('input, select, textarea').on('input change', function() {
+            //     $(this).removeClass('is-invalid');
+            // });
+
+        });
+    </script>
+{{--    form validation end--}}
+
+
 @endpush

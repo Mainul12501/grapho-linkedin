@@ -20,7 +20,7 @@
     <link rel="stylesheet" href="{{ asset('/') }}common-assets/css/toastr-2.1.3.min.css" />
     <!-- Sweet Alert -->
 {{--    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.min.css" rel="stylesheet" />--}}
-    <link rel="stylesheet" href="{{ asset('/') }}common-assets/css/sweetalert2-11.7.3.min.css" />
+{{--    <link rel="stylesheet" href="{{ asset('/') }}common-assets/css/sweetalert2-11.7.3.min.css" />--}}
 
     <!-- css class helper -->
 {{--    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Mainul12501/css-common-helper-classes/helper.min.css" />--}}
@@ -127,7 +127,37 @@
 <script src="{{ asset('/') }}common-assets/js/toastr-2.1.3.min.js"></script>
 {{--    sweet alert js--}}
 {{--<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>--}}
-<script src="{{ asset('/') }}common-assets/js/sweetalert2@11-11.22.0.js"></script>
+{{--<script src="{{ asset('/') }}common-assets/js/sweetalert2@11-11.22.0.js"></script>--}}
+<!-- Sweet Alert JS -->
+{{--<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js"></script>--}}
+
+{{--    sweet alert js--}}
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+{{--    delete popup with sweet alert--}}
+<script>
+    $(document).on('click', '.data-delete-form', function () {
+        event.preventDefault();
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Swal.fire(
+                //     'Deleted!',
+                //     'Your file has been deleted.',
+                //     'success'
+                // )
+                $(this).parent().submit();
+            }
+
+        })
+    })
+</script>
 {!! Toastr::message() !!}
 {!! $siteSetting->meta_footer ?? '' !!}
 <script>

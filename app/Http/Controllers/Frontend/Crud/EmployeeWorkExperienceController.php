@@ -94,6 +94,10 @@ class EmployeeWorkExperienceController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        $request->validate([
+            'title' => 'required',
+            'company_name' => 'required',
+        ]);
         $workExperience = EmployeeWorkExperience::findOrFail($id);
         if ($workExperience->user_id != auth()->id())
             return ViewHelper::returEexceptionError('You are not authorized to update this experience.');

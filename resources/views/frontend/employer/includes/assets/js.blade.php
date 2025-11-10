@@ -14,7 +14,37 @@
 {{--<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>--}}
 <script src="{{ asset('/') }}common-assets/js/toastr-2.1.3.min.js"></script>
 {{--    sweet alert js--}}
-<script src="{{ asset('/') }}common-assets/js/sweetalert2@11-11.22.0.js"></script>
+{{--<script src="{{ asset('/') }}common-assets/js/sweetalert2@11-11.22.0.js"></script>--}}
+<!-- Sweet Alert JS -->
+{{--<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js"></script>--}}
+
+{{--    sweet alert js--}}
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+{{--    delete popup with sweet alert--}}
+<script>
+    $(document).on('click', '.data-delete-form', function () {
+        event.preventDefault();
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Swal.fire(
+                //     'Deleted!',
+                //     'Your file has been deleted.',
+                //     'success'
+                // )
+                $(this).parent().submit();
+            }
+
+        })
+    })
+</script>
 {!! Toastr::message() !!}
 
 

@@ -1,4 +1,4 @@
-<form action="{{ route('employee.employee-documents.update', $data->id) }}" method="post" enctype="multipart/form-data">
+<form action="{{ route('employee.employee-documents.update', $data->id) }}" id="editEmployeeDocuments" method="post" enctype="multipart/form-data">
     @csrf
     @method('put')
     <div class="modal-body">
@@ -8,7 +8,7 @@
             <label for="documentFileTitleInput" class="form-label">{{ trans('employee.document_title') }}</label>
             <div class="d-flex align-items-center">
 {{--                <input type="text" name="title" value="{{ $data->title ?? '' }}" class="form-control" id="documentFileTitleInput" />--}}
-                <select name="title" class="form-control select2" id="">
+                <select name="title" required class="form-control select2" id="">
                     <option value="CV" {{ $data->title == 'CV' ? 'selected' : '' }}>CV</option>
                     <option value="NID" {{ $data->title == 'NID' ? 'selected' : '' }}>NID</option>
                     <option value="Certificate" {{ $data->title == 'Certificate' ? 'selected' : '' }}>Certificate</option>
@@ -19,7 +19,7 @@
         <div class="mb-4">
             <label for="documentFileInput" class="form-label">{{ trans('employee.document_file') }}</label>
             <div class="d-flex align-items-center">
-                <input type="file" name="file" class="form-control" id="documentFileInput" />
+                <input type="file" required name="file" class="form-control" id="documentFileInput" />
                 {{--                                    <span class="ms-2">cv.pdf <small>(PDF - 325 KB)</small></span>--}}
             </div>
         </div>

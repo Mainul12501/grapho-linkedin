@@ -1,4 +1,4 @@
-<form action="{{ route('employee.employee-work-experiences.update', $data->id) }}" id="" method="post" enctype="multipart/form-data">
+<form action="{{ route('employee.employee-work-experiences.update', $data->id) }}" id="editEmployeeWorkExperienceForm" method="post" enctype="multipart/form-data" >
     <div class="modal-body">
         <!-- Form for adding work experience -->
         @method('put')
@@ -20,7 +20,7 @@
 
         <div class="mb-4">
             <label for="ediCompanyInput" class="form-label">{{ trans('employee.company_organization') }}</label>
-            <input type="text" class="form-control" list="companyDatalist" name="company_name" value="{{ $data->company_name }}" id="ediCompanyInput" placeholder="{{ trans('employer.type_here') }}" />
+            <input type="text" class="form-control" list="companyDatalist" required name="company_name" value="{{ $data->company_name }}" id="ediCompanyInput" placeholder="{{ trans('employer.type_here') }}" />
 
 {{--            <div class="mt-3 row">--}}
 {{--                <div class="col-8">--}}
@@ -78,7 +78,7 @@
 
         <div class="mb-4">
             <label for="editWorkSummaryInput" class="form-label">{{ trans('employee.responsibilities') }}</label>
-            <textarea class="form-control summernote" name="job_responsibilities" id="editWorkSummaryInput" rows="4" placeholder="{{ trans('employer.type_here') }}">{!! $data->job_responsibilities ?? '' !!}</textarea>
+            <textarea class="form-control summernote" required name="job_responsibilities" id="editWorkSummaryInput" rows="4" placeholder="{{ trans('employer.type_here') }}">{!! $data->job_responsibilities ?? '' !!}</textarea>
         </div>
 
     </div>

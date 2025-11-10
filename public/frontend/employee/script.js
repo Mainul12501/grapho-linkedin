@@ -700,117 +700,117 @@ document.addEventListener('DOMContentLoaded', () => {
   const fmtMY = (m, y) => (m && y) ? `${MONTH[m] || m} ${y}` : (y || '');
 
   // ---------- Steps definition ----------
-  const STEPS = [
-    {
-      id: 'editContactModal',
-      nextLabel: 'Next: Work',
-      collect(modal) {
-        return {
-          location: fieldByLabel(modal,'Location')?.value || '',
-          email:    fieldByLabel(modal,'Email')?.value || '',
-          phone:    fieldByLabel(modal,'Phone')?.value || '',
-          website:  fieldByLabel(modal,'Website')?.value || ''
-        };
-      },
-      apply(d) {
-        setText('.profileIngo.location p', d.location);
-        setLink('.profileIngo.email p a', `mailto:${d.email}`, d.email);
-        setText('.profileIngo.phone p', d.phone);
-        const url = d.website ? (d.website.startsWith('http') ? d.website : `https://${d.website}`) : '';
-        setLink('.profileIngo.website p a', url, d.website || '');
-      }
-    },
-    {
-      id: 'addWorkExperienceModal',
-      nextLabel: 'Next: Education',
-      collect(modal) {
-        return {
-          title:    modal.querySelector('#jobTitleInput')?.value || '',
-          type:     (modal.querySelector('#jobTypeInput')?.value || '').replace('-', ' ').replace(/\b\w/g,c=>c.toUpperCase()),
-          company:  modal.querySelector('#companyInput')?.value || '',
-          start:    fmtMY(modal.querySelector('#startMonthInput')?.value, modal.querySelector('#startYearInput')?.value),
-          current:  modal.querySelector('#currentJobCheck')?.checked || false,
-          location: modal.querySelector('#locationInput')?.value || '',
-          summary:  modal.querySelector('#workSummaryInput')?.value || ''
-        };
-      },
-      apply: renderExperienceCard
-    },
-    {
-      id: 'addEducationModal',
-      nextLabel: 'Next: Document',
-      collect(modal) {
-        return {
-          degree:     modal.querySelector('#degreeInput')?.value || '',
-          university: modal.querySelector('#universityInput')?.value || '',
-          field:      modal.querySelector('#fieldOfStudyInput')?.value || '',
-          major:      modal.querySelector('#majorSubjectInput')?.value || '',
-          start:      fmtMY(modal.querySelector('#startMonthInput')?.value, modal.querySelector('#startYearInput')?.value),
-          end:        fmtMY(modal.querySelector('#endMonthInput')?.value,   modal.querySelector('#endYearInput')?.value),
-          cgpa:       modal.querySelector('#cgpaInput')?.value || '',
-          location:   modal.querySelector('#locationInput')?.value || ''
-        };
-      },
-      apply: renderEducationCard
-    },
-    {
-      id: 'addDocumentModal',
-      nextLabel: 'Finish',
-      collect(modal) {
-        const f = modal.querySelector('#documentFileInput')?.files?.[0];
-        const sizeKB = f ? `${Math.round(f.size / 1024)} KB` : '';
-        return {
-          name: f?.name || 'Document',
-          type: f ? (f.type?.toUpperCase().split('/').pop() || 'FILE') : '',
-          size: sizeKB,
-          location: 'Dhaka, Bangladesh'
-        };
-      },
-      apply: renderDocumentCard
-    }
-  ];
+  // const STEPS = [
+  //   {
+  //     id: 'editContactModal',
+  //     nextLabel: 'Next: Work',
+  //     collect(modal) {
+  //       return {
+  //         location: fieldByLabel(modal,'Location')?.value || '',
+  //         email:    fieldByLabel(modal,'Email')?.value || '',
+  //         phone:    fieldByLabel(modal,'Phone')?.value || '',
+  //         website:  fieldByLabel(modal,'Website')?.value || ''
+  //       };
+  //     },
+  //     apply(d) {
+  //       setText('.profileIngo.location p', d.location);
+  //       setLink('.profileIngo.email p a', `mailto:${d.email}`, d.email);
+  //       setText('.profileIngo.phone p', d.phone);
+  //       const url = d.website ? (d.website.startsWith('http') ? d.website : `https://${d.website}`) : '';
+  //       setLink('.profileIngo.website p a', url, d.website || '');
+  //     }
+  //   },
+  //   {
+  //     id: 'addWorkExperienceModal',
+  //     nextLabel: 'Next: Education',
+  //     collect(modal) {
+  //       return {
+  //         title:    modal.querySelector('#jobTitleInput')?.value || '',
+  //         type:     (modal.querySelector('#jobTypeInput')?.value || '').replace('-', ' ').replace(/\b\w/g,c=>c.toUpperCase()),
+  //         company:  modal.querySelector('#companyInput')?.value || '',
+  //         start:    fmtMY(modal.querySelector('#startMonthInput')?.value, modal.querySelector('#startYearInput')?.value),
+  //         current:  modal.querySelector('#currentJobCheck')?.checked || false,
+  //         location: modal.querySelector('#locationInput')?.value || '',
+  //         summary:  modal.querySelector('#workSummaryInput')?.value || ''
+  //       };
+  //     },
+  //     apply: renderExperienceCard
+  //   },
+  //   {
+  //     id: 'addEducationModal',
+  //     nextLabel: 'Next: Document',
+  //     collect(modal) {
+  //       return {
+  //         degree:     modal.querySelector('#degreeInput')?.value || '',
+  //         university: modal.querySelector('#universityInput')?.value || '',
+  //         field:      modal.querySelector('#fieldOfStudyInput')?.value || '',
+  //         major:      modal.querySelector('#majorSubjectInput')?.value || '',
+  //         start:      fmtMY(modal.querySelector('#startMonthInput')?.value, modal.querySelector('#startYearInput')?.value),
+  //         end:        fmtMY(modal.querySelector('#endMonthInput')?.value,   modal.querySelector('#endYearInput')?.value),
+  //         cgpa:       modal.querySelector('#cgpaInput')?.value || '',
+  //         location:   modal.querySelector('#locationInput')?.value || ''
+  //       };
+  //     },
+  //     apply: renderEducationCard
+  //   },
+  //   {
+  //     id: 'addDocumentModal',
+  //     nextLabel: 'Finish',
+  //     collect(modal) {
+  //       const f = modal.querySelector('#documentFileInput')?.files?.[0];
+  //       const sizeKB = f ? `${Math.round(f.size / 1024)} KB` : '';
+  //       return {
+  //         name: f?.name || 'Document',
+  //         type: f ? (f.type?.toUpperCase().split('/').pop() || 'FILE') : '',
+  //         size: sizeKB,
+  //         location: 'Dhaka, Bangladesh'
+  //       };
+  //     },
+  //     apply: renderDocumentCard
+  //   }
+  // ];
 
   // ---------- Wire Save → Next behavior ----------
-  STEPS.forEach((step, idx) => {
-    const modalEl = document.getElementById(step.id);
-    if (!modalEl) return;
-
-    const saveBtn = modalEl.querySelector('.modal-footer .btn.btn-primary');
-    if (!saveBtn) return;
-
-    // initial mode
-    saveBtn.dataset.mode = 'save';
-    const originalLabel = saveBtn.textContent;
-
-    saveBtn.addEventListener('click', () => {
-      const mode = saveBtn.dataset.mode;
-
-      if (mode === 'save') {
-        // 1) Save: collect + apply to page
-        const data = step.collect(modalEl);
-        step.apply(data);
-
-        // 2) Turn this same button into “Next”
-        saveBtn.dataset.mode = 'next';
-        saveBtn.textContent = step.nextLabel || 'Next';
-
-      } else {
-        // “Next”: move to the next step
-        modalAPI(modalEl).hide();
-        const next = STEPS[idx + 1];
-        if (next) {
-          const nextEl = document.getElementById(next.id);
-          if (nextEl) modalAPI(nextEl).show();
-        }
-      }
-    });
-
-    // Reset the button back to “Save” whenever modal closes
-    modalEl.addEventListener('hidden.bs.modal', () => {
-      saveBtn.dataset.mode = 'save';
-      saveBtn.textContent = originalLabel;
-    });
-  });
+  // STEPS.forEach((step, idx) => {
+  //   const modalEl = document.getElementById(step.id);
+  //   if (!modalEl) return;
+  //
+  //   const saveBtn = modalEl.querySelector('.modal-footer .btn.btn-primary');
+  //   if (!saveBtn) return;
+  //
+  //   // initial mode
+  //   saveBtn.dataset.mode = 'save';
+  //   const originalLabel = saveBtn.textContent;
+  //
+  //   saveBtn.addEventListener('click', () => {
+  //     const mode = saveBtn.dataset.mode;
+  //
+  //     if (mode === 'save') {
+  //       // 1) Save: collect + apply to page
+  //       const data = step.collect(modalEl);
+  //       step.apply(data);
+  //
+  //       // 2) Turn this same button into “Next”
+  //       saveBtn.dataset.mode = 'next';
+  //       saveBtn.textContent = step.nextLabel || 'Next';
+  //
+  //     } else {
+  //       // “Next”: move to the next step
+  //       modalAPI(modalEl).hide();
+  //       const next = STEPS[idx + 1];
+  //       if (next) {
+  //         const nextEl = document.getElementById(next.id);
+  //         if (nextEl) modalAPI(nextEl).show();
+  //       }
+  //     }
+  //   });
+  //
+  //   // Reset the button back to “Save” whenever modal closes
+  //   modalEl.addEventListener('hidden.bs.modal', () => {
+  //     saveBtn.dataset.mode = 'save';
+  //     saveBtn.textContent = originalLabel;
+  //   });
+  // });
 });
 
 /* =================================================
