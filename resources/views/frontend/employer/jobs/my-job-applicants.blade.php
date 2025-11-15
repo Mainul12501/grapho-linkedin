@@ -15,29 +15,29 @@
 
         <!-- Bootstrap Tabs -->
         <div class="talentMobileTop">
-            <ul class="nav nav-tabs mb-4 talenttabbutton" id="applicationTabs" role="tablist">
-                <li class="nav-item mx-1" role="presentation">
+            <ul class="nav nav-tabs mb-4 talenttabbutton flex-wrap" id="applicationTabs" role="tablist">
+                <li class="nav-item mx-1 p-1" role="presentation">
                     <button class="nav-link active rounded-pill px-4 tab-btn-bg" id="pending-tab" data-bs-toggle="tab"
                             data-bs-target="#pending" type="button" role="tab" aria-controls="pending" aria-selected="true">
                         {{ trans('employee.pending') }}
                     </button>
                 </li>
-                <li class="nav-item mx-1" role="presentation">
+                <li class="nav-item mx-1 p-1" role="presentation">
                     <button class="nav-link rounded-pill px-4 tab-btn-bg" id="shortlisted-tab" data-bs-toggle="tab"
                             data-bs-target="#shortlisted" type="button" role="tab" aria-controls="shortlisted" aria-selected="false">
-                        {{ trans('employee.pending') }}
+                        {{ trans('employee.shortlisted') }}
                     </button>
                 </li>
-                <li class="nav-item mx-1" role="presentation">
-                    <button class="nav-link rounded-pill px-4 tab-btn-bg" id="rejected-tab" data-bs-toggle="tab" data-bs-target="#rejected"
-                            type="button" role="tab" aria-controls="rejected" aria-selected="false">
-                        {{ trans('employee.rejected') }}
-                    </button>
-                </li>
-                <li class="nav-item mx-1" role="presentation">
+                <li class="nav-item mx-1 p-1" role="presentation">
                     <button class="nav-link rounded-pill px-4 tab-btn-bg" id="rejected-tab" data-bs-toggle="tab" data-bs-target="#approved"
                             type="button" role="tab" aria-controls="rejected" aria-selected="false">
                         {{ trans('employee.approved') }}
+                    </button>
+                </li>
+                <li class="nav-item mx-1 p-1" role="presentation">
+                    <button class="nav-link rounded-pill px-4 tab-btn-bg" id="rejected-tab" data-bs-toggle="tab" data-bs-target="#rejected"
+                            type="button" role="tab" aria-controls="rejected" aria-selected="false">
+                        {{ trans('employee.rejected') }}
                     </button>
                 </li>
             </ul>
@@ -112,7 +112,7 @@
                 </div>
                 <!-- Mobile Cards -->
                 <div class="pending-cards">
-                    @forelse($pendingApplicants as $pendingApplicant))
+                    @forelse($pendingApplicants as $pendingApplicant)
                         <div class="card mb-3 p-3 shadow-sm rounded-3">
                             <div class="d-flex align-items-start flex-column gap-3">
                                 <img src="{{ asset($pendingApplicant?->user->profile_image ?? 'frontend/user-vector-img.jpg') }}" alt="Ayesha Begum" class="rounded-circle"

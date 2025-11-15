@@ -25,7 +25,7 @@
                             </div>
                             <div class="col-md-6 mt-2">
                                 <label for="">Price</label>
-                                <input type="number" name="price" {{ $isShown ? 'disabled' : '' }} class="form-control" value="{{ isset($subscription) ? $subscription->price : '' }}" />
+                                <input type="number" name="price" {{ $isShown ? 'disabled' : '' }} min="0" class="form-control" value="{{ isset($subscription) ? $subscription->price : '' }}" />
                             </div>
                             <div class="col-md-6 mt-2">
                                 <label for="">Duration (In days)</label>

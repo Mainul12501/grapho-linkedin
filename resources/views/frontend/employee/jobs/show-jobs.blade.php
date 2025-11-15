@@ -265,7 +265,7 @@
 
                 <!-- ---------- Right: Details panel (initial prompt) ---------- -->
                 @if($foundData)
-                    <div class="job-details" id="" style="display: block;">
+                    <div class="job-details" id="jobDetailsWithData" style="display: block;">
                         <div class="company-info mb-2">
                             <a href="{{ route('view-company-profile', $singleJobTask->employer_company_id) }}">
                                 <img style="height: 40px; margin-right: 10px; cursor: pointer" src="{{ isset($singleJobTask?->employerCompany?->logo) ? asset($singleJobTask?->employerCompany?->logo) : asset('/frontend/employee/images/contentImages/jobCardLogo.png') }}" alt="{{ $singleJobTask?->employerCompany?->name ?? 'job-0' }}" class="company-logo">
@@ -314,7 +314,7 @@
                         </div>
                     </div>
                 @else
-                    <div class="job-details" style="min-height: 570px">
+                    <div class="job-details" id="jobDetailsWithoutData" style="min-height: 570px">
                         <div class="row mt-5">
                             <div class="col-md-11 mx-auto">
                                 <div class="card card-body border-0">
@@ -388,6 +388,23 @@
     </section>
 
 
+{{--    modal for mobile view--}}
+    <div class="modal fade" id="jobDeatilsForModal">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Job Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="job-details" id="jobDeatilsForMobile">
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
 
 @endsection
 
@@ -518,6 +535,14 @@
         }
         .select-box { padding: 1px 32px 1px 16px !important;}
         .custom-select{max-width: 135px!important;}
+
+        @media screen and (max-width: 768px) {
+            .apply-btn, .save-btn {
+                width: auto!important;
+            }
+            #jobDetailsWithData {display: none!important;};
+            #jobDetailsWithoutData {display: none!important;};
+        }
     </style>
 @endpush
 @push('script')
@@ -527,37 +552,18 @@
             var jobId = $(this).attr('data-job-id');
             sendAjaxRequest('get-job-details/'+jobId+'?render=1', 'GET').then(function (response) {
                 console.log(response);
-                const jobDetailsDiv = document.querySelector('.job-details');
-                jobDetailsDiv.style.display = 'block';
-                jobDetailsDiv.innerHTML = response;
-{{--                var job = response.job;--}}
-{{--                jobDetailsDiv.innerHTML = `--}}
-{{--                                    <div class="company-info mb-2">--}}
-{{--                        <img style="height: 40px; margin-right: 10px;" src="${base_url+job.employer_company.logo}" alt="${job.employer_company.name}-logo" class="company-logo">--}}
-{{--                        <div class="company-details d-flex  pt-2" style="padding-top: 14px;">--}}
-{{--                            <h3 class="p-t-5">${job.employer_company.name}</h3>--}}
-{{--                            <span class="mx-1 p-t-5">,</span>--}}
-{{--                            <p class="p-t-5">${job.employer_company.address ?? 'Dhaka'}</p>--}}
-{{--                        </div>--}}
-{{--                    </div>--}}
-{{--                    <h4 class="job-title mb-2">${job.job_title ?? 'Job Title'}</h4>--}}
-{{--                    <div class="job-type"><span class="badge">${job.job_type.name}</span> <span class="badge">${job.job_location_type.name}</span> </div>--}}
-{{--                    <div class="d-flex gap-2  mb-3 mt-1">--}}
-{{--                        ${!response.isApplied ? `--}}
-{{--                    <form class="apply-form " action="${base_url}employee/apply-job/${job.id}" method="POST">--}}
-{{--<input type="hidden" name="_token" value="<?php echo csrf_token() ?>">--}}
-{{--      <div class="">--}}
-{{--        <button type="submit" style="padding: 8px 20px;" class="apply-btn show-apply-model" data-job-id="${job.id}" data-job-company-logo="${base_url+job.employer_company.logo}">Easy Apply</button>--}}
-{{--      </div>--}}
-{{--    </form>--}}
-{{--                    ` : ''}--}}
-{{--                    ${!response.isSaved ? `<button style="padding: 8px 20px;" class="save-btn" data-job-id="${job.id}"><img src="${base_url}frontend/employee/images/contentImages/saveIcon.png" alt="Save Icon" title="Save Job" class="save-icon"> Save</button>` : ''}--}}
-{{--                    </div>--}}
-{{--                    <h5>About ${job.employer_company.name}</h5>--}}
-{{--                    <p>${job.employer_company.company_overview}</p>--}}
-{{--                    <h5>Job Requirements</h5>--}}
-{{--                    <div class="job-requirements ms-0">${job.description}</ul>--}}
-{{--                `;--}}
+                if (window.innerWidth > 768)
+                {
+                    const jobDetailsDiv = document.querySelector('.job-details');
+                    jobDetailsDiv.style.display = 'block';
+                    jobDetailsDiv.innerHTML = response;
+                } else {
+                    const jobDetailsDiv = document.querySelector('#jobDeatilsForMobile');
+                    jobDetailsDiv.style.display = 'block';
+                    jobDetailsDiv.innerHTML = response;
+                    $('#jobDeatilsForModal').modal('show');
+                }
+
             });
 
         })

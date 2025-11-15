@@ -344,6 +344,18 @@ class EmployerViewController extends Controller
         return \view('frontend.employer.jobs.head-hunt');
     }
 
+    public function getHeadHuntFilterOptions()
+    {
+        return response()->json([
+            'jobTypes' => JobType::where(['status' => 1])->get(['id', 'name', 'slug']),
+            'universityNames' => UniversityName::where(['status' => 1])->get(['id', 'name', 'slug']),
+            'industries' => Industry::where(['status' => 1])->get(['id', 'name', 'slug']),
+            'jobLocations' => JobLocationType::where(['status' => 1])->get(['id', 'name', 'slug']),
+            'fieldOfStudies' => FieldOfStudy::where(['status' => 1])->get(['id', 'field_name', 'slug']),
+            'skillCategories' => SkillsCategory::where(['status' => 1])->with('skills')->get(['id', 'category_name', 'slug']),
+        ]);
+    }
+
     public function headHunt_backup(Request $request)
     {
         $employees = User::query()->with([
@@ -766,7 +778,8 @@ class EmployerViewController extends Controller
             $subUser->organization_name = $user->organization_name;
             $subUser->employer_agent_active_status = 'active';
             $subUser->save();
-            return ViewHelper::returnSuccessMessage('Sub user created successfully');
+            $subUser->roles()->sync(5);
+            return ViewHelper::returnSuccessMessage('Sub Employer created successfully');
         } catch (\Exception $e) {
             return ViewHelper::returEexceptionError($e->getMessage());
         }

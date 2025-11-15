@@ -37,6 +37,8 @@ class SubscriptionController extends Controller
     {
         $request->validate( [
             'title' => 'required',
+            'price' => 'required|numeric|min:0|regex:/^\d+(\.\d{1,2})?$/',
+            'duration_in_days' => 'required|integer|min:0',
         ]);
         $subscription = SubscriptionPlan::createOrUpdateSubscription($request);
         if ($subscription)
@@ -80,6 +82,8 @@ class SubscriptionController extends Controller
     {
         $request->validate([
             'title' => 'required',
+            'price' => 'required|numeric:strict|min:0',
+            'duration_in_days' => 'required|integer|min:0',
         ]);
         $subscription = SubscriptionPlan::createOrUpdateSubscription($request, $subscription);
         if ($subscription)

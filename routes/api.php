@@ -76,6 +76,7 @@ Route::middleware([
         Route::get('my-job-wise-applicants', [EmployerViewController::class, 'myJobWiseApplicants']);
         Route::get('my-job-applicants/{jobTask}', [EmployerViewController::class, 'myJobApplicants']);
         Route::get('head-hunt', [EmployerViewController::class, 'headHunt']);
+        Route::get('get-head-hunt-filter-options', [EmployerViewController::class, 'getHeadHuntFilterOptions']);
         Route::get('employer-user-management', [EmployerViewController::class, 'employerUserManagement']);
         Route::get('settings', [EmployerViewController::class, 'settings']);
         Route::get('company-profile', [EmployerViewController::class, 'companyProfile']);

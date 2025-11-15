@@ -35,6 +35,9 @@
         font-weight: 400;
         font-size: 13px;
     }
+    @media screen and (max-width: 768px) {
+        body {padding-bottom: 85px!important;}
+    }
 </style>
 
 @yield('style')

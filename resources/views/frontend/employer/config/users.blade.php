@@ -206,15 +206,17 @@
 {{--                    </div>--}}
 
                     <div class="mb-3">
-                        <button class="add-user-btn btn flex-start btn-dark" data-bs-toggle="modal" data-bs-target="#addUserModal"{{-- style="background-color: #FFCB11"--}}>
-                            <img src="{{ asset('/') }}frontend/employer/images/employersHome/addUser.png" alt="">
-                            <span class="d-none d-md-block text-white">{{ trans('common.add') }} {{ trans('common.user') }}</span>
-                        </button>
+                        @if(auth()->user()->user_type == 'employer')
+                            <button class="add-user-btn btn flex-start btn-dark" data-bs-toggle="modal" data-bs-target="#addUserModal"{{-- style="background-color: #FFCB11"--}}>
+                                <img src="{{ asset('/') }}frontend/employer/images/employersHome/addUser.png" alt="">
+                                <span class="d-none d-md-block text-white">{{ trans('common.add') }} {{ trans('common.user') }}</span>
+                            </button>
+                        @endif
                     </div>
 
                     <div class="card usermanagement-content mt-3 p-3">
-                        <div class="table-responsive">
-                            <table class="table" id="datatable">
+                        <div class="table-responsive-md">
+                            <table class="table " id="">
                                 <thead>
                                     <tr>
                                         <th>#</th>
@@ -226,26 +228,52 @@
                                         <th>{{ trans('common.action') }}</th>
                                     </tr>
                                 </thead>
-                                <tbody class="user-card">
-                                    @foreach($employerUsers as $key => $employerUser)
-                                        <tr class="user-info">
-                                            <td>{{ $loop->iteration }}</td>
-                                            <td class="name">{{ $employerUser->name ?? 'User Name' }}</td>
-                                            <td class="email">{{ $employerUser->email ?? 'User Email' }}</td>
-                                            <td class="email">{{ $employerUser->mobile ?? '01500000000' }}</td>
-                                            <td class="role">{{ $employerUser->user_type ?? 'User Type' }}</td>
-                                            <td><a href="{{ route('employer.change-sub-employer-status', ['user' => $employerUser->id, 'status' => $employerUser->employer_agent_active_status == 'active' ? 'inactive' : 'active']) }}"><span class="status badge {{ $employerUser->employer_agent_active_status == 'active' ? 'active bg-success' : 'invited bg-secondary' }}">{{ $employerUser->employer_agent_active_status == 'active' ? trans('admin.active') : trans('admin.inactive') }}</span></a></td>
-                                            <td>
+{{--                                <tbody class="user-card">--}}
+{{--                                    @foreach($employerUsers as $key => $employerUser)--}}
+{{--                                        <tr class="user-info">--}}
+{{--                                            <td>{{ $loop->iteration }}</td>--}}
+{{--                                            <td class="name">{{ $employerUser->name ?? 'User Name' }}</td>--}}
+{{--                                            <td class="email">{{ $employerUser->email ?? 'User Email' }}</td>--}}
+{{--                                            <td class="email">{{ $employerUser->mobile ?? '01500000000' }}</td>--}}
+{{--                                            <td class="role">{{ $employerUser->user_type ?? 'User Type' }}</td>--}}
+{{--                                            <td><a href="{{ route('employer.change-sub-employer-status', ['user' => $employerUser->id, 'status' => $employerUser->employer_agent_active_status == 'active' ? 'inactive' : 'active']) }}"><span class="status badge {{ $employerUser->employer_agent_active_status == 'active' ? 'active bg-success' : 'invited bg-secondary' }}">{{ $employerUser->employer_agent_active_status == 'active' ? trans('admin.active') : trans('admin.inactive') }}</span></a></td>--}}
+{{--                                            <td>--}}
 {{--                                                <a href="" class="btn btn-sm btn-success mx-1"><i class="fa fa-eye text-white f-s-11"></i></a>--}}
-                                                <a href="" class="btn btn-sm btn-primary mx-1 user-edit" data-user-id="{{ $employerUser->id }}"><i class="fa fa-edit text-white f-s-11"></i></a>
-                                                <a href="#" class="btn btn-sm btn-danger mx-1" onclick="event.preventDefault(); document.getElementById('delSubEmployer{{ $employerUser->id }}').submit()"><i class="fa fa-trash text-white f-s-11"></i></a>
+{{--                                                <a href="" class="btn btn-sm btn-primary mx-1 user-edit" data-user-id="{{ $employerUser->id }}"><i class="fa fa-edit text-white f-s-11"></i></a>--}}
+{{--                                                <a href="#" class="btn btn-sm btn-danger mx-1" onclick="event.preventDefault(); document.getElementById('delSubEmployer{{ $employerUser->id }}').submit()"><i class="fa fa-trash text-white f-s-11"></i></a>--}}
+{{--                                                <form action="{{ route('employer.delete-sub-employer', $employerUser->id) }}" onsubmit="return confirm('Are you sure to delete this user?')" method="post" id="delSubEmployer{{ $employerUser->id }}">--}}
+{{--                                                    @csrf--}}
+{{--                                                </form>--}}
+{{--                                            </td>--}}
+{{--                                        </tr>--}}
+{{--                                    @endforeach--}}
+{{--                                </tbody>--}}
+
+                                <tbody class="">
+                                @foreach($employerUsers as $key => $employerUser)
+                                    <tr class="">
+                                        <td>{{ $loop->iteration }}</td>
+                                        <td class="">{{ $employerUser->name ?? 'User Name' }}</td>
+                                        <td class="">{{ $employerUser->email ?? 'User Email' }}</td>
+                                        <td class="">{{ $employerUser->mobile ?? '01500000000' }}</td>
+                                        <td class="">{{ $employerUser->user_type ?? 'User Type' }}</td>
+                                        <td><a href="{{ route('employer.change-sub-employer-status', ['user' => $employerUser->id, 'status' => $employerUser->employer_agent_active_status == 'active' ? 'inactive' : 'active']) }}"><span class="status badge {{ $employerUser->employer_agent_active_status == 'active' ? 'active bg-success' : 'invited bg-secondary' }}">{{ $employerUser->employer_agent_active_status == 'active' ? trans('admin.active') : trans('admin.inactive') }}</span></a></td>
+                                        <td>
+                                            {{--                                                <a href="" class="btn btn-sm btn-success mx-1"><i class="fa fa-eye text-white f-s-11"></i></a>--}}
+                                            <a href="" class="btn btn-sm btn-primary mx-1 user-edit" data-user-id="{{ $employerUser->id }}"><i class="fa fa-edit text-white f-s-11"></i></a>
+                                            @if(auth()->user()->user_type == 'employer')
+                                            <a href="#" class="btn btn-sm btn-danger mx-1" onclick="event.preventDefault(); document.getElementById('delSubEmployer{{ $employerUser->id }}').submit()"><i class="fa fa-trash text-white f-s-11"></i></a>
                                                 <form action="{{ route('employer.delete-sub-employer', $employerUser->id) }}" onsubmit="return confirm('Are you sure to delete this user?')" method="post" id="delSubEmployer{{ $employerUser->id }}">
                                                     @csrf
                                                 </form>
-                                            </td>
-                                        </tr>
-                                    @endforeach
+                                            @endif
+                                        </td>
+                                    </tr>
+                                @endforeach
                                 </tbody>
+
+
+
                             </table>
                         </div>
                     </div>

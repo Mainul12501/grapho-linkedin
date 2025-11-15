@@ -73,12 +73,12 @@
                                             <img src="{{ asset('/') }}frontend/employer/images/employersHome/three dot.png" alt="">
                                         </button>
                                         <ul class="dropdown-menu dropdown-menu-end">
-                                            <li><a class="dropdown-item" href="{{ route('employer.job-tasks.edit', $jobTask->id) }}">{{ trans('common.edit') }}</a></li>
+{{--                                            <li><a class="dropdown-item" href="{{ route('employer.job-tasks.edit', $jobTask->id) }}">{{ trans('common.edit') }}</a></li>--}}
                                             <li>
                                                 <form action="{{ route('employer.job-tasks.destroy', $jobTask->id) }}" method="post">
                                                     @csrf
                                                     @method('delete')
-                                                    <button class="dropdown-item" type="submit">{{ trans('common.delete') }}</button>
+                                                    <button class="dropdown-item data-delete-form" type="submit">{{ trans('common.delete') }}</button>
                                                 </form>
                                             </li>
                                         </ul>
@@ -97,68 +97,6 @@
                         </div>
 
 
-                        <!-- Repeat Job Cards (clone above block) -->
-{{--                        <div class="col-12">--}}
-{{--                            <article class="job-card">--}}
-{{--                                <div class="job-details flex-grow-1">--}}
-{{--                                    <h6 class="job-title">Senior Officer, Corporate Banking</h6>--}}
-{{--                                    <div class="job-badges d-flex flex-wrap gap-2">--}}
-{{--                                        <span class="badge bg-light text-secondary">Full Time</span>--}}
-{{--                                        <span class="badge bg-light text-secondary">On-Site</span>--}}
-{{--                                        <span class="badge bg-light text-secondary">Day Shift</span>--}}
-{{--                                    </div>--}}
-{{--                                </div>--}}
-
-{{--                                <div class="job-info">--}}
-{{--                                    <div class="mb-2"><img src="{{ asset('/') }}frontend/employer/images/employersHome/postdOn.png" alt="" class="me-2">Posted on: 16 Feb, 2025</div>--}}
-{{--                                    <div class="mb-2"><img src="{{ asset('/') }}frontend/employer/images/employersHome/Dedline.png" alt="" class="me-2">Deadline: 24 Mar, 2025</div>--}}
-{{--                                    <div><img src="{{ asset('/') }}frontend/employer/images/employersHome/24application.png" alt="" class="me-2"><a href="#"--}}
-{{--                                                                                                                                                    class="text-decoration-underline">24 Applicants</a></div>--}}
-{{--                                </div>--}}
-
-{{--                                <div class="job-actions dropdown">--}}
-{{--                                    <button class="btn btn-link p-0 text-secondary" type="button"--}}
-{{--                                            data-bs-toggle="dropdown" aria-expanded="false">--}}
-{{--                                        <img src="{{ asset('/') }}frontend/employer/images/employersHome/three dot.png" alt="">--}}
-{{--                                    </button>--}}
-{{--                                    <ul class="dropdown-menu dropdown-menu-end">--}}
-{{--                                        <li><a class="dropdown-item" href="#">Edit</a></li>--}}
-{{--                                        <li><a class="dropdown-item" href="#">Delete</a></li>--}}
-{{--                                    </ul>--}}
-{{--                                </div>--}}
-{{--                            </article>--}}
-{{--                        </div>--}}
-
-{{--                        <div class="col-12">--}}
-{{--                            <article class="job-card">--}}
-{{--                                <div class="job-details flex-grow-1">--}}
-{{--                                    <h6 class="job-title">Senior Officer, Corporate Banking</h6>--}}
-{{--                                    <div class="job-badges d-flex flex-wrap gap-2">--}}
-{{--                                        <span class="badge bg-light text-secondary">Full Time</span>--}}
-{{--                                        <span class="badge bg-light text-secondary">On-Site</span>--}}
-{{--                                        <span class="badge bg-light text-secondary">Day Shift</span>--}}
-{{--                                    </div>--}}
-{{--                                </div>--}}
-
-{{--                                <div class="job-info">--}}
-{{--                                    <div class="mb-2"><img src="{{ asset('/') }}frontend/employer/images/employersHome/postdOn.png" alt="" class="me-2">Posted on: 16 Feb, 2025</div>--}}
-{{--                                    <div class="mb-2"><img src="{{ asset('/') }}frontend/employer/images/employersHome/Dedline.png" alt="" class="me-2">Deadline: 24 Mar, 2025</div>--}}
-{{--                                    <div><img src="{{ asset('/') }}frontend/employer/images/employersHome/24application.png" alt="" class="me-2"><a href="#"--}}
-{{--                                                                                                                                                    class="text-decoration-underline">24 Applicants</a></div>--}}
-{{--                                </div>--}}
-
-{{--                                <div class="job-actions dropdown">--}}
-{{--                                    <button class="btn btn-link p-0 text-secondary" type="button"--}}
-{{--                                            data-bs-toggle="dropdown" aria-expanded="false">--}}
-{{--                                        <img src="{{ asset('/') }}frontend/employer/images/employersHome/three dot.png" alt="">--}}
-{{--                                    </button>--}}
-{{--                                    <ul class="dropdown-menu dropdown-menu-end">--}}
-{{--                                        <li><a class="dropdown-item" href="#">Edit</a></li>--}}
-{{--                                        <li><a class="dropdown-item" href="#">Delete</a></li>--}}
-{{--                                    </ul>--}}
-{{--                                </div>--}}
-{{--                            </article>--}}
-{{--                        </div>--}}
 
 
                     </div>

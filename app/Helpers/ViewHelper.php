@@ -9,6 +9,7 @@ use App\Models\User;
 use Brian2694\Toastr\Facades\Toastr;
 use http\Client\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Cache;
 use phpDocumentor\Reflection\Types\Boolean;
 use Xenon\LaravelBDSms\Facades\SMS;
@@ -179,6 +180,16 @@ class ViewHelper
             }
         }
         return self::$status;
+    }
+
+    public static function startQueueWorkManuallyByArtisanCommand()
+    {
+        // Manually process the queue
+        Artisan::call('queue:work', [
+            '--stop-when-empty' => true,
+            '--tries' => 1,
+            '--timeout' => 60
+        ]);
     }
 
     public static function sendSms($number = '01646688970', $message = '')

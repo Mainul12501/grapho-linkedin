@@ -34,7 +34,7 @@
                 <div class="planWrapper row <!--justify-content-between-->">
 
                     @forelse($subscriptionPlans as $key => $subscriptionPlan)
-                        <div class="col-12 col-md-4 planOne ">
+                        <div class="col-12 col-md-4 planOne py-2">
                             <div class="card card-body p-4">
                                 <p class="olanDuration">{{ $subscriptionPlan->title ?? '' }}</p>
                                 <h2 class="planPrive">Tk. {{ $subscriptionPlan->price ?? 0 }}</h2>

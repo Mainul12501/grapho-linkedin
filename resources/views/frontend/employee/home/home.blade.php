@@ -130,7 +130,7 @@
                                     <p>{{ $topJobForEmployee->required_experience ?? 0 }} {{ trans('employee.years_of_experience') }}</p>
                                     <p>{{ trans('employee.salary') }}: Tk. {{ $topJobForEmployee->salary_amount ?? 0 }}/{{ $topJobForEmployee->job_pref_salary_payment_type }}</p>
                                 </div>
-                                <div class="jobApply d-flex justify-content-between">
+                                <div class="jobApply d-flex justify-content-between easy-apply-mob-div">
                                     <div>
                                         @if(!$topJobForEmployee['isApplied'])
                                             <form action="{{ route('employee.apply-job', $topJobForEmployee->id) }}" method="post" style="float: left">
@@ -307,6 +307,12 @@
         }
         .companyLogo {width: 65px}
         .border {border: 2px solid #e5e7ebaf !important;}
+
+        @media screen and (max-width: 768px) {
+            .apply-btn, .save-btn {
+                width: auto!important;
+            }
+        }
     </style>
 {{--    apply modal two image set--}}
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
@@ -423,6 +429,13 @@
             color: white;
         }
         .modal .job-type {margin-bottom: 10px}
+
+
+        /*for mobile device*/
+
+
+
+
     </style>
 @endpush
 

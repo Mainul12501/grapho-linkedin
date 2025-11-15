@@ -23,6 +23,7 @@ use App\Http\Controllers\Backend\SiteControllers\SiteSettingsController;
 use App\Http\Controllers\Backend\SiteControllers\SubscriptionController;
 use App\Http\Controllers\Backend\SiteControllers\CommonPageController;
 use App\Http\Controllers\Backend\Employer\TransactionController;
+use App\Http\Controllers\Backend\SiteController\SendNotificationController;
 
 
 Route::middleware([
@@ -37,8 +38,11 @@ Route::middleware([
         Route::get('/pending-users', [UserController::class, 'PendingUsers'])->name('pending-users');
         Route::post('/change-user-approve-status/{user}/{status?}', [UserController::class, 'changeUserApproveStatus'])->name('change-user-approve-status');
         Route::get('/view-employer-jobs/{user}', [UserController::class, 'viewEmployerJobs'])->name('view-employer-jobs');
+        Route::get('/view-employer-posts/{user}', [UserController::class, 'viewEmployerPosts'])->name('view-employer-posts');
+        Route::post('/delete-post-admin/{post}', [\App\Http\Controllers\Frontend\Crud\PostController::class, 'destroy'])->name('delete-post-admin');
         Route::post('/set-subs-to-all-user', [SubscriptionController::class, 'setSubsToAllUser'])->name('set-subs-to-all-user');
         Route::get('/show-subscription-users/{subscriptionPlan}', [SubscriptionController::class, 'showSubscriptionUsers'])->name('show-subscription-users');
+        Route::post('/send-notification-to-user-by-method/{sendNotification}', [SendNotificationController::class, 'sendNotificationToUser'])->name('send-notification-to-user-by-method');
     });
 
     Route::resources([
@@ -63,6 +67,8 @@ Route::middleware([
         'site-settings' => SiteSettingsController::class,
         'subscriptions' => SubscriptionController::class,
         'transactions' => TransactionController::class,
+
+        'send-notifications' => SendNotificationController::class,
     ]);
 
 });

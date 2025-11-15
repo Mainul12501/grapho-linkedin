@@ -2,7 +2,7 @@
     <div class="container">
         <header class="py-2 px-3 d-flex align-items-center justify-content-between flex-wrap">
             <div class="d-flex">
-                <img src="{{ asset($siteSetting->logo ?? '/frontend/employee/images/header images/Compnay logo.png') }}" alt="Logo" class="logo" style="height: 40px" />
+                <a href="{{ route('/') }}"><img src="{{ asset($siteSetting->logo ?? '/frontend/employee/images/header images/Compnay logo.png') }}" alt="Logo" class="logo" style="height: 40px" /></a>
                 <div class="search-bar flex-grow-1 mx-2 position-relative">
                     <form action="{{ route('employee.show-jobs') }}" method="get" id="headerSearchForm">
                         <input type="text" class="form-control ps-5" placeholder="{{ trans('employer.search_jobs') }}" name="search_text" />

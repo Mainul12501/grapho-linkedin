@@ -34,6 +34,7 @@
                                 @if(!isset($_GET['show_sub_employer']))
                                     <th>Sub Employers</th>
                                 @endif
+                                <th>Posts</th>
                             @endif
                             <th>Action</th>
                         </tr>
@@ -58,6 +59,7 @@
                                     @if(!isset($_GET['show_sub_employer']))
                                         <td><a href="{{ route('users.index', ['user_type' => 'employer', 'employer_id' => $user->id, 'show_sub_employer' => 1]) }}" title="Total Sub Employers" class="btn btn-sm btn-primary">{{ $user?->users()->count() ?? 0 }}</a></td>
                                     @endif
+                                    <td><a href="{{ route('view-employer-posts', $user->id) }}" title="Total Jobs" class="btn btn-sm btn-primary">{{ $user?->posts()->count() ?? 0 }}</a></td>
                                 @endif
                                 <td class="">
 {{--                                    @can('edit-permission')--}}

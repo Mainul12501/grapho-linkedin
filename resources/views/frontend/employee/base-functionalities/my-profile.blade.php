@@ -1191,6 +1191,14 @@
             object-fit: cover;
             border: 3px solid #007bff;
         }
+
+        @media (max-width: 768px) {
+            .profileMain .left-panel {
+                width: 100% !important;
+                margin-left: auto!important;
+                margin-right: auto!important;
+            }
+        }
     </style>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>

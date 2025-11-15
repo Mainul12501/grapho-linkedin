@@ -26,7 +26,7 @@
         </div>
         <div class="mt-2 " style="text-align: justify">
             <p>
-                {!! str()->words($post->description, 40, ` <a href="`. route('employer.view-post', $post->id)  .`">See More...</a>`) !!}
+                {!! str()->words($post->description, 40, ' <a href="'. route('employer.view-post', $post->id)  .'">See More...</a>') !!}
             </p>
         </div>
     </div>

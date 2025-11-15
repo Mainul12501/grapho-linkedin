@@ -140,4 +140,13 @@ class UserController extends Controller
         return ViewHelper::checkViewForApi($this->data, 'backend.user-management.view-employer-jobs');
         return view('backend.user-management.view-employer-jobs');
     }
+    public function viewEmployerPosts(User $user)
+    {
+        $this->data = [
+            'user' => $user,
+            'posts' => $user->posts()->get(),
+        ];
+        return ViewHelper::checkViewForApi($this->data, 'backend.user-management.view-employer-posts');
+        return view('backend.user-management.view-employer-posts');
+    }
 }

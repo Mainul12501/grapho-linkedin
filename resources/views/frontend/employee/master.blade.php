@@ -43,7 +43,11 @@
             font-weight: 400;
             font-size: 13px;
         }
-
+        @media screen and (max-width: 768px) {
+            body {
+                padding-bottom: 100px!important; /* same or slightly more than .bottom-nav height */
+            }
+        }
 
     </style>
 
@@ -59,7 +63,7 @@
 @yield('body')
 
 <!-- Mobile Bottom Navigation -->
-<div class="bottom-nav d-md-none d-flex justify-content-around py-4" style="position: sticky;">
+<div class="bottom-nav d-md-none d-flex justify-content-around py-4 mobile-bottom-menu" >
     <div class="text-center mobileHome active">
         <a href="{{ route('employee.home') }}"><img src="{{ asset('/') }}frontend/employee/images/header images/mobileHomeIcon.png" alt="" /> <br />
             Home</a>

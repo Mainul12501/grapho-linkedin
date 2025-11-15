@@ -79,6 +79,7 @@ return [
     'applied_on' => 'আবেদন করেছেন',
     'approved' => 'অনুমোদিত',
     'pending' => 'মুলতুবি',
+    'shortlisted' => 'Shortlisted',
     'rejected' => 'প্রত্যাখ্যাত',
     'havent_applied_any_job' => 'আপনি এখনও কোন চাকরিতে আবেদন করেননি।',
     'no_education_info_enlisted' => 'কোন শিক্ষাগত তথ্য তালিকাভুক্ত নেই।',

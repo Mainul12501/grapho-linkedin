@@ -109,6 +109,10 @@ class JobTaskController extends Controller
      */
     public function edit(JobTask  $jobTask/*string $id*/)
     {
+        $jobTask->load([
+            'employerPrefferableUniversityNames',
+            'employerPrefferableFieldOfStudyNames'
+        ]);
         $data = [
             'jobTask' => $jobTask,
             'jobTypes'  => JobType::where(['status' => 1])->get(['id', 'name']),
