@@ -60,7 +60,7 @@
                                         <select name="user_subscription_id" id="setUserSubscription" data-user-id="{{ $user->id }}">
                                             <option disabled>Select Subscription Plan</option>
                                             @foreach($subscriptions as $subscription)
-                                                <option value="{{ $subscription->id }}" {{ isset($user?->subscriptionPlan) && $user?->subscription_plan_id == $subscription->id ? 'selected' : '' }}>{{ $subscription->title }}</option>
+                                                <option value="{{ $subscription->id }}" {{ isset($user?->subscriptionPlan) && $user?->subscription_plan_id == $subscription->id ? 'selected' : '' }}>{{ $subscription->title }} ({{ $subscription->duration_in_days ?? 0 }})</option>
                                             @endforeach
                                         </select>
                                     </td>
