@@ -295,6 +295,14 @@ class CustomLoginController extends Controller
             if (auth()->attempt($request->only(['email', 'password']), $request->remember_me))
             {
                 $user = ViewHelper::loggedUser();
+                if ($user->user_type == 'employer')
+                {
+                    if ($user->is_approved == 0)
+                    {
+                        \auth()->logout();
+                        return ViewHelper::returEexceptionError('Your account has not approved yet. Please try again later.');
+                    }
+                }
                 return $this->redirectsAfterLogin($user);
             } else {
                 return ViewHelper::returEexceptionError('Auth failed. Please check your email and password.');

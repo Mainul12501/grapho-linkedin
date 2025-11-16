@@ -7,6 +7,7 @@ use App\Models\Backend\Course\Course;
 use App\Models\Backend\JobTask;
 use App\Models\Backend\OrderManagement\ParentOrder;
 use App\Models\Backend\OrderPayment;
+use App\Models\Backend\Post;
 use App\Models\Backend\UserManagement\Student;
 use App\Models\Backend\UserManagement\Teacher;
 use App\Models\User;
@@ -27,12 +28,16 @@ class AdminViewController extends Controller
         $thisMonthTransaction = OrderPayment::whereMonth('created_at', Carbon::now()->month)
             ->whereYear('created_at', Carbon::now()->year)
             ->sum('paid_amount');
+        $totalTransaction = OrderPayment::sum('paid_amount');
         $this->data = [
             'loggedInUser' => $user,
             'totalJobs' => JobTask::count(),
             'totalEmployees' => User::where(['user_type' => 'employee'])->count(),
             'totalEmployers' => User::where(['user_type' => 'employer'])->count(),
             'thisMonthTransaction' => $thisMonthTransaction,
+            'totalTransaction' => $totalTransaction,
+            'latestJobs'    => JobTask::latest()->take(10)->get(['id', 'job_title']),
+            'latestPosts'    => Post::latest()->take(10)->get(['id', 'title']),
         ];
         return view('backend.single-view.dashboard.dashboard', $this->data);
     }

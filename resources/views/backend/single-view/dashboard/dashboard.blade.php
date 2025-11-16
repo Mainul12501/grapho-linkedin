@@ -53,6 +53,50 @@
                         </div>
                     </div>
                 </div>
+                <div class="col-md-6">
+                    <div class="card ">
+                        <div class="card-body">
+                            <h4 class="fw-bolder f-s-22">Total Transactions</h4>
+                            <span class="fw-bold f-s-25" style="">{{ $totalTransaction ?? 0 }}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card ">
+                        <div class="card-header">
+                            <h3>Latest Jobs</h3>
+                        </div>
+                        <div class="card-body">
+                            @forelse($latestJobs as $latestJob)
+                                <div>
+                                    <p><b>{{ $latestJob->job_title }}</b></p>
+                                </div>
+                            @empty
+                                <div>
+                                    <p>No Jobs published yet</p>
+                                </div>
+                            @endforelse
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card ">
+                        <div class="card-header">
+                            <h3>Latest Posts</h3>
+                        </div>
+                        <div class="card-body">
+                            @forelse($latestPosts as $latestPost)
+                                <div>
+                                    <p><b>{{ $latestPost->title }}</b></p>
+                                </div>
+                            @empty
+                                <div>
+                                    <p>No Posts published yet</p>
+                                </div>
+                            @endforelse
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>

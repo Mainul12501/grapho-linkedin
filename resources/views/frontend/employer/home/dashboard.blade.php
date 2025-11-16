@@ -9,14 +9,20 @@
                 <!-- Left Sidebar -->
                 <aside class="col-lg-3 col-md-4">
                     <!-- Find your next hire -->
-                    <div class="sidebar-box hire">
-                        <div class="sidebar-icon hire">
-                            <img src="{{ asset('/') }}frontend/employer/images/employersHome/findYour next Hire.png" alt="">
-                        </div>
-                        <h5 class="fw-bold">{{ trans('employer.head_hunt') }}</h5>
-                        <p class="small mb-3">More than {{ \App\Models\User::where('user_type', 'employee')->count() ?? 0 }} talents are on the network waiting for your call
-                        </p>
-                        <a href="{{ route('employer.my-jobs', ['show_modal' => 'create']) }}" class="btn btn-dark btn-sm px-3 py-2" style="border-radius: 10px;">{{ trans('employer.post_a_job') }}</a>
+{{--                    <div class="sidebar-box hire">--}}
+{{--                        <div class="sidebar-icon hire">--}}
+{{--                            <img src="{{ asset('/') }}frontend/employer/images/employersHome/findYour next Hire.png" alt="">--}}
+{{--                        </div>--}}
+{{--                        <h5 class="fw-bold">{{ trans('employer.head_hunt') }}</h5>--}}
+{{--                        <p class="small mb-3">More than {{ \App\Models\User::where('user_type', 'employee')->count() ?? 0 }} talents are on the network waiting for your call--}}
+{{--                        </p>--}}
+{{--                        <a href="{{ route('employer.my-jobs', ['show_modal' => 'create']) }}" class="btn btn-dark btn-sm px-3 py-2" style="border-radius: 10px;">{{ trans('employer.post_a_job') }}</a>--}}
+{{--                    </div>--}}
+
+                    <div class="">
+                        <a href="{{ route('employer.my-jobs', ['show_modal' => 'create']) }}">
+                            <img src="{{ asset('/frontend/employer/images/post-jobs.jpeg') }}" alt="" class="img-fluid">
+                        </a>
                     </div>
 
 
