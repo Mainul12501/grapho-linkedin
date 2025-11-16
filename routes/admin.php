@@ -43,6 +43,7 @@ Route::middleware([
         Route::post('/set-subs-to-all-user', [SubscriptionController::class, 'setSubsToAllUser'])->name('set-subs-to-all-user');
         Route::get('/show-subscription-users/{subscriptionPlan}', [SubscriptionController::class, 'showSubscriptionUsers'])->name('show-subscription-users');
         Route::post('/send-notification-to-user-by-method/{sendNotification}', [SendNotificationController::class, 'sendNotificationToUser'])->name('send-notification-to-user-by-method');
+        Route::post('/set-user-subscription-plan', [UserController::class, 'setUserSubscriptionPlan'])->name('set-user-subscription-plan');
     });
 
     Route::resources([

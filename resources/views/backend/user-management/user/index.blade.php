@@ -28,7 +28,9 @@
                             <th>{{ $userType == 'employer' ? 'Company Name' : 'name' }}</th>
                             <th>Mobile</th>
                             <th>Email</th>
-                            <th>Subscription Plan</th>
+                            @if(in_array($_GET['user_type'], ['employer','employee','sub_employer',]))
+                                <th>Subscription Plan</th>
+                            @endif
                             @if($userType == 'employer')
                                 <th>Jobs</th>
                                 @if(!isset($_GET['show_sub_employer']))
@@ -53,7 +55,16 @@
                                 <td>{{ $user->name }}</td>
                                 <td>{{ $user->mobile }}</td>
                                 <td>{{ $user->email }}</td>
-                                <td>{{ $user?->subscriptionPlan?->title?? '' }}</td>
+                                @if(in_array($_GET['user_type'], ['employer','employee','sub_employer',]))
+                                    <td>
+                                        <select name="user_subscription_id" id="setUserSubscription" data-user-id="{{ $user->id }}">
+                                            <option disabled>Select Subscription Plan</option>
+                                            @foreach($subscriptions as $subscription)
+                                                <option value="{{ $subscription->id }}" {{ isset($user?->subscriptionPlan) && $user?->subscription_plan_id == $subscription->id ? 'selected' : '' }}>{{ $subscription->title }}</option>
+                                            @endforeach
+                                        </select>
+                                    </td>
+                                @endif
                                 @if($userType == 'employer')
                                     <td><a href="{{ route('view-employer-jobs', $user->id) }}" title="Total Jobs" class="btn btn-sm btn-primary">{{ $user?->jobs()->count() ?? 0 }}</a></td>
                                     @if(!isset($_GET['show_sub_employer']))
@@ -107,9 +118,27 @@
 
 {{--    {{ $dataTable->scripts(attributes: ['type' => 'module']) }}--}}
     <!-- yo -->
-    @include('backend.includes.assets.plugin-files.datatable')
+{{--    @include('backend.includes.assets.plugin-files.datatable')--}}
 
 <script>
+    $(document).on('change', '#setUserSubscription', function () {
+        var userId = $(this).attr('data-user-id');
+        var selectedValue = $('#setUserSubscription option:selected').val();
+
+        $.ajax({
+           url: "{{ route('set-user-subscription-plan') }}",
+           data: {user_id: userId, subscription_id: selectedValue, req_from: "admin"},
+           method: "POST",
+           success: function (response) {
+               if (response.status == 'success')
+                   toastr.success(response.msg);
+               else if (response.status == 'error')
+                   toastr.error(response.msg);
+               else
+                   toastr.warning('Something went wrong. Please try again.')
+           }
+       })
+    })
     $(document).on('click', '.data-block-form', function (event) {
         event.preventDefault();
         var currentBlockStatus = 'Block';
