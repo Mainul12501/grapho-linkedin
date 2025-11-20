@@ -295,14 +295,14 @@ class CustomLoginController extends Controller
             if (auth()->attempt($request->only(['email', 'password']), $request->remember_me))
             {
                 $user = ViewHelper::loggedUser();
-                if ($user->user_type == 'employer')
-                {
-                    if ($user->is_approved == 0)
-                    {
-                        \auth()->logout();
-                        return ViewHelper::returEexceptionError('Your account has not approved yet. Please try again later.');
-                    }
-                }
+//                if ($user->user_type == 'employer')
+//                {
+//                    if ($user->is_approved == 0)
+//                    {
+//                        \auth()->logout();
+//                        return ViewHelper::returEexceptionError('Your account has not approved yet. Please try again later.');
+//                    }
+//                }
                 return $this->redirectsAfterLogin($user);
             } else {
                 return ViewHelper::returEexceptionError('Auth failed. Please check your email and password.');
@@ -415,7 +415,7 @@ class CustomLoginController extends Controller
                 }
             }
             $otp = ViewHelper::generateOtp($request->mobile);
-            ViewHelper::sendSms($request->mobile, "Your Grapho OTP is $otp.");
+            ViewHelper::sendSms($request->mobile, "Your LikewiseBD OTP is $otp.");
             return response()->json(['status'=> 'success', 'msg' => "An OTP has sent to your number.",]);
         } elseif ($request->filled('email'))
         {
@@ -483,5 +483,49 @@ class CustomLoginController extends Controller
         } else {
             return ViewHelper::returEexceptionError('Current password is incorrect.');
         }
+    }
+
+    public function loginWithGoogleApp(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'provider' => 'required',
+            'provider_id' => 'required',
+            'provider_token' => 'required',
+            'name' => 'required',
+            'user_type' => 'required',
+            'email' => 'required|email',
+        ]);
+        if ($validator->fails())
+        {
+            return ViewHelper::returEexceptionError($validator->errors());
+        }
+        $user = new User();
+        $user->name     = $request->name;
+        $user->email     = $request->email;
+        $user->user_type     = $request->user_type;
+        $user->provider     = $request->provider;
+        $user->provider_id     = $request->provider_id;
+        $user->provider_token     = $request->provider_token;
+        $user->user_slug     = str_replace(' ', '-', $request->name);
+        $user->organization_name     = $request->user_type == 'employer' ? $request->name. ' company' : '';
+        $user->save();
+        if ($user && $user->user_type == 'employer')
+        {
+            $company = new EmployerCompany();
+            $company->user_id   = $user->id;
+            $company->name  = $user->name.' company';
+            $company->status    = 1;
+            $company->save();
+        }
+
+        if ($request->user_type == 'employee')
+        {
+            $user->roles()->sync(3);
+        } elseif ($request->user_type == 'employer')
+        {
+            $user->roles()->sync(4);
+        }
+        Auth::login($user);
+        return $this->redirectsAfterLogin($user);
     }
 }

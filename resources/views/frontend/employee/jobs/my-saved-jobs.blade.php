@@ -74,11 +74,13 @@
                             </div>
                             <div class="jobApply d-flex justify-content-between mt-2">
                                 <div>
-                                    @if(!$savedJob->isApplied)
-                                        <form action="{{ route('employee.apply-job', $savedJob->id) }}" method="post">
-                                            @csrf
-                                            <button type="submit" class="btn">{{ trans('employee.easy_apply') }}</button>
-                                        </form>
+                                    @if(!\App\Helpers\ViewHelper::checkIfUserApprovedOrBlocked(auth()->user()))
+                                        @if(!$savedJob->isApplied)
+                                            <form action="{{ route('employee.apply-job', $savedJob->id) }}" method="post">
+                                                @csrf
+                                                <button type="submit" class="btn">{{ trans('employee.easy_apply') }}</button>
+                                            </form>
+                                        @endif
                                     @endif
                                     <img src="{{ asset('/') }}frontend/employee/images/profile/savedMarkIcon.png" alt="Bookmark" class="bookmarkIcon" />
                                 </div>

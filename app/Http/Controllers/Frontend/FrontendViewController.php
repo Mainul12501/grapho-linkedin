@@ -36,7 +36,7 @@ class FrontendViewController extends Controller
         $data = [];
         $data['user_id']    = $loggedUser->id;
         $data['subscription_id']    = $subscriptionPlan->id;
-        $data['redirect_url']    = url()->previous();
+        $data['redirect_url']    = $request->redirect_url ?? url()->previous();
         $data['total_amount']    = $subscriptionPlan->price ?? 0;
         session()->put('requestData', $data);
         return SSLCommerzController::sendOrderRequestToSSLZ($subscriptionPlan->price ?? 0, $subscriptionPlan->name ?? 'Subscription Plan Title');

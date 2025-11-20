@@ -5,9 +5,12 @@
                 <span style="" class="mr-2"><img src="{{ asset($post?->employer?->employerCompany?->logo ?? 'frontend/employee/images/authentication images/Compnay logo.png') }}" style="height: 60px; width: 60px " alt=""></span>
                 <span class="fw-bolder">{{ $post?->employer?->employerCompany?->name ?? 'Employer Name' }}</span>
             </a>
-            <span class="float-end">
+            @if(!\App\Helpers\ViewHelper::checkIfUserApprovedOrBlocked(auth()->user()))
+                <span class="float-end">
                     <button type="button" data-employer-id="{{ $post->user_id }}" data-follow-history-status="{{ $post->follow_history_status == 1 ? 1 : 0 }}" data-post-id="{{ $post->id }}" id="followBtn{{ $post->id }}" class="btn btn-primary btn-sm follow-btn text-dark border-0" style="background-color: #FFD600">{{ $post->follow_history_status == 1 ? trans('employer.unfollow') : trans('employer.follow') }}</button>
-            </span>
+                </span>
+            @endif
+
         </div>
         <div class="mt-2 row">
             @if(isset($post->images))

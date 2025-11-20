@@ -18,11 +18,14 @@
                 </div>
             </div>
             <div class="row g-4">
-                <div class=" ps-5 {{ count($advertisements) > 0 ? 'col-md-9 mx-auto' : 'col-md-8' }}" id="appendContentHere">
-                    <div class="card card-body d-flex">
-                        <p class="d-inline-flex">{{ trans('employer.have_something_new_on_mind') }}</p>
-                        <p class="d-inline-flex"><a href="{{ route('employer.posts.create') }}" class="btn btn-sm btn-success">{{ trans('employer.post') }}</a></p>
-                    </div>
+                <div class=" ps-5 {{ count($advertisements) > 0 ? 'col-md-8' : ' col-md-9 mx-auto' }}" id="appendContentHere">
+                    @if(!\App\Helpers\ViewHelper::checkIfUserApprovedOrBlocked(auth()->user()))
+                        <div class="card card-body d-flex">
+                            <p class="d-inline-flex">{{ trans('employer.have_something_new_on_mind') }}</p>
+                            <p class="d-inline-flex"><a href="{{ route('employer.posts.create') }}" class="btn btn-sm btn-success">{{ trans('employer.post') }}</a></p>
+                        </div>
+                    @endif
+
 {{--                    contents appends here--}}
                 </div>
                 @if(count($advertisements) > 0)
@@ -40,7 +43,6 @@
                         @endif
                     </div>
                 @endif
-
             </div>
         </div>
 

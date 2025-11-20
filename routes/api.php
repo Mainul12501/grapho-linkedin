@@ -23,6 +23,7 @@ Route::get('/user', function (Request $request) {
 Route::get('/page/{slug?}', [FrontendViewController::class, 'showCommonPage']);
 Route::post('send-otp', [CustomLoginController::class, 'sendOtp'])->name('send-otp');
 Route::post('verify-otp', [CustomLoginController::class, 'verifyOtp']);
+Route::post('login-with-google-app', [CustomLoginController::class, 'loginWithGoogleApp']);
 Route::post('buy-subscription/{subscriptionPlan}', [FrontendViewController::class, 'buySubscription']);
 
 Route::get('employee-profile/{employeeId}', [EmployerViewController::class, 'employeeProfile']);

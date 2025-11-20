@@ -160,6 +160,15 @@ class ViewHelper
         }
     }
 
+    public static function checkIfUserApprovedOrBlocked($user)
+    {
+        $status = false;
+        if ($user->is_approved == 0 || $user->status == 'blocked')
+            $status = true;
+
+        return $status;
+    }
+
     public static function checkIfUserHasValidSubscription ()
     {
         if (str_contains(url()->current(), '/api/'))
@@ -254,6 +263,19 @@ class ViewHelper
             $loggedUser->subscription_started_from  = now();
             $loggedUser->subscription_end_date  = Carbon::now()->addDays($subscriptionPlan->duration_in_days ?? 0);
             $loggedUser->save();
+            if ($loggedUser->user_type == 'employer')
+            {
+                if (count($loggedUser->users) > 0)
+                {
+                    foreach ($loggedUser->users as $subUser)
+                    {
+                        $subUser->subscription_plan_id  = $subscription_id;
+                        $subUser->subscription_started_from  = now();
+                        $subUser->subscription_end_date  = Carbon::now()->addDays($subscriptionPlan->duration_in_days ?? 0);
+                        $subUser->save();
+                    }
+                }
+            }
             return ['status' => 'success', 'msg' => 'Your subscription plan is active.'];
         } catch (\Exception $exception)
         {

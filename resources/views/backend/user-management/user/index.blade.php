@@ -28,7 +28,7 @@
                             <th>{{ $userType == 'employer' ? 'Company Name' : 'name' }}</th>
                             <th>Mobile</th>
                             <th>Email</th>
-                            @if(in_array($_GET['user_type'], ['employer','employee','sub_employer',]))
+                            @if(in_array($_GET['user_type'], ['employer','employee', 'sub_employer']))
                                 <th>Subscription Plan</th>
                             @endif
                             @if($userType == 'employer')
@@ -55,12 +55,12 @@
                                 <td>{{ $user->name }}</td>
                                 <td>{{ $user->mobile }}</td>
                                 <td>{{ $user->email }}</td>
-                                @if(in_array($_GET['user_type'], ['employer','employee','sub_employer',]))
+                                @if(in_array($_GET['user_type'], ['employer','employee', 'sub_employer']))
                                     <td>
                                         <select name="user_subscription_id" id="setUserSubscription" data-user-id="{{ $user->id }}">
-                                            <option disabled>Select Subscription Plan</option>
+                                            <option disabled {{ !isset($user?->subscriptionPlan) ? 'selected' : '' }}>Select Subscription Plan</option>
                                             @foreach($subscriptions as $subscription)
-                                                <option value="{{ $subscription->id }}" {{ isset($user?->subscriptionPlan) && $user?->subscription_plan_id == $subscription->id ? 'selected' : '' }}>{{ $subscription->title }} ({{ $subscription->duration_in_days ?? 0 }})</option>
+                                                <option value="{{ $subscription->id }}" {{ isset($user?->subscriptionPlan) && $user?->subscription_plan_id == $subscription->id ? 'selected' : '' }}>{{ $subscription->title }} ({{ $subscription->duration_in_days ?? 0 }} days)</option>
                                             @endforeach
                                         </select>
                                     </td>
@@ -109,16 +109,16 @@
 @push('style')
     <!-- DataTables -->
 {{--    <link href="{{ asset('/') }}backend/assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />--}}
-    <link rel="stylesheet" href="https://cdn.datatables.net/2.3.4/css/dataTables.bootstrap4.min.css">
+{{--    <link rel="stylesheet" href="https://cdn.datatables.net/2.3.4/css/dataTables.bootstrap4.min.css">--}}
 {{--    <link href="{{ asset('/') }}backend/assets/libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />--}}
-    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/3.2.5/css/buttons.bootstrap4.min.css">
+{{--    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/3.2.5/css/buttons.bootstrap4.min.css">--}}
 @endpush
 
 @push('script')
 
 {{--    {{ $dataTable->scripts(attributes: ['type' => 'module']) }}--}}
     <!-- yo -->
-{{--    @include('backend.includes.assets.plugin-files.datatable')--}}
+    @include('backend.includes.assets.plugin-files.datatable')
 
 <script>
     $(document).on('change', '#setUserSubscription', function () {

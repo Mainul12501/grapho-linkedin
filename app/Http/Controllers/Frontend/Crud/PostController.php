@@ -27,6 +27,10 @@ class PostController extends Controller
      */
     public function create()
     {
+        if (ViewHelper::checkIfUserApprovedOrBlocked(auth()->user()))
+        {
+            return ViewHelper::returnRedirectWithMessage(route('employer.dashboard'), 'Your account is blocked or has not approved yet. Please contact with admin.');
+        }
         return view('frontend.employer.posts.create', [
             'isShown'   => false,
         ]);
@@ -37,6 +41,10 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
+        if (ViewHelper::checkIfUserApprovedOrBlocked(auth()->user()))
+        {
+            return ViewHelper::returnRedirectWithMessage(route('employer.dashboard'), 'Your account is blocked or has not approved yet. Please contact with admin.');
+        }
         $validator = Validator::make($request->all(), [
             'title' => 'required'
         ]);
@@ -85,6 +93,10 @@ class PostController extends Controller
         $data = [
             'post'  => $post,
         ];
+        if (\request()->ajax() && isset($_GET['req_from']) && $_GET['req_from'] == 'admin')
+        {
+            return view('backend.user-management.view-post', $data)->render();
+        }
         return ViewHelper::checkViewForApi($data, 'frontend.employer.home.view-post');
          return view('frontend.employer.home.view-post');
     }
@@ -94,6 +106,10 @@ class PostController extends Controller
      */
     public function edit(string $id)
     {
+        if (ViewHelper::checkIfUserApprovedOrBlocked(auth()->user()))
+        {
+            return ViewHelper::returnRedirectWithMessage(route('employer.dashboard'), 'Your account is blocked or has not approved yet. Please contact with admin.');
+        }
         $data = [
             'isShown'   => false,
             'post' => Post::find($id)
@@ -110,6 +126,10 @@ class PostController extends Controller
      */
     public function update(Request $request, Post $post/*string $id*/)
     {
+        if (ViewHelper::checkIfUserApprovedOrBlocked(auth()->user()))
+        {
+            return ViewHelper::returnRedirectWithMessage(route('employer.dashboard'), 'Your account is blocked or has not approved yet. Please contact with admin.');
+        }
         $validator = Validator::make($request->all(), [
             'title' => 'required'
         ]);
@@ -139,6 +159,10 @@ class PostController extends Controller
      */
     public function destroy(Post $post/*string $id*/)
     {
+        if (ViewHelper::checkIfUserApprovedOrBlocked(auth()->user()))
+        {
+            return ViewHelper::returnRedirectWithMessage(route('employer.dashboard'), 'Your account is blocked or has not approved yet. Please contact with admin.');
+        }
         $post->delete();
         return ViewHelper::returnSuccessMessage('Post Deleted successfully');
     }

@@ -149,9 +149,16 @@ Route::get('/symlink', function () {
 
 Route::get('/clear-all-cache', function () {
     Artisan::call('optimize:clear');
-    return redirect()->back()->with('success', 'Cache cleared successfully' );
+    return Artisan::output();
 })->name('clear-all-cache');
+
+Route::get('/run-db-seeder', function () {
+    Artisan::call('db:seed');
+    return Artisan::output();
+})->name('run-db-seeder');
 
 Route::get('/phpinfo', function () {
     phpinfo();
 });
+
+

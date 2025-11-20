@@ -35,7 +35,7 @@
                         @foreach($jobs as $job)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
-                                <td>{{ $job->job_title ?? '' }}</td>
+                                <td><a href="javascript:void(0)" class="nav-link text-success view-job" data-job-id="{{ $job->id }}">{{ $job->job_title ?? '' }}</a></td>
                                 <td>
                                     <span>Company : {{ $job?->employerCompany?->name ?? '' }}</span> <br>
                                     <span>Type : {{ $job?->jobType?->name ?? '' }}</span> <br>
@@ -87,12 +87,35 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="showJob">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">View Job</h5>
+                    <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">x</button>
+                </div>
+                <div class="modal-body" id="appendJobHere">
+                    <p>Modal body text goes here.</p>
+                </div>
+
+            </div>
+        </div>
+    </div>
 @endsection
 
 @push('style')
     <!-- DataTables -->
     <link href="{{ asset('/') }}backend/assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
     <link href="{{ asset('/') }}backend/assets/libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <style>
+        .p-t-5 .nav-link {
+            color: green!important;
+            font-size: 18px!important;
+            padding: 0px 3px 5px 0px !important;
+        }
+        .job-type .badge {background-color: gray}
+    </style>
 @endpush
 
 @push('script')
@@ -119,4 +142,18 @@
 {{--        // $('#datatable-buttons_wrapper').DataTable();--}}
 {{--    </script>--}}
     @include('backend.includes.assets.plugin-files.datatable')
+
+<script>
+    $(document).on('click', '.view-job', function () {
+        var jobId = $(this).attr('data-job-id');
+        $.ajax({
+            url: "/get-job-details/"+jobId+"?render=1",
+            method: "GET",
+            success: function (response) {
+                $('#appendJobHere').append(response);
+                $('#showJob').empty().modal('show');
+            }
+        })
+    })
+</script>
 @endpush

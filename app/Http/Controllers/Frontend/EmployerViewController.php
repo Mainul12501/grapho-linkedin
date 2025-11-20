@@ -13,6 +13,7 @@ use App\Models\Backend\JobLocationType;
 use App\Models\Backend\JobTask;
 use App\Models\Backend\JobType;
 use App\Models\Backend\Post;
+use App\Models\Backend\SiteSetting;
 use App\Models\Backend\SkillsCategory;
 use App\Models\Backend\SubscriptionPlan;
 use App\Models\Backend\UniversityName;
@@ -21,6 +22,7 @@ use App\Models\Backend\WebNotification;
 use App\Models\User;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Illuminate\View\View;
@@ -85,6 +87,10 @@ class EmployerViewController extends Controller
 
     public function myJobs(Request $request)
     {
+        if (ViewHelper::checkIfUserApprovedOrBlocked(auth()->user()))
+        {
+            return ViewHelper::returnRedirectWithMessage(route('employer.dashboard'), 'Your account is blocked or has not approved yet. Please contact with admin.');
+        }
         $loggedUser = ViewHelper::loggedUser();
         if ($loggedUser->user_type == 'employer')
             $jobUserId = $loggedUser->id;
@@ -125,6 +131,10 @@ class EmployerViewController extends Controller
 
     public function myJobWiseApplicants()
     {
+        if (ViewHelper::checkIfUserApprovedOrBlocked(auth()->user()))
+        {
+            return ViewHelper::returnRedirectWithMessage(route('employer.dashboard'), 'Your account is blocked or has not approved yet. Please contact with admin.');
+        }
         $jobTasks = JobTask::where(['user_id' => ViewHelper::loggedUser()->id, 'status' => 1])->get(['id', 'job_title']);
         if (ViewHelper::checkIfRequestFromApi()) {
             foreach ($jobTasks as $jobTask) {
@@ -145,10 +155,10 @@ class EmployerViewController extends Controller
 //            return redirect(route('employer.my-job-applicants', ['jobTask' => $jobTask->id, 'status' => 'pending']));
 //        }
         $applicants = $jobTask->employeeAppliedJobs()->with(['user'])->get();
-        $pendingApplicants = $applicants->where('status', 'pending');
-        $approvedApplicants = $applicants->where('status', 'approved');
-        $rejectedApplicants = $applicants->where('status', 'rejected');
-        $shortListedApplicants = $applicants->where('status', 'shortlisted');
+        $pendingApplicants = $applicants->where('status', 'pending')->values();
+        $approvedApplicants = $applicants->where('status', 'approved')->values();
+        $rejectedApplicants = $applicants->where('status', 'rejected')->values();
+        $shortListedApplicants = $applicants->where('status', 'shortlisted')->values();
         $this->data = [
             'jobTask' => $jobTask,
 //            'applicants' => $jobTask->employeeAppliedJobs()->where(['status' => 'pending'])->with(['user'])->get(),
@@ -163,8 +173,14 @@ class EmployerViewController extends Controller
 
     public function headHunt(Request $request)
     {
+        if (ViewHelper::checkIfUserApprovedOrBlocked(auth()->user()))
+        {
+            return ViewHelper::returnRedirectWithMessage(route('employer.dashboard'), 'Your account is blocked or has not approved yet. Please contact with admin.');
+        }
         $employees = User::query()->with([
-            'universityName',
+            'universityName' => function ($universityName) {
+                $universityName->select('id', 'name', 'slug');
+            },
             'industry',
             'fieldOfStudy',
             'jobTypes',
@@ -323,22 +339,39 @@ class EmployerViewController extends Controller
             'district'
         ])->paginate(21);
 
-        $data = [
-            'employees' => $employees,
-            'jobTypes' => JobType::where(['status' => 1])->get(['id', 'name', 'slug']),
-            'universityNames' => UniversityName::where(['status' => 1])->get(['id', 'name', 'slug']),
-            'industries' => Industry::where(['status' => 1])->get(['id', 'name', 'slug']),
-            'jobLocations' => JobLocationType::where(['status' => 1])->get(['id', 'name', 'slug']),
-            'fieldOfStudies' => FieldOfStudy::where(['status' => 1])->get(['id', 'field_name', 'slug']),
-            'skillCategories' => SkillsCategory::where(['status' => 1])->with('skills')->get(['id', 'category_name', 'slug']),
-            // Pass current filters back to the view for maintaining state
-            'currentFilters' => [
-                'filters' => $filters,
-                'cgpa' => $request->input('cgpa'),
-                'experience' => $request->input('experience'),
-                'search_text' => $request->input('search_text'),
-            ]
-        ];
+        if (str()->contains(url()->current(), '/api/'))
+        {
+            $data = [
+                'employees' => $employees,
+
+                // Pass current filters back to the view for maintaining state
+                'currentFilters' => [
+                    'filters' => $filters,
+                    'cgpa' => $request->input('cgpa'),
+                    'experience' => $request->input('experience'),
+                    'search_text' => $request->input('search_text'),
+                ]
+            ];
+        } else {
+            $data = [
+                'employees' => $employees,
+                'jobTypes' => JobType::where(['status' => 1])->get(['id', 'name', 'slug']),
+                'universityNames' => UniversityName::where(['status' => 1])->get(['id', 'name', 'slug']),
+                'industries' => Industry::where(['status' => 1])->get(['id', 'name', 'slug']),
+                'jobLocations' => JobLocationType::where(['status' => 1])->get(['id', 'name', 'slug']),
+                'fieldOfStudies' => FieldOfStudy::where(['status' => 1])->get(['id', 'field_name', 'slug']),
+                'skillCategories' => SkillsCategory::where(['status' => 1])->with('skills')->get(['id', 'category_name', 'slug']),
+                // Pass current filters back to the view for maintaining state
+                'currentFilters' => [
+                    'filters' => $filters,
+                    'cgpa' => $request->input('cgpa'),
+                    'experience' => $request->input('experience'),
+                    'search_text' => $request->input('search_text'),
+                ]
+            ];
+        }
+
+
 
         return ViewHelper::checkViewForApi($data, 'frontend.employer.jobs.head-hunt');
         return \view('frontend.employer.jobs.head-hunt');
@@ -667,6 +700,32 @@ class EmployerViewController extends Controller
 //            }
             $appliedJob->status = $status;
             $appliedJob->save();
+
+            if (isset($user->email))
+            {
+                $msg = '';
+                if ($status == 'shortlisted')
+                    $msg = "Dear $user->name, Congratulations! We're pleased to inform you that your application for $jobTask->job_title has been shortlisted.";
+                elseif ($status == 'pending')
+                    $msg = "Dear $user->name, Thank you for applying to $jobTask->job_title at LikewiseBD. We have successfully received your application and it is currently under review.";
+                elseif ($status == 'approved')
+                    $msg = "Dear $user->name, We are delighted to inform you that you have been selected for job $jobTask->job_title at LikewiseBD!";
+                elseif ($status == 'rejected')
+                    $msg = "Dear $user->name, Thank you for your interest in the $jobTask->job_title position at LikewiseBD and for taking the time to apply.
+After careful consideration, we regret to inform you that we have decided to move forward with other candidates whose qualifications more closely match our current needs.";
+                $data = [
+                    'user'   => $user,
+                    'request'   => $request,
+                    'msg'   => $msg,
+                    'status'   => $status,
+                    'siteSetting'   => SiteSetting::first(),
+                ];
+                Mail::send('frontend.employer.jobs.job-status-change-mail', $data, function ($message) use ($data, $user, $status){
+                    $message->to($user->email, 'Like Wise Bd')->subject("Job Status Changed to $status");
+                });
+            }
+
+
             return ViewHelper::returnSuccessMessage('Employee job application status updated successfully');
         } catch (\Exception $e) {
             return ViewHelper::returEexceptionError($e->getMessage());

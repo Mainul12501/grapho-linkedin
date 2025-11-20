@@ -38,7 +38,7 @@
                                         @endforeach
                                     @endif
                                 </td>
-                                <td>{{ $post->title ?? '' }}</td>
+                                <td><a href="javascript:void(0)" class="nav-link view-post text-success" data-post-id="{{ $post->id }}">{{ $post->title ?? '' }}</a></td>
                                 <td>{!!  \Illuminate\Support\Str::words($post->description, 60) ?? '' !!}</td>
                                 <td>{{ $post->total_view ?? '' }}</td>
                                 <td>{{ $post->status == 1 ? 'Published' : 'Unpublished' }}</td>
@@ -67,6 +67,21 @@
                         </tbody>
                     </table>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="showPost">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">View Post</h5>
+                    <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">x</button>
+                </div>
+                <div class="modal-body" id="appendPostHere">
+                    <p>Modal body text goes here.</p>
+                </div>
+
             </div>
         </div>
     </div>
@@ -102,4 +117,18 @@
 {{--        // $('#datatable-buttons_wrapper').DataTable();--}}
 {{--    </script>--}}
     @include('backend.includes.assets.plugin-files.datatable')
+
+<script>
+    $(document).on('click', '.view-post', function () {
+        var postData = $(this).attr('data-post-id');
+        $.ajax({
+            url: "/admin/view-post/"+postData+"?req_from=admin",
+            method: "GET",
+            success: function (response) {
+                $('#appendPostHere').empty().append(response);
+                $('#showPost').modal('show');
+            }
+        })
+    })
+</script>
 @endpush

@@ -209,6 +209,53 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     <style>
         .modal .job-type {margin-bottom: 10px}
+
+
+        @media screen and (max-width: 529px) {
+            .job-card {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 1rem;
+                position: relative;
+                padding-top: 2.5rem;
+                justify-content: flex-start; /* Align items to left */
+                align-items: flex-start; /* Align items to top */
+            }
+
+            .job-details {
+                flex: 1 1 100%;
+                min-width: 0;
+            }
+
+            .job-info {
+                flex: 1 1 100%;
+                min-width: 200px;
+            }
+
+            .job-actions {
+                position: absolute;
+                top: 1rem;
+                right: 1rem;
+                margin-left: 0;
+            }
+        }
+
+        /* For very small screens */
+        @media screen and (max-width: 472px) {
+            .job-card {
+                flex-direction: column;
+                position: relative;
+                padding-top: 2.5rem;
+                justify-content: flex-start;
+                align-items: flex-start;
+            }
+
+            .job-actions {
+                position: absolute;
+                top: 1rem;
+                right: 1rem;
+            }
+        }
     </style>
 @endpush
 

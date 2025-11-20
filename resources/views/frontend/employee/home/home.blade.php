@@ -131,28 +131,31 @@
                                     <p>{{ trans('employee.salary') }}: Tk. {{ $topJobForEmployee->salary_amount ?? 0 }}/{{ $topJobForEmployee->job_pref_salary_payment_type }}</p>
                                 </div>
                                 <div class="jobApply d-flex justify-content-between easy-apply-mob-div">
-                                    <div>
-                                        @if(!$topJobForEmployee['isApplied'])
-                                            <form action="{{ route('employee.apply-job', $topJobForEmployee->id) }}" method="post" style="float: left">
-                                                @csrf
-                                                <button title="Apply Job" type="submit" class="btn flex-column show-apply-model" data-job-id="{{ $topJobForEmployee->id }}" data-job-company-logo="{{ asset($topJobForEmployee?->employerCompany?->logo) ?? '' }}">{{ trans('employee.easy_apply') }}</button>
-                                            </form>
-                                        @else
-                                            <form action="" method="post" style="float: left">
-                                                <button title="Job Applied" type="submit" class="btn flex-column " disabled data-job-id="{{ $topJobForEmployee->id }}" data-job-company-logo="{{ asset($topJobForEmployee?->employerCompany?->logo) ?? '' }}">{{ trans('employee.applied') }}</button>
-                                            </form>
-                                        @endif
-
-
-{{--                                            <img title="Save Job" src="{{ !auth()->user()?->employeeSavedJobs->contains($topJobForEmployee->id) ? asset('/frontend/employee/images/contentImages/bookmark.png') : asset('/frontend/bookmark-circle.png') }}" alt="Bookmark" data-job-id="{{ $topJobForEmployee->id }}" style="max-height: 40px" class="bookmarkIcon  ms-2 {{ !auth()->user()?->employeeSavedJobs->contains($topJobForEmployee->id) ? 'save-btnx' : '' }}" />--}}
-
-                                            @if(!auth()->user()?->employeeSavedJobs->contains($topJobForEmployee->id))
-                                                <button style="padding: 6px 20px; margin: 0px 8px!important;" is-saved="no" class="save-btn" data-job-id="{{ $topJobForEmployee->id }}"><img id="saveBtnImg{{ $topJobForEmployee->id }}" src="{{ asset('/') }}frontend/employee/images/contentImages/saveIcon.png" alt="Save Icon" class="save-icon"> <span id="saveBtnTxt{{ $topJobForEmployee->id }}">{{ trans('common.save') }}</span></button>
+                                    @if(!\App\Helpers\ViewHelper::checkIfUserApprovedOrBlocked(auth()->user()))
+                                        <div>
+                                            @if(!$topJobForEmployee['isApplied'])
+                                                <form action="{{ route('employee.apply-job', $topJobForEmployee->id) }}" method="post" style="float: left">
+                                                    @csrf
+                                                    <button title="Apply Job" type="submit" class="btn flex-column show-apply-model" data-job-id="{{ $topJobForEmployee->id }}" data-job-company-logo="{{ asset($topJobForEmployee?->employerCompany?->logo) ?? '' }}">{{ trans('employee.easy_apply') }}</button>
+                                                </form>
                                             @else
-                                                <button disabled style="padding: 6px 20px; margin: 0px 8px!important;" is-saved="yes" class="save-btn" data-job-id="{{ $topJobForEmployee->id }}"><img id="saveBtnImg{{ $topJobForEmployee->id }}" src="{{ asset('/frontend/bookmark-circle.png') }}" style="height: 20px; width: 20px" alt="Save Icon" class=""> <span id="saveBtnTxt{{ $topJobForEmployee->id }}">{{ trans('common.saved') }}</span></button>
+                                                <form action="" method="post" style="float: left">
+                                                    <button title="Job Applied" type="submit" class="btn flex-column " disabled data-job-id="{{ $topJobForEmployee->id }}" data-job-company-logo="{{ asset($topJobForEmployee?->employerCompany?->logo) ?? '' }}">{{ trans('employee.applied') }}</button>
+                                                </form>
                                             @endif
 
-                                    </div>
+
+                                            {{--                                            <img title="Save Job" src="{{ !auth()->user()?->employeeSavedJobs->contains($topJobForEmployee->id) ? asset('/frontend/employee/images/contentImages/bookmark.png') : asset('/frontend/bookmark-circle.png') }}" alt="Bookmark" data-job-id="{{ $topJobForEmployee->id }}" style="max-height: 40px" class="bookmarkIcon  ms-2 {{ !auth()->user()?->employeeSavedJobs->contains($topJobForEmployee->id) ? 'save-btnx' : '' }}" />--}}
+
+                                            @if(!auth()->user()?->employeeSavedJobs->contains($topJobForEmployee->id))
+                                                <button style="padding: 5px 20px; margin: 0px 8px!important; border-radius: 9px" is-saved="no" class="save-btn bg-primary text-white" data-job-id="{{ $topJobForEmployee->id }}"><img id="saveBtnImg{{ $topJobForEmployee->id }}" src="{{ asset('frontend/employee/images/bookmark-white.png') }}" alt="Save Icon" class="save-icon"> <span id="saveBtnTxt{{ $topJobForEmployee->id }}">{{ trans('common.save') }}</span></button>
+                                            @else
+                                                <button disabled style="padding: 5px 20px; margin: 0px 8px!important; border-radius: 9px" is-saved="yes" class="save-btn bg-gray-300 bg-light text-dark" data-job-id="{{ $topJobForEmployee->id }}"><img id="saveBtnImg{{ $topJobForEmployee->id }}" src="{{ asset('/frontend/employee/images/contentImages/saveIcon.png') }}" style="height: 20px; width: 20px" alt="Save Icon" class=""> <span id="saveBtnTxt{{ $topJobForEmployee->id }}">{{ trans('common.saved') }}</span></button>
+                                            @endif
+
+                                        </div>
+                                    @endif
+
 {{--                                    <div>--}}
 {{--                                        <img src="{{ asset('/') }}frontend/employee/images/contentImages/closeIcon.png" alt="Close" class="closeIcon" />--}}
 {{--                                    </div>--}}
@@ -213,22 +216,22 @@
                                 <p>{{ trans('employee.salary') }}: Tk. {{ $topJobForEmployee->salary_amount ?? 0 }}/{{ $topJobForEmployee->job_pref_salary_payment_type }}</p>
                             </div>
                             <div class="jobApply d-flex justify-content-between">
-                                <div>
-                                    @if(!$topJobForEmployee['isApplied'])
-                                        <form action="{{ route('employee.apply-job', $topJobForEmployee->id) }}" method="post" style="float: left">
-                                            @csrf
-                                            <button type="submit" title="Apply Job" class="btn flex-column show-apply-model" data-job-id="{{ $topJobForEmployee->id }}" data-job-company-logo="{{ asset($topJobForEmployee?->employerCompany?->logo) ?? '' }}">{{ trans('employee.easy_apply') }}</button>
-                                        </form>
-                                    @endif
-{{--                                    @if(!auth()->user()?->employeeSavedJobs->contains($topJobForEmployee->id))--}}
-{{--                                        <img title="Save Job" src="{{ auth()->user()?->employeeSavedJobs->contains($topJobForEmployee->id) ? asset('/frontend/bookmark-circle.png') : asset('/frontend/employee/images/contentImages/bookmark.png') }}" alt="Bookmark" data-job-id="{{ $topJobForEmployee->id }}" style="max-height: 40px" class="bookmarkIcon ms-2 {{ !auth()->user()?->employeeSavedJobs->contains($topJobForEmployee->id) ? 'save-btnx' : '' }}" />--}}
-{{--                                    @endif--}}
-                                        @if(!auth()->user()?->employeeSavedJobs->contains($topJobForEmployee->id))
-                                            <button style="padding: 6px 20px; margin: 0px 8px!important;" is-saved="no" class="save-btn" data-job-id="{{ $topJobForEmployee->id }}"><img id="saveBtnImg{{ $topJobForEmployee->id }}" src="{{ asset('/') }}frontend/employee/images/contentImages/saveIcon.png" alt="Save Icon" class="save-icon"> <span id="saveBtnTxt{{ $topJobForEmployee->id }}">{{ trans('common.save') }}</span></button>
-                                        @else
-                                            <button disabled style="padding: 6px 20px; margin: 0px 8px!important;" is-saved="yes" class="save-btn" data-job-id="{{ $topJobForEmployee->id }}"><img id="saveBtnImg{{ $topJobForEmployee->id }}" src="{{ asset('/frontend/bookmark-circle.png') }}" style="height: 20px; width: 20px" alt="Save Icon" class=""> <span id="saveBtnTxt{{ $topJobForEmployee->id }}">{{ trans('common.saved') }}</span></button>
+                                @if(!\App\Helpers\ViewHelper::checkIfUserApprovedOrBlocked(auth()->user()))
+                                    <div>
+                                        @if(!$topJobForEmployee['isApplied'])
+                                            <form action="{{ route('employee.apply-job', $topJobForEmployee->id) }}" method="post" style="float: left">
+                                                @csrf
+                                                <button type="submit" title="Apply Job" class="btn flex-column show-apply-model" data-job-id="{{ $topJobForEmployee->id }}" data-job-company-logo="{{ asset($topJobForEmployee?->employerCompany?->logo) ?? '' }}">{{ trans('employee.easy_apply') }}</button>
+                                            </form>
                                         @endif
-                                </div>
+                                        @if(!auth()->user()?->employeeSavedJobs->contains($topJobForEmployee->id))
+                                            <button style="padding: 5px 20px; margin: 0px 8px!important; border-radius: 9px;" is-saved="no" class="save-btn bg-primary text-white" data-job-id="{{ $topJobForEmployee->id }}"><img id="saveBtnImg{{ $topJobForEmployee->id }}" src="{{ asset('/frontend/employee/images/bookmark-white.png') }}" alt="Save Icon" class="save-icon"> <span id="saveBtnTxt{{ $topJobForEmployee->id }}">{{ trans('common.save') }}</span></button>
+                                        @else
+                                            <button disabled style="padding: 5px 20px; margin: 0px 8px!important; border-radius: 9px;" is-saved="yes" class="save-btn bg-light text-dark" data-job-id="{{ $topJobForEmployee->id }}"><img id="saveBtnImg{{ $topJobForEmployee->id }}" src="{{ asset('/frontend/employee/images/contentImages/saveIcon.png') }}" style="height: 20px; width: 20px" alt="Save Icon" class=""> <span id="saveBtnTxt{{ $topJobForEmployee->id }}">{{ trans('common.saved') }}</span></button>
+                                        @endif
+                                    </div>
+                                @endif
+
                                 {{--                                    <div>--}}
                                 {{--                                        <img src="{{ asset('/') }}frontend/employee/images/contentImages/closeIcon.png" alt="Close" class="closeIcon" />--}}
                                 {{--                                    </div>--}}

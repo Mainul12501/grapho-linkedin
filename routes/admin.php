@@ -24,6 +24,7 @@ use App\Http\Controllers\Backend\SiteControllers\SubscriptionController;
 use App\Http\Controllers\Backend\SiteControllers\CommonPageController;
 use App\Http\Controllers\Backend\Employer\TransactionController;
 use App\Http\Controllers\Backend\SiteController\SendNotificationController;
+use App\Http\Controllers\Frontend\Crud\PostController;
 
 
 Route::middleware([
@@ -45,6 +46,7 @@ Route::middleware([
         Route::post('/send-notification-to-user-by-method/{sendNotification}', [SendNotificationController::class, 'sendNotificationToUser'])->name('send-notification-to-user-by-method');
         Route::post('/set-user-subscription-plan', [UserController::class, 'setUserSubscriptionPlan'])->name('set-user-subscription-plan');
         Route::post('/update-vendor-credentials', [SiteSettingsController::class, 'updateVendorCredentials'])->name('update-vendor-credentials');
+        Route::get('view-post/{post}', [PostController::class, 'viewPost'])->name('admin.view-post');
     });
 
     Route::resources([

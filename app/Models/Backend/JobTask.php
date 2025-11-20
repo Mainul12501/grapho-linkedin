@@ -70,6 +70,14 @@ class JobTask extends Model
         return $this->hasMany(EmployeeAppliedJob::class);
     }
 
+    // Add this relationship
+    public function employeeSavedJobs()
+    {
+        return $this->belongsToMany(User::class, 'job_task_user', 'job_task_id', 'user_id');
+        // Adjust table name based on your pivot table name
+        // Common names: employee_job_task, job_task_user, employee_saved_jobs
+    }
+
     public function employerPrefferableUniversityNames()
     {
         return $this->belongsToMany(UniversityName::class);

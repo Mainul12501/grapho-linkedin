@@ -45,7 +45,7 @@
         <!-- Footer Buttons -->
         <div class="d-flex justify-content-between align-items-center">
             <button class="btn btn-outline-dark px-4 py-2 rounded-3" data-bs-dismiss="modal">{{ trans('common.cancel') }}</button>
-            <button id="continueToStep2" data-continue-btn-parent-form="jobEditFormAppend" type="button" class="btn btn-warning text-dark fw-semibold px-4 py-2 rounded-3">{{ trans('common.next') }}</button>
+            <button id="continueToStep2Edit" data-continue-btn-parent-form="jobEditFormAppend" type="button" class="btn btn-warning text-dark fw-semibold px-4 py-2 rounded-3">{{ trans('common.next') }}</button>
         </div>
     </div>
 
@@ -76,10 +76,10 @@
                 <div style="border-radius: 0px" class="bg-white p-4 shadow-sm">
                     <div class="d-flex justify-content-between flex-wrap gap-3">
                         <div>
-                            <h5 class="fw-semibold mb-2"><span id="formJobTitle">IT Support, Corporate Banking</span></h5>
+                            <h5 class="fw-semibold mb-2"><span id="formJobTitleEdit">IT Support, Corporate Banking</span></h5>
                             <div class="d-flex flex-wrap gap-2">
-                                <span class="badge bg-light text-dark"><span id="jobJobType">Full Time</span></span>
-                                <span class="badge bg-light text-dark"><span id="jobjobLocationType">Hybrid</span></span>
+                                <span class="badge bg-light text-dark"><span id="jobJobTypeEdit">Full Time</span></span>
+                                <span class="badge bg-light text-dark"><span id="jobjobLocationTypeEdit">Hybrid</span></span>
                             </div>
                         </div>
                         <div>
@@ -228,8 +228,8 @@
                                                 $selected = true;
                                             }
                                     @endphp
-                                        <input type="checkbox" class="btn-check" name="required_skills[]" {{ $selected ? 'checked' : '' }}  id="editskill{{ $skillKey }}" value="{{ $skill->id }}" >
-                                        <label class="btn border select-skill {{ $selected ? 'selected-skill' : '' }}" for="editskill{{ $skillKey }}">{{ $skill->skill_name ?? 'sn' }}</label>
+                                        <input type="checkbox" class="btn-check" name="required_skills[]" {{ $selected ? 'checked' : '' }}  id="editskill{{ $skill->id }}" value="{{ $skill->id }}" >
+                                        <label class="btn border select-skill p-2 {{ $selected ? 'selected-skill' : '' }}"  data-input-id="{{ $singleSkillCategory->slug }}-{{ $skillKey }}" for="editskill{{ $skill->id }}">{{ $skill->skill_name ?? 'sn' }}</label>
                                     @endforeach
                                 </div>
                             @endforeach
@@ -246,8 +246,8 @@
                     <div>
                         <div class="input-group rounded-3 border border-secondary-subtle">
                             <select name="status" class="form-control select2" id="">
-                                <option value="on">Stay Published</option>
-                                <option value="">Unpublished</option>
+                                <option value="on" {{ $jobTask->status == 1 ? 'selected' : '' }}>Stay Published</option>
+                                <option value="" {{ $jobTask->status == 0 ? 'selected' : '' }}>Unpublished</option>
                             </select>
                         </div>
                     </div>

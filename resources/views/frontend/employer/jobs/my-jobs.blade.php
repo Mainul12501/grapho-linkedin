@@ -33,10 +33,10 @@
                             <!-- ✅ Mobile Search -->
                             <div class="d-block d-md-none mb-3">
                                 <div class="input-group">
-                                    <span class="input-group-text bg-white border-end-0">
+                                    <input type="text" class="form-control border-start-0" id="mobile_search_text" placeholder="Search jobs (mobile)" />
+                                    <span class="input-group-text bg-white border-end-0" onclick="searchOnMobile()">
                                       <img src="{{ asset('/') }}frontend/employer/images/employersHome/search 1.png" alt="">
                                     </span>
-                                    <input type="text" class="form-control border-start-0" placeholder="Search jobs (mobile)" />
                                 </div>
                             </div>
 
@@ -143,131 +143,6 @@
                         @endforelse
 
 
-{{--                        <div class="col-12">--}}
-{{--                            <article class="job-card d-flex flex-wrap justify-content-between align-items-start gap-3">--}}
-
-{{--                                <!-- ✅ Modal Trigger Area -->--}}
-{{--                                <div class="job-main clickable-area flex-grow-1" data-bs-toggle="modal" data-bs-target="#jobDetailsModal" style="cursor: pointer;">--}}
-{{--                                    <div class="job-details">--}}
-{{--                                        <h6 class="job-title fw-semibold mb-2">Senior Officer, Corporate Banking</h6>--}}
-{{--                                        <div class="job-badges d-flex flex-wrap gap-2 mb-2">--}}
-{{--                                            <span class="badge bg-light text-secondary">Full Time</span>--}}
-{{--                                            <span class="badge bg-light text-secondary">On-Site</span>--}}
-{{--                                            <span class="badge bg-light text-secondary">Day Shift</span>--}}
-{{--                                        </div>--}}
-{{--                                    </div>--}}
-{{--                                    <div class="job-info text-muted small">--}}
-{{--                                        <div class="mb-1">--}}
-{{--                                            <img src="{{ asset('/') }}frontend/employer/images/employersHome/postdOn.png" class="me-1" alt=""> Posted on: 16 Feb, 2025--}}
-{{--                                        </div>--}}
-{{--                                        <div class="mb-1">--}}
-{{--                                            <img src="{{ asset('/') }}frontend/employer/images/employersHome/Dedline.png" class="me-1" alt=""> Deadline: 24 Mar, 2025--}}
-{{--                                        </div>--}}
-{{--                                        <div>--}}
-{{--                                            <img src="{{ asset('/') }}frontend/employer/images/employersHome/24application.png" class="me-1" alt="">--}}
-{{--                                            <a href="#" class="text-decoration-underline">24 Applicants</a>--}}
-{{--                                        </div>--}}
-{{--                                    </div>--}}
-{{--                                </div>--}}
-
-{{--                                <!-- ✅ Dropdown (Three Dot) -->--}}
-{{--                                <div class="job-actions dropdown">--}}
-{{--                                    <button class="btn btn-link p-0 text-secondary"--}}
-{{--                                            type="button" data-bs-toggle="dropdown" aria-expanded="false">--}}
-{{--                                        <img src="{{ asset('/') }}frontend/employer/images/employersHome/three dot.png" alt="">--}}
-{{--                                    </button>--}}
-{{--                                    <ul class="dropdown-menu dropdown-menu-end">--}}
-{{--                                        <li><a class="dropdown-item" href="#">Edit</a></li>--}}
-{{--                                        <li><a class="dropdown-item" href="#">Delete</a></li>--}}
-{{--                                    </ul>--}}
-{{--                                </div>--}}
-{{--                            </article>--}}
-{{--                        </div>--}}
-
-
-{{--                        <div class="col-12">--}}
-{{--                            <article class="job-card d-flex flex-wrap justify-content-between align-items-start gap-3">--}}
-
-{{--                                <!-- ✅ Modal Trigger Area -->--}}
-{{--                                <div class="job-main clickable-area flex-grow-1" data-bs-toggle="modal" data-bs-target="#jobDetailsModal" style="cursor: pointer;">--}}
-{{--                                    <div class="job-details">--}}
-{{--                                        <h6 class="job-title fw-semibold mb-2">Senior Officer, Corporate Banking</h6>--}}
-{{--                                        <div class="job-badges d-flex flex-wrap gap-2 mb-2">--}}
-{{--                                            <span class="badge bg-light text-secondary">Full Time</span>--}}
-{{--                                            <span class="badge bg-light text-secondary">On-Site</span>--}}
-{{--                                            <span class="badge bg-light text-secondary">Day Shift</span>--}}
-{{--                                        </div>--}}
-{{--                                    </div>--}}
-{{--                                    <div class="job-info text-muted small">--}}
-{{--                                        <div class="mb-1">--}}
-{{--                                            <img src="{{ asset('/') }}frontend/employer/images/employersHome/postdOn.png" class="me-1" alt=""> Posted on: 16 Feb, 2025--}}
-{{--                                        </div>--}}
-{{--                                        <div class="mb-1">--}}
-{{--                                            <img src="{{ asset('/') }}frontend/employer/images/employersHome/Dedline.png" class="me-1" alt=""> Deadline: 24 Mar, 2025--}}
-{{--                                        </div>--}}
-{{--                                        <div>--}}
-{{--                                            <img src="{{ asset('/') }}frontend/employer/images/employersHome/24application.png" class="me-1" alt="">--}}
-{{--                                            <a href="#" class="text-decoration-underline">24 Applicants</a>--}}
-{{--                                        </div>--}}
-{{--                                    </div>--}}
-{{--                                </div>--}}
-
-{{--                                <!-- ✅ Dropdown (Three Dot) -->--}}
-{{--                                <div class="job-actions dropdown">--}}
-{{--                                    <button class="btn btn-link p-0 text-secondary"--}}
-{{--                                            type="button" data-bs-toggle="dropdown" aria-expanded="false">--}}
-{{--                                        <img src="{{ asset('/') }}frontend/employer/images/employersHome/three dot.png" alt="">--}}
-{{--                                    </button>--}}
-{{--                                    <ul class="dropdown-menu dropdown-menu-end">--}}
-{{--                                        <li><a class="dropdown-item" href="#">Edit</a></li>--}}
-{{--                                        <li><a class="dropdown-item" href="#">Delete</a></li>--}}
-{{--                                    </ul>--}}
-{{--                                </div>--}}
-{{--                            </article>--}}
-{{--                        </div>--}}
-
-{{--                        <div class="col-12">--}}
-{{--                            <article class="job-card d-flex flex-wrap justify-content-between align-items-start gap-3">--}}
-
-{{--                                <!-- ✅ Modal Trigger Area -->--}}
-{{--                                <div class="job-main clickable-area flex-grow-1" data-bs-toggle="modal" data-bs-target="#jobDetailsModal" style="cursor: pointer;">--}}
-{{--                                    <div class="job-details">--}}
-{{--                                        <h6 class="job-title fw-semibold mb-2">Senior Officer, Corporate Banking</h6>--}}
-{{--                                        <div class="job-badges d-flex flex-wrap gap-2 mb-2">--}}
-{{--                                            <span class="badge bg-light text-secondary">Full Time</span>--}}
-{{--                                            <span class="badge bg-light text-secondary">On-Site</span>--}}
-{{--                                            <span class="badge bg-light text-secondary">Day Shift</span>--}}
-{{--                                        </div>--}}
-{{--                                    </div>--}}
-{{--                                    <div class="job-info text-muted small">--}}
-{{--                                        <div class="mb-1">--}}
-{{--                                            <img src="{{ asset('/') }}frontend/employer/images/employersHome/postdOn.png" class="me-1" alt=""> Posted on: 16 Feb, 2025--}}
-{{--                                        </div>--}}
-{{--                                        <div class="mb-1">--}}
-{{--                                            <img src="{{ asset('/') }}frontend/employer/images/employersHome/Dedline.png" class="me-1" alt=""> Deadline: 24 Mar, 2025--}}
-{{--                                        </div>--}}
-{{--                                        <div>--}}
-{{--                                            <img src="{{ asset('/') }}frontend/employer/images/employersHome/24application.png" class="me-1" alt="">--}}
-{{--                                            <a href="#" class="text-decoration-underline">24 Applicants</a>--}}
-{{--                                        </div>--}}
-{{--                                    </div>--}}
-{{--                                </div>--}}
-
-{{--                                <!-- ✅ Dropdown (Three Dot) -->--}}
-{{--                                <div class="job-actions dropdown">--}}
-{{--                                    <button class="btn btn-link p-0 text-secondary"--}}
-{{--                                            type="button" data-bs-toggle="dropdown" aria-expanded="false">--}}
-{{--                                        <img src="{{ asset('/') }}frontend/employer/images/employersHome/three dot.png" alt="">--}}
-{{--                                    </button>--}}
-{{--                                    <ul class="dropdown-menu dropdown-menu-end">--}}
-{{--                                        <li><a class="dropdown-item" href="#">Edit</a></li>--}}
-{{--                                        <li><a class="dropdown-item" href="#">Delete</a></li>--}}
-{{--                                    </ul>--}}
-{{--                                </div>--}}
-{{--                            </article>--}}
-{{--                        </div>--}}
-
-
                     </div>
                 </section>
             </div>
@@ -338,7 +213,7 @@
 
 
     <!-- Create Job Modal -->
-    <div class="modal fade" id="createJobModal" data-bs-backdrop="static">
+    <div class="modal fade" id="createJobModal" data-bs-backdrop="static" data-bs-focus="false">
         <div class="modal-dialog modal-dialog-centered modal-md">
             <div class="modal-content p-4 rounded-4">
                 <div style="display: none">
@@ -586,8 +461,8 @@
                                             @foreach($skillCategories as $x => $singleSkillCategory)
                                                 <div class="tab-pane fade {{ $x == 0 ? 'show active' : '' }}" id="skillCategory{{$x}}" >
                                                     @foreach($singleSkillCategory->publishedSkills as $skillKey => $skill)
-                                                        <input type="checkbox" class="btn-check" name="required_skills[]" id="{{ $singleSkillCategory->category_name }}-{{ $skillKey }}" value="{{ $skill->id }}" >
-                                                        <label class="btn border select-skill" data-input-id="{{ $singleSkillCategory->category_name }}-{{ $skillKey }}" for="{{ $singleSkillCategory->category_name }}-{{ $skillKey }}">{{ $skill->skill_name ?? 'sn' }}</label>
+                                                        <input type="checkbox" class="btn-check" name="required_skills[]" id="{{ $singleSkillCategory->slug }}-{{ $skillKey }}" value="{{ $skill->id }}" >
+                                                        <label class="btn border select-skill" data-input-id="{{ $singleSkillCategory->slug }}-{{ $skillKey }}" for="{{ $singleSkillCategory->slug }}-{{ $skillKey }}">{{ $skill->skill_name ?? 'sn' }}</label>
                                                     @endforeach
                                                 </div>
                                             @endforeach
@@ -711,7 +586,7 @@
     </div>
 
     <!-- Edit Job Modal -->
-    <div class="modal fade" id="editJobModal" >
+    <div class="modal fade" id="editJobModal" data-bs-focus="false" data-bs-backdrop="static">
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content p-4 rounded-4">
                 <div class="" id="editJobForm">
@@ -734,6 +609,7 @@
         .select2-container--default .select2-selection--multiple .select2-selection__choice {
             background-color: #FFCB11!important;
         }
+        /* hide select 2 search field */
         /*.select2-search__field {display: none!important;}*/
         .selected-skill {
             color: black!important;
@@ -786,6 +662,9 @@
                 versionCheck: false
             } );
         })
+        function searchOnMobile() {
+            window.location ="{{ route('employer.my-jobs') }}?search_text="+$('#mobile_search_text').val();
+        }
     </script>
 
     @if(isset($_GET['show_modal']) && $_GET['show_modal'] == 'create')
@@ -818,25 +697,12 @@
                     // minimumResultsForSearch: 0,
                     // dropdownParent: $('#editJobModal')// Always show search box and make it functional
                 });
-                // $('.modal').on('shown.bs.modal', function () {
-                //     $(this).find('.select2').select2({
-                //         theme: 'bootstrap-5',
-                //         width: '100%',
-                //         minimumResultsForSearch: 0,
-                //         dropdownParent: $(this)
-                //     });
-                // });
-                // $('.select2').selectize();
-                // document.querySelectorAll('.select2').forEach(function (el) {
-                //     new SlimSelect({
-                //         select: el,
-                //         events: {
-                //             searchFilter: (option, search) => {
-                //                 return option.text.toLowerCase().indexOf(search.toLowerCase()) !== -1;
-                //             }
-                //         }
-                //     });
-                // });
+                // Fix for single select focus issue
+                $(document).on('select2:open', () => {
+                    setTimeout(() => {
+                        document.querySelector('.select2-container--open .select2-search__field').focus();
+                    }, 0);
+                });
                 $('#editJobModal').modal('show');
             })
         })
@@ -859,10 +725,21 @@
         })
         $(document).on('click', '#continueToStep2', function () {
             var btnParentForm = $(this).attr('data-continue-btn-parent-form');
-
             $('#formJobTitle').text($('#'+btnParentForm+' input[name="job_title"]').val());
             $('#jobJobType').text($('#'+btnParentForm+' label[for="'+$('#'+btnParentForm+' input[name="job_type_id"]:checked').attr('id')+'"]').text());
             $('#jobjobLocationType').text($('#'+btnParentForm+' label[for="'+$('#'+btnParentForm+' input[name="job_location_type_id"]:checked').attr('id')+'"]').text());
+            // document.querySelector('#createJobModal .stepOne').classList.add('d-none');
+            $('.stepOne').addClass('d-none');
+            // document.querySelector('#createJobModal .jobModalForPost').classList.remove('d-none');
+            $('.jobModalForPost').removeClass('d-none');
+            $('.stepTwo').removeClass('d-none');
+        })
+        $(document).on('click', '#continueToStep2Edit', function () {
+            var btnParentForm = $(this).attr('data-continue-btn-parent-form');
+
+            $('#formJobTitleEdit').text($('#'+btnParentForm+' input[name="job_title"]').val());
+            $('#jobJobTypeEdit').text($('#'+btnParentForm+' label[for="'+$('#'+btnParentForm+' input[name="job_type_id"]:checked').attr('id')+'"]').text());
+            $('#jobjobLocationTypeEdit').text($('#'+btnParentForm+' label[for="'+$('#'+btnParentForm+' input[name="job_location_type_id"]:checked').attr('id')+'"]').text());
             // document.querySelector('#createJobModal .stepOne').classList.add('d-none');
             $('.stepOne').addClass('d-none');
             // document.querySelector('#createJobModal .jobModalForPost').classList.remove('d-none');

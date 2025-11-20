@@ -52,7 +52,7 @@
 <!-- Offcanvas Navbar for Mobile -->
 <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
     <div class="offcanvas-header">
-        <h5 class="offcanvas-title" id="offcanvasNavbarLabel"><img src="{{ asset('/') }}frontend/home-landing/images/Compnay logo.png" alt="" class="img-fluid"></h5>
+        <h5 class="offcanvas-title" id="offcanvasNavbarLabel"><img style="max-height: 100px;" src="{{ asset(\App\Models\Backend\SiteSetting::first()->logo ?? '/frontend/home-landing/images/Compnay logo.png') }}" alt="" class="img-fluid"></h5>
         <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
     <div class="offcanvas-body d-flex flex-column justify-content-between">
@@ -99,10 +99,16 @@
     <div class="container d-flex justify-content-between align-items-center">
 
         <!-- Brand / Logo -->
-        <a class="navbar-brand" href="{{ route('/') }}">
-            <img src="{{ asset('/') }}frontend/home-landing/images/Compnay logo.png" alt="">
+        <a class="navbar-brand py-0" href="{{ route('/') }}">
+            <img id="landingHomeLargeScreenLogo"  src="{{ asset(isset($siteSetting) ? $siteSetting->site_icon : '/frontend/home-landing/images/Compnay logo.png') }}" alt="" style="max-height: 45px;">
         </a>
-
+        <style>
+           @media  screen and (max-width: 426px) {
+               #landingHomeLargeScreenLogo {
+                   max-height: 30px;
+               }
+           }
+        </style>
         <!-- Mobile notification bell and hamburger grouped -->
         <div class="d-flex align-items-center gap-2 d-lg-none">
             <!-- Notification Bell -->
@@ -250,7 +256,7 @@
         <div class="col-6 col-md-3">
             <div class="d-flex flex-column align-items-center">
                 <div class="rounded-circle border d-flex justify-content-center align-items-center" style="width: 72px; height: 72px;">
-                    <img src="{{ asset('/') }}frontend/home-landing/images/searchcompany.png" alt="Company Reviews" style="width: 40px;">
+                    <img src="{{ asset(isset($siteSetting) ? $siteSetting->logo : '/frontend/home-landing/images/searchcompany.png') }}" alt="Company Reviews" style="width: 40px;">
                 </div>
                 <span class="mt-2">{{ trans('home.search_company_reviews') }}</span>
             </div>

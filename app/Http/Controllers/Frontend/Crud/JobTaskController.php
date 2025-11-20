@@ -51,6 +51,10 @@ class JobTaskController extends Controller
      */
     public function store(Request $request)
     {
+        if (ViewHelper::checkIfUserApprovedOrBlocked(auth()->user()))
+        {
+            return ViewHelper::returnRedirectWithMessage(route('employer.dashboard'), 'Your account is blocked or has not approved yet. Please contact with admin.');
+        }
         $validator = Validator::make($request->all(),[
             'job_title' => 'required'
         ]);
@@ -109,6 +113,10 @@ class JobTaskController extends Controller
      */
     public function edit(JobTask  $jobTask/*string $id*/)
     {
+        if (ViewHelper::checkIfUserApprovedOrBlocked(auth()->user()))
+        {
+            return ViewHelper::returnRedirectWithMessage(route('employer.dashboard'), 'Your account is blocked or has not approved yet. Please contact with admin.');
+        }
         $jobTask->load([
             'employerPrefferableUniversityNames',
             'employerPrefferableFieldOfStudyNames'
@@ -149,6 +157,10 @@ class JobTaskController extends Controller
      */
     public function update(Request $request, JobTask $jobTask/*string $id*/)
     {
+        if (ViewHelper::checkIfUserApprovedOrBlocked(auth()->user()))
+        {
+            return ViewHelper::returnRedirectWithMessage(route('employer.dashboard'), 'Your account is blocked or has not approved yet. Please contact with admin.');
+        }
 //        return $request->all();
         $validator = Validator::make($request->all(),[
             'job_title' => 'required'
@@ -203,6 +215,10 @@ class JobTaskController extends Controller
      */
     public function destroy(JobTask $jobTask)
     {
+        if (ViewHelper::checkIfUserApprovedOrBlocked(auth()->user()))
+        {
+            return ViewHelper::returnRedirectWithMessage(route('employer.dashboard'), 'Your account is blocked or has not approved yet. Please contact with admin.');
+        }
         $jobTask->employerPrefferableUniversityNames()->detach();
         $jobTask->employerPrefferableFieldOfStudyNames()->detach();
         $jobTask->jobRequiredskills()->detach();
