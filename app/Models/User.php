@@ -230,9 +230,7 @@ class User extends Authenticatable
     }
     public function appliedJobsWithJobDetails()
     {
-        return $this->hasMany(EmployeeAppliedJob::class, 'user_id')->with(['jobTask' => function ($jobtask) {
-            return $jobtask->with('employerCompany');
-        }]);
+        return $this->hasMany(EmployeeAppliedJob::class, 'user_id')->with('jobTask.employerCompany');
     }
 
     public function viewEmployerIds()

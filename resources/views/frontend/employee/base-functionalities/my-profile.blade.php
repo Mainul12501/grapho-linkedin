@@ -31,11 +31,11 @@
 
 
 
-                    <p class="mt-2">
+                    <p class="mt-2" data-bs-toggle="modal" data-bs-target="#editBioModal">
                         {{ auth()->user()->profile_title ?? 'user profile title here.' }}
                     </p>
 
-                    <div class="viewoProfileforSmallDevice py-4">
+                    <div class="viewoProfileforSmallDevice py-3 " style="border-top: 1px solid lightgrey;">
                         <a href="">{{ trans('employee.view_profile_details') }}</a>
                         <img src="{{ asset('/') }}frontend/employee/images/profile/arrow-right dark.png" alt="">
                     </div>
@@ -436,12 +436,12 @@
                                              aria-expanded="false" />
 
                                         <ul class="dropdown-menu dropdown-menu-end">
-                                            <li><a class="dropdown-item edit-work-experience" data-work-experience-id="{{ $workExperience->id }}" href="javascript:void(0)">{{ trans('common.edit') }}</a></li>
+                                            <li><a class="dropdown-item edit-work-experience f-s-15" data-work-experience-id="{{ $workExperience->id }}" href="javascript:void(0)">{{ trans('common.edit') }}</a></li>
                                             <li>
                                                 <form action="{{ route('employee.employee-work-experiences.destroy', $workExperience->id) }}" method="post">
                                                     @csrf
                                                     @method('delete')
-                                                    <button class="dropdown-item data-delete-form" type="submit">{{ trans('common.delete') }}</button>
+                                                    <button class="dropdown-item data-delete-form f-s-15" type="submit">{{ trans('common.delete') }}</button>
                                                 </form>
                                             </li>
                                         </ul>
@@ -502,12 +502,12 @@
                                              aria-expanded="false" />
 
                                         <ul class="dropdown-menu dropdown-menu-end">
-                                            <li><a class="dropdown-item edit-education" data-education-id="{{ $employeeEducation->id }}" href="javascript:void(0)">{{ trans('common.edit') }}</a></li>
+                                            <li><a class="dropdown-item edit-education f-s-15" data-education-id="{{ $employeeEducation->id }}" href="javascript:void(0)">{{ trans('common.edit') }}</a></li>
                                             <li>
                                                 <form action="{{ route('employee.employee-educations.destroy', $employeeEducation->id) }}" method="post">
                                                     @csrf
                                                     @method('delete')
-                                                    <button class="dropdown-item data-delete-form" type="submit">{{ trans('common.delete') }}</button>
+                                                    <button class="dropdown-item data-delete-form f-s-15" type="submit">{{ trans('common.delete') }}</button>
                                                 </form>
                                             </li>
                                         </ul>
@@ -583,12 +583,12 @@
                                              aria-expanded="false" />
 
                                         <ul class="dropdown-menu dropdown-menu-end">
-                                            <li><a class="dropdown-item edit-document" data-document-id="{{ $employeeDocument->id }}" href="javascript:void(0)">{{ trans('common.edit') }}</a></li>
+                                            <li><a class="dropdown-item edit-document f-s-15" data-document-id="{{ $employeeDocument->id }}" href="javascript:void(0)">{{ trans('common.edit') }}</a></li>
                                             <li>
                                                 <form action="{{ route('employee.employee-documents.destroy', $employeeDocument->id) }}" method="post">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button class="dropdown-item data-delete-form" type="submit">{{ trans('common.delete') }}</button>
+                                                    <button class="dropdown-item data-delete-form f-s-15" type="submit">{{ trans('common.delete') }}</button>
                                                 </form>
                                             </li>
                                         </ul>
@@ -1197,6 +1197,18 @@
                 width: 100% !important;
                 margin-left: auto!important;
                 margin-right: auto!important;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .profile {
+                padding-top: 15px;
+                padding-bottom: 0px!important;
+            }
+        }
+        @media (max-width: 426px) {
+            .search-bar {
+                display: none;
             }
         }
     </style>

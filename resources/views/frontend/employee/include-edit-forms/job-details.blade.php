@@ -55,10 +55,13 @@
 <h5 style="" class="fw-bold  about-company-name">{{ trans('employer.about') }} {{ $singleJobTask?->employerCompany?->name ?? 'company Name' }}</h5>
 
 <p class="text-muted">{{ $singleJobTask?->employerCompany?->company_overview ?? 'company overview' }}</p>
-<h5 class="fw-bold">{{ trans('employer.job_requirements') }}</h5>
-<div class="job-requirements ms-0 text-muted" style="color: gray;">
-    {!! $singleJobTask->description ?? 'job description here' !!}
-</div>
+@if(isset($singleJobTask->description))
+    <h5 class="fw-bold">{{ trans('employer.job_requirements') }}</h5>
+    <div class="job-requirements ms-0 text-muted" style="color: gray;">
+        {!! $singleJobTask->description ?? 'job description here' !!}
+    </div>
+@endif
+
 
 <h6 class="fw-semibold mt-4 mb-2">Field Of Study Preference</h6>
 <span>

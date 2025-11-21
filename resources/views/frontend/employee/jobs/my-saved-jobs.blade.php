@@ -6,7 +6,7 @@
 
 
     <section class="bg-white forSmall smallTop">
-        <a href=""><img src="{{ asset('/') }}frontend/employee/images/profile/leftArrowDark.png" alt="" class="me-2"> {{ trans('employee.jobs_saved') }}</a>
+        <a href="{{ route('employee.my-profile') }}"><img src="{{ asset('/') }}frontend/employee/images/profile/leftArrowDark.png" alt="" class="me-2"> {{ trans('employee.jobs_saved') }}</a>
     </section>
 
     <!-- Main Content -->
@@ -93,7 +93,7 @@
                 @empty
                     <div class="row">
                         <div class="col-12">
-                            <span>{{ trans('employee.havent_applied_any_job') }}</span>
+                            <span class="text-center mx-auto">{{ trans('employee.havent_applied_any_job') }}</span>
                         </div>
                     </div>
                 @endforelse
