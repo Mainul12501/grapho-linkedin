@@ -18,7 +18,7 @@
                 </div>
             </div>
             <div class="row g-4">
-                <div class=" ps-5 {{ count($advertisements) > 0 ? 'col-md-8' : ' col-md-9 mx-auto' }}" id="appendContentHere">
+                <div class=" ps-5 {{ count($advertisements) > 0 ? 'col-md-8 col-sm-10 mx-auto' : ' col-md-9 mx-auto' }}" id="appendContentHere">
                     @if(!\App\Helpers\ViewHelper::checkIfUserApprovedOrBlocked(auth()->user()))
                         <div class="card card-body d-flex">
                             <p class="d-inline-flex">{{ trans('employer.have_something_new_on_mind') }}</p>
@@ -29,7 +29,7 @@
 {{--                    contents appends here--}}
                 </div>
                 @if(count($advertisements) > 0)
-                    <div class="col-md-4">
+                    <div class="col-md-4 " id="advertisementContainer">
                         @if(count($advertisements) > 0)
                             <div>
                                 @foreach($advertisements as $advertisement)
@@ -49,6 +49,13 @@
     </main>
 @endsection
 
+@push('style')
+    <style>
+        @media screen and (max-width: 425px){
+            #advertisementContainer {display: none}
+        }
+    </style>
+@endpush
 
 @push('script')
     <script>
@@ -87,10 +94,12 @@
                 {
                     if (response.follow_status == 1)
                     {
+                        toastr.success('You followed this employer successfully.');
                         $('#followBtn'+postId).text("{{ trans('employer.unfollow') }}").attr('data-follow-history-status', 1);
 
                     } else if (response.follow_status == 0)
                     {
+                        toastr.warning('You Unfollowed this employer successfully.');
                         $('#followBtn'+postId).text("{{ trans('employer.follow') }}").attr('data-follow-history-status', 0);
                     }
                 } else {

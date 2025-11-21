@@ -4,14 +4,29 @@
 
 @section('body')
 
-            <div class="ps-3 py-2 d-block d-md-none">
-                <img src="{{ asset('/') }}frontend/employer/images/employersHome/leftarrow.png" alt="">
+            <div class="ps-3 py-2 d-block d-md-none bg-white">
+                <a href="{{ url()->previous() }}"><img src="{{ asset('/') }}frontend/employer/images/employersHome/leftarrow.png" alt=""></a>
             </div>
+            <style>
+                @media screen and (max-width: 426px){
+                    .mobile-padding-0 {
+                        padding: 0px!important;
+                        border-radius: 0px!important;
+                    }
+                    .p-sm-0 {padding-top: 0px!important;}
+                }
+                @media (max-width: 768px) {
+                    .profileLeftCard {
+                        border-radius: 0px !important;
+                        border: 0px!important;
+                    }
+                }
+            </style>
 
-            <div class="employerProfile container-fluid py-2">
+            <div class="employerProfile container-fluid py-2 p-sm-0">
                 <div class="row g-4">
                     <!-- Left profile card -->
-                    <div class="col-lg-3">
+                    <div class="col-lg-3 mobile-padding-0">
                         <div class="card rounded-3 p-4  profileLeftCard" style="">
                             <div class="mb-4 profile-left-card-info">
                                 <div class="">
@@ -26,7 +41,7 @@
 
                                 @if($employeeDetails->is_open_for_hire == 1)
                                     <span class="badge d-inline-flex align-items-center mb-3 gap-2">
-                                        <img src="{{ asset('/') }}frontend/employer/images/employersHome/Open to Full-time Roles.png" alt=""> Open to Full-time Roles
+                                        <img src="{{ asset('/') }}frontend/employer/images/employersHome/Open to Full-time Roles.png" alt=""> Open to hire
                                     </span>
                                 @endif
 
@@ -44,7 +59,7 @@
                                 </a>
                             </div>
 
-                            <ul class="list-unstyled mb-0">
+                            <ul class="list-unstyled mb-0 d-block d-md-none">
                                 <li class="mb-3 d-flex align-items-center gap-3">
                                     <img src="{{ asset('/') }}frontend/employer/images/employersHome/profile location.png" alt="">
                                     <div>
@@ -66,26 +81,36 @@
                                         {{ $employeeDetails->mobile ?? 'Ex: +880 123 456 7890' }}
                                     </div>
                                 </li>
-{{--                                <li class="d-flex align-items-center gap-3">--}}
-{{--                                    <img src="{{ asset('/') }}frontend/employer/images/employersHome/profile website.png" alt="">--}}
-{{--                                    <div>--}}
-{{--                                        <small class="fw-bold d-block">Website</small>--}}
-{{--                                        <a href="https://www.devpranto.com" target="_blank" class="text-decoration-none">{{ $employeeDetails->website ?? 'grapho.com' }}</a>--}}
-{{--                                    </div>--}}
-{{--                                </li>--}}
+                                {{--                                <li class="d-flex align-items-center gap-3">--}}
+                                {{--                                    <img src="{{ asset('/') }}frontend/employer/images/employersHome/profile website.png" alt="">--}}
+                                {{--                                    <div>--}}
+                                {{--                                        <small class="fw-bold d-block">Website</small>--}}
+                                {{--                                        <a href="https://www.devpranto.com" target="_blank" class="text-decoration-none">{{ $employeeDetails->website ?? 'grapho.com' }}</a>--}}
+                                {{--                                    </div>--}}
+                                {{--                                </li>--}}
                             </ul>
                         </div>
                     </div>
-
+                    <style>
+                        @media screen and (max-width: 576px) {
+                            .card-sm-only {
+                                border: none !important;
+                                background: none !important;
+                                box-shadow: none !important;
+                                padding-bottom: 10px!important;
+                                padding-left: 0px!important;
+                            }
+                        }
+                    </style>
                     <!-- Right content -->
                     <div class="col-lg-9">
                         <!-- Work Experiences -->
                         <section class="mb-5">
-                            <h5 class="card mb-0 p-4 fw-semibold " style="border-radius: 0px!important;">{{ trans('employee.work_experiences') }}</h5>
+                            <h5 class="card card-sm-only mb-0 p-4 p-md-4 ps-md-4 ps-0 fw-semibold f-s-23" style="border-radius: 0px!important;">{{ trans('employee.work_experiences') }}</h5>
                             @forelse($employeeDetails->employeeWorkExperiences as $workExperience)
                                 <div class="card p-4 shadow-sm rounded-3" style="border-radius: 0px!important;">
-                                    <div class="d-flex align-items-center mb-3 gap-3">
-                                        <img src="{{ asset($workExperience->company_logo ?? '/frontend/company-vector.jpg') }}" alt="UCB Logo" style=" object-fit: contain; height: 60px; border-radius: 50%" />
+                                    <div class="d-flex align-items-start mb-3 gap-3">
+                                        <img src="{{ asset($workExperience->company_logo ?? (isset($siteSetting) ? $siteSetting->common_institute_logo : '/frontend/company-vector.jpg')) }}" alt="company Logo" style=" object-fit: contain; height: 60px; border-radius: 50%" />
                                         <div>
                                             <h6 class="mb-0 fw-bold">{{ $workExperience->position ?? 'Officer' }}</h6>
                                             <small class="text-muted">{{ $workExperience->company_name }} &bull; {{ $workExperience->job_type ?? 'Full Time' }}</small><br />
@@ -105,35 +130,16 @@
                                     <p class="f-s-26 text-center">No Data Available</p>
                                 </div>
                             @endforelse
-
-
-{{--                            <div class="card p-4 shadow-sm rounded-3">--}}
-{{--                                <div class="d-flex align-items-center mb-3 gap-3">--}}
-{{--                                    <img src="{{ asset('/') }}frontend/employer/images/employersHome/profileCompany-2.png" alt="HSBC Logo" object-fit: contain;" />--}}
-{{--                                    <div>--}}
-{{--                                        <h6 class="mb-0 fw-bold">Sales Intern</h6>--}}
-{{--                                        <small class="text-muted">HSBC &bull; Full Time</small><br />--}}
-{{--                                        <small class="text-muted">Jul 2024 - Dec 2024 &bull; 5 mos</small><br />--}}
-{{--                                        <small class="text-muted">Dhaka, Bangladesh</small>--}}
-{{--                                    </div>--}}
-{{--                                </div>--}}
-{{--                                <p class="mb-1 fw-semibold">Job Summary:</p>--}}
-{{--                                <ul>--}}
-{{--                                    <li>This was my first job in the banking field.</li>--}}
-{{--                                    <li>I gained a good amount of leadership skills & learned to think about the business side of banking.</li>--}}
-{{--                                    <li>After a while, I led a team of three. I had to maintain communication with the stakeholders.</li>--}}
-{{--                                </ul>--}}
-{{--                            </div>--}}
                         </section>
 
 
                         <!-- Education -->
                         <section class="mb-5">
-                            <h5 class="card mb-0 fw-semibold p-4 f-s-23" style="border-radius: 0px!important">{{ trans('employee.education') }}</h5>
+                            <h5 class="card card-sm-only mb-0 fw-semibold p-4 f-s-23" style="border-radius: 0px!important">{{ trans('employee.education') }}</h5>
                             @forelse($employeeDetails->employeeEducations as $education)
                                 <div class="card p-4 shadow-sm rounded-3" style="border-radius: 0px!important;">
-                                    <div class="d-flex align-items-center mb-3 gap-3">
-                                        <img src="{{ asset( $education?->universityName?->logo ?? '/frontend/company-vector.jpg') }}" alt="UCB Logo" style=" object-fit: contain; border-radius: 50%" height="60"  />
+                                    <div class="d-flex align-items-start mb-3 gap-3">
+                                        <img src="{{ asset( $education?->universityName?->logo ?? (isset($siteSetting) ? $siteSetting->common_institute_logo : '/frontend/company-vector.jpg')) }}" alt="institute Logo" style=" object-fit: contain; border-radius: 50%" height="60"  />
                                         <div>
                                             <h6 class="mb-0 fw-bold">{{ $education?->institute_name ?? 'Institute Name' }}</h6>
                                             <small class="text-muted">{{ $education?->educationDegreeName?->degree_name ?? 'Degree Name' }} - {{ $education?->field_of_study ?? '' }} &bull; CGPA {{ $education->cgpa ?? 0 }}</small><br />                                            <small class="text-muted">Jan 2017 - Jul 2024</small><br />
@@ -146,26 +152,13 @@
                                     <p class="f-s-26 text-center">No Data Available</p>
                                 </div>
                             @endforelse
-
-
-{{--                            <div class="card p-4 shadow-sm rounded-3">--}}
-{{--                                <div class="d-flex align-items-center mb-3 gap-3">--}}
-{{--                                    <img src="{{ asset('/') }}frontend/employer/images/employersHome/profile-education-2.png" alt="HSBC Logo" object-fit: contain;/>--}}
-{{--                                    <div>--}}
-{{--                                        <h6 class="mb-0 fw-bold">Notre Dame College</h6>--}}
-{{--                                        <small class="text-muted">BBA - Marketing &bull; CGPA 3.45</small><br />--}}
-{{--                                        <small class="text-muted">Jan 2017 - Jul 2024</small><br />--}}
-{{--                                        <small class="text-muted">Dhaka, Bangladesh</small>--}}
-{{--                                    </div>--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
                         </section>
 
 
                         <!-- documents -->
                         <!-- Education -->
                         <section class="mb-5">
-                            <h5 class="card mb-0 fw-semibold p-4 f-s-23">{{ trans('employee.documents') }}</h5>
+                            <h5 class="card card-sm-only mb-0 fw-semibold p-4 f-s-23">{{ trans('employee.documents') }}</h5>
                             @forelse($employeeDetails->employeeDocuments as $document)
                                 <div class="card p-4 shadow-sm rounded-3" style="border-radius: 0px!important;">
                                     <div class="d-flex align-items-center mb-3 gap-3">
@@ -196,19 +189,6 @@
                                     <p class="f-s-26 text-center">No Data Available</p>
                                 </div>
                             @endforelse
-
-
-{{--                            <div class="card p-4 shadow-sm rounded-3">--}}
-{{--                                <div class="d-flex align-items-center mb-3 gap-3">--}}
-{{--                                    <img src="{{ asset('/') }}frontend/employer/images/employersHome/NID.png" alt="HSBC Logo" object-fit: contain;/>--}}
-{{--                                    <div>--}}
-{{--                                        <div>--}}
-{{--                                            <h6 class="mb-0 fw-bold">Curriculum Vitae</h6>--}}
-{{--                                            <small class="text-muted">PDF &bull; 325 KB</small>--}}
-{{--                                        </div>--}}
-{{--                                    </div>--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
                         </section>
                     </div>
                 </div>

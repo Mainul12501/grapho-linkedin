@@ -161,4 +161,14 @@ Route::get('/phpinfo', function () {
     phpinfo();
 });
 
-
+Route::get('/active-all-users', function (){
+    foreach (\App\Models\User::all() as $user)
+    {
+        if ($user->is_approved == 0)
+        {
+            $user->is_approved = 1;
+            $user->save();
+        }
+    }
+    return 'success';
+});

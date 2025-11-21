@@ -150,6 +150,15 @@
                                     <img src="{{ asset($basicSetting->favicon) }}" alt="" style="height: 16px" />
                                 @endif
                             </div>
+                            <div class="col-md-6 mt-2">
+                                <label for="">Common Institute Icon</label>
+                                @if(!isset($isShown))
+                                    <input type="file" name="common_institute_logo" class="form-control" accept="image/*" />
+                                @endif
+                                @if(isset($basicSetting->common_institute_logo))
+                                    <img src="{{ asset($basicSetting->common_institute_logo) }}" alt="" style="height: 60px" />
+                                @endif
+                            </div>
 
                         </div>
                         <div class="mt-2">

@@ -45,7 +45,7 @@
                                             </td>
                                             <td>{{ $post->title ?? '' }}</td>
                                             <td>{!! str()->words($post->description, 30) ?? '' !!}</td>
-                                            <td>{{ $post->status == 1 ? trans('common.status') : trans('common.unpublished') }}</td>
+                                            <td>{{ $post->status == 1 ? trans('published') : trans('common.unpublished') }}</td>
                                             <td class="">
                                                 <a href="{{ route('employer.posts.show', $post->id) }}" class="btn btn-sm btn-primary">
                                                     <i class="fa-solid fa-eye text-white"></i>

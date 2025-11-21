@@ -33,10 +33,19 @@
                             <!-- ✅ Mobile Search -->
                             <div class="d-block d-md-none mb-3">
                                 <div class="input-group">
-                                    <input type="text" class="form-control border-start-0" id="mobile_search_text" placeholder="Search jobs (mobile)" />
-                                    <span class="input-group-text bg-white border-end-0" onclick="searchOnMobile()">
+                                    <span class="input-group-text bg-white " onclick="searchOnMobile()">
                                       <img src="{{ asset('/') }}frontend/employer/images/employersHome/search 1.png" alt="">
                                     </span>
+                                    <input type="text" class="form-control border-start-0" id="mobile_search_text" placeholder="Search jobs (mobile)" />
+                                    <span class="input-group-text bg-white border-end-0" onclick="document.getElementById('mobile_search_text').value = '';">
+{{--                                      <img src="{{ asset('/') }}frontend/employer/images/employersHome/search 1.png" alt="">--}}
+                                        <i class="fas fa-close"></i>
+                                    </span>
+                                </div>
+
+                                <div id="t2" class="d-flex flex-wrap gap-2 mt-3">
+                                    <a href="{{ route('employer.my-jobs', ['job_status' => 'open']) }}"><button class="btn {{  request('job_status') != 'closed' ? 'btn-dark' : 'btn-light' }} btn-sm rounded-pill px-3">{{ trans('employer.open_jobs') }}</button></a>
+                                    <a href="{{ route('employer.my-jobs', ['job_status' => 'closed']) }}"><button class="btn  {{ request('job_status') && request('job_status') == 'closed' ? 'btn-dark text-white' : 'btn-light text-muted' }} btn-sm rounded-pill px-3 ">{{ trans('employer.closed_jobs') }}</button></a>
                                 </div>
                             </div>
 
@@ -52,10 +61,14 @@
                                 <div id="t1" style="max-width: 320px; width: 100%;">
                                     <form action="" id="searchForm">
                                         <div class="input-group">
-                                          <span class="input-group-text bg-white border-end-0" onclick="document.getElementById('searchForm').submit();">
+                                          <span class="input-group-text bg-white " onclick="document.getElementById('searchForm').submit();">
                                             <img src="{{ asset('/') }}frontend/employer/images/employersHome/search 1.png" alt="">
                                           </span>
-                                            <input type="text" class="form-control border-start-0" name="search_text" placeholder="{{ trans('employer.search_jobs') }}" />
+                                            <input type="text" class="form-control border-start-0" id="desktop_search_text" name="search_text" placeholder="{{ trans('employer.search_jobs') }}" />
+                                            <span class="input-group-text bg-white " onclick="document.getElementById('desktop_search_text').value = '';">
+{{--                                            <img src="{{ asset('/') }}frontend/employer/images/employersHome/search 1.png" alt="">--}}
+                                                <i class="fas fa-close"></i>
+                                          </span>
                                         </div>
                                     </form>
                                 </div>
@@ -435,7 +448,7 @@
                                     </div>
                                     <div>
                                         <div class="input-group rounded-3 border border-secondary-subtle">
-                                            <input type="date" name="deadline" class="form-control" value="" />
+                                            <input type="date" name="deadline" min="{{ date('Y-m-d') }}" class="form-control" value="" />
                                         </div>
                                     </div>
                                 </div>
@@ -816,17 +829,60 @@
                 $(this).removeClass('selected-skill');
             }
         });
-        $(document).on('click', '.show-review-btn', function () {
-            var getModalId = $(this).attr('data-modal-id');
-            $(this).blur();
-            showReviewModalWithData(`#${getModalId} `);
-            $('#modalPostJobBtn').attr('req-for', 'create').attr('data-modal-id', getModalId).addClass('submit-form-after-review');
-            // $('#createJobModal').modal('hide');
-            setTimeout(function () {
-                $('#jobDetailsModalReview').modal('show');
-            }, 50)
+        // $(document).on('click', '.show-review-btn', function () {
+        //     var getModalId = $(this).attr('data-modal-id');
+        //     $(this).blur();
+        //     showReviewModalWithData(`#${getModalId} `);
+        //     $('#modalPostJobBtn').attr('req-for', 'create').attr('data-modal-id', getModalId).addClass('submit-form-after-review');
+        //     // $('#createJobModal').modal('hide');
+        //     setTimeout(function () {
+        //         $('#jobDetailsModalReview').modal('show');
+        //     }, 50)
+        //
+        // });
 
+        $(document).on('click', '.show-review-btn', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            const formId = 'jobCreateForm';
+
+            // Run validation FIRST
+            if (validateJobForm(formId)) {
+                // ✅ Validation passed - proceed with original functionality
+                var getModalId = $(this).attr('data-modal-id');
+                $(this).blur();
+
+                // Call your existing function
+                showReviewModalWithData(`#${getModalId} `);
+
+                // Set attributes for submit button
+                $('#modalPostJobBtn')
+                    .attr('req-for', 'create')
+                    .attr('data-modal-id', getModalId)
+                    .addClass('submit-form-after-review');
+
+                // Show review modal after short delay
+                setTimeout(function () {
+                    $('#jobDetailsModalReview').modal('show');
+                }, 50);
+
+                return true;
+            } else {
+                // ❌ Validation failed - stop everything
+                toastr.error('Validation failed! Please fix the errors before reviewing.');
+
+                // Scroll to first error
+                const firstError = $('.is-invalid, .validation-error').first();
+                if (firstError.length) {
+                    firstError[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+
+                return false;
+            }
         });
+
+
         $(document).on('click', '.hide-review-modal', function () {
             // $(this).blur();
             // showReviewModalWithData();
@@ -909,4 +965,368 @@
 
         }
     </script>
+
+
+
+
+
+{{--    job form validations--}}
+    <script>
+        // Common validation function for job forms
+        function validateJobForm(formId) {
+            const form = document.getElementById(formId);
+            let isValid = true;
+            let errors = [];
+
+            // Clear previous error messages
+            clearErrors(form);
+
+            // 1. Job Title - Required
+            const jobTitle = form.querySelector('[name="job_title"]');
+            if (!jobTitle || !jobTitle.value.trim()) {
+                showError(jobTitle, 'Job title is required');
+                errors.push('Job title is required');
+                isValid = false;
+            }
+
+            // 2. Job Type - Required (at least one radio should be checked)
+            const jobType = form.querySelector('[name="job_type_id"]:checked');
+            if (!jobType) {
+                const jobTypeContainer = form.querySelector('[name="job_type_id"]')?.closest('.mb-4');
+                showError(jobTypeContainer, 'Please select a job type');
+                errors.push('Job type is required');
+                isValid = false;
+            }
+
+            // 3. Job Location Type - Required
+            const jobLocationType = form.querySelector('[name="job_location_type_id"]:checked');
+            if (!jobLocationType) {
+                const locationContainer = form.querySelector('[name="job_location_type_id"]')?.closest('.mb-4');
+                showError(locationContainer, 'Please select a job location type');
+                errors.push('Job location type is required');
+                isValid = false;
+            }
+
+            // 4. Required Experience - Required
+            const experience = form.querySelector('[name="required_experience"]:checked');
+            if (!experience) {
+                const expContainer = form.querySelector('[name="required_experience"]')?.closest('.bg-white');
+                showError(expContainer, 'Please select required experience');
+                errors.push('Required experience is required');
+                isValid = false;
+            } else if (experience.value === 'custom') {
+                // Validate custom experience range
+                const expRangeStart = form.querySelector('[name="exp_range_start"]');
+                const expRangeEnd = form.querySelector('[name="exp_range_end"]');
+
+                if (!expRangeStart?.value || !expRangeEnd?.value) {
+                    showError(expRangeStart?.parentElement, 'Please enter both start and end years for custom experience');
+                    errors.push('Custom experience range incomplete');
+                    isValid = false;
+                } else if (parseInt(expRangeStart.value) >= parseInt(expRangeEnd.value)) {
+                    showError(expRangeStart?.parentElement, 'End year must be greater than start year');
+                    errors.push('Invalid experience range');
+                    isValid = false;
+                }
+            }
+
+            // 5. Industry - Required
+            const industry = form.querySelector('[name="industry_id"]');
+            if (!industry || !industry.value) {
+                showError(industry, 'Please select an industry');
+                errors.push('Industry is required');
+                isValid = false;
+            }
+
+            // 6. University Preference - At least one required
+            // const universities = form.querySelectorAll('[name="university_preference[]"]');
+            // const selectedUniversities = Array.from(universities).filter(u => u.selected);
+            // if (selectedUniversities.length === 0) {
+            //     const uniSelect = form.querySelector('[name="university_preference[]"]');
+            //     showError(uniSelect?.closest('.bg-white'), 'Please select at least one university');
+            //     errors.push('At least one university preference is required');
+            //     isValid = false;
+            // }
+
+            // 7. Field of Study - At least one required
+            // const fieldOfStudy = form.querySelectorAll('[name="field_of_study_preference[]"]');
+            // const selectedFields = Array.from(fieldOfStudy).filter(f => f.selected);
+            // if (selectedFields.length === 0) {
+            //     const fieldSelect = form.querySelector('[name="field_of_study_preference[]"]');
+            //     showError(fieldSelect?.closest('.bg-white'), 'Please select at least one field of study');
+            //     errors.push('At least one field of study is required');
+            //     isValid = false;
+            // }
+
+            // 8. CGPA - Required, must be a number, min 0
+            const cgpa = form.querySelector('[name="cgpa"]');
+            if (!cgpa || !cgpa.value.trim()) {
+                showError(cgpa, 'CGPA is required');
+                errors.push('CGPA is required');
+                isValid = false;
+            } else if (isNaN(cgpa.value) || parseFloat(cgpa.value) < 0) {
+                showError(cgpa, 'CGPA must be a valid number greater than or equal to 0');
+                errors.push('Invalid CGPA');
+                isValid = false;
+            } else if (parseFloat(cgpa.value) > 4.0) {
+                showError(cgpa, 'CGPA cannot exceed 4.0');
+                errors.push('CGPA too high');
+                isValid = false;
+            }
+
+            // 9. Gender - Required
+            const gender = form.querySelector('[name="gender"]');
+            if (!gender || !gender.value) {
+                showError(gender, 'Please select a gender preference');
+                errors.push('Gender preference is required');
+                isValid = false;
+            }
+
+            // 10. Salary Payment Type - Required
+            const salaryType = form.querySelector('[name="job_pref_salary_payment_type"]');
+            if (!salaryType || !salaryType.value) {
+                const salaryContainer = form.querySelector('.nav-tabs')?.closest('.bg-white');
+                showError(salaryContainer, 'Please select a salary payment type');
+                errors.push('Salary payment type is required');
+                isValid = false;
+            }
+
+            // 11. Salary Amount - Required, must be a number, min 0
+            const salary = form.querySelector('[name="salary_amount"]');
+            if (!salary || !salary.value.trim()) {
+                showError(salary, 'Salary amount is required');
+                errors.push('Salary amount is required');
+                isValid = false;
+            } else if (isNaN(salary.value) || parseFloat(salary.value) <= 0) {
+                showError(salary, 'Salary must be a valid number greater than 0');
+                errors.push('Invalid salary amount');
+                isValid = false;
+            }
+
+            // 12. Description - Required
+            // const description = form.querySelector('[name="description"]');
+            // if (!description || !description.value.trim()) {
+            //     showError(description, 'Job description is required');
+            //     errors.push('Job description is required');
+            //     isValid = false;
+            // }
+
+            // 13. Deadline - Required, must be a future date
+            const deadline = form.querySelector('[name="deadline"]');
+            if (!deadline || !deadline.value) {
+                showError(deadline, 'Application deadline is required');
+                errors.push('Application deadline is required');
+                isValid = false;
+            } else {
+                const selectedDate = new Date(deadline.value);
+                const today = new Date();
+                today.setHours(0, 0, 0, 0); // Reset time to compare dates only
+
+                if (selectedDate <= today) {
+                    showError(deadline, 'Application deadline must be a future date');
+                    errors.push('Invalid deadline date');
+                    isValid = false;
+                }
+            }
+
+            // Display summary if there are errors
+            if (!isValid) {
+                displayErrorSummary(form, errors);
+            }
+
+            return isValid;
+        }
+
+        // Helper function to show error messages
+        function showError(element, message) {
+            if (!element) return;
+
+            // Add error class to input
+            if (element.tagName === 'INPUT' || element.tagName === 'SELECT' || element.tagName === 'TEXTAREA') {
+                element.classList.add('is-invalid');
+
+                // Create error message element
+                const errorDiv = document.createElement('div');
+                errorDiv.className = 'invalid-feedback d-block';
+                errorDiv.textContent = message;
+                element.parentNode.appendChild(errorDiv);
+            } else {
+                // For containers
+                const errorDiv = document.createElement('div');
+                errorDiv.className = 'alert alert-danger mt-2 validation-error';
+                errorDiv.textContent = message;
+                element.appendChild(errorDiv);
+            }
+        }
+
+        // Helper function to clear all errors
+        function clearErrors(form) {
+            // Remove error classes
+            form.querySelectorAll('.is-invalid').forEach(el => {
+                el.classList.remove('is-invalid');
+            });
+
+            // Remove error messages
+            form.querySelectorAll('.invalid-feedback, .validation-error, .error-summary').forEach(el => {
+                el.remove();
+            });
+        }
+
+        // Display error summary at the top of the form
+        function displayErrorSummary(form, errors) {
+            const summaryDiv = document.createElement('div');
+            summaryDiv.className = 'alert alert-danger error-summary mb-3';
+            summaryDiv.innerHTML = `
+        <strong>Please fix the following errors:</strong>
+        <ul class="mb-0 mt-2">
+            ${errors.map(error => `<li>${error}</li>`).join('')}
+        </ul>
+    `;
+
+            // Insert at the beginning of the visible step
+            const activeStep = form.querySelector('.wizard-step:not(.d-none)');
+            if (activeStep) {
+                activeStep.insertBefore(summaryDiv, activeStep.firstChild);
+                // Scroll to top of modal
+                summaryDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+        }
+
+        // Initialize validation with jQuery
+        $(document).ready(function() {
+
+            // CRITICAL: Validate when clicking "Review & Post" button
+            $(document).on('click', '.show-review-btn', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+
+                const formId = 'jobCreateForm';
+
+                // Run validation
+                if (validateJobForm(formId)) {
+                    // Validation passed - allow rest of the functions to work
+                    console.log('Validation passed! Proceeding with review...');
+
+                    // Add your review modal logic here
+                    // Example: $('#jobDetailsModal').modal('show');
+
+                    // Or submit the form
+                    // $('#' + formId).submit();
+
+                    return true;
+                } else {
+                    // Validation failed - stop everything
+                    console.log('Validation failed! Please fix errors.');
+                    return false;
+                }
+            });
+
+            // Validate on form submit (as backup)
+            $('#jobCreateForm').on('submit', function(e) {
+                if (!validateJobForm('jobCreateForm')) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    return false;
+                }
+            });
+
+            // Handle continue to step 2 button
+            $('#continueToStep2').on('click', function(e) {
+                e.preventDefault();
+
+                const form = $('#jobCreateForm');
+                clearErrors(form[0]);
+                let isValid = true;
+                let errors = [];
+
+                // Validate only Step 1 fields
+                const jobTitle = form.find('[name="job_title"]');
+                if (!jobTitle.val() || !jobTitle.val().trim()) {
+                    showError(jobTitle[0], 'Job title is required');
+                    errors.push('Job title is required');
+                    isValid = false;
+                }
+
+                const jobType = form.find('[name="job_type_id"]:checked');
+                if (jobType.length === 0) {
+                    const container = form.find('[name="job_type_id"]').first().closest('.mb-4');
+                    showError(container[0], 'Please select a job type');
+                    errors.push('Job type is required');
+                    isValid = false;
+                }
+
+                const jobLocationType = form.find('[name="job_location_type_id"]:checked');
+                if (jobLocationType.length === 0) {
+                    const container = form.find('[name="job_location_type_id"]').first().closest('.mb-4');
+                    showError(container[0], 'Please select a job location type');
+                    errors.push('Job location type is required');
+                    isValid = false;
+                }
+
+                if (!isValid) {
+                    displayErrorSummary(form[0], errors);
+                } else {
+                    // Proceed to step 2
+                    $('.stepOne').addClass('d-none');
+                    $('.stepTwo').removeClass('d-none');
+                }
+            });
+
+            // Handle back to step 1
+            $('#backToStepOne, .return-to-first-part').on('click', function(e) {
+                e.preventDefault();
+                $('.stepTwo').addClass('d-none');
+                $('.stepOne').removeClass('d-none');
+                clearErrors($('#jobCreateForm')[0]);
+            });
+
+            // Salary type selection handler
+            $(document).on('click', '.salary-type', function(e) {
+                e.preventDefault();
+                $('.salary-type').removeClass('active');
+                $(this).addClass('active');
+                $('.job_pref_salary_payment_type').val($(this).data('value'));
+            });
+
+            // Custom experience field toggle
+            $('[name="required_experience"]').on('change', function() {
+                if ($(this).val() === 'custom') {
+                    $('#customExperienceField').show();
+                } else {
+                    $('#customExperienceField').hide();
+                }
+            });
+
+            // Real-time validation - clear error on input
+            $(document).on('blur', '#jobCreateForm input, #jobCreateForm select, #jobCreateForm textarea', function() {
+                $(this).removeClass('is-invalid');
+                $(this).parent().find('.invalid-feedback').remove();
+            });
+
+            // Clear error when selecting from multi-select
+            $(document).on('change', '#jobCreateForm select[multiple]', function() {
+                $(this).removeClass('is-invalid');
+                $(this).closest('.bg-white').find('.validation-error').remove();
+            });
+        });
+
+        // When user clicks "Review & Post"
+        $('.show-review-btn').on('click', function(e) {
+            e.preventDefault(); // Stop default behavior
+
+            if (validateJobForm('jobCreateForm')) {
+                // ✅ VALIDATION PASSED
+                // Add your next steps here:
+                // - Show review modal
+                // - Submit form
+                // - Whatever you need
+                return true;
+            } else {
+                // ❌ VALIDATION FAILED
+                // User sees errors, nothing else happens
+                return false;
+            }
+        });
+    </script>
+
 @endpush

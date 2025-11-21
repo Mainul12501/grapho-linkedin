@@ -22,9 +22,9 @@
         }
     @endphp
 
-    <div class="ps-3 py-2 d-block d-md-none">
-        <img src="{{ asset('/') }}frontend/employer/images/employersHome/leftarrow.png" alt="">
-    </div>
+{{--    <div class="ps-3 py-2 d-block d-md-none">--}}
+{{--        <img src="{{ asset('/') }}frontend/employer/images/employersHome/leftarrow.png" alt="">--}}
+{{--    </div>--}}
     <!-- head hunt -->
     <div class="headHunt p-4">
         <h2 class="mb-1 fw-bold f-s-23">{{ trans('employer.head_hunt') }}</h2>
@@ -257,7 +257,7 @@
                         <input type="text" class="form-control select-box locationSearch" style="background-image: none" value="{{ request('experience') ?? '' }}" name="experience" placeholder="Experience" >
                     </div>
                     <!-- ===== Filter #7: Search Text ===== -->
-                    <div class="custom-select" data-filter-key="search_text" style="max-width: 166px!important;" data-placeholder="Search Text">
+                    <div class="custom-select" data-filter-key="search_text" id="mobileSearchText" style="max-width: 166px!important;" data-placeholder="Search Text">
 {{--                        <label class="custom-select-label">Search Text</label>--}}
                         <input type="text" class="form-control select-box locationSearch" value="{{ request('search_text') ?? '' }}" style="background-image: none; max-width: 250px!important;" name="search_text" placeholder="Search by text" >
                     </div>
@@ -290,7 +290,7 @@
                                 </div>
                                 <h5 class="card-title fw-bold mb-1">{{ $employee->name ?? trans('common.employee_name') }}</h5>
                                 <p class="card-text mb-2" style="font-size: 14px;">
-                                    {{ $employee->profile_title ?? trans('employee.profile_title') }}
+                                    {{ str()->words($employee->profile_title, 20) ?? trans('employee.profile_title') }}
                                 </p>
                                 <p class="text-muted mb-1" style="font-size: 13px;">
                                     <img src="{{ asset('/') }}frontend/employer/images/employersHome/profile location.png" alt="Location" style="width: 20px;" />
@@ -331,6 +331,80 @@
             min-width: 100px !important;
         }
         .select-box { padding: 1px 32px 1px 16px !important;}
+    </style>
+
+{{--    filter responsive design for mobile--}}
+    <style>
+        @media screen and (max-width: 768px) {
+            /* Main filter container changes */
+            #jobFilters {
+                /* Allow items to wrap and fill the available width */
+                flex-wrap: wrap !important;
+                /* Center content or align to start if wrapping */
+                justify-content: flex-start !important;
+                /* Add some padding for better spacing */
+                padding: 10px;
+            }
+
+            /* Set a consistent size for the filter icons and labels */
+            .fielterIcon {
+                /* Ensure the filter icon/label takes its own space and doesn't stretch */
+                flex-basis: 100% !important; /* Forces it to a new line */
+                margin-bottom: 10px;
+                font-weight: bold;
+            }
+
+            /* Style for the main filter dropdowns (custom-select) */
+            #jobFilters > .custom-select {
+                /* Make filters take a fraction of the width, allowing 2-3 per row */
+                max-width: 30% !important;
+                /* Add space between them */
+                margin-right: 5px;
+                margin-bottom: 10px;
+                /* Ensure they are displayed inline */
+                display: inline-block;
+            }
+
+            /* Override the width for the 'Search Text' input to move it to a new row */
+            [data-filter-key="search_text"] {
+                flex-basis: 100% !important; /* Forces a new line */
+                max-width: 100% !important; /* Full width for the search box */
+                order: 10; /* Use order to push it toward the bottom */
+            }
+
+            /* Ensure the input field inside 'Search Text' is full width */
+            [data-filter-key="search_text"] .form-control {
+                max-width: 100% !important;
+            }
+
+            /* Style for the buttons (Search and Clear All) to ensure they are on the last line */
+            #saveBtn, #clearAllBtn {
+                /* Make buttons take up about half the width, side-by-side */
+                max-width: calc(50% - 5px) !important;
+                flex-grow: 1; /* Allow them to grow */
+                margin-right: 5px;
+                margin-left: 0;
+                margin-bottom: 10px;
+                /* Also push them toward the bottom using 'order' */
+                order: 20;
+            }
+
+            #saveBtn {max-width: 80px!important;}
+            #mobileSearchText {max-width: 150px!important;}
+
+            /* Remove margin from the last button */
+            #clearAllBtn {
+                margin-right: 0;
+            }
+        }
+
+        /* Optional: For very small screens (like smaller phones), force filters to be single-column for legibility */
+        @media screen and (max-width: 480px) {
+            #jobFilters > .custom-select {
+                max-width: 100% !important; /* Full width for easier tapping/reading */
+                margin-right: 0;
+            }
+        }
     </style>
 @endpush
 

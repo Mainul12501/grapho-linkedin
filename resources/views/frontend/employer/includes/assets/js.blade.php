@@ -108,5 +108,48 @@
 
     }
 </script>
+{{--drawer mobile menu scripts--}}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const openDrawerBtn = document.getElementById('openDrawer');
+        const closeDrawerBtn = document.getElementById('closeDrawer');
+        const drawer = document.getElementById('sideDrawer');
+        const overlay = document.getElementById('drawerOverlay');
+
+        // Open drawer
+        if (openDrawerBtn) {
+            openDrawerBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                drawer.classList.add('show');
+                overlay.classList.add('show');
+                document.body.style.overflow = 'hidden';
+            });
+        }
+
+        // Close drawer function
+        function closeDrawer() {
+            drawer.classList.remove('show');
+            overlay.classList.remove('show');
+            document.body.style.overflow = '';
+        }
+
+        // Close button
+        if (closeDrawerBtn) {
+            closeDrawerBtn.addEventListener('click', closeDrawer);
+        }
+
+        // Overlay click
+        if (overlay) {
+            overlay.addEventListener('click', closeDrawer);
+        }
+
+        // Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && drawer.classList.contains('show')) {
+                closeDrawer();
+            }
+        });
+    });
+</script>
 @yield('script')
 @stack('script')

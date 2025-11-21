@@ -79,8 +79,8 @@
                                     <div class="d-flex align-items-center gap-3">
                                         <a href="{{ route('employee-profile', ['employeeId' => $pendingApplicant?->user?->id]) }}" class="btn p-0" title="View profile" aria-label="View profile">
 {{--                                            <img src="{{ asset('/') }}frontend/employer/images/employersHome/talen-green-tikIcon.png" alt="Profile icon" style="width: 20px; height: 20px;" />--}}
-                                            <span><i class="fas fa-user-circle text-primary" style="width: 20px; height: 20px;"></i></span>
-{{--                                            <img src="{{ asset('/') }}frontend/employer/images/employersHome/three dot.png" alt="More options" style="width: 20px; height: 20px;" />--}}
+{{--                                            <span><i class="fas fa-user-circle text-primary" style="width: 20px; height: 20px;"></i></span>--}}
+                                            <img src="{{ asset('/frontend/employer/images/profile.png') }}" alt="More options" style="max-width: 22px; max-height: 22px;" />
                                         </a>
                                         <a href="{{ route('employer.change-employee-job-application-status', ['jobTask' => $pendingApplicant?->job_task_id, 'user' => $pendingApplicant?->user?->id, 'status' => 'shortlisted']) }}" class="btn p-0" title="Shortlist This Applicant" aria-label="Shortlist applicant">
                                             <img src="{{ asset('/') }}frontend/employer/images/employersHome/talen-green-tikIcon.png" alt="Profile icon" style="width: 20px; height: 20px;" />
@@ -103,7 +103,7 @@
                         @empty
                             <tr>
                                 <td colspan="5">
-                                    <p class="f-s-25 text-center">No Data Found</p>
+                                    <p class="f-s-25 text-center mx-auto">No Data Found</p>
                                 </td>
                             </tr>
                         @endforelse
@@ -125,16 +125,16 @@
                                 </div>
                             </div>
                             <div class="mt-3 d-flex gap-2 justify-content-between">
-                                <a href="{{ route('employee-profile', ['employeeId' => $pendingApplicant?->user?->id]) }}" class="btn btn-outline-primary btn-sm flex-fill me-1">{{ trans('employee.view_profile_details') }}</a>
-                                <a href="{{ route('employer.change-employee-job-application-status', ['jobTask' => $pendingApplicant?->job_task_id, 'user' => $pendingApplicant?->user?->id, 'status' => 'shortlisted']) }}" class="btn btn-outline-success btn-sm flex-fill me-1">{{ trans('employee.pending') }}</a>
-                                <a href="{{ route('employer.change-employee-job-application-status', ['jobTask' => $pendingApplicant?->job_task_id, 'user' => $pendingApplicant?->user?->id, 'status' => 'rejected']) }}" class="btn btn-outline-danger btn-sm flex-fill mx-1">{{ trans('employee.rejected') }}</a>
-                                <img src="{{ asset('/') }}frontend/employer/images/employersHome/talentMobileCrossIcon.png" alt="">
+                                <a href="{{ route('employee-profile', ['employeeId' => $pendingApplicant?->user?->id]) }}" style="background-color: #0a53be" class="btn mobile-btn-custom btn-sm flex-fill me-1 text-white">{{ trans('employee.view_profile_details') }}</a>
+                                <a href="{{ route('employer.change-employee-job-application-status', ['jobTask' => $pendingApplicant?->job_task_id, 'user' => $pendingApplicant?->user?->id, 'status' => 'shortlisted']) }}" style="background-color: #008A221F; color: #008A22" class="btn mobile-btn-custom btn-sm flex-fill me-1">{{ trans('employee.shortlisted') }}</a>
+                                <a href="{{ route('employer.change-employee-job-application-status', ['jobTask' => $pendingApplicant?->job_task_id, 'user' => $pendingApplicant?->user?->id, 'status' => 'rejected']) }}" style="background-color: #E8191C1F; color: #E8191C" class="btn mobile-btn-custom btn-sm flex-fill mx-1">{{ trans('employee.rejected') }}</a>
+{{--                                <img src="{{ asset('/') }}frontend/employer/images/employersHome/talentMobileCrossIcon.png" alt="">--}}
                             </div>
                         </div>
                     @empty
                         <div class="card mb-3 p-3 shadow-sm rounded-3">
                             <div class="d-flex align-items-start flex-column gap-3">
-                                <p class="f-s-26 text-center">No Data Found</p>
+                                <p class="f-s-26 text-center mx-auto">No Data Found</p>
                             </div>
                         </div>
                     @endforelse
@@ -196,44 +196,17 @@
                         @empty
                             <tr>
                                 <td colspan="5">
-                                    <p class="f-s-25 text-center">No Data Found</p>
+                                    <p class="f-s-25 text-center mx-auto">No Data Found</p>
                                 </td>
                             </tr>
                         @endforelse
-{{--                        <tr>--}}
-{{--                            <td class="d-flex align-items-center gap-3">--}}
-{{--                                <img src="{{ asset('/') }}frontend/employer/images/employersHome/talent-2.png" alt="Ayesha Begum" class="rounded-circle"--}}
-{{--                                     style="width: 38px; height: 38px; object-fit: cover;" />--}}
-{{--                                Ayesha Begum--}}
-{{--                            </td>--}}
-{{--                            <td>Bangladesh University of Engineering</td>--}}
-{{--                            <td>2.9</td>--}}
-{{--                            <td>25-09-2024</td>--}}
-{{--                            <td>--}}
-{{--                                <div class="d-flex align-items-center gap-3">--}}
-{{--                                    <button type="button" class="btn p-0" title="View profile" aria-label="View profile">--}}
-{{--                                        <img src="{{ asset('/') }}frontend/employer/images/employersHome/talentSingle userIcon.png" alt="Profile icon" style="width: 20px; height: 20px;" />--}}
-{{--                                    </button>--}}
-{{--                                    <div class="dropdown">--}}
-{{--                                        <button class="btn p-0" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Actions menu">--}}
-{{--                                            <img src="{{ asset('/') }}frontend/employer/images/employersHome/three dot.png" alt="More options" style="width: 20px; height: 20px;" />--}}
-{{--                                        </button>--}}
-{{--                                        <ul class="dropdown-menu dropdown-menu-end">--}}
-{{--                                            <li><a class="dropdown-item" href="#">Remove from shortlist</a></li>--}}
-{{--                                            <li><a class="dropdown-item" href="#">Send message</a></li>--}}
-{{--                                            <li><a class="dropdown-item text-danger" href="#">Remove</a></li>--}}
-{{--                                        </ul>--}}
-{{--                                    </div>--}}
-{{--                                </div>--}}
-{{--                            </td>--}}
-{{--                        </tr>--}}
                         </tbody>
                     </table>
                 </div>
 
                 <!-- Mobile Cards -->
                 <div class="pending-cards">
-                    @forelse($shortListedApplicants as $shortListedApplicant))
+                    @forelse($shortListedApplicants as $shortListedApplicant)
                     <div class="card mb-3 p-3 shadow-sm rounded-3">
                         <div class="d-flex align-items-start flex-column gap-3">
                             <img src="{{ asset($shortListedApplicant?->user->profile_image ?? 'frontend/user-vector-img.jpg') }}" alt="Ayesha Begum" class="rounded-circle"
@@ -246,16 +219,16 @@
                             </div>
                         </div>
                         <div class="mt-3 d-flex gap-2 justify-content-between">
-                            <a href="{{ route('employee-profile', ['employeeId' => $shortListedApplicant?->user?->id]) }}" class="btn btn-outline-primary btn-sm flex-fill me-1">View Profile</a>
-                            <a href="{{ route('employer.change-employee-job-application-status', ['jobTask' => $shortListedApplicant->job_task_id, 'user' => $shortListedApplicant?->user?->id, 'status' => 'approved']) }}" class="btn btn-outline-success btn-sm flex-fill me-1">Approve</a>
-                            <a href="{{ route('employer.change-employee-job-application-status', ['jobTask' => $shortListedApplicant->job_task_id, 'user' => $shortListedApplicant?->user?->id, 'status' => 'rejected']) }}" class="btn btn-outline-danger btn-sm flex-fill mx-1">Reject</a>
-                            <img src="{{ asset('/') }}frontend/employer/images/employersHome/talentMobileCrossIcon.png" alt="">
+                            <a href="{{ route('employee-profile', ['employeeId' => $shortListedApplicant?->user?->id]) }}" class="btn btn-primary text-white btn-sm flex-fill me-1">View Profile</a>
+                            <a href="{{ route('employer.change-employee-job-application-status', ['jobTask' => $shortListedApplicant->job_task_id, 'user' => $shortListedApplicant?->user?->id, 'status' => 'approved']) }}" style="background-color: #008A221F; color: #008A22" class="btn mobile-btn-custom btn-sm flex-fill me-1">Approve</a>
+                            <a href="{{ route('employer.change-employee-job-application-status', ['jobTask' => $shortListedApplicant->job_task_id, 'user' => $shortListedApplicant?->user?->id, 'status' => 'rejected']) }}" style="background-color: #E8191C1F; color: #E8191C" class="btn mobile-btn-custom btn-sm flex-fill mx-1">Reject</a>
+{{--                            <img src="{{ asset('/') }}frontend/employer/images/employersHome/talentMobileCrossIcon.png" alt="">--}}
                         </div>
                     </div>
                     @empty
                         <div class="card mb-3 p-3 shadow-sm rounded-3">
                             <div class="d-flex align-items-start flex-column gap-3">
-                                <p class="f-s-26 text-center">No Data Found</p>
+                                <p class="f-s-26 text-center mx-auto">No Data Found</p>
                             </div>
                         </div>
                     @endforelse
@@ -295,21 +268,6 @@
 {{--                                            <img src="{{ asset('/') }}frontend/employer/images/employersHome/three dot.png" alt="More options" style="width: 20px; height: 20px;" />--}}
                                                                                         <span><i class="fas fa-user-circle text-primary" style="width: 20px; height: 20px;"></i></span>
                                         </a>
-{{--                                        <a href="" class="btn p-0" title="Approve Request" aria-label="Shortlist applicant">--}}
-{{--                                            <img src="{{ asset('/') }}frontend/employer/images/employersHome/talen-green-tikIcon.png" alt="Profile icon" style="width: 20px; height: 20px;" />--}}
-{{--                                        </a>--}}
-{{--                                        <a href="" class="btn p-0" title="Remove from shortlist" aria-label="View profile">--}}
-{{--                                            <img src="{{ asset('/') }}frontend/employer/images/employersHome/talent-red-closeIcon.png" alt="Profile icon" style="width: 20px; height: 20px;" />--}}
-{{--                                        </a>--}}
-{{--                                        <div class="dropdown">--}}
-{{--                                            <button class="btn p-0" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Actions menu">--}}
-{{--                                                <img src="{{ asset('/') }}frontend/employer/images/employersHome/three dot.png" alt="More options" style="width: 20px; height: 20px;" />--}}
-{{--                                            </button>--}}
-{{--                                            <ul class="dropdown-menu dropdown-menu-end">--}}
-{{--                                                <li><a class="dropdown-item" href="#">Send message</a></li>--}}
-{{--                                                <li><a class="dropdown-item text-danger" href="#">Remove</a></li>--}}
-{{--                                            </ul>--}}
-{{--                                        </div>--}}
                                     </div>
                                 </td>
                             </tr>
@@ -320,36 +278,6 @@
                                 </td>
                             </tr>
                         @endforelse
-{{--                        <tr>--}}
-{{--                            <td class="d-flex align-items-center gap-3">--}}
-{{--                                <img src="{{ asset('/') }}frontend/employer/images/employersHome/talent-2.png" alt="Ayesha Begum" class="rounded-circle"--}}
-{{--                                     style="width: 38px; height: 38px; object-fit: cover;" />--}}
-{{--                                John--}}
-{{--                            </td>--}}
-{{--                            <td>Bangladesh University of Engineering</td>--}}
-{{--                            <td>2.9</td>--}}
-{{--                            <td>25-09-2024</td>--}}
-{{--                            <td>--}}
-{{--                                <div class="d-flex align-items-center gap-3">--}}
-{{--                                    <button type="button" class="btn p-0" title="View profile" aria-label="View profile">--}}
-{{--                                        <img src="{{ asset('/') }}frontend/employer/images/employersHome/talen-green-tikIcon.png" alt="Profile icon" style="width: 20px; height: 20px;" />--}}
-{{--                                    </button>--}}
-{{--                                    <button type="button" class="btn p-0" title="View profile" aria-label="View profile">--}}
-{{--                                        <img src="{{ asset('/') }}frontend/employer/images/employersHome/talent-red-closeIcon.png" alt="Profile icon" style="width: 20px; height: 20px;" />--}}
-{{--                                    </button>--}}
-{{--                                    <div class="dropdown">--}}
-{{--                                        <button class="btn p-0" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Actions menu">--}}
-{{--                                            <img src="{{ asset('/') }}frontend/employer/images/employersHome/three dot.png" alt="More options" style="width: 20px; height: 20px;" />--}}
-{{--                                        </button>--}}
-{{--                                        <ul class="dropdown-menu dropdown-menu-end">--}}
-{{--                                            <li><a class="dropdown-item" href="#">Remove from shortlist</a></li>--}}
-{{--                                            <li><a class="dropdown-item" href="#">Send message</a></li>--}}
-{{--                                            <li><a class="dropdown-item text-danger" href="#">Remove</a></li>--}}
-{{--                                        </ul>--}}
-{{--                                    </div>--}}
-{{--                                </div>--}}
-{{--                            </td>--}}
-{{--                        </tr>--}}
                         </tbody>
                     </table>
                 </div>
@@ -372,7 +300,7 @@
                             <a href="{{ route('employee-profile', ['employeeId' => $rejectedApplicant?->user?->id]) }}" class="btn btn-outline-primary btn-sm flex-fill me-1">View Profile</a>
 {{--                            <a href="" class="btn btn-outline-success btn-sm flex-fill me-1">Shortlist</a>--}}
 {{--                            <a href="" class="btn btn-outline-danger btn-sm flex-fill mx-1">Reject</a>--}}
-                            <img src="{{ asset('/') }}frontend/employer/images/employersHome/talentMobileCrossIcon.png" alt="">
+{{--                            <img src="{{ asset('/') }}frontend/employer/images/employersHome/talentMobileCrossIcon.png" alt="">--}}
                         </div>
                     </div>
                     @empty
@@ -417,21 +345,7 @@
 {{--                                            <img src="{{ asset('/') }}frontend/employer/images/employersHome/three dot.png" alt="More options" style="width: 20px; height: 20px;" />--}}
                                                                                         <span><i class="fas fa-user-circle text-primary" style="width: 20px; height: 20px;"></i></span>
                                         </a>
-{{--                                        <a href="" class="btn p-0" title="Approve Request" aria-label="Shortlist applicant">--}}
-{{--                                            <img src="{{ asset('/') }}frontend/employer/images/employersHome/talen-green-tikIcon.png" alt="Profile icon" style="width: 20px; height: 20px;" />--}}
-{{--                                        </a>--}}
-{{--                                        <a href="" class="btn p-0" title="Remove from shortlist" aria-label="View profile">--}}
-{{--                                            <img src="{{ asset('/') }}frontend/employer/images/employersHome/talent-red-closeIcon.png" alt="Profile icon" style="width: 20px; height: 20px;" />--}}
-{{--                                        </a>--}}
-{{--                                        <div class="dropdown">--}}
-{{--                                            <button class="btn p-0" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Actions menu">--}}
-{{--                                                <img src="{{ asset('/') }}frontend/employer/images/employersHome/three dot.png" alt="More options" style="width: 20px; height: 20px;" />--}}
-{{--                                            </button>--}}
-{{--                                            <ul class="dropdown-menu dropdown-menu-end">--}}
-{{--                                                <li><a class="dropdown-item" href="#">Send message</a></li>--}}
-{{--                                                <li><a class="dropdown-item text-danger" href="#">Remove</a></li>--}}
-{{--                                            </ul>--}}
-{{--                                        </div>--}}
+
                                     </div>
                                 </td>
                             </tr>
@@ -442,36 +356,7 @@
                                 </td>
                             </tr>
                         @endforelse
-{{--                        <tr>--}}
-{{--                            <td class="d-flex align-items-center gap-3">--}}
-{{--                                <img src="{{ asset('/') }}frontend/employer/images/employersHome/talent-2.png" alt="Ayesha Begum" class="rounded-circle"--}}
-{{--                                     style="width: 38px; height: 38px; object-fit: cover;" />--}}
-{{--                                John--}}
-{{--                            </td>--}}
-{{--                            <td>Bangladesh University of Engineering</td>--}}
-{{--                            <td>2.9</td>--}}
-{{--                            <td>25-09-2024</td>--}}
-{{--                            <td>--}}
-{{--                                <div class="d-flex align-items-center gap-3">--}}
-{{--                                    <button type="button" class="btn p-0" title="View profile" aria-label="View profile">--}}
-{{--                                        <img src="{{ asset('/') }}frontend/employer/images/employersHome/talen-green-tikIcon.png" alt="Profile icon" style="width: 20px; height: 20px;" />--}}
-{{--                                    </button>--}}
-{{--                                    <button type="button" class="btn p-0" title="View profile" aria-label="View profile">--}}
-{{--                                        <img src="{{ asset('/') }}frontend/employer/images/employersHome/talent-red-closeIcon.png" alt="Profile icon" style="width: 20px; height: 20px;" />--}}
-{{--                                    </button>--}}
-{{--                                    <div class="dropdown">--}}
-{{--                                        <button class="btn p-0" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Actions menu">--}}
-{{--                                            <img src="{{ asset('/') }}frontend/employer/images/employersHome/three dot.png" alt="More options" style="width: 20px; height: 20px;" />--}}
-{{--                                        </button>--}}
-{{--                                        <ul class="dropdown-menu dropdown-menu-end">--}}
-{{--                                            <li><a class="dropdown-item" href="#">Remove from shortlist</a></li>--}}
-{{--                                            <li><a class="dropdown-item" href="#">Send message</a></li>--}}
-{{--                                            <li><a class="dropdown-item text-danger" href="#">Remove</a></li>--}}
-{{--                                        </ul>--}}
-{{--                                    </div>--}}
-{{--                                </div>--}}
-{{--                            </td>--}}
-{{--                        </tr>--}}
+
                         </tbody>
                     </table>
                 </div>
@@ -491,16 +376,16 @@
                             </div>
                         </div>
                         <div class="mt-3 d-flex gap-2 justify-content-between">
-                            <a href="{{ route('employee-profile', ['employeeId' => $approvedApplicant?->user?->id]) }}" class="btn btn-outline-primary btn-sm flex-fill me-1">View Profile</a>
+                            <a href="{{ route('employee-profile', ['employeeId' => $approvedApplicant?->user?->id]) }}" class="btn btn-primary text-white btn-sm flex-fill me-1">View Profile</a>
 {{--                            <a href="" class="btn btn-outline-success btn-sm flex-fill me-1">Shortlist</a>--}}
 {{--                            <a href="" class="btn btn-outline-danger btn-sm flex-fill mx-1">Reject</a>--}}
-                            <img src="{{ asset('/') }}frontend/employer/images/employersHome/talentMobileCrossIcon.png" alt="">
+{{--                            <img src="{{ asset('/') }}frontend/employer/images/employersHome/talentMobileCrossIcon.png" alt="">--}}
                         </div>
                     </div>
                     @empty
                         <div class="card mb-3 p-3 shadow-sm rounded-3">
                             <div class="d-flex align-items-start flex-column gap-3">
-                                <p class="f-s-26 text-center">No Data Found</p>
+                                <p class="f-s-26 text-center mx-auto">No Data Found</p>
                             </div>
                         </div>
                     @endforelse
@@ -517,6 +402,10 @@
         .tab-btn-bg {
             background-color: lightgrey;
             color: black;
+        }
+        .mobile-btn-custom {
+            padding: 6px 12px;
+            gap: 12px;
         }
     </style>
 @endpush

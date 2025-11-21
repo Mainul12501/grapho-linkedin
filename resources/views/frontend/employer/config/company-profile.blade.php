@@ -140,7 +140,7 @@
                         <div class="row mt-3">
                             <div class="col-md-6">
                                 <label for="selectCompanyCategory">{{ trans('employer.select_company_category') }}</label>
-                                <select name="employer_company_category_id" id="selectCompanyCategory" class="form-control select2">
+                                <select name="employer_company_category_id" id="selectCompanyCategory" class=" select2">
                                     <option value="">{{ trans('employer.select_industry') }}</option>
                                     @foreach ($employerCompanyCategories as $employerCompanyCategory)
                                         <option value="{{ $employerCompanyCategory->id }}" {{ $companyDetails->employer_company_category_id == $employerCompanyCategory->id ? 'selected' : '' }}>{{ $employerCompanyCategory->category_name }}</option>
@@ -149,7 +149,7 @@
                             </div>
                             <div class="col-md-6">
                                 <label for="selectIndustry">{{ trans('employer.select_industry') }}</label>
-                                <select name="industry_id" id="selectIndustry" class="form-control select2">
+                                <select name="industry_id" id="selectIndustry" class=" select2">
                                     <option value="">{{ trans('employer.select_industry') }}</option>
                                     @foreach ($industries as $industry)
                                         <option value="{{ $industry->id }}" {{ $companyDetails->industry_id == $industry->id ? 'selected' : '' }}>{{ $industry->name }}</option>
@@ -203,4 +203,273 @@
 @push('script')
     @include('common-resource-files.selectize')
     @include('common-resource-files.summernote')
+
+{{--    profile info validate--}}
+    <script>
+        // Company Information Form Validation
+        $(document).ready(function() {
+
+            // Validate Company Edit Form on Submit
+            $('#employerCompanyEditModal form').on('submit', function(e) {
+                e.preventDefault();
+
+                // Clear previous errors
+                clearCompanyErrors();
+
+                let isValid = true;
+                let errors = [];
+
+                // 1. Company Name - Required
+                const nameInput = $(this).find('[name="name"]');
+                const nameValue = nameInput.val().trim();
+
+                if (!nameValue) {
+                    showCompanyError(nameInput, 'Company name is required');
+                    errors.push('Company name is required');
+                    isValid = false;
+                } else if (nameValue.length < 2) {
+                    showCompanyError(nameInput, 'Company name must be at least 2 characters');
+                    errors.push('Company name must be at least 2 characters');
+                    isValid = false;
+                }
+
+                // 2. Email - Required and Valid Format
+                const emailInput = $(this).find('[name="email"]');
+                const emailValue = emailInput.val().trim();
+
+                if (!emailValue) {
+                    showCompanyError(emailInput, 'Email is required');
+                    errors.push('Email is required');
+                    isValid = false;
+                } else {
+                    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                    if (!emailPattern.test(emailValue)) {
+                        showCompanyError(emailInput, 'Please enter a valid email address');
+                        errors.push('Invalid email format');
+                        isValid = false;
+                    }
+                }
+
+                // 3. Mobile - Bangladeshi Format (01XXXXXXXXX - 11 digits starting with 01)
+                const mobileInput = $(this).find('[name="phone"]');
+                const mobileValue = mobileInput.val().trim();
+
+                if (mobileValue) {
+                    // Check if mobile contains only digits
+                    const onlyDigits = /^[0-9]+$/;
+                    if (!onlyDigits.test(mobileValue)) {
+                        showCompanyError(mobileInput, 'Mobile number must contain only digits (no text or special characters)');
+                        errors.push('Invalid mobile format - only digits allowed');
+                        isValid = false;
+                    }
+                    // Check Bangladeshi mobile format: starts with 01 and exactly 11 digits
+                    else if (!mobileValue.startsWith('01')) {
+                        showCompanyError(mobileInput, 'Mobile number must start with 01');
+                        errors.push('Mobile must start with 01');
+                        isValid = false;
+                    } else if (mobileValue.length !== 11) {
+                        showCompanyError(mobileInput, 'Mobile number must be exactly 11 digits');
+                        errors.push('Mobile must be 11 digits');
+                        isValid = false;
+                    }
+                    // Additional validation for valid BD operator prefixes
+                    else {
+                        const validPrefixes = ['013', '014', '015', '016', '017', '018', '019'];
+                        const prefix = mobileValue.substring(0, 3);
+                        if (!validPrefixes.includes(prefix)) {
+                            showCompanyError(mobileInput, 'Invalid Mobile operator (must start with 013-019)');
+                            errors.push('Invalid mobile operator prefix');
+                            isValid = false;
+                        }
+                    }
+                }
+
+                // 4. BIN Number - Required
+                const binInput = $(this).find('[name="bin_number"]');
+                const binValue = binInput.val().trim();
+
+                if (!binValue) {
+                    showCompanyError(binInput, 'BIN Number is required');
+                    errors.push('BIN Number is required');
+                    isValid = false;
+                } else if (!/^[0-9]+$/.test(binValue)) {
+                    showCompanyError(binInput, 'BIN Number must contain only digits');
+                    errors.push('BIN Number must contain only digits');
+                    isValid = false;
+                } else if (binValue.length < 6) {
+                    showCompanyError(binInput, 'BIN Number must be at least 6 characters');
+                    errors.push('Invalid BIN Number length');
+                    isValid = false;
+                }
+
+                // 5. Trade License Number - Required
+                const tradeInput = $(this).find('[name="trade_license_number"]');
+                const tradeValue = tradeInput.val().trim();
+
+                if (!tradeValue) {
+                    showCompanyError(tradeInput, 'Trade License Number is required');
+                    errors.push('Trade License Number is required');
+                    isValid = false;
+                } else if (!/^[0-9]+$/.test(tradeValue)) {
+                    showCompanyError(tradeInput, 'Trade License Number must contain only digits');
+                    errors.push('Trade License Number must contain only digits');
+                    isValid = false;
+                } else if (tradeValue.length < 6) {
+                    showCompanyError(tradeInput, 'Trade License Number must be at least 6 characters');
+                    errors.push('Invalid Trade License Number length');
+                    isValid = false;
+                }
+
+                // 6. Website Validation (Optional but validated if provided)
+                const websiteInput = $(this).find('[name="website"]');
+                const websiteValue = websiteInput.val().trim();
+
+                if (websiteValue) {
+                    // Basic URL pattern validation
+                    const urlPattern = /^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)$/;
+                    if (!urlPattern.test(websiteValue)) {
+                        showCompanyError(websiteInput, 'Please enter a valid website URL');
+                        errors.push('Invalid website URL');
+                        isValid = false;
+                    }
+                }
+
+                // 7. Total Employees Validation (Optional but must be number if provided)
+                const employeesInput = $(this).find('[name="total_employees"]');
+                const employeesValue = employeesInput.val().trim();
+
+                if (employeesValue) {
+                    if (isNaN(employeesValue) || parseInt(employeesValue) < 1) {
+                        showCompanyError(employeesInput, 'Total employees must be a valid number greater than 0');
+                        errors.push('Invalid total employees value');
+                        isValid = false;
+                    }
+                }
+
+                // 8. Company Category - Required
+                const categoryInput = $(this).find('[name="employer_company_category_id"]');
+                const categoryValue = categoryInput.val();
+
+                if (!categoryValue) {
+                    showCompanyError(categoryInput.next('.select2-container'), 'Please select a company category');
+                    errors.push('Company category is required');
+                    isValid = false;
+                }
+
+                // 9. Industry - Required
+                const industryInput = $(this).find('[name="industry_id"]');
+                const industryValue = industryInput.val();
+
+                if (!industryValue) {
+                    showCompanyError(industryInput.next('.select2-container'), 'Please select an industry');
+                    errors.push('Industry is required');
+                    isValid = false;
+                }
+
+                // 10. Logo Validation (Optional - check file type and size if uploaded)
+                const logoInput = $(this).find('[name="logo"]');
+                if (logoInput[0].files.length > 0) {
+                    const file = logoInput[0].files[0];
+                    const fileSize = file.size / 1024 / 1024; // Convert to MB
+                    const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
+
+                    if (!allowedTypes.includes(file.type)) {
+                        showCompanyError(logoInput, 'Logo must be a valid image file (JPEG, PNG, GIF, WEBP)');
+                        errors.push('Invalid logo file type');
+                        isValid = false;
+                    } else if (fileSize > 5) {
+                        showCompanyError(logoInput, 'Logo must be less than 5MB');
+                        errors.push('Logo file too large');
+                        isValid = false;
+                    }
+                }
+
+                // Show error summary if validation fails
+                if (!isValid) {
+                    displayCompanyErrorSummary(errors);
+
+                    // Scroll to first error
+                    const firstError = $('#employerCompanyEditModal .is-invalid').first();
+                    if (firstError.length) {
+                        $('#employerCompanyEditModal .modal-body').animate({
+                            scrollTop: firstError.offset().top - $('#employerCompanyEditModal .modal-body').offset().top + $('#employerCompanyEditModal .modal-body').scrollTop() - 20
+                        }, 500);
+                    }
+
+                    return false;
+                }
+
+                // ✅ All validations passed - submit the form
+                this.submit();
+            });
+
+            // Real-time validation - clear errors on input
+            $('#employerCompanyEditModal').on('input change', 'input, select, textarea', function() {
+                $(this).removeClass('is-invalid');
+                $(this).siblings('.invalid-feedback').remove();
+                $(this).next('.select2-container').removeClass('is-invalid');
+                $(this).next('.select2-container').siblings('.invalid-feedback').remove();
+                $('.company-error-summary').remove();
+            });
+
+            // Clear errors when modal is closed
+            $('#employerCompanyEditModal').on('hidden.bs.modal', function() {
+                clearCompanyErrors();
+            });
+
+            // Real-time mobile number formatting
+            $('#employerCompanyEditModal [name="phone"]').on('input', function() {
+                // Remove any non-digit characters
+                let value = $(this).val().replace(/\D/g, '');
+
+                // Limit to 11 digits
+                if (value.length > 11) {
+                    value = value.substring(0, 11);
+                }
+
+                $(this).val(value);
+            });
+
+            // Total employees - only allow numbers
+            $('#employerCompanyEditModal [name="total_employees"]').on('input', function() {
+                let value = $(this).val().replace(/\D/g, '');
+                $(this).val(value);
+            });
+        });
+
+        // Helper function to show error for company form
+        function showCompanyError(element, message) {
+            element.addClass('is-invalid');
+
+            const errorDiv = $('<div class="invalid-feedback d-block"></div>').text(message);
+
+            // Handle select2 elements differently
+            if (element.hasClass('select2-container')) {
+                element.after(errorDiv);
+            } else {
+                element.after(errorDiv);
+            }
+        }
+
+        // Helper function to clear all errors in company form
+        function clearCompanyErrors() {
+            $('#employerCompanyEditModal .is-invalid').removeClass('is-invalid');
+            $('#employerCompanyEditModal .invalid-feedback').remove();
+            $('#employerCompanyEditModal .company-error-summary').remove();
+        }
+
+        // Display error summary at the top of modal body
+        function displayCompanyErrorSummary(errors) {
+            const summaryHtml = `
+        <div class="alert alert-danger company-error-summary mb-3">
+            <strong>Please fix the following errors:</strong>
+            <ul class="mb-0 mt-2">
+                ${errors.map(error => `<li>${error}</li>`).join('')}
+            </ul>
+        </div>
+    `;
+
+            $('#employerCompanyEditModal .modal-body').prepend(summaryHtml);
+        }
+    </script>
 @endpush

@@ -25,8 +25,8 @@
                                     <input type="text" name="title" {{ $isShown ? 'disabled' : '' }} class="form-control" value="{{ isset($post) ? $post->title : '' }}" />
                                 </div>
                                 <div class="mt-2">
-                                    <label for="">{{ trans('employer.post') }} {{ trans('common.title') }}</label>
-                                    <textarea name="description" class="form-control summernote" {{ $isShown ? 'disabled' : '' }} id="" cols="30" rows="2">{!! isset($post) ? $post->description : '' !!}</textarea>
+                                    <label for="">{{ trans('employer.post') }} {{ trans('content') }}</label>
+                                    <textarea name="description" class="form-control summernote" {{ $isShown ? 'disabled' : '' }} id="summernote" cols="30" rows="2">{!! isset($post) ? $post->description : '' !!}</textarea>
                                 </div>
                                 <div class="mt-2">
                                     <label for="">{{ trans('employer.post') }} {{ trans('common.images') }}</label> <br>
@@ -80,5 +80,17 @@
 
 @endpush
 @push('script')
-    @include('common-resource-files.summernote')
+{{--    @include('common-resource-files.summernote')--}}
+    <script src="//cdn.ckeditor.com/4.22.1/full/ckeditor.js"></script>
+    <script>
+        $(document).ready(function () {
+            CKEDITOR.replace( 'summernote', {
+                versionCheck: false,
+                // extraPlugins: 'uploadimage',
+                // removePlugins: 'image',
+                // filebrowserUploadUrl: '',
+                // filebrowserImageUploadUrl: '',
+            } );
+        })
+    </script>
 @endpush

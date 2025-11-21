@@ -183,10 +183,18 @@ class EmployerViewController extends Controller
             },
             'industry',
             'fieldOfStudy',
-            'jobTypes',
-            'jobLocationTypes',
-            'employeeSkills',
-            'employeeWorkExperiences',
+            'jobTypes' => function ($jobType) {
+                $jobType->select('id', 'name', 'slug');
+            },
+            'jobLocationTypes' => function ($jobLocationTypes) {
+                $jobLocationTypes->select('id', 'name', 'slug');
+            },
+            'employeeSkills' => function ($skills) {
+                $skills->select('id', 'skills_category_id', 'skill_name', 'slug');
+            },
+            'employeeWorkExperiences' => function ($employeeWorkExperiences) {
+                $employeeWorkExperiences->select('id', 'user_id', 'title', 'duration');
+            },
             'employeeEducations'
         ]);
 

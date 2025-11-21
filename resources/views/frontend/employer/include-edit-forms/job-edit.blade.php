@@ -194,7 +194,7 @@
                     </div>
                     <div>
                         <div class="input-group rounded-3 border border-secondary-subtle">
-                            <input type="date" name="deadline"  class="form-control" value="{{ $jobTask->deadline ?? '' }}" />
+                            <input type="date" name="deadline" min="{{ date('Y-m-d') }}" class="form-control" value="{{ $jobTask->deadline ?? '' }}" />
                         </div>
                     </div>
                 </div>
