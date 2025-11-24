@@ -36,14 +36,14 @@
                     </p>
 
                     <div class="viewoProfileforSmallDevice py-3 " style="border-top: 1px solid lightgrey;">
-                        <a href="">{{ trans('employee.view_profile_details') }}</a>
+                        <a href="" id="showMobileProfileEditBox">{{ trans('employee.view_profile_details') }}</a>
                         <img src="{{ asset('/') }}frontend/employee/images/profile/arrow-right dark.png" alt="">
                     </div>
 
                     <!-- editt profile -->
                     <div class="profileEdit">
                         <!-- Trigger for Edit Bio Modal -->
-                        <h2 class="">
+                        <h2 class="bio-edit-icon">
                             <img src="{{ asset('/') }}frontend/employee/images/profile/editIcon.png" alt="" class="me-1" />
                             <span class="editBio" data-bs-toggle="modal" data-bs-target="#editBioModal">{{ trans('employee.edit_bio') }}</span>
                         </h2>
@@ -97,7 +97,7 @@
                         <!-- edit contact with modal -->
 
                         <!-- Edit Contact Info (Existing Button) -->
-                        <h2 class="mt-3">
+                        <h2 class="mt-3 bio-edit-icon">
                             <img src="{{ asset('/') }}frontend/employee/images/profile/editIcon.png" alt="" class="me-1" />
                             <span class="editBio" data-bs-toggle="modal" data-bs-target="#editContactModal">{{ trans('employee.edit_contact_info') }}</span>
                         </h2>
@@ -1042,6 +1042,13 @@
     <style>
         .form-control {border-radius: 0px}
         .selectize-input {padding: 15px!important;}
+        @media screen and (max-width: 768px){
+            .bio-edit-icon {
+                display: block!important;
+            }
+            .location,.email,.phone{text-align: left}
+            #editContactModal label {display: flex}
+        }
     </style>
 @endpush
 @push('script')
@@ -1121,16 +1128,16 @@
     {{--                        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>--}}
     <script>
         // When the Edit Contact modal is opened
-        $("#editContactModal").on("shown.bs.modal", function () {
-            // Remove sticky position from the left-panel when the modal is open
-            $(".left-panel").css("position", "relative");
-        });
+        // $("#editContactModal").on("shown.bs.modal", function () {
+        //     // Remove sticky position from the left-panel when the modal is open
+        //     $(".left-panel").css("position", "relative");
+        // });
 
         // When the Edit Contact modal is closed
-        $("#editContactModal").on("hidden.bs.modal", function () {
-            // Restore sticky position to the left-panel when the modal is closed
-            $(".left-panel").css("position", "sticky");
-        });
+        // $("#editContactModal").on("hidden.bs.modal", function () {
+        //     // Restore sticky position to the left-panel when the modal is closed
+        //     $(".left-panel").css("position", "sticky");
+        // });
     </script>
 
     <!-- edit contact with modal -->
@@ -1773,5 +1780,15 @@
     </script>
 {{--    form validation end--}}
 
+{{--    show profile edit btn on mobile--}}
+    <script>
+        $(document).on('click', '#showMobileProfileEditBox', function (event) {
+            event.preventDefault();
+
+            $('.viewoProfileforSmallDevice').addClass('d-none');
+            $('.profileEdit').addClass('d-block');
+            // $('#profileEdit').css('display', 'block');
+        });
+    </script>
 
 @endpush

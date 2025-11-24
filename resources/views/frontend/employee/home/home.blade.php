@@ -447,6 +447,7 @@
         $(document).on('click', '.save-btn', function () {
             var jobId = $(this).attr('data-job-id');
             var isSaved = $(this).attr('is-saved');
+            var thisBtn = $(this);
             if (isSaved == 'yes')
             {
                 toastr.info('You have already saved this job.');
@@ -462,6 +463,7 @@
                     })
                     $('#saveBtnImg'+jobId).attr('src', "{{ asset('/frontend/bookmark-circle.png') }}");
                     $('#saveBtnTxt'+jobId).text("{{ trans('common.saved') }}");
+                    thisBtn.removeClass('bg-primary text-white').addClass('bg-gray-300 bg-light text-dark');
                     toastr.success(response.msg);
                 }
                 else if (response.status == 'error')

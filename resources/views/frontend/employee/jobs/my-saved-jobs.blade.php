@@ -75,14 +75,14 @@
                             <div class="jobApply d-flex justify-content-between mt-2">
                                 <div>
                                     @if(!\App\Helpers\ViewHelper::checkIfUserApprovedOrBlocked(auth()->user()))
-                                        @if(!$savedJob->isApplied)
+                                        @if(!$savedJob['isApplied']['isApplied'])
                                             <form action="{{ route('employee.apply-job', $savedJob->id) }}" method="post">
                                                 @csrf
                                                 <button type="submit" class="btn">{{ trans('employee.easy_apply') }}</button>
                                             </form>
                                         @endif
                                     @endif
-                                    <img src="{{ asset('/') }}frontend/employee/images/profile/savedMarkIcon.png" alt="Bookmark" class="bookmarkIcon" />
+{{--                                    <img src="{{ asset('/') }}frontend/employee/images/profile/savedMarkIcon.png" alt="Bookmark" class="bookmarkIcon" />--}}
                                 </div>
 {{--                                <div>--}}
 {{--                                    <img src="{{ asset('/') }}frontend/employee/images/contentImages/closeIcon.png" data-job-id="{{ $savedJob->id }}" alt="Close" class="closeIcon" />--}}
@@ -93,7 +93,7 @@
                 @empty
                     <div class="row">
                         <div class="col-12">
-                            <span class="text-center mx-auto">{{ trans('employee.havent_applied_any_job') }}</span>
+                            <span class="text-center d-block mx-auto">{{ trans('employee.havent_applied_any_job') }}</span>
                         </div>
                     </div>
                 @endforelse
@@ -154,6 +154,12 @@
 {{--                        </div>--}}
 {{--                    </div>--}}
 {{--                </div>--}}
+
+
+
+
+
+
             </div>
 
 

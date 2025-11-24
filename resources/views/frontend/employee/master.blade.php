@@ -360,6 +360,15 @@
 
     </style>
 
+    <style>
+        .employee-mobile-drawer .bottom-nav a {
+             gap: 0px;
+        }
+
+        .employee-mobile-drawer .bottom-nav .active::after {
+            top: -8px!important;
+        }
+    </style>
     @yield('style')
     @stack('style')
 </head>
@@ -370,46 +379,6 @@
 
 <!-- Main Content -->
 @yield('body')
-
-<!-- Mobile Bottom Navigation -->
-{{--<div class="bottom-nav d-md-none d-flex justify-content-around py-4 mobile-bottom-menu" >--}}
-{{--    <div class="text-center mobileHome active">--}}
-{{--        <a href="{{ route('employee.home') }}"><img src="{{ asset('/') }}frontend/employee/images/header images/mobileHomeIcon.png" alt="" /> <br />--}}
-{{--            Home</a>--}}
-{{--    </div>--}}
-
-{{--    <div class="text-center mobileJobs">--}}
-{{--        <a href="{{ route('employee.show-jobs') }}"><img src="{{ asset('/') }}frontend/employee/images/header images/mobileJobIcon.png" alt="" /> <br />--}}
-{{--            Jobs</a>--}}
-{{--    </div>--}}
-{{--    <div class="text-center mobileProfile">--}}
-{{--        <a href="{{ route('employee.my-profile') }}"><img src="{{ asset('/') }}frontend/employee/images/header images/mobileProfielIcon.png" alt="" />--}}
-{{--            <br />--}}
-{{--            Profile</a>--}}
-{{--    </div>--}}
-{{--    <div class="text-center mobileInbox dropdown">--}}
-
-{{--        <a class="btn btn-secondary  dropdown-toggle bg-transparent border-0" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">--}}
-{{--            <img src="{{ asset('/') }}frontend/employee/images/header images/MobileMessageIcon.png" alt="" />--}}
-{{--            <br>--}}
-{{--            Options--}}
-{{--        </a>--}}
-
-{{--        <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">--}}
-{{--            <li><a class="dropdown-item" href="{{ route('employee.my-notifications') }}">Notifications</a></li>--}}
-{{--            <li><a class="dropdown-item" href="{{ url('/chat') }}">chat</a></li>--}}
-{{--            <li><a class="dropdown-item" href="{{ route('employee.settings') }}">Settings</a></li>--}}
-{{--            <li><a class="dropdown-item" href="{{ route('employee.my-subscriptions') }}">Subscription</a></li>--}}
-{{--            <li><a class="dropdown-item" href="{{ route('employee.my-profile-viewers') }}">Profile Viewers</a></li>--}}
-{{--            <li><a class="dropdown-item" href="{{ route('employee.my-applications') }}">My Applications</a></li>--}}
-{{--            <li><a class="dropdown-item" href="{{ route('employee.my-saved-jobs') }}">Saved Jobs</a></li>--}}
-{{--            <li><a class="dropdown-item" href="#" onclick="event.preventDefault(); document.getElementById('employeeMobileMenuLogout').submit()">Logout</a></li>--}}
-{{--            <form action="{{ route('logout') }}" method="post" id="employeeMobileMenuLogout">--}}
-{{--                @csrf--}}
-{{--            </form>--}}
-{{--        </ul>--}}
-{{--    </div>--}}
-{{--</div>--}}
 
 {{--employee drawer mobile menu--}}
 <div class="employee-mobile-drawer">
@@ -484,32 +453,33 @@
     </div>
 
     <!-- Mobile Bottom Navigation -->
-    <div class="bottom-nav d-md-none d-flex justify-content-around mobile-bottom-menu">
+    <div class="bottom-nav d-md-none d-flex justify-content-around mobile-bottom-menu" style="max-height: 93px; background-color: #E5E7EB;">
         <div class="text-center mobileHome {{ request()->is('employee/home') ? 'active' : '' }}">
             <a href="{{ route('employee.home') }}">
-                <img src="{{ asset('/frontend/employee/images/header images/mobileHomeIcon.png') }}" alt="Home" />
-                <br />Home
+{{--                <img src="{{ asset('/frontend/employee/images/header images/mobileHomeIcon.png') }}" alt="Home" />--}}
+                <img src="{{ asset('/frontend/employee/fi_3405771.png') }}" alt="Home" />
+                <span class="mt-1">Home</span>
             </a>
         </div>
 
         <div class="text-center mobileJobs {{ request()->is('employee/show-jobs') ? 'active' : '' }}">
             <a href="{{ route('employee.show-jobs') }}">
                 <img src="{{ asset('/frontend/employee/images/header images/mobileJobIcon.png') }}" alt="Jobs" />
-                <br />Jobs
+                <span class="mt-1">Jobs</span>
             </a>
         </div>
 
         <div class="text-center mobileProfile {{ request()->is('employee/my-profile') ? 'active' : '' }}">
             <a href="{{ route('employee.my-profile') }}">
                 <img src="{{ asset('/frontend/employee/images/header images/mobileProfielIcon.png') }}" alt="Profile" />
-                <br />Profile
+                <span class="mt-1">Profile</span>
             </a>
         </div>
 
         <div class="text-center mobileInbox">
             <a href="#" id="openDrawer">
                 <img src="{{ asset('/frontend/employee/images/header images/MobileMessageIcon.png') }}" alt="Options" />
-                <br />Options
+                <span class="mt-1">Options</span>
             </a>
         </div>
     </div>
