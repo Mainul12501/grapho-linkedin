@@ -35,6 +35,7 @@ class JobTask extends Model
         'field_of_study_preference',
         'is_custom_exp',
         'gender',
+        'is_softly_deleted',
     ];
 
     protected $searchableFields = ['*'];

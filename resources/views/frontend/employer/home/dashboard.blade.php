@@ -234,7 +234,8 @@
 
             .job-actions {
                 position: absolute;
-                top: 1rem;
+                /*top: 1rem;*/
+                top: 37px;
                 right: 1rem;
                 margin-left: 0;
             }
@@ -252,7 +253,8 @@
 
             .job-actions {
                 position: absolute;
-                top: 1rem;
+                /*top: 1rem;*/
+                top: 37px;
                 right: 1rem;
             }
         }

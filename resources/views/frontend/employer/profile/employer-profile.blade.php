@@ -51,12 +51,19 @@
                             </div>
 
                             <div class="d-flex gap-2 mb-4">
-                                <a href="{{ url("/chat/$employeeDetails->id" ) }}" target="_blank" class="btn btn-dark flex-grow-1 d-flex align-items-center justify-content-center gap-2">
-                                    <img src="{{ asset('/') }}frontend/employer/images/employersHome/messengerIcon.png" alt=""> {{ trans('common.message') }}
-                                </a>
-                                <a href="tel:{{ $employeeDetails->mobile }}" class="btn btn-outline-dark flex-grow-1 d-flex align-items-center justify-content-center gap-2">
-                                    <img src="{{ asset('/') }}frontend/employer/images/employersHome/profileCallIcon.png" alt=""> Call
-                                </a>
+                                @if($employeeDetails->is_open_for_hire == 0)
+                                    <a href="javascript:void(0)" target="_blank" class="btn btn-danger flex-grow-1 d-flex align-items-center justify-content-center gap-2">
+                                        <span class="text-white">Employee is offline currently.</span>
+                                    </a>
+                                @else
+                                    <a href="{{ url("/chat/$employeeDetails->id" ) }}" target="_blank" class="btn btn-dark flex-grow-1 d-flex align-items-center justify-content-center gap-2">
+                                        <img src="{{ asset('/') }}frontend/employer/images/employersHome/messengerIcon.png" alt=""> {{ trans('common.message') }}
+                                    </a>
+                                    <a href="tel:{{ $employeeDetails->mobile }}" class="btn btn-outline-dark flex-grow-1 d-flex align-items-center justify-content-center gap-2">
+                                        <img src="{{ asset('/') }}frontend/employer/images/employersHome/profileCallIcon.png" alt=""> Call
+                                    </a>
+                                @endif
+
                             </div>
 
                             <ul class="list-unstyled mb-0 d-block d-md-none">

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Frontend\Crud;
 use App\Helpers\ViewHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Backend\Post;
+use App\Models\Backend\WebNotification;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -29,7 +30,7 @@ class PostController extends Controller
     {
         if (ViewHelper::checkIfUserApprovedOrBlocked(auth()->user()))
         {
-            return ViewHelper::returnRedirectWithMessage(route('employer.dashboard'), 'Your account is blocked or has not approved yet. Please contact with admin.');
+            return ViewHelper::returnRedirectWithMessage(route('employer.dashboard'),  'error','Your account is blocked or has not approved yet. Please contact with Likewise.');
         }
         return view('frontend.employer.posts.create', [
             'isShown'   => false,
@@ -43,7 +44,7 @@ class PostController extends Controller
     {
         if (ViewHelper::checkIfUserApprovedOrBlocked(auth()->user()))
         {
-            return ViewHelper::returnRedirectWithMessage(route('employer.dashboard'), 'Your account is blocked or has not approved yet. Please contact with admin.');
+            return ViewHelper::returnRedirectWithMessage(route('employer.dashboard'),  'error','Your account is blocked or has not approved yet. Please contact with Likewise.');
         }
         $validator = Validator::make($request->all(), [
             'title' => 'required'
@@ -58,6 +59,15 @@ class PostController extends Controller
             $post = Post::updateOrCreatePost($request);
             if ($post)
             {
+                $loggedUser = ViewHelper::loggedUser();
+                $webNotification = new WebNotification();
+//                $webNotification->viewer_id = $loggedUser->id;
+//                $webNotification->viewed_user_id = $user->id;
+                $webNotification->notification_type = 'new_post';
+                $webNotification->msg = "$loggedUser->name has posted a new post.";
+                $webNotification->save();
+
+
                 return ViewHelper::returnRedirectWithMessage(route('employer.posts.index'), 'success','Post created successfully');
             } else {
                 return ViewHelper::returEexceptionError('Something went wrong. Please try again.');
@@ -108,7 +118,7 @@ class PostController extends Controller
     {
         if (ViewHelper::checkIfUserApprovedOrBlocked(auth()->user()))
         {
-            return ViewHelper::returnRedirectWithMessage(route('employer.dashboard'), 'Your account is blocked or has not approved yet. Please contact with admin.');
+            return ViewHelper::returnRedirectWithMessage(route('employer.dashboard'),  'error','Your account is blocked or has not approved yet. Please contact with Likewise.');
         }
         $data = [
             'isShown'   => false,
@@ -128,7 +138,7 @@ class PostController extends Controller
     {
         if (ViewHelper::checkIfUserApprovedOrBlocked(auth()->user()))
         {
-            return ViewHelper::returnRedirectWithMessage(route('employer.dashboard'), 'Your account is blocked or has not approved yet. Please contact with admin.');
+            return ViewHelper::returnRedirectWithMessage(route('employer.dashboard'),  'error','Your account is blocked or has not approved yet. Please contact with Likewise.');
         }
         $validator = Validator::make($request->all(), [
             'title' => 'required'
@@ -161,7 +171,7 @@ class PostController extends Controller
     {
         if (ViewHelper::checkIfUserApprovedOrBlocked(auth()->user()))
         {
-            return ViewHelper::returnRedirectWithMessage(route('employer.dashboard'), 'Your account is blocked or has not approved yet. Please contact with admin.');
+            return ViewHelper::returnRedirectWithMessage(route('employer.dashboard'),  'error','Your account is blocked or has not approved yet. Please contact with Likewise.');
         }
         $post->delete();
         return ViewHelper::returnSuccessMessage('Post Deleted successfully');

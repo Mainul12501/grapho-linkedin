@@ -64,8 +64,8 @@
                                           <span class="input-group-text bg-white " onclick="document.getElementById('searchForm').submit();">
                                             <img src="{{ asset('/') }}frontend/employer/images/employersHome/search 1.png" alt="">
                                           </span>
-                                            <input type="text" class="form-control border-start-0" id="desktop_search_text" name="search_text" placeholder="{{ trans('employer.search_jobs') }}" />
-                                            <span class="input-group-text bg-white " onclick="document.getElementById('desktop_search_text').value = '';">
+                                            <input type="text" class="form-control border-start-0" id="desktop_search_text" name="search_text" value="{{  $_GET['search_text'] ?? '' }}" placeholder="{{ trans('employer.search_jobs') }}" />
+                                            <span class="input-group-text bg-white " style="cursor:pointer;" onclick="document.getElementById('desktop_search_text').value = '';">
 {{--                                            <img src="{{ asset('/') }}frontend/employer/images/employersHome/search 1.png" alt="">--}}
                                                 <i class="fas fa-close"></i>
                                           </span>
@@ -144,7 +144,7 @@
                                         <div class="card card-body border-0">
                                             <div class="d-flex text-center align-content-center">
                                                 <p>
-                                                    <img src="{{ asset('/frontend/think.svg') }}" alt="empty-img" class="" style="max-height: 300px; min-width: 300px">
+{{--                                                    <img src="{{ asset('/frontend/think.svg') }}" alt="empty-img" class="" style="max-height: 300px;">--}}
                                                 </p>
                                                 <p class="text-danger text-center f-s-20 fw-bold p-5" style="margin-top: 10px">{{ trans('employer.no_available_job_found') }}</p>
                                             </div>
@@ -660,6 +660,50 @@
             border-bottom: 2px solid #dee2e6; /* or your desired color */
         }
 
+
+
+
+         /* Mobile: Position job-actions at top right */
+          @media screen and (max-width: 768px) {
+                .job-card {
+                  position: relative;
+                  padding-right: 3rem;
+                }
+                .job-actions {
+                  position: absolute;
+                  /*top: 1rem;*/
+                  top: 25px;
+                  right: 1rem;
+                  margin-left: 0;
+                }
+              }
+
+
+
+        /*fix job title long content desing issue*/
+        .job-card .job-title {
+            white-space: normal !important;
+            overflow: visible !important;
+            text-overflow: clip !important;
+            word-wrap: break-word !important;
+            overflow-wrap: break-word !important;
+            max-width: 350px !important; /* Direct width limit on title itself */
+        }
+
+        .job-card .job-main {
+            width: 350px !important; /* Fixed width instead of max-width */
+        }
+
+        /* Mobile adjustments */
+        @media screen and (max-width: 768px) {
+            .job-card .job-main {
+                width: auto !important;
+            }
+            .job-card .job-title {
+                max-width: 100% !important;
+            }
+        }
+
     </style>
 @endpush
 
@@ -701,21 +745,19 @@
                 // $('.summernote').summernote({
                 //     height: 300
                 // });
+                $('.select2').select2({
+                    width: "100%",
+                });
                 CKEDITOR.replace( 'summernote2', {
                     versionCheck: false
                 } );
-                $('.select2').select2({
-                    // theme: 'bootstrap-5',
-                    width: '100%',
-                    // minimumResultsForSearch: 0,
-                    // dropdownParent: $('#editJobModal')// Always show search box and make it functional
-                });
+
                 // Fix for single select focus issue
-                $(document).on('select2:open', () => {
-                    setTimeout(() => {
-                        document.querySelector('.select2-container--open .select2-search__field').focus();
-                    }, 0);
-                });
+                // $(document).on('select2:open', () => {
+                //     setTimeout(() => {
+                //         document.querySelector('.select2-container--open .select2-search__field').focus();
+                //     }, 0);
+                // });
                 $('#editJobModal').modal('show');
             })
         })
@@ -845,7 +887,8 @@
             e.preventDefault();
             e.stopPropagation();
 
-            const formId = 'jobCreateForm';
+            // const formId = 'jobCreateForm';
+            const formId = $(this).closest('form').attr('id');
 
             // Run validation FIRST
             if (validateJobForm(formId)) {
@@ -1196,30 +1239,30 @@
         $(document).ready(function() {
 
             // CRITICAL: Validate when clicking "Review & Post" button
-            $(document).on('click', '.show-review-btn', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-
-                const formId = 'jobCreateForm';
-
-                // Run validation
-                if (validateJobForm(formId)) {
-                    // Validation passed - allow rest of the functions to work
-                    console.log('Validation passed! Proceeding with review...');
-
-                    // Add your review modal logic here
-                    // Example: $('#jobDetailsModal').modal('show');
-
-                    // Or submit the form
-                    // $('#' + formId).submit();
-
-                    return true;
-                } else {
-                    // Validation failed - stop everything
-                    console.log('Validation failed! Please fix errors.');
-                    return false;
-                }
-            });
+            // $(document).on('click', '.show-review-btn', function(e) {
+            //     e.preventDefault();
+            //     e.stopPropagation();
+            //
+            //     const formId = 'jobCreateForm';
+            //
+            //     // Run validation
+            //     if (validateJobForm(formId)) {
+            //         // Validation passed - allow rest of the functions to work
+            //         console.log('Validation passed! Proceeding with review...');
+            //
+            //         // Add your review modal logic here
+            //         // Example: $('#jobDetailsModal').modal('show');
+            //
+            //         // Or submit the form
+            //         // $('#' + formId).submit();
+            //
+            //         return true;
+            //     } else {
+            //         // Validation failed - stop everything
+            //         console.log('Validation failed! Please fix errors.');
+            //         return false;
+            //     }
+            // });
 
             // Validate on form submit (as backup)
             $('#jobCreateForm').on('submit', function(e) {
@@ -1311,22 +1354,22 @@
         });
 
         // When user clicks "Review & Post"
-        $('.show-review-btn').on('click', function(e) {
-            e.preventDefault(); // Stop default behavior
-
-            if (validateJobForm('jobCreateForm')) {
-                // ✅ VALIDATION PASSED
-                // Add your next steps here:
-                // - Show review modal
-                // - Submit form
-                // - Whatever you need
-                return true;
-            } else {
-                // ❌ VALIDATION FAILED
-                // User sees errors, nothing else happens
-                return false;
-            }
-        });
+        // $('.show-review-btn').on('click', function(e) {
+        //     e.preventDefault(); // Stop default behavior
+        //
+        //     if (validateJobForm('jobCreateForm')) {
+        //         // ✅ VALIDATION PASSED
+        //         // Add your next steps here:
+        //         // - Show review modal
+        //         // - Submit form
+        //         // - Whatever you need
+        //         return true;
+        //     } else {
+        //         // ❌ VALIDATION FAILED
+        //         // User sees errors, nothing else happens
+        //         return false;
+        //     }
+        // });
     </script>
 
 @endpush

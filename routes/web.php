@@ -81,7 +81,7 @@ Route::middleware([
     Route::get('call-user/{type?}', [TwilioVideoController::class, 'viewPage'])->name('employer.call-user');
     Route::get('view-company-profile/{employerCompany}', [EmployeeViewController::class, 'viewCompanyProfile'])->name('view-company-profile');
 
-    Route::prefix('employer')->as('employer.')->middleware('isEmployer')->group(function (){
+    Route::prefix('employer')->as('employer.')->middleware(['isEmployer', 'siteSubscriptionStatusCheck'])->group(function (){
         Route::get('home', [EmployerViewController::class, 'employerHome'])->name('home');
         Route::get('dashboard', [EmployerViewController::class, 'dashboard'])->name('dashboard');
         Route::get('my-jobs', [EmployerViewController::class, 'myJobs'])->name('my-jobs');
@@ -97,6 +97,7 @@ Route::middleware([
         Route::get('employer-subscriptions', [EmployerViewController::class, 'employerSubscriptions'])->name('employer-subscriptions');
         Route::get('view-post/{post}', [PostController::class, 'viewPost'])->name('view-post');
         Route::get('set-follow-history', [FollowerHistroyController::class, 'store'])->name('set-follow-history');
+        Route::get('my-notifications', [EmployerViewController::class, 'myNotifications'])->name('my-notifications');
 
         Route::post('update-settings', [EmployerViewController::class, 'updateSettings'])->name('update-settings');
         Route::post('update-company-info', [EmployerViewController::class, 'updateCompanyInfo'])->name('update-company-info');
@@ -109,7 +110,7 @@ Route::middleware([
             'posts'  => PostController::class
         ]);
     });
-    Route::prefix('employee')->as('employee.')->middleware('isEmployee')->group(function (){
+    Route::prefix('employee')->as('employee.')->middleware(['isEmployee', 'siteSubscriptionStatusCheck'])->group(function (){
         Route::get('home', [EmployeeViewController::class, 'employeeHome'])->name('home');
         Route::get('show-jobs', [EmployeeViewController::class, 'showJobs'])->name('show-jobs');
         Route::get('my-saved-jobs', [EmployeeViewController::class, 'mySavedJobs'])->name('my-saved-jobs');
@@ -161,14 +162,5 @@ Route::get('/phpinfo', function () {
     phpinfo();
 });
 
-Route::get('/active-all-users', function (){
-    foreach (\App\Models\User::all() as $user)
-    {
-        if ($user->is_approved == 0)
-        {
-            $user->is_approved = 1;
-            $user->save();
-        }
-    }
-    return 'success';
-});
+
+

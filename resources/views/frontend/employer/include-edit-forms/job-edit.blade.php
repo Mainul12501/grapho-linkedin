@@ -115,7 +115,7 @@
             <div class="container px-0 border-bottom">
                 <div style="border-radius: 0px" class="bg-white p-4 shadow-sm">
                     <h6 class="fw-semibold mb-3">{{ trans('common.industry') }}</h6>
-                    <select name="industry_id" id="select2-div" class="form-control select2 industryId"  >
+                    <select name="industry_id" id="industryId" class="form-control select2 industryId"  >
                         @foreach($industries as $industryKey => $industry)
                             <option value="{{ $industry->id }}" {{ $jobTask->industry_id == $industry->id ? 'selected' : '' }}>{{ $industry->name ?? 'un' }}</option>
                         @endforeach

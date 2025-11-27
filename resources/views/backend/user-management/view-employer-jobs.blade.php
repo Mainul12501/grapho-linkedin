@@ -1,6 +1,6 @@
 @extends('backend.master')
 
-@section('title', '{{ $user->name }} Jobs')
+@section('title', "$user->name Jobs")
 
 @section('body')
     <div class="row py-5">
@@ -61,22 +61,26 @@
                                 <td>{{ $job->status == 1 ? 'Published' : 'Unpublished' }}</td>
                                 <td class="">
 {{--                                    @can('edit-permission')--}}
-
-{{--                                    <form class="d-inline" action="{{ route('change-user-approve-status', ['user' => $job->id, 'status' => 1]) }}" method="post">--}}
-{{--                                        @csrf--}}
-{{--                                        <button type="submit" class="btn btn-sm btn-warning">--}}
-{{--                                            <i class="fa-solid fa-check"></i>--}}
-{{--                                        </button>--}}
-{{--                                    </form>--}}
+                                    @if($job->is_softly_deleted == 1)
+                                        <form class="d-inline" action="{{ route('job-soft-delete-status', ['jobTask' => $job->id, 'status' => 0]) }}" method="post">
+                                            @csrf
+                                            <button type="submit" class="btn btn-sm btn-success" title="Unblock the Job">
+                                                <i class="fa-solid fa-check"></i>
+                                            </button>
+                                        </form>
+                                    @endif
 
 {{--                                    @endcan--}}
 {{--                                    @can('delete-permission')--}}
-{{--                                        <form class="d-inline" action="{{ route('change-user-approve-status', ['user' => $job->id, 'status' => 2]) }}" method="post" >--}}
-{{--                                            @csrf--}}
-{{--                                            <button type="submit" class="btn btn-sm btn-danger data-delete-form">--}}
-{{--                                                <i class="fa-solid fa-trash"></i>--}}
-{{--                                            </button>--}}
-{{--                                        </form>--}}
+                                    @if($job->is_softly_deleted == 0)
+                                        <form class="d-inline" action="{{ route('job-soft-delete-status', ['jobTask' => $job->id, 'status' => 1]) }}" method="post" >
+                                            @csrf
+                                            <button type="submit" title="Soft Delete Job" class="btn btn-sm btn-danger data-delete-form">
+                                                <i class="fa-solid fa-trash"></i>
+                                            </button>
+                                        </form>
+                                    @endif
+
 {{--                                    @endcan--}}
                                 </td>
                             </tr>
@@ -150,8 +154,8 @@
             url: "/get-job-details/"+jobId+"?render=1",
             method: "GET",
             success: function (response) {
-                $('#appendJobHere').append(response);
-                $('#showJob').empty().modal('show');
+                $('#appendJobHere').empty().append(response);
+                $('#showJob').modal('show');
             }
         })
     })

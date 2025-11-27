@@ -33,14 +33,14 @@ class UserController extends Controller
         {
             if ($request->has('show_sub_employer') && $request->show_sub_employer == 1 && $request->has('employer_id'))
             {
-                $this->users = User::where(['user_type' => 'sub_employer', 'user_id' => $request->employer_id])->get();
+                $this->users = User::where(['user_type' => 'sub_employer', 'user_id' => $request->employer_id])->where('is_approved', 1)->get();
             } else {
-                $this->users = User::where(['user_type' => 'employer'])->get();
+                $this->users = User::where(['user_type' => 'employer'])->where('is_approved', 1)->get();
             }
             $subscriptions = SubscriptionPlan::where(['status' => 1, 'subscription_for' => 'employer'])->get(['id', 'title', 'subscription_for', 'duration_in_days']);
         } elseif ($request->user_type == 'employee')
         {
-            $this->users = User::where(['user_type' => 'employee'])->get();
+            $this->users = User::where(['user_type' => 'employee'])->where('is_approved', 1)->get();
             $subscriptions = SubscriptionPlan::where(['status' => 1, 'subscription_for' => 'employee'])->get(['id', 'title', 'subscription_for', 'duration_in_days']);
         } else {
             $this->users = User::take(200)->get();

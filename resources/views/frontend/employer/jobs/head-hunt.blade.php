@@ -344,6 +344,7 @@
                 justify-content: flex-start !important;
                 /* Add some padding for better spacing */
                 padding: 10px;
+                overflow-x: visible!important;
             }
 
             /* Set a consistent size for the filter icons and labels */

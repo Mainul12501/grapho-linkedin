@@ -129,7 +129,7 @@ class ViewHelper
             return back();
         }
     }
-    public static function returnSuccessMessage ($message = null)
+    public static function returnSuccessMessage($message = null)
     {
         if (str()->contains(url()->current(), '/api/') || \request()->ajax())
         {
@@ -154,7 +154,13 @@ class ViewHelper
     {
         if (str_contains(url()->current(), '/api/'))
         {
-            return auth('sanctum')->user();
+            $loggedUser = auth('sanctum')->user();
+            if ($loggedUser->user_type == 'employer')
+            {
+                return $loggedUser->load('employerCompanies');
+            } else {
+                return $loggedUser;
+            }
         } else {
             return auth()->user();
         }

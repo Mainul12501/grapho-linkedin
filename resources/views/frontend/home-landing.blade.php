@@ -44,6 +44,19 @@
             font-weight: 600;
             font-style: normal;
         }
+
+        .tiro-bangla-regular {
+            font-family: "Tiro Bangla", serif;
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        .tiro-bangla-regular-italic {
+            font-family: "Tiro Bangla", serif;
+            font-weight: 400;
+            font-style: italic;
+        }
+
     </style>
 </head>
 
@@ -171,7 +184,8 @@
         <div class="d-lg-none text-center mb-4">
             <img src="{{ asset('/') }}frontend/home-landing/images/5.png" alt="Mobile Illustration" class="img-fluid">
         </div>
-        <h1 class="d-none d-lg-block text-center">{{ trans('home.your_work_people_are_here') }}</h1>
+{{--        <h1 class="d-none d-lg-block text-center">{{ trans('home.your_work_people_are_here') }}</h1>--}}
+        <h1 class="d-none d-lg-block text-center tiro-bangla-regular-italic">{{ trans('home.where_doors_knock_you') }}</h1>
 
         <div class="row justify-content-center align-items-center">
             <!-- Left Illustration (Hidden on mobile) -->
@@ -183,7 +197,8 @@
             <div class="col-12 col-lg-4 text-center">
                 <!-- Header -->
                 <div class="mb-4">
-                    <h1 class="d-lg-none">{{ trans('home.your_work_people_are_here') }}</h1>
+{{--                    <h1 class="d-lg-none">{{ trans('home.your_work_people_are_here') }}</h1>--}}
+                    <h1 class="d-lg-none tiro-bangla-regular-italic">{{ trans('home.where_doors_knock_you') }}</h1>
                     <p>{{ trans('home.by_continuing_agree_terms') }}</p>
                 </div>
 

@@ -2,6 +2,7 @@
 
 return [
     'your_work_people_are_here' => 'Your work people are here',
+    'where_doors_knock_you' => 'Where Doors Knock You',
     'by_continuing_agree_terms' => 'By continuing, you agree to our Terms of Use and Privacy Policy.',
     'continue_with_google' => 'Continue with Google',
     'continue_with_email' => 'Continue with Email',

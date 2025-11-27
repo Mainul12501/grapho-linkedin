@@ -7,18 +7,30 @@ use App\Http\Controllers\Controller;
 use App\Models\Backend\OrderPayment;
 use App\Models\Backend\SubscriptionPlan;
 use App\Models\User;
-use DGvai\SSLCommerz\SSLCommerz;
+use App\Services\SSLCommerzService;
 use Illuminate\Http\Request;
+use DGvai\SSLCommerz\SSLCommerz;
 
 class SSLCommerzController extends Controller
 {
     public static function sendOrderRequestToSSLZ($totalAmount, $contentName)
     {
+//        $sslc = new SSLCommerzService();
         $sslc = new SSLCommerz();
         $sslc->amount($totalAmount)
             ->trxid(OrderPayment::generateOrderNumber())
             ->product($contentName)
             ->customer(ViewHelper::loggedUser()->name, ViewHelper::loggedUser()->email ?? 'user@demo.com', ViewHelper::loggedUser()->mobile);
+//        return $sslc->make_payment();
+        if (str()->contains(url()->current(), '/api/'))
+        {
+            $sslPayment = $sslc->make_payment(true);
+            $sslPaymentDecodeData = json_decode($sslPayment);
+            if ($sslPaymentDecodeData->status == 'success')
+            {
+                return $sslPaymentDecodeData->data;
+            }
+        }
         return $sslc->make_payment();
     }
 
@@ -26,7 +38,8 @@ class SSLCommerzController extends Controller
     {
 
         try {
-            $validate = SSLCommerz::validate_payment($request);
+            $validate = SSLCommerzService::validate_payment($request);
+//            $validate = SSLCommerz::validate_payment($request);
             if($validate)
             {
                 $requestData = (object) \session()->get('requestData');

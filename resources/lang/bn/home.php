@@ -2,6 +2,7 @@
 
 return [
     'your_work_people_are_here' => 'আপনার কাজের মানুষ এখানে আছেন',
+    'where_doors_knock_you' => 'যেখানে দরজা আপনাকে কড়া নাড়ছে',
     'by_continuing_agree_terms' => 'চালিয়ে যাওয়ার মাধ্যমে, আপনি আমাদের ব্যবহারের শর্তাবলী এবং গোপনীয়তা নীতিতে সম্মত হচ্ছেন।',
     'continue_with_google' => 'গুগল দিয়ে চালিয়ে যান',
     'continue_with_email' => 'ইমেইল দিয়ে চালিয়ে যান',

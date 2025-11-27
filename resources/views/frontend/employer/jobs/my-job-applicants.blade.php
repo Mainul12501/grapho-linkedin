@@ -306,7 +306,7 @@
                     @empty
                         <div class="card mb-3 p-3 shadow-sm rounded-3">
                             <div class="d-flex align-items-start flex-column gap-3">
-                                <p class="f-s-26 text-center">No Data Found</p>
+                                <p class="f-s-26 text-center mx-auto">No Data Found</p>
                             </div>
                         </div>
                     @endforelse

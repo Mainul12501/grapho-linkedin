@@ -68,7 +68,7 @@
                             <li><a href="{{ route('pending-users') }}" class="slide-item {{ request()->is('pending-users') ? 'active' : '' }}">Pending Users</a></li>
 {{--                        @endcan--}}
 {{--                        @can('manage-permission')--}}
-                            <li><a href="{{ route('users.index', ['user_type' => 'admin']) }}" class="slide-item {{ request()->is('users')  && request()->query('user_type') == 'admin' ? 'active' : '' }}">Admins</a></li>
+{{--                            <li><a href="{{ route('users.index', ['user_type' => 'admin']) }}" class="slide-item {{ request()->is('users')  && request()->query('user_type') == 'admin' ? 'active' : '' }}">Admins</a></li>--}}
 {{--                        @endcan--}}
 {{--                        @can('manage-role')--}}
                             <li><a href="{{ route('users.index', ['user_type' => 'employer']) }}" class="slide-item {{ request()->is('users') && request()->query('user_type') == 'employer' ? 'active' : '' }}">Employers</a></li>

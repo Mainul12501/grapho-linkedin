@@ -69,7 +69,7 @@
 
                 </div>
                 <div class="d-md-none">
-                    <img src="{{ asset('/') }}frontend/employee/images/contentImages/notificationBell.png" alt="Notification" />
+                    <a href="{{ route('employee.my-notifications') }}"><img src="{{ asset('/') }}frontend/employee/images/contentImages/notificationBell.png" alt="Notification" /></a>
                 </div>
             </div>
         </header>

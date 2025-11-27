@@ -114,6 +114,15 @@
             padding: 0px 3px 5px 0px !important;
         }
         /*.job-type .badge {background-color: gray}*/
+
+        @media screen and (max-width: 768px) {
+            .appliedJobs .action-dropdown {
+                top: 30px;      /* Position it just below the trigger icon */
+                right: 0;
+                bottom: -37px;
+            }
+
+        }
     </style>
 @endpush
 

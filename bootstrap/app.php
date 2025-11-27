@@ -34,6 +34,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'redirectToHomeOnSessionOut'    => \App\Http\Middleware\RedirectToHomeOnSessionOut::class,
             'setLocalLang'    => \App\Http\Middleware\SetLocalLanguageMiddleware::class,
             'auth-page' => \App\Http\Middleware\AuthPageAuthenticationMiddleware::class,
+            'siteSubscriptionStatusCheck' => \App\Http\Middleware\SiteSubscriptionStatusCheck::class,
         ]);
         $middleware->validateCsrfTokens(except: [
             'sslcommerz/*'

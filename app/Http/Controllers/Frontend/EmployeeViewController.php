@@ -51,6 +51,7 @@ class EmployeeViewController extends Controller
                 $query->where('job_task_user.user_id', $loggedUser->id);
             })
             ->with('employerCompany', 'jobType')
+            ->where('is_softly_deleted', 0)
             ->latest()
             ->take(5)
             ->get();
@@ -63,6 +64,7 @@ class EmployeeViewController extends Controller
                 $query->where('job_task_user.user_id', $loggedUser->id);
             })
             ->with('employerCompany', 'jobType')
+            ->where('is_softly_deleted', 0)
             ->inRandomOrder()
             ->take(5)
             ->get();
@@ -85,9 +87,9 @@ class EmployeeViewController extends Controller
 //            $jobx->isApplied = ViewHelper::getJobSaveApplyInfo($jobx->id)['isApplied'] ?? false;
 //        }
         $data = [
-            'totalSavedJobs' => auth()->user()->employeeSavedJobs()->count() ?? 0,
-            'totalAppliedApplications' => auth()->user()->employeeAppliedJobs()->count() ?? 0,
-            'totalViewedEmployers' => auth()->user()->viewedEmployers()->count() ?? 0,
+            'totalSavedJobs' => ViewHelper::loggedUser()->employeeSavedJobs()->count() ?? 0,
+            'totalAppliedApplications' => ViewHelper::loggedUser()->employeeAppliedJobs()->count() ?? 0,
+            'totalViewedEmployers' => ViewHelper::loggedUser()->viewedEmployers()->count() ?? 0,
             'topJobsForEmployee' => $topJobsForEmployee,
             'moreJobsForEmployee' => $moreJobsForEmployee,
         ];
@@ -114,7 +116,7 @@ class EmployeeViewController extends Controller
     {
         if (ViewHelper::checkIfUserApprovedOrBlocked(auth()->user()))
         {
-            return ViewHelper::returnRedirectWithMessage(route('employee.home', 'Your account is blocked or has not approved yet. Please contact with admin.'));
+            return ViewHelper::returnRedirectWithMessage(route('employee.home', 'error', 'Your account is blocked or has not approved yet. Please contact with admin.'));
         }
         $jobTasks = JobTask::query()->with(['employerCompany.employerCompanyCategory', 'jobLocationType', 'industry', 'jobType']);
 
@@ -218,7 +220,7 @@ class EmployeeViewController extends Controller
             }
         }
 
-        $jobTasks = $jobTasks->where(['status' => 1])->latest()->paginate(20);
+        $jobTasks = $jobTasks->where(['status' => 1])->where('is_softly_deleted', 0)->latest()->paginate(20);
 
         if (count($jobTasks) > 0) {
             foreach ($jobTasks as $jobTask) {
@@ -259,7 +261,11 @@ class EmployeeViewController extends Controller
     public function mySavedJobs()
     {
         $loggedUser = ViewHelper::loggedUser();
-        $savedJobs = $loggedUser->employeeSavedJobs;
+
+        $appliedJobIds = $loggedUser->appliedJobsWithJobDetails()
+            ->pluck('job_task_id');
+
+        $savedJobs = $loggedUser->employeeSavedJobs()->whereNotIn('job_tasks.id', $appliedJobIds)->get();
         foreach ($savedJobs as $savedJob) {
             $savedJob->isApplied = ViewHelper::getJobSaveApplyInfo($savedJob->id);
         }
@@ -350,6 +356,10 @@ class EmployeeViewController extends Controller
 
     public function saveJob(Request $request, JobTask $jobTask)
     {
+        if (ViewHelper::checkIfUserApprovedOrBlocked(ViewHelper::loggedUser()))
+        {
+            return ViewHelper::returnRedirectWithMessage(route('employee.home', 'error', 'Your account is blocked or has not approved yet. Please contact with admin.'));
+        }
         $user = ViewHelper::loggedUser();
         if (isset($jobTask) && $user) {
             $user->employeeSavedJobs()->syncWithoutDetaching($jobTask->id);
@@ -388,6 +398,14 @@ class EmployeeViewController extends Controller
 
     public function applyJob(Request $request, JobTask $jobTask)
     {
+        if ($jobTask->is_softly_deleted == 1)
+        {
+            return ViewHelper::returEexceptionError('Job is blocked by Likewise. Please contact with Likewise.');
+        }
+        if (ViewHelper::checkIfUserApprovedOrBlocked(ViewHelper::loggedUser()))
+        {
+            return ViewHelper::returnRedirectWithMessage(route('employee.home', 'error', 'Your account is blocked or has not approved yet. Please contact with admin.'));
+        }
 //        return $jobTask;
         $loggedUser = ViewHelper::loggedUser();
         if ($jobTask && $loggedUser) {
@@ -397,6 +415,14 @@ class EmployeeViewController extends Controller
                 $employeeAppliedJob->job_task_id = $jobTask->id;
                 $employeeAppliedJob->status = 'pending';
                 $employeeAppliedJob->save();
+
+                $webNotification = new WebNotification();
+                $webNotification->viewer_id = $jobTask->id;
+                $webNotification->viewed_user_id = $loggedUser->id;
+                $webNotification->notification_type = 'accept_application';
+                $webNotification->msg = "$loggedUser->name has applied to your job: $jobTask->job_title.";
+                $webNotification->save();
+
                 return ViewHelper::returnSuccessMessage('You applied for this job successfully.');
             } catch (\Exception $exception) {
                 return ViewHelper::returEexceptionError($exception->getMessage());

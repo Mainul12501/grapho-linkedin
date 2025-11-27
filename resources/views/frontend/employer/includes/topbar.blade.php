@@ -5,7 +5,7 @@
 
 
     <div class="d-flex align-items-center gap-3">
-        <a href="#"><img src="{{ asset('/') }}frontend/employer/images/employersHome/notification.png" alt="" class="me-3" /></a>
+        <a href="{{ route('employer.my-notifications') }}"><img src="{{ asset('/') }}frontend/employer/images/employersHome/notification.png" alt="" class="me-3" /></a>
         <a href="{{ route('employer.settings') }}"><img src="{{ asset('/') }}frontend/employer/images/employersHome/gearIcon.png" alt="" class="me-3" /></a>
 
         <div class="dropdown d-flex align-items-center" style="cursor: pointer">
