@@ -6,6 +6,7 @@ use App\Helpers\ViewHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Payment\SSLCommerzController;
 use App\Models\Backend\CommonPage;
+use App\Models\Backend\SiteSetting;
 use App\Models\Backend\SubscriptionPlan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -66,5 +67,45 @@ class FrontendViewController extends Controller
 //        return session('locale');
 //        return app()->getLocale();
         return back();
+    }
+
+    public function getSiteSetting()
+    {
+        return response()->json(SiteSetting::first());
+    }
+    public function checkBlockApproveStatus()
+    {
+        $status = false;
+        $loggedUser = ViewHelper::loggedUser();
+        if (!$loggedUser)
+        {
+            return response()->json([
+                'status'    => 0,
+                'msg' => 'You are not logged in. Please login first.'
+            ]);
+        }
+        if ($loggedUser->is_approved == 0 || $loggedUser->status == 'blocked')
+        {
+            $status = true;
+        } elseif (SiteSetting::first()->subscription_system_status == 1)
+        {
+            if (Carbon::parse($loggedUser->subscription_end_date) < now())
+            {
+                $status = true;
+            }
+        }
+        if ($status)
+        {
+            $data = [
+                'status'    => 0,
+                'msg' => 'Your account is blocked or has not approved yet or your subscription is expired. Please contact with LikewiseBD.'
+            ];
+        } else {
+            $data = [
+                'status'    => 1,
+                'msg' => 'Success!! you passed all validations.'
+            ];
+        }
+        return response()->json($data);
     }
 }

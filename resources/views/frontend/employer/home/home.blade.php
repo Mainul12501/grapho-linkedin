@@ -7,7 +7,7 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-12">
-                    <div class="float-end">
+                    <div class="float-end mobile-search-float-left-0">
                         <form action="" method="get">
                             <div class="input-group mb-3" style="max-width: 400px">
                                 <input type="text" name="search_text" class="form-control" placeholder="{{ trans('employer.search_company') }}">
@@ -18,7 +18,7 @@
                 </div>
             </div>
             <div class="row g-4">
-                <div class=" ps-5 {{ count($advertisements) > 0 ? 'col-md-8 col-sm-10 mx-auto' : ' col-md-9 mx-auto' }}" id="appendContentHere">
+                <div class=" {{ count($advertisements) > 0 ? 'col-md-8 col-sm-11 mx-auto' : ' col-md-10 me-auto' }}" id="appendContentHere">
                     @if(!\App\Helpers\ViewHelper::checkIfUserApprovedOrBlocked(auth()->user()))
                         <div class="card card-body d-flex">
                             <p class="d-inline-flex">{{ trans('employer.have_something_new_on_mind') }}</p>
@@ -54,7 +54,168 @@
         @media screen and (max-width: 425px){
             #advertisementContainer {display: none}
         }
+        @media screen and (max-width: 768px){
+            #appendContentHere {padding-left: 10px!important;}
+            .mobile-search-float-left-0 {float: none!important;}
+        }
     </style>
+
+
+{{--    post header css--}}
+    <style>
+        /* Header layout - Horizontal flex */
+        .header-div {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            flex-wrap: nowrap;
+        }
+
+        /* Company info section - Vertical stack (image on top, name below) */
+        .company-info {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            flex-shrink: 0;
+            width: 80px;
+        }
+
+        .company-img {
+            display: block;
+            margin-bottom: 6px;
+        }
+
+        .company-img img {
+            height: 60px;
+            width: 60px;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+
+        .company-name {
+            font-weight: 700;
+            color: #333;
+            display: block;
+            font-size: 14px;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            hyphens: auto;
+        }
+
+        /* Post title - Takes remaining space */
+        .post-title {
+            flex: 1;
+            margin: 0;
+            font-size: 18px;
+            font-weight: 600;
+            line-height: 1.4;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            padding-top: 5px;
+            min-width: 0; /* Important for flex text wrapping */
+        }
+
+        /* Follow button - Right side */
+        .follow-unfollow-btn {
+            flex-shrink: 0;
+            align-self: flex-start;
+        }
+
+        .follow-btn {
+            white-space: nowrap;
+            padding: 6px 16px;
+            font-size: 14px;
+            min-width: 90px;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .header-div {
+                gap: 12px;
+            }
+
+            .post-title {
+                font-size: 16px;
+            }
+
+            .follow-btn {
+                padding: 5px 12px;
+                font-size: 13px;
+                min-width: 80px;
+            }
+
+            .company-info {
+                width: 70px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .header-div {
+                gap: 10px;
+            }
+
+            .company-info {
+                width: 60px;
+            }
+
+            .company-img img {
+                height: 50px;
+                width: 50px;
+            }
+
+            .company-name {
+                font-size: 12px;
+            }
+
+            .post-title {
+                font-size: 14px;
+                line-height: 1.3;
+            }
+
+            .follow-btn {
+                padding: 4px 8px;
+                font-size: 12px;
+                min-width: 65px;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .header-div {
+                gap: 8px;
+            }
+
+            .company-info {
+                width: 55px;
+            }
+
+            .company-img img {
+                height: 45px;
+                width: 45px;
+            }
+
+            .company-name {
+                font-size: 11px;
+            }
+
+            .post-title {
+                font-size: 13px;
+            }
+
+            .follow-btn {
+                padding: 3px 6px;
+                font-size: 11px;
+                min-width: 60px;
+            }
+        }
+
+        /* Card improvements */
+        .card {
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+    </style>
+
 @endpush
 
 @push('script')

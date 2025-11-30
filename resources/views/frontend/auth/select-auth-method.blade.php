@@ -41,6 +41,13 @@
                 overflow-y: scroll;
             }
         }
+        @media only screen and (max-width: 768px) {
+            .loginCard p {
+                font-weight: 400!important;
+                font-size: 18px!important;
+            }
+            #hir {font-size: 13px!important;}
+        }
     </style>
 </head>
 
@@ -52,7 +59,8 @@
     <img src="{{ asset(isset($siteSetting->site_icon) ? $siteSetting->site_icon : '/frontend/employee/images/authentication images/Compnay logo.png') }}" alt="Company Logo" style="height: 41px; width: 166px">
 
     <!-- Call to Action -->
-    <p>{{ trans('auth.hiring_or_looking_opportunities') }}</p>
+{{--    <p>{{ trans('auth.hiring_or_looking_opportunities') }}</p>--}}
+    <p id="hir">Hiring or looking for opportunities?</p>
 
     <!-- Buttons for Log In and Create Account -->
     <a href="{{ route('auth.set-login-role') }}"><button class="btn login" style="border-radius: 15px;">{{ trans('auth.log_in') }}</button></a>

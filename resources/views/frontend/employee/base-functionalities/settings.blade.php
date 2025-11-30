@@ -6,7 +6,7 @@
 
 
     <section class="bg-white forSmall smallTop">
-        <a href=""><img src="{{ asset('/') }}frontend/employee/images/profile/leftArrowDark.png" alt="" class="me-2"> {{ trans('employee.settings') }}</a>
+        <a href="{{ route('employee.my-subscriptions') }}"><img src="{{ asset('/') }}frontend/employee/images/profile/leftArrowDark.png" alt="" class="me-2"> {{ trans('employee.settings') }}</a>
     </section>
 
     <!-- Main Content -->
@@ -38,7 +38,7 @@
                         <img src="{{ asset('/') }}frontend/employee/images/profile/Change password.png" alt="Password Icon" class="me-2"/>
                         <span>{{ trans('employee.change_password') }}</span>
                     </div>
-                    <div class="option">
+                    <div class="option ">
                         <span>********</span>
                         <span data-bs-toggle="modal" data-bs-target="#settingModal" style="cursor: pointer">
                             <img src="{{ asset('/') }}frontend/employee/images/profile/arrowRightLight.png" alt="Right Arrow"  />
@@ -46,12 +46,12 @@
                     </div>
                 </div>
 
-                <div class="settings-row d-flex justify-content-between p-4 border-bottom">
-                    <div class="icon">
+                <div class="settings-row d-flex justify-content-between p-4 border-bottom align-items-center">
+                    <div class="icon d-flex align-items-center">
                         <img src="{{ asset('/') }}frontend/employee/images/profile/Change Email.png" alt="Email Icon" class="me-2"/>
                         <span>{{ trans('employee.change_email') }}</span>
                     </div>
-                    <div class="option">
+                    <div class="option d-flex align-items-center text-end">
                         <span>{{ auth()->user()->email ?? 'demo@email.com' }}</span>
                         <span data-bs-toggle="modal" data-bs-target="#emailModal" style="cursor: pointer">
                             <img src="{{ asset('/') }}frontend/employee/images/profile/arrowRightLight.png" alt="Right Arrow" />

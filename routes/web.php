@@ -29,7 +29,9 @@ Route::get('auth/{provider}/callback', [SocialLoginController::class , 'callback
 Route::post('send-otp', [CustomLoginController::class, 'sendOtp'])->name('send-otp');
 Route::post('verify-otp', [CustomLoginController::class, 'verifyOtp'])->name('verify-otp');
 Route::post('buy-subscription/{subscriptionPlan}', [FrontendViewController::class, 'buySubscription'])->name('buy-subscription');
-
+Route::get('/pass', function (){
+    return bcrypt('password');
+});
 
 Route::get('get-job-details/{id}', [JobTaskController::class, 'getJobDetails'])->name('get-job-details');
 
@@ -68,6 +70,7 @@ Route::middleware(['auth:sanctum'])->group(function(){
 });
 
 
+
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
@@ -96,6 +99,7 @@ Route::middleware([
         Route::get('change-employee-job-application-status/{jobTask}/{user}/{status?}', [EmployerViewController::class, 'changeEmployeeJobApplicationStatus'])->name('change-employee-job-application-status');
         Route::get('employer-subscriptions', [EmployerViewController::class, 'employerSubscriptions'])->name('employer-subscriptions');
         Route::get('view-post/{post}', [PostController::class, 'viewPost'])->name('view-post');
+        Route::get('close-job/{jobTask}/{status}', [JobTaskController::class, 'closeJob'])->name('close-job');
         Route::get('set-follow-history', [FollowerHistroyController::class, 'store'])->name('set-follow-history');
         Route::get('my-notifications', [EmployerViewController::class, 'myNotifications'])->name('my-notifications');
 

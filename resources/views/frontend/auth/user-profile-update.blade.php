@@ -584,6 +584,14 @@
         font-weight: 400;
         font-size: 15px!important;
     }
+
+
+    /*responsive codes*/
+    @media screen and (max-width: 768px) {
+        #stepBadge {
+            border-radius: 5px!important;
+        }
+    }
 </style>
 @endpush
 

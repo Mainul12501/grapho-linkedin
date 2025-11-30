@@ -279,7 +279,7 @@
                             <img src="{{ asset('/') }}frontend/employee/images/profile/arrow-right 1.png" alt="" class="profileRightArrow">
                         </div>
                     </div>
-                    <h1 class="mt-2">{{ auth()->user()->employeeSavedJobs()->count() ?? 0 }}</h1>
+                    <h1 class="mt-2">{{ $totalSavedJobs ?? 0 }}</h1>
                     <p class="mb-0">{{ trans('employee.jobs_saved') }}</p>
                 </div>
 

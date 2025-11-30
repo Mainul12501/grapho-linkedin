@@ -56,7 +56,10 @@
             font-weight: 400;
             font-style: italic;
         }
-
+        @media screen and (max-width: 768px) {
+            .mobile-no-border{border-bottom: 0px}
+            .mobile-col-9-no-padding {padding-right: 0px!important;}
+        }
     </style>
 </head>
 
@@ -415,7 +418,7 @@
             <div class="modal-body ">
                 <div class="">
                     <div class="card shadow signupCard">
-                        <div class="card-header bg-transparent position-relative">
+                        <div class="card-header bg-transparent position-relative mobile-no-border">
                             <a href="{{ route('/') }}"><img src="{{ asset('frontend/employee/images/authentication images/Compnay logo.png') }}" alt="" class="signupLogo w-25"></a>
                             <button type="button" class="btn position-absolute btn-close" style="right: 5px" data-bs-dismiss="modal"></button>
                         </div>
@@ -424,15 +427,15 @@
                         <div class="userCard">
                             <div>
                                 <a href="{{ route('auth.socialite.redirect', ['provider' => 'google', 'user' => 'Employer']) }}" class="userSelectOption mb-3">
-                                    <div class="row d-flex align-items-center w-100">
-                                        <div class="col-2  iconWrapper">
+                                    <div class="row d-flex align-items-center w-100 mobile-col-9-no-padding">
+                                        <div class="col-2 mobile-col-9-no-padding iconWrapper">
                                             <img src="{{ asset('frontend/employee/images/authentication images/employeeIcon.png') }}" alt="" class="userSelectOptionIcon">
                                         </div>
-                                        <div class="col-9">
+                                        <div class="col-9 mobile-col-9-no-padding">
                                             <h5>{{ trans('home.employer_text') }}</h5>
                                             <p>{{ trans('home.employer_desc') }}</p>
                                         </div>
-                                        <div class="col-1">
+                                        <div class="col-1 mobile-col-9-no-padding">
                                             <img src="{{ asset('frontend/employee/images/authentication images/arrow-right 1.png') }}" alt="" class="arrowIcon">
                                         </div>
                                     </div>

@@ -42,7 +42,7 @@
                             </div>
                             <div class="position">{{ $myApplication?->jobTask?->employerCompany?->name ?? 'Company Name' }}</div>
                             <div class="date">{{ \Illuminate\Support\Carbon::parse($myApplication?->jobTask?->created_at)->format('d-m-Y') ?? '24-09-2024' }}</div>
-                            <div class="status @if($myApplication?->status == 'approved') accepted @endif @if($myApplication?->status == 'pending') pending @endif @if($myApplication?->status == 'rejected') bg-danger @endif ">@if($myApplication?->status == 'approved') {{ trans('employee.approved') }} @endif @if($myApplication?->status == 'pending') {{ trans('employee.pending') }} @endif @if($myApplication?->status == 'rejected') {{ trans('employee.rejected') }} @endif</div>
+                            <div class="status @if($myApplication?->status == 'approved' || $myApplication?->status == 'shortlisted') accepted @endif @if($myApplication?->status == 'pending') pending @endif @if($myApplication?->status == 'rejected') bg-danger @endif ">@if($myApplication?->status == 'approved') {{ trans('employee.approved') }} @endif @if($myApplication?->status == 'pending') {{ trans('employee.pending') }} @endif @if($myApplication?->status == 'shortlisted') {{ trans('employee.shortlisted') }} @endif @if($myApplication?->status == 'rejected') {{ trans('employee.rejected') }} @endif</div>
                             <div class="action">
                                 <div class="action-menu-trigger" onclick="toggleActionMenu(this)">⋮</div>
                                 <div class="action-dropdown">
@@ -121,7 +121,7 @@
                 right: 0;
                 bottom: -37px;
             }
-
+            .appliedJobs {background-color: transparent}
         }
     </style>
 @endpush

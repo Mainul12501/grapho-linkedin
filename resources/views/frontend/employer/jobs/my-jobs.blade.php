@@ -124,6 +124,9 @@
                                             <img src="{{ asset('/') }}frontend/employer/images/employersHome/three dot.png" alt="">
                                         </button>
                                         <ul class="dropdown-menu dropdown-menu-end">
+
+                                                <li><a class="dropdown-item close-job" href="{{ route('employer.close-job', ['jobTask' => $publishedJob->id, 'status' => $publishedJob->status == 1 ? 0 : 1]) }}" data-job-id="{{ $publishedJob->id }}">{{ $publishedJob->status == 1 ? 'Close Job' : 'Open Job' }}</a></li>
+
                                             <li><a class="dropdown-item edit-job" href="javascript:void(0)" data-job-id="{{ $publishedJob->id }}">{{ trans('common.edit') }}</a></li>
 {{--                                            <li><a class="dropdown-item " href="{{ route('employer.job-tasks.edit', $publishedJob->id) }}" data-job-id="{{ $publishedJob->id }}">Edit</a></li>--}}
                                             <li>
@@ -393,7 +396,7 @@
                             <div class="container px-0 border-bottom">
                                 <div class="bg-white  p-4 shadow-sm" style="border-radius: 0px">
                                     <h6 class="fw-semibold mb-3">CGPA preference</h6>
-                                    <input type="number" min="0" name="cgpa" class="form-control" placeholder="e.g. 3.50 to 3.90">
+                                    <input type="number" min="0" name="cgpa" class="form-control" placeholder="Min 3.50">
                                 </div>
                             </div>
 
@@ -716,7 +719,8 @@
     <script>
         $(document).ready(function () {
             CKEDITOR.replace( 'summernote', {
-                versionCheck: false
+                versionCheck: false,
+                height: 450
             } );
         })
         function searchOnMobile() {
@@ -952,7 +956,11 @@
             var jobType = $(parentModalId+'label[for="'+$(parentModalId+'input[name="job_type_id"]').attr('id')+'"]').text();
             var jobLocationType = $(parentModalId+'label[for="'+$('input[name="job_location_type_id"]').attr('id')+'"]').text();
             var requiredExperience = $(parentModalId+'input[name="required_experience"]').val();
-            var description = $(parentModalId+'textarea[name="description"]').val();
+            // var description = $(parentModalId+'textarea[name="description"]').val();
+            if (parentModalId == '#createJobModal ')
+                var description = CKEDITOR.instances['summernote'].getData();
+            else
+                var description = CKEDITOR.instances['summernote2'].getData();
 
             var finalExperience = '';
             if (requiredExperience == 'custom')

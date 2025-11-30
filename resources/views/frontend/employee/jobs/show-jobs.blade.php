@@ -217,56 +217,65 @@
             <div class="job-listings-container d-flex">
 
                 <!-- ---------- Left: Job cards list ---------- -->
-                <div class="job-options">
+                <div class="job-options" id="job-options-container">
                     <!-- Header above results -->
                     <div class="search-header card border-0 py-3 jobSearchResultText border-end" style="">
                         <h5 class="p-l-20">{{ trans('common.showing_results') }} : {{ count($jobTasks) ?? 0 }} results</h5>
                     </div>
                     <!-- Job card #1 -->
-                    @forelse($jobTasks as $key => $jobTask)
-                        <div class="job-card job-card-ajax border-bottom {{ $singleJobTask->id == $jobTask->id ? 'active' : '' }}" onclick="setLetSideActiveJob({{ $key }})" data-job-id="{{ $jobTask->id }}" id="job-{{ $key }}">
-                            <div class="row">
-                                <div class="col-2">
-{{--                                    <a href="{{ route('view-company-profile', $jobTask->employer_company_id) }}">--}}
+                    <div id="job-list-container">
+                        @forelse($jobTasks as $key => $jobTask)
+                            <div  class="job-card job-card-ajax border-bottom {{ $singleJobTask->id == $jobTask->id ? 'active' : '' }}" onclick="setLetSideActiveJob({{ $key }})" data-job-id="{{ $jobTask->id }}" id="job-{{ $key }}">
+                                <div class="row">
+                                    <div class="col-2">
+                                        {{--                                    <a href="{{ route('view-company-profile', $jobTask->employer_company_id) }}">--}}
                                         <img style="cursor: pointer" src="{{ isset($jobTask?->employerCompany?->logo) ? asset($jobTask?->employerCompany?->logo) : asset('/frontend/employee/images/contentImages/jobCardLogo.png') }}" alt="{{ $jobTask->job_title }}" class="img-fluid" />
-{{--                                    </a>--}}
-                                </div>
-                                <div class="col-10">
-                                    <h5 class="mb-0 ">{{ $jobTask->job_title ?? trans('common.job_title') }}</h5>
-                                    <p class="text-muted">
-{{--                                        <a href="{{ route('view-company-profile', $jobTask->employer_company_id) }}" class="text-muted nav-link">--}}
+                                        {{--                                    </a>--}}
+                                    </div>
+                                    <div class="col-10">
+                                        <h5 class="mb-0 ">{{ $jobTask->job_title ?? trans('common.job_title') }}</h5>
+                                        <p class="text-muted">
+                                            {{--                                        <a href="{{ route('view-company-profile', $jobTask->employer_company_id) }}" class="text-muted nav-link">--}}
                                             {{ $jobTask?->employerCompany?->name ?? trans('common.company_name') }}
-{{--                                        </a>--}}
-                                    </p>
-                                    <div class="job-type d-flex text-muted">
-                                        <span class="badge" style="background-color: #EDEFF2">{{ $jobTask?->jobType?->name ?? trans('common.full_time') }}</span>
-                                        <span class="badge" style="background-color: #EDEFF2">{{ $jobTask?->jobLocationType?->name ?? trans('common.on_site') }}</span>
-                                        {{--                                        <span class="badge">Day Shift</span>--}}
-                                    </div>
-                                    <p class="job-location mt-2 mb-0 text-muted">{{ $jobTask?->employerCompany?->address ?? trans('common.company_address') }}</p>
-                                    <p class="job-location mt-2 show-only-mobile mb-0 text-muted">{{ $jobTask->required_experience ?? 0 }} years experience</p>
-                                    <p class="job-location mt-2 show-only-mobile mb-0 text-muted">Salary: {{ $jobTask->salary_amount ?? 0 }}/{{ $jobTask->job_pref_salary_payment_type ?? 'month' }}</p>
-                                </div>
-                            </div>
-                        </div>
-                    @empty
-                        <div class="job-card"  style="min-height: 570px">
-                            <div class="row">
-                                <div class="col-md-12 mx-auto">
-                                    <div class="card card-body border-0">
-                                        <div class="d-flex text-center">
-                                            <p>
-                                                <img src="{{ asset('/frontend/think.svg') }}" alt="empty-img" class="" style="max-height: 300px; min-width: 300px">
-                                            </p>
+                                            {{--                                        </a>--}}
+                                        </p>
+                                        <div class="job-type d-flex text-muted">
+                                            <span class="badge" style="background-color: #EDEFF2">{{ $jobTask?->jobType?->name ?? trans('common.full_time') }}</span>
+                                            <span class="badge" style="background-color: #EDEFF2">{{ $jobTask?->jobLocationType?->name ?? trans('common.on_site') }}</span>
+                                            {{--                                        <span class="badge">Day Shift</span>--}}
                                         </div>
-                                        <p class="text-danger text-center f-s-20 fw-bold p-5" style="margin-top: 10px">{{ trans('common.sorry_no_job_found') }}</p>
-
+                                        <p class="job-location mt-2 mb-0 text-muted">{{ $jobTask?->employerCompany?->address ?? trans('common.company_address') }}</p>
+                                        <p class="job-location mt-2 show-only-mobile mb-0 text-muted">{{ $jobTask->required_experience ?? 0 }} years experience</p>
+                                        <p class="job-location mt-2 show-only-mobile mb-0 text-muted">Salary: {{ $jobTask->salary_amount ?? 0 }}/{{ $jobTask->job_pref_salary_payment_type ?? 'month' }}</p>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    @endforelse
+                        @empty
+                            <div class="job-card"  style="min-height: 570px">
+                                <div class="row">
+                                    <div class="col-md-12 mx-auto">
+                                        <div class="card card-body border-0">
+                                            <div class="d-flex text-center">
+                                                <p>
+                                                    <img src="{{ asset('/frontend/think.svg') }}" alt="empty-img" class="" style="max-height: 300px; min-width: 300px">
+                                                </p>
+                                            </div>
+                                            <p class="text-danger text-center f-s-20 fw-bold p-5" style="margin-top: 10px">{{ trans('common.sorry_no_job_found') }}</p>
 
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforelse
+                    </div>
+
+                </div>
+                <!-- Loading indicator -->
+                <!-- Loading indicator - positioned absolutely -->
+                <div id="loading-indicator" class="loading-overlay" style="display: none;">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
                 </div>
 
                 <!-- ---------- Right: Details panel (initial prompt) ---------- -->
@@ -549,6 +558,49 @@
             #jobDetailsWithData {display: none!important;};
             #jobDetailsWithoutData {display: none!important;};
         }
+        @media screen and (min-width: 768px) {
+            .job-options{
+                /*max-height: calc(100vh - 200px);*/
+                max-height: 600px;
+                overflow-y: scroll;
+                position: relative; /* Important for absolute positioning of loader */
+            }
+        }
+
+
+        /*loading icon*/
+        /* Loading overlay styles */
+        .loading-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            text-align: center;
+            z-index: 10;
+            pointer-events: none; /* Allows scrolling through the overlay */
+        }
+
+        /* Alternative: Fixed at bottom of scrollable container */
+        .loading-overlay-sticky {
+            position: sticky;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 15px;
+            text-align: center;
+            z-index: 10;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /*fix job details modal for mobile view*/
+        .job-details{
+            padding: 0px 5px!important;
+            margin-top: 0px!important;
+            box-shadow: none!important;
+        }
     </style>
 
 
@@ -658,6 +710,126 @@
             // Reset live object + event
             window.JOB_FILTERS = {};
             document.dispatchEvent(new CustomEvent('filters:change', { detail: {} }));
+        }
+    </script>
+
+{{--    auto append jobs in left menu--}}
+    <script>
+        let currentPage = 1;
+        let isLoading = false;
+        let hasMorePages = {{ $jobTasks->hasMorePages() ? 'true' : 'false' }};
+        let jobCounter = {{ count($jobTasks) }};
+        let observer;
+
+        $(document).ready(function() {
+            initInfiniteScroll();
+        });
+
+        function initInfiniteScroll() {
+            // Create a sentinel element at the bottom
+            const sentinel = $('<div id="scroll-sentinel" style="height: 1px;"></div>');
+            $('#job-list-container').append(sentinel);
+
+            // Configure Intersection Observer
+            const options = {
+                root: document.querySelector('#job-options-container'),
+                rootMargin: '100px', // Trigger 100px before reaching the sentinel
+                threshold: 0
+            };
+
+            observer = new IntersectionObserver(handleIntersection, options);
+            observer.observe(document.getElementById('scroll-sentinel'));
+        }
+
+        function handleIntersection(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting && !isLoading && hasMorePages) {
+                    loadMoreJobs();
+                }
+            });
+        }
+
+        function loadMoreJobs() {
+            isLoading = true;
+            $('#loading-indicator').show();
+
+            // Get current filters and search params
+            const urlParams = new URLSearchParams(window.location.search);
+            const params = {
+                page: currentPage + 1
+            };
+
+            // Add existing filters
+            if (urlParams.has('search_text')) {
+                params.search_text = urlParams.get('search_text');
+            }
+
+            if (urlParams.has('filters')) {
+                params.filters = urlParams.get('filters');
+            }
+
+            $.ajax({
+                url: '{{ route("employee.show-jobs") }}',
+                type: 'GET',
+                data: params,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+                success: function(response) {
+                    if (response.html) {
+                        // Insert new jobs before the sentinel
+                        $('#scroll-sentinel').before(response.html);
+
+                        // Update state
+                        currentPage = response.next_page;
+                        hasMorePages = response.has_more;
+
+                        // Update job counter
+                        jobCounter += $(response.html).filter('.job-card').length;
+                        $('#job-count').text(jobCounter);
+
+                        // Re-bind click events if needed
+                        bindJobCardEvents();
+
+                        // If no more pages, remove observer
+                        if (!hasMorePages) {
+                            observer.disconnect();
+                            $('#scroll-sentinel').remove();
+                        }
+                    }
+
+                    $('#loading-indicator').hide();
+                    isLoading = false;
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error loading more jobs:', error);
+                    $('#loading-indicator').hide();
+                    isLoading = false;
+                }
+            });
+        }
+
+        function bindJobCardEvents() {
+            // Re-bind any event handlers for newly loaded job cards if necessary
+            $('.job-card-ajax').off('click').on('click', function() {
+                // Your existing click handler logic
+                var jobId = $(this).attr('data-job-id');
+                sendAjaxRequest('get-job-details/'+jobId+'?render=1', 'GET').then(function (response) {
+                    console.log(response);
+                    if (window.innerWidth > 768)
+                    {
+                        const jobDetailsDiv = document.querySelector('.job-details');
+                        jobDetailsDiv.style.display = 'block';
+                        jobDetailsDiv.innerHTML = response;
+                    } else {
+                        const jobDetailsDiv = document.querySelector('#jobDeatilsForMobile');
+                        jobDetailsDiv.style.display = 'block';
+                        jobDetailsDiv.innerHTML = response;
+                        $('#jobDeatilsForModal').modal('show');
+                    }
+
+                });
+            });
         }
     </script>
 @endpush

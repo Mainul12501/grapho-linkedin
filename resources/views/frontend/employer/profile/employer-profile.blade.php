@@ -21,6 +21,12 @@
                         border: 0px!important;
                     }
                 }
+                @media (min-width: 768px) {
+                    .mobile-padding-0 {
+                        padding-right: 0px!important;
+                        padding-left: 20px!important;
+                    }
+                }
             </style>
 
             <div class="employerProfile container-fluid py-2 p-sm-0">
@@ -51,11 +57,11 @@
                             </div>
 
                             <div class="d-flex gap-2 mb-4">
-                                @if($employeeDetails->is_open_for_hire == 0)
-                                    <a href="javascript:void(0)" target="_blank" class="btn btn-danger flex-grow-1 d-flex align-items-center justify-content-center gap-2">
-                                        <span class="text-white">Employee is offline currently.</span>
-                                    </a>
-                                @else
+                                @if($employeeDetails->is_open_for_hire == 1)
+{{--                                    <a href="javascript:void(0)" target="_blank" class="btn btn-danger flex-grow-1 d-flex align-items-center justify-content-center gap-2">--}}
+{{--                                        <span class="text-white">Employee is offline currently.</span>--}}
+{{--                                    </a>--}}
+{{--                                @else--}}
                                     <a href="{{ url("/chat/$employeeDetails->id" ) }}" target="_blank" class="btn btn-dark flex-grow-1 d-flex align-items-center justify-content-center gap-2">
                                         <img src="{{ asset('/') }}frontend/employer/images/employersHome/messengerIcon.png" alt=""> {{ trans('common.message') }}
                                     </a>

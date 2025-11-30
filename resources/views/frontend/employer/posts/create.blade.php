@@ -33,7 +33,7 @@
                                     @if(!$isShown)
                                         <input type="file" name="images[]" accept="images/*" multiple />
                                     @endif
-                                    @if(isset($post))
+                                    @if(isset($post) && isset($post->images))
                                         <div class="mt-1">
                                             @foreach(json_decode($post->images) as $image)
                                                 <span class="p-1">

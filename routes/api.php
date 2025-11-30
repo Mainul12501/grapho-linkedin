@@ -21,6 +21,7 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 Route::get('/page/{slug?}', [FrontendViewController::class, 'showCommonPage']);
+Route::get('/check-block-approve-status', [FrontendViewController::class, 'checkBlockApproveStatus']);
 Route::post('send-otp', [CustomLoginController::class, 'sendOtp'])->name('send-otp');
 Route::post('verify-otp', [CustomLoginController::class, 'verifyOtp']);
 Route::post('login-with-google-app', [CustomLoginController::class, 'loginWithGoogleApp']);
@@ -28,6 +29,7 @@ Route::post('buy-subscription/{subscriptionPlan}', [FrontendViewController::clas
 
 Route::get('employee-profile/{employeeId}', [EmployerViewController::class, 'employeeProfile']);
 Route::get('get-job-details/{id}', [JobTaskController::class, 'getJobDetails']);
+Route::get('get-site-settings', [FrontendViewController::class, 'getSiteSetting']);
 
 Route::prefix('auth')->name('auth.')->group(function (){
     Route::get('select-auth-method', [CustomLoginController::class, 'selectAuthMethod']);

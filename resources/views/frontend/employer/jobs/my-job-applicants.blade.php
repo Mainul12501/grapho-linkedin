@@ -284,7 +284,7 @@
 
                 <!-- Mobile Cards -->
                 <div class="pending-cards">
-                    @forelse($rejectedApplicants as $rejectedApplicant))
+                    @forelse($rejectedApplicants as $rejectedApplicant)
                     <div class="card mb-3 p-3 shadow-sm rounded-3">
                         <div class="d-flex align-items-start flex-column gap-3">
                             <img src="{{ asset($rejectedApplicant?->user->profile_image ?? 'frontend/user-vector-img.jpg') }}" alt="Ayesha Begum" class="rounded-circle"
@@ -363,7 +363,7 @@
 
                 <!-- Mobile Cards -->
                 <div class="pending-cards">
-                    @forelse($approvedApplicants as $approvedApplicant))
+                    @forelse($approvedApplicants as $approvedApplicant)
                     <div class="card mb-3 p-3 shadow-sm rounded-3">
                         <div class="d-flex align-items-start flex-column gap-3">
                             <img src="{{ asset($approvedApplicant?->user->profile_image ?? 'frontend/user-vector-img.jpg') }}" alt="Ayesha Begum" class="rounded-circle"
@@ -406,6 +406,10 @@
         .mobile-btn-custom {
             padding: 6px 12px;
             gap: 12px;
+        }
+
+        @media screen and (max-width: 768px) {
+            .talenttabbutton {border-bottom: 0px!important;}
         }
     </style>
 @endpush

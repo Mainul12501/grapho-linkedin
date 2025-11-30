@@ -220,7 +220,22 @@ class EmployeeViewController extends Controller
             }
         }
 
-        $jobTasks = $jobTasks->where(['status' => 1])->where('is_softly_deleted', 0)->latest()->paginate(20);
+        $jobTasks = $jobTasks->where(['status' => 1])->where('is_softly_deleted', 0)->latest()->paginate(15);
+
+
+        // Handle AJAX request for infinite scroll
+        if ($request->ajax()) {
+            $html = view('frontend.employee.jobs.partials.job-list', [
+                'jobTasks' => $jobTasks,
+                'singleJobTask' => $jobTasks->first()
+            ])->render();
+
+            return response()->json([
+                'html' => $html,
+                'next_page' => $jobTasks->currentPage() + 1,
+                'has_more' => $jobTasks->hasMorePages()
+            ]);
+        }
 
         if (count($jobTasks) > 0) {
             foreach ($jobTasks as $jobTask) {
@@ -325,6 +340,8 @@ class EmployeeViewController extends Controller
         if (str()->contains(url()->current(), '/api/')) {
             $loggedUser->profile_image = asset($loggedUser->profile_image);
         }
+        $totalSavedJobs = $loggedUser->employeeSavedJobs->whereNotIn('id', $loggedUser->employeeAppliedJobs->pluck('id'))->count();
+
         $data = [
             'workExperiences' => EmployeeWorkExperience::where(['user_id' => auth()->id(), 'status' => 1])->get(), // stringp tags for api
             'employeeEducations' => EmployeeEducation::where(['user_id' => auth()->id(), 'status' => 1])->get(),
@@ -335,6 +352,7 @@ class EmployeeViewController extends Controller
             'fieldOfStudies' => FieldOfStudy::where(['status' => 1])->get(['id', 'field_name']),
             'companyList' => EmployerCompany::where(['status' => 1])->get(['id', 'name']),
             'jobTypes' => JobType::where(['status' => 1])->get(['id', 'name']),
+            'totalSavedJobs'    => $totalSavedJobs,
         ];
         return ViewHelper::checkViewForApi($data, 'frontend.employee.base-functionalities.my-profile');
         return \view('frontend.employee.base-functionalities.my-profile');

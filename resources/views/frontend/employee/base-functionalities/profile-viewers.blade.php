@@ -30,7 +30,7 @@
                                 <span>{{ $myProfileViewer?->employerCompany?->address ?? 'Company Address' }}</span>
                             </div>
                         </div>
-                        <div class="time">Viewed {{ \Illuminate\Support\Carbon::now()->diffForHumans(\Illuminate\Support\Carbon::parse($myProfileViewer?->created_at)) ?? 0 }} </div>
+                        <div class="time">Viewed {{ \Illuminate\Support\Carbon::parse($myProfileViewer?->created_at)->diffForHumans() ?? 0 }} </div>
                     </div>
                 @endforeach
             </div>

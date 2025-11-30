@@ -18,6 +18,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\View\View;
 use phpseclib3\System\SSH\Agent\Identity;
+use PHPUnit\Util\PHP\Job;
 
 class JobTaskController extends Controller
 {
@@ -183,7 +184,7 @@ class JobTaskController extends Controller
         try {
             //        $jobTask = JobTask::createOrUpdateJobTask($request);
 //            $jobTask = new JobTask();
-            $jobTask->user_id = ViewHelper::loggedUser()->id;
+//            $jobTask->user_id = ViewHelper::loggedUser()->id;
             $jobTask->job_title = $request->job_title;
             $jobTask->job_type_id = $request->job_type_id;
             $jobTask->job_location_type_id = $request->job_location_type_id;
@@ -296,6 +297,19 @@ class JobTaskController extends Controller
             $webNotification->save();
         }
 
+        return ViewHelper::returnSuccessMessage($msg);
+    }
+
+    public function closeJob(JobTask $jobTask, $status = 0)
+    {
+        $jobTask->status = $status;
+        $jobTask->save();
+        if ($status == 0)
+        {
+            $msg = 'Job Closed Successfully.';
+        } else {
+            $msg = 'Job Opened Successfully.';
+        }
         return ViewHelper::returnSuccessMessage($msg);
     }
 }

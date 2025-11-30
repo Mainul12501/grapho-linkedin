@@ -294,7 +294,7 @@
                                 </p>
                                 <p class="text-muted mb-1" style="font-size: 13px;">
                                     <img src="{{ asset('/') }}frontend/employer/images/employersHome/profile location.png" alt="Location" style="width: 20px;" />
-                                    {!! $employee->address ?? trans('common.user_address') !!}
+                                    {!! str()->words($employee->address, 17) ?? trans('common.user_address') !!}
                                 </p>
                                 <div class="d-flex flex-wrap gap-2 mt-3">
                                     <span class="badge bg-light text-dark">{{ $employee?->employeeWorkExperiences[0]?->duration ?? 0 }} {{ trans('employer.yrs') }}</span>
@@ -320,6 +320,16 @@
             @endforelse
 
         </div>
+
+        @if(count($employees) > 0)
+            <div class="row ">
+                <div class="col-md-8 mx-auto">
+                    <div class="mx-auto">
+                        {{ $employees->links() }}
+                    </div>
+                </div>
+            </div>
+        @endif
     </div>
 
 @endsection

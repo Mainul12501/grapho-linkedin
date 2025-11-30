@@ -8,7 +8,7 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header pt-3">
-                        <h4 class="float-start">{{ auth()->user()->name ?? 'Employer Name' }} {{ trans('employer.post') }}s</h4>
+                        <h4 class="float-start">{{ auth()->user()?->employerCompanies[0]?->name ?? 'Company' }} {{ trans('employer.post') }}s</h4>
                         @if(!\App\Helpers\ViewHelper::checkIfUserApprovedOrBlocked(auth()->user()))
                             <p class="float-end">
                                 <a href="{{ route('employer.posts.create') }}" class="btn btn-sm btn-success">{{ trans('common.add') }}</a>

@@ -150,7 +150,7 @@
             <div class="container px-0 border-bottom">
                 <div style="border-radius: 0px" class="bg-white p-4 shadow-sm">
                     <h6 class="fw-semibold mb-3">{{ trans('employer.cgpa_preference') }}</h6>
-                    <input type="number" min="0" name="cgpa" value="{{ $jobTask->cgpa ?? 0 }}" class="form-control" placeholder="{{ trans('employer.eg_350_to_390') }}">
+                    <input type="number" min="0" name="cgpa" value="{{ $jobTask->cgpa ?? 0 }}" class="form-control" placeholder="Min 3.50">
                 </div>
             </div>
             <!-- Gender Preference -->
@@ -246,8 +246,8 @@
                     <div>
                         <div class="input-group rounded-3 border border-secondary-subtle">
                             <select name="status" class="form-control select2" id="">
-                                <option value="on" {{ $jobTask->status == 1 ? 'selected' : '' }}>Stay Published</option>
-                                <option value="" {{ $jobTask->status == 0 ? 'selected' : '' }}>Unpublished</option>
+                                <option value="on" {{ $jobTask->status == 1 ? 'selected' : '' }}>Stay Opened</option>
+                                <option value="" {{ $jobTask->status == 0 ? 'selected' : '' }}>Close Job</option>
                             </select>
                         </div>
                     </div>

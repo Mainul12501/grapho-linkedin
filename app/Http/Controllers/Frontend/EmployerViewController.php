@@ -56,9 +56,15 @@ class EmployerViewController extends Controller
             ->take(10)
             ->get();
 
-
+        $isApiRequest = false;
+        if (str()->contains(url()->current(), '/api/'))
+        {
+            $isApiRequest = true;
+        }
         foreach ($posts as $post) {
             $post['follow_history_status'] = ViewHelper::checkFollowHistory($post->user_id, ViewHelper::loggedUser()->id) ?? false;
+            if ($isApiRequest)
+            $post['image_array'] = json_decode($post->images);
         }
 //        return response()->json($posts);
 //        return $posts;
@@ -98,18 +104,18 @@ class EmployerViewController extends Controller
             $jobUserId = $loggedUser->user_id;
         if ($request->has('job_status')) {
             if ($request->job_status == 'closed') {
-                $jobs = JobTask::where(['user_id' => $jobUserId, 'status' => 0])->where('is_softly_deleted', 0)->paginate(10);
+                $jobs = JobTask::where(['user_id' => $jobUserId, 'status' => 0])->latest()->where('is_softly_deleted', 0)->paginate(10);
             } else {
-                $jobs = JobTask::where(['user_id' => $jobUserId, 'status' => 1])->where('is_softly_deleted', 0)->paginate(10);
+                $jobs = JobTask::where(['user_id' => $jobUserId, 'status' => 1])->latest()->where('is_softly_deleted', 0)->paginate(10);
             }
         } elseif (isset($request->search_text)) {
             $jobs = JobTask::where([
                 'user_id' => $jobUserId,
                 'status' => 1,
 
-            ])->where('job_title', 'LIKE', "%{$request->search_text}%")->where('is_softly_deleted', 0)->paginate(10);
+            ])->where('job_title', 'LIKE', "%{$request->search_text}%")->latest()->where('is_softly_deleted', 0)->paginate(10);
         } else {
-            $jobs = JobTask::where(['user_id' => $jobUserId, 'status' => 1])->where('is_softly_deleted', 0)->paginate(10);
+            $jobs = JobTask::where(['user_id' => $jobUserId, 'status' => 1])->latest()->where('is_softly_deleted', 0)->paginate(10);
         }
         if (ViewHelper::checkIfRequestFromApi()) {
             foreach ($jobs as $job) {
