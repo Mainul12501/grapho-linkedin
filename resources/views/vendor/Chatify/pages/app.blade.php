@@ -63,7 +63,11 @@
                 {{-- header buttons --}}
                 <nav class="m-header-right">
                     @if(auth()->user()->user_type == 'employer')
-                        <a href="{{ route('twilio.view') }}" target="_blank" class="bg-warning"><i class="fas fa-video"></i></a>
+{{--                        <a href="{{ route('twilio.view') }}" target="_blank" class="bg-warning"><i class="fas fa-video"></i></a>--}}
+                        <a href="javascript:void(0)"  onclick="makeAudioCall({{ $id }})" class="bg-warning"><i class="fas fa-phone"></i></a>
+                        <a href="javascript:void(0)"  onclick="makeVideoCall({{ $id }})" class="bg-warning"><i class="fas fa-video"></i></a>
+                        <!-- Add buttons container -->
+{{--                        <div id="call-buttons"></div>--}}
                     @endif
                     <a href="#" class="add-to-favorite"><i class="fas fa-star"></i></a>
                     <a href="/"><i class="fas fa-home"></i></a>
@@ -113,3 +117,21 @@
 
 @include('Chatify::layouts.modals')
 @include('Chatify::layouts.footerLinks')
+{{-- Include ZegoCloud incoming call popup --}}
+@include('frontend.zegocloud.incoming-call-popup')
+
+<!-- Include the helper script -->
+<script src="{{ asset('js/zegocloud-caller.js') }}"></script>
+
+<!-- Initialize buttons -->
+<script>
+    {{--const csrfToken = "{{ csrf_token() }}";--}}
+
+    function makeVideoCall(userId) {
+        ZegoCloudCaller.initiateCall(userId, 'video', csrfToken);
+    }
+
+    function makeAudioCall(userId) {
+        ZegoCloudCaller.initiateCall(userId, 'audio', csrfToken);
+    }
+</script>

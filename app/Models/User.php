@@ -80,6 +80,10 @@ class User extends Authenticatable
         'university_name_id',
         'industry_id',
         'field_of_study_id',
+        'device_token',
+        'device_platform',
+        'is_online',
+        'last_seen',
     ];
 
     /**
@@ -92,6 +96,7 @@ class User extends Authenticatable
         'remember_token',
         'two_factor_recovery_codes',
         'two_factor_secret',
+        'device_token',
     ];
 
     /**
@@ -113,6 +118,8 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'is_online' => 'boolean',
+            'last_seen' => 'datetime',
         ];
     }
 
@@ -303,6 +310,16 @@ class User extends Authenticatable
             'id',
             'employer_company_id'
         );
+    }
+
+    public function initiatedCalls()
+    {
+        return $this->hasMany(\App\Models\Backend\Call::class, 'caller_id');
+    }
+
+    public function receivedCalls()
+    {
+        return $this->hasMany(\App\Models\Backend\Call::class, 'receiver_id');
     }
 
     public function isSuperAdmin(): bool

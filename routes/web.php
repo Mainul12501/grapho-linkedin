@@ -16,6 +16,7 @@ use App\Http\Controllers\Frontend\Crud\PostController;
 use App\Http\Controllers\Frontend\Crud\FollowerHistroyController;
 use App\Http\Controllers\Frontend\Twilio\TwilioVideoController;
 use Illuminate\Support\Facades\Artisan;
+use App\Http\Controllers\Frontend\ZegoCloud\ZegoCloudController;
 
 Route::get('change-local-language/{local}', [FrontendViewController::class, 'changeLocalLanguage'])->name('change-local-language');
 
@@ -61,6 +62,20 @@ Route::get('/view-twilio-video-page', [TwilioVideoController::class, 'viewPage']
 Route::post('/video/token', [TwilioVideoController::class, 'token'])->name('video.token');
 Route::post('/audio/token', [TwilioVideoController::class, 'audioToken'])->name('audio.token');
 // Protected (host actions) -- twilio
+
+//zego cloud video and audio page routes starts
+Route::prefix('call')->name('zego.')->middleware(['auth'])->group(function (){
+    Route::get('/call-page', [ZegoCloudController::class, 'viewCallPage'])->name('call-page');
+    Route::post('/initiate', [ZegoCloudController::class, 'initiateCall'])->name('initiate');
+    Route::post('/{call}/accept', [ZegoCloudController::class, 'acceptCall'])->name('accept');
+    Route::post('/{call}/reject', [ZegoCloudController::class, 'rejectCall'])->name('reject');
+    Route::post('/{call}/end', [ZegoCloudController::class, 'endCall'])->name('end');
+    Route::get('/{call}/details', [ZegoCloudController::class, 'getCallDetails'])->name('details');
+    Route::post('/generate-token', [ZegoCloudController::class, 'generateToken'])->name('generate-token');
+});
+//zego cloud video and audio page routes ends
+
+
 Route::middleware(['auth:sanctum'])->group(function(){
     Route::post('/twilio/invite', [TwilioVideoController::class, 'inviteCreate'])->name('twilio.invite');
     Route::post('/twilio/kick', [TwilioVideoController::class, 'kickParticipant'])->name('twilio.kick');

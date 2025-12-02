@@ -505,6 +505,11 @@
         }
     });
 </script>
+
+{{--include zigo-cloud popup blade--}}
+<script src="https://js.pusher.com/7.2.0/pusher.min.js"></script>
+@include('frontend.zegocloud.incoming-call-popup')
+
 <script>
     {{--var base_url = "{{ url('/') }}"+'/';--}}
     var base_url = "{{ url('/') }}"+'/frontend/employee/';

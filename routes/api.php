@@ -15,6 +15,7 @@ use App\Http\Controllers\Frontend\Crud\EmployeeDocumentsController;
 use App\Http\Controllers\Frontend\Twilio\TwilioVideoController;
 use App\Http\Controllers\Frontend\Crud\PostController;
 use App\Http\Controllers\Frontend\Crud\FollowerHistroyController;
+use App\Http\Controllers\Api\Mobile\ZegoCloudMobileController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -124,5 +125,27 @@ Route::middleware([
             'employee-educations' => EmployeeEducationController::class,
             'employee-documents'    => EmployeeDocumentsController::class,
         ]);
+    });
+
+    // Mobile App API Routes for ZegoCloud Calling
+    Route::prefix('mobile/call')->name('mobile.call.')->group(function () {
+        // Device registration
+        Route::post('/register-device', [ZegoCloudMobileController::class, 'registerDevice']);
+        Route::post('/update-online-status', [ZegoCloudMobileController::class, 'updateOnlineStatus']);
+
+        // Call management
+        Route::post('/initiate', [ZegoCloudMobileController::class, 'initiateCall']);
+        Route::post('/{callId}/accept', [ZegoCloudMobileController::class, 'acceptCall']);
+        Route::post('/{callId}/reject', [ZegoCloudMobileController::class, 'rejectCall']);
+        Route::post('/{callId}/end', [ZegoCloudMobileController::class, 'endCall']);
+
+        // Call information
+        Route::get('/active-calls', [ZegoCloudMobileController::class, 'getActiveCalls']);
+        Route::get('/call-history', [ZegoCloudMobileController::class, 'getCallHistory']);
+        Route::get('/{callId}/details', [ZegoCloudMobileController::class, 'getCallDetails']);
+        Route::get('/user/{userId}/availability', [ZegoCloudMobileController::class, 'checkUserAvailability']);
+
+        // ZegoCloud configuration
+        Route::post('/generate-token', [ZegoCloudMobileController::class, 'generateToken']);
     });
 });

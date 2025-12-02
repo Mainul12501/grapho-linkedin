@@ -53,4 +53,21 @@ return [
         'redirect' => env('GITHUB_REDIRECT_URI')
     ],
 
+    'zegocloud' => [
+        'app_id' => env('ZEGOCLOUD_APP_ID'),
+        'server_secret' => env('ZEGOCLOUD_SERVER_SECRET'),
+    ],
+
+    'fcm' => [
+        'server_key' => env('FCM_SERVER_KEY'),
+    ],
+
+    'apn' => [
+        'key_id' => env('APN_KEY_ID'),
+        'team_id' => env('APN_TEAM_ID'),
+        'bundle_id' => env('APN_BUNDLE_ID'),
+        'key_path' => env('APN_KEY_PATH'),
+        'production' => env('APN_PRODUCTION', false),
+    ],
+
 ];

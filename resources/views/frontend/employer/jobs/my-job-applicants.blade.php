@@ -173,7 +173,8 @@
                                         <a href="{{ route('employee-profile', ['employeeId' => $shortListedApplicant?->user?->id]) }}" class="btn p-0" title="View profile" aria-label="View profile">
                                             {{--                                            <img src="{{ asset('/') }}frontend/employer/images/employersHome/talen-green-tikIcon.png" alt="Profile icon" style="width: 20px; height: 20px;" />--}}
 {{--                                            <img src="{{ asset('/') }}frontend/employer/images/employersHome/three dot.png" alt="More options" style="width: 20px; height: 20px;" />--}}
-                                            <span><i class="fas fa-user-circle text-primary" style="width: 20px; height: 20px;"></i></span>
+{{--                                            <span><i class="fas fa-user-circle text-primary" style="width: 20px; height: 20px;"></i></span>--}}
+                                            <img src="{{ asset('/frontend/employer/images/profile.png') }}" alt="More options" style="max-width: 22px; max-height: 22px;" />
                                         </a>
                                         <a href="{{ route('employer.change-employee-job-application-status', ['jobTask' => $shortListedApplicant->job_task_id, 'user' => $shortListedApplicant?->user?->id, 'status' => 'approved']) }}" class="btn p-0" title="Approve Request" aria-label="Shortlist applicant">
                                             <img src="{{ asset('/') }}frontend/employer/images/employersHome/talen-green-tikIcon.png" alt="Profile icon" style="width: 20px; height: 20px;" />
@@ -266,7 +267,8 @@
                                         <a href="{{ route('employee-profile', ['employeeId' => $rejectedApplicant?->user?->id]) }}" class="btn p-0" title="View profile" aria-label="View profile">
                                             {{--                                            <img src="{{ asset('/') }}frontend/employer/images/employersHome/talen-green-tikIcon.png" alt="Profile icon" style="width: 20px; height: 20px;" />--}}
 {{--                                            <img src="{{ asset('/') }}frontend/employer/images/employersHome/three dot.png" alt="More options" style="width: 20px; height: 20px;" />--}}
-                                                                                        <span><i class="fas fa-user-circle text-primary" style="width: 20px; height: 20px;"></i></span>
+{{--                                                                                        <span><i class="fas fa-user-circle text-primary" style="width: 20px; height: 20px;"></i></span>--}}
+                                            <img src="{{ asset('/frontend/employer/images/profile.png') }}" alt="More options" style="max-width: 22px; max-height: 22px;" />
                                         </a>
                                     </div>
                                 </td>
@@ -343,7 +345,8 @@
                                         <a href="{{ route('employee-profile', ['employeeId' => $approvedApplicant?->user?->id]) }}" class="btn p-0" title="View profile" aria-label="View profile">
                                             {{--                                            <img src="{{ asset('/') }}frontend/employer/images/employersHome/talen-green-tikIcon.png" alt="Profile icon" style="width: 20px; height: 20px;" />--}}
 {{--                                            <img src="{{ asset('/') }}frontend/employer/images/employersHome/three dot.png" alt="More options" style="width: 20px; height: 20px;" />--}}
-                                                                                        <span><i class="fas fa-user-circle text-primary" style="width: 20px; height: 20px;"></i></span>
+{{--                                                                                        <span><i class="fas fa-user-circle text-primary" style="width: 20px; height: 20px;"></i></span>--}}
+                                            <img src="{{ asset('/frontend/employer/images/profile.png') }}" alt="More options" style="max-width: 22px; max-height: 22px;" />
                                         </a>
 
                                     </div>
