@@ -276,7 +276,7 @@
                 <div class="rounded-circle border d-flex justify-content-center align-items-center" style="width: 72px; height: 72px;">
                     <img src="{{ asset(isset($siteSetting) ? $siteSetting->logo : '/frontend/home-landing/images/searchcompany.png') }}" alt="Company Reviews" style="width: 40px;">
                 </div>
-                <span class="mt-2">{{ trans('home.search_company_reviews') }}</span>
+                <span class="mt-2">Get Your Work People</span>
             </div>
         </div>
         <div class="col-6 col-md-3">
@@ -284,7 +284,7 @@
                 <div class="rounded-circle border d-flex justify-content-center align-items-center" style="width: 72px; height: 72px;">
                     <img src="{{ asset('/') }}frontend/home-landing/images/salary.png" alt="Salaries" style="width: 40px;">
                 </div>
-                <span class="mt-2">{{ trans('home.compare_salaries') }}</span>
+                <span class="mt-2">Easy Recruitments</span>
             </div>
         </div>
     </div>
@@ -305,7 +305,10 @@
     <div class="container">
         <div class="row mb-4">
             <div class="col-md-2 mb-3">
-                <a href="{{ route('/') }}" class="d-inline-block mb-3"><img src="{{ asset('/') }}frontend/home-landing/images/Compnay logo.png" alt=""></a>
+                <a href="{{ route('/') }}" class="d-inline-block mb-3">
+{{--                    <img src="{{ asset('/') }}frontend/home-landing/images/Compnay logo.png" alt="">--}}
+                    <img src="{{ asset(isset($siteSetting) ? $siteSetting->logo : '') }}" alt="site-logo">
+                </a>
 {{--                <ul class="list-unstyled small">--}}
 {{--                    <li><a href="#" class="text-decoration-none text-dark">About / Press</a></li>--}}
 {{--                    <li><a href="#" class="text-decoration-none text-dark">Awards</a></li>--}}
@@ -473,6 +476,8 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
 <script src="{{ asset('/') }}common-assets/js/toastr-2.1.3.min.js"></script>
 {!! Toastr::message() !!}
+<script src="https://js.pusher.com/7.2.0/pusher.min.js"></script>
+@include('frontend.zegocloud.incoming-call-popup')
 <script>
     @if($errors->any())
     @foreach($errors->all() as $error)
@@ -485,7 +490,6 @@
     @if(session()->has('error'))
         toastr.error("{{ session('error') }}");
     @endif
-    toastr.error('fuck');
 </script>
 </body>
 </html>

@@ -64,6 +64,7 @@
                 <span class="follow-unfollow-btn">
                     <button type="button"
                             data-employer-id="{{ $post->user_id }}"
+                            data-employer-company-name="{{ $post?->employer?->employerCompany?->name ?? 'Company' }}"
                             data-follow-history-status="{{ $post->follow_history_status == 1 ? 1 : 0 }}"
                             data-post-id="{{ $post->id }}"
                             id="followBtn{{ $post->id }}"

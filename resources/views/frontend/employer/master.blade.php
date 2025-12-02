@@ -9,6 +9,11 @@
     <title>{{ isset($siteSetting) ? $siteSetting->site_title : 'Grapho' }} - @yield('title')</title>
     @include('frontend.employer.includes.assets.css')
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        .site-base-color-bg {background-color: #FFCB11!important;}
+        .drawer-menu a span {font-weight: bolder}
+        .drawer-menu a i {color: #FFCB11!important;}
+    </style>
 </head>
 
 <body class="">
@@ -65,9 +70,9 @@
 
         <!-- Side Drawer -->
         <div class="side-drawer" id="sideDrawer">
-            <div class="drawer-header">
+            <div class="drawer-header " style="background: #FFCB11!important;">
                 <h5 class="drawer-title">
-                    <i class="fas fa-bars me-2"></i>{{ trans('employee.options') }}
+                    <i class="fas fa-bars me-2"></i>{{--{{ trans('employee.options') }}--}} Menu
                 </h5>
                 <button class="drawer-close" id="closeDrawer">
                     {{--                <i class="fas fa-times"></i>--}}
@@ -154,7 +159,7 @@
 
             <a href="#" class="nav-link text-center flex-fill" id="openDrawer">
                 <img src="{{ asset('/frontend/employer/images/employersHome/Applicants.png') }}" alt="">
-                <span class="text-light-gray">{{ trans('employee.options') }}</span>
+                <span class="text-light-gray">{{--{{ trans('employee.options') }}--}} Menu</span>
             </a>
         </nav>
 

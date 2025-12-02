@@ -115,40 +115,40 @@
                         </a>
                     </div>
 
-                    <div class="row g-3">
-                        <!-- Talent Card 1 -->
-                        @foreach($employees as $employee)
-                            <div class="col-md-4 col-sm-6">
-                                <a href="{{ route('employee-profile', $employee->id) }}" style="text-decoration: none">
-                                    <article class="talent-card">
-                                        <img src="{{ asset($employee->profile_image ?? '/frontend/user-vector-img.jpg') }}"
-                                             alt="Mohammed Pranto" class="talent-img" />
-                                        <div class="talent-details mt-2">
-                                            <h6>{{ $employee->name ?? trans('common.employee_name') }}</h6>
-                                            <p>{{ $employee->profile_title ?? trans('employee.profile_title') }}</p>
-                                            <span>
-                                                    <i class="bi bi-geo-alt"></i>
+{{--                    <div class="row g-3">--}}
+{{--                        <!-- Talent Card 1 -->--}}
+{{--                        @foreach($employees as $employee)--}}
+{{--                            <div class="col-md-4 col-sm-6">--}}
+{{--                                <a href="{{ route('employee-profile', $employee->id) }}" style="text-decoration: none">--}}
+{{--                                    <article class="talent-card">--}}
+{{--                                        <img src="{{ asset($employee->profile_image ?? '/frontend/user-vector-img.jpg') }}"--}}
+{{--                                             alt="Mohammed Pranto" class="talent-img" />--}}
+{{--                                        <div class="talent-details mt-2">--}}
+{{--                                            <h6>{{ $employee->name ?? trans('common.employee_name') }}</h6>--}}
+{{--                                            <p>{{ $employee->profile_title ?? trans('employee.profile_title') }}</p>--}}
+{{--                                            <span>--}}
+{{--                                                    <i class="bi bi-geo-alt"></i>--}}
 {{--                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-geo-alt-fill" viewBox="0 0 16 16">--}}
 {{--                                                        <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10m0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6"/>--}}
 {{--                                                    </svg>--}}
-                                                    <span class="ms-1" style="text-decoration: none">{!! $employee->address ?? trans('common.user_address') !!}</span>
-                                                </span>
-                                            <div class="talent-meta mt-2">
+{{--                                                    <span class="ms-1" style="text-decoration: none">{!! $employee->address ?? trans('common.user_address') !!}</span>--}}
+{{--                                                </span>--}}
+{{--                                            <div class="talent-meta mt-2">--}}
 
-                                                <span class="p-1">{{ $employee?->employeeWorkExperiences[0]?->duration ?? 0 }}+ {{ trans('common.yrs') }}</span>
-                                                <span class="p-1">{{ $employee?->employeeEducations[$employee->employeeEducations()->count() - 1]?->cgpa ?? 0.0 }} {{ trans('common.cgpa') }}</span>
-                                            </div>
-                                        </div>
-                                    </article>
-                                </a>
-                            </div>
-
-
-
-                        @endforeach
+{{--                                                <span class="p-1">{{ $employee?->employeeWorkExperiences[0]?->duration ?? 0 }}+ {{ trans('common.yrs') }}</span>--}}
+{{--                                                <span class="p-1">{{ $employee?->employeeEducations[$employee->employeeEducations()->count() - 1]?->cgpa ?? 0.0 }} {{ trans('common.cgpa') }}</span>--}}
+{{--                                            </div>--}}
+{{--                                        </div>--}}
+{{--                                    </article>--}}
+{{--                                </a>--}}
+{{--                            </div>--}}
 
 
-                        <!-- Talent Card 2 -->
+
+{{--                        @endforeach--}}
+
+
+{{--                        <!-- Talent Card 2 -->--}}
 {{--                        <div class="col-md-4 col-sm-6">--}}
 {{--                            <article class="talent-card">--}}
 {{--                                <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Ayesha Rahman"--}}
@@ -181,7 +181,7 @@
 {{--                                </div>--}}
 {{--                            </article>--}}
 {{--                        </div>--}}
-                    </div>
+{{--                    </div>--}}
                 </section>
             </div>
         </div>

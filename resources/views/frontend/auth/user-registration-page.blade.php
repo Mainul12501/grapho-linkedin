@@ -438,6 +438,8 @@
         width: 100% !important;
     }
 </style>
+<script src="https://js.pusher.com/7.2.0/pusher.min.js"></script>
+@include('frontend.zegocloud.incoming-call-popup')
 </body>
 
 </html>

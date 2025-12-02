@@ -519,6 +519,11 @@
 <!-- Toastr JS -->
 {{--<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>--}}
 <script src="{{ asset('/') }}common-assets/js/toastr-2.1.3.min.js"></script>
+<script>
+    toastr.options.onShown = function() {
+        $('.toast').css('opacity', '1');
+    };
+</script>
 {{--    sweet alert js--}}
 {{--<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>--}}
 {{--<script src="{{ asset('/') }}common-assets/js/sweetalert2@11-11.22.0.js"></script>--}}

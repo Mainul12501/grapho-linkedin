@@ -15,27 +15,27 @@
 
         <!-- Bootstrap Tabs -->
         <div class="talentMobileTop">
-            <ul class="nav nav-tabs mb-4 talenttabbutton flex-wrap" id="applicationTabs" role="tablist">
-                <li class="nav-item mx-1 p-1" role="presentation">
-                    <button class="nav-link active rounded-pill px-4 tab-btn-bg" id="pending-tab" data-bs-toggle="tab"
+            <ul class="nav nav-tabs mb-4 talenttabbutton flex-wrap border-bottom-0" id="applicationTabs" role="tablist">
+                <li class="nav-item mx-1 p-1 " role="presentation">
+                    <button class="nav-link active rounded-pill px-4 tab-btn-bg site-base-color-bg" id="pending-tab" data-bs-toggle="tab"
                             data-bs-target="#pending" type="button" role="tab" aria-controls="pending" aria-selected="true">
                         {{ trans('employee.pending') }}
                     </button>
                 </li>
                 <li class="nav-item mx-1 p-1" role="presentation">
-                    <button class="nav-link rounded-pill px-4 tab-btn-bg" id="shortlisted-tab" data-bs-toggle="tab"
+                    <button class="nav-link rounded-pill px-4 tab-btn-bg site-base-color-bg" id="shortlisted-tab" data-bs-toggle="tab"
                             data-bs-target="#shortlisted" type="button" role="tab" aria-controls="shortlisted" aria-selected="false">
                         {{ trans('employee.shortlisted') }}
                     </button>
                 </li>
                 <li class="nav-item mx-1 p-1" role="presentation">
-                    <button class="nav-link rounded-pill px-4 tab-btn-bg" id="rejected-tab" data-bs-toggle="tab" data-bs-target="#approved"
+                    <button class="nav-link rounded-pill px-4 tab-btn-bg site-base-color-bg" id="rejected-tab" data-bs-toggle="tab" data-bs-target="#approved"
                             type="button" role="tab" aria-controls="rejected" aria-selected="false">
                         {{ trans('employee.approved') }}
                     </button>
                 </li>
                 <li class="nav-item mx-1 p-1" role="presentation">
-                    <button class="nav-link rounded-pill px-4 tab-btn-bg" id="rejected-tab" data-bs-toggle="tab" data-bs-target="#rejected"
+                    <button class="nav-link rounded-pill px-4 tab-btn-bg site-base-color-bg" id="rejected-tab" data-bs-toggle="tab" data-bs-target="#rejected"
                             type="button" role="tab" aria-controls="rejected" aria-selected="false">
                         {{ trans('employee.rejected') }}
                     </button>
@@ -413,6 +413,9 @@
 
         @media screen and (max-width: 768px) {
             .talenttabbutton {border-bottom: 0px!important;}
+        }
+        #applicationTabs .active {
+            background-color: gray!important;
         }
     </style>
 @endpush

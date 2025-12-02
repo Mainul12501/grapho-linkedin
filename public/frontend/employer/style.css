@@ -335,9 +335,9 @@ body {
     overflow-x: unset;
     -webkit-overflow-scrolling: touch;
 }
-  
 
-   
+
+
 
 
 
@@ -438,7 +438,7 @@ color: #141C25;
 }
 
 
- 
+
 .settings-content {
   background: #fff;
   border-radius: 8px;
@@ -553,7 +553,7 @@ color: #141C25;
 /* same inner width as other steps */
 #step3 .review-head,
 #step3 .review-body{
-  max-width: 640px;   
+  max-width: 640px;
   margin-inline: auto;
 }
 
@@ -668,7 +668,7 @@ color: #141C25;
 
 
 
-   
+
    /* heathunt */
 /* ============================
    Pill Filters — look & layout
@@ -761,7 +761,7 @@ color: #141C25;
   line-height:1;
 }
 
-   
+
 
 
 
@@ -850,5 +850,5 @@ color: #141C25;
   .job-main{
   flex-direction: column;
 }
-  
+
 }

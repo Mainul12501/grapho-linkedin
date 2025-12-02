@@ -76,6 +76,7 @@ class EmployerViewController extends Controller
         }
         $data = [
             'advertisements' => Advertisement::where(['status' => 1])->latest()->inRandomOrder()->paginate(10),
+            'employees' => User::where(['user_type' => 'employee', 'is_open_for_hire' => 1])->take(5)->get(['id', 'name', 'profile_title', 'address', 'profile_image']),
         ];
         return ViewHelper::checkViewForApi($data, 'frontend.employer.home.home');
         return view('frontend.employer.home.home', $data);
@@ -85,7 +86,7 @@ class EmployerViewController extends Controller
     {
         $data = [
             'jobTasks' => JobTask::where(['user_id' => ViewHelper::loggedUser()->id, 'status' => 1])->where('is_softly_deleted', 0)->paginate(10),
-            'employees' => User::where(['user_type' => 'employee', 'is_open_for_hire' => 1])->take(3)->get(['id', 'name', 'profile_title', 'address', 'profile_image']),
+//            'employees' => User::where(['user_type' => 'employee', 'is_open_for_hire' => 1])->take(3)->get(['id', 'name', 'profile_title', 'address', 'profile_image']),
         ];
         return ViewHelper::checkViewForApi($data, 'frontend.employer.home.dashboard');
         return view('frontend.employer.home.dashboard', $data);
@@ -768,5 +769,15 @@ After careful consideration, we regret to inform you that we have decided to mov
         ];
         return ViewHelper::checkViewForApi($data, 'frontend.employee.base-functionalities.my-notifications');
         return \view('frontend.employee.base-functionalities.my-notifications');
+    }
+
+    public function employeeSuggestions()
+    {
+        $employees = User::where(['user_type' => 'employee'])->latest()->select(['id', 'name', 'profile_title', 'address', 'profile_image'])->paginate(20);
+        $data = [
+            'employees' => $employees,
+        ];
+        return ViewHelper::checkViewForApi($data, 'frontend.employer.home.suggested-employees');
+        return \view('frontend.employer.home.suggested-employees');
     }
 }

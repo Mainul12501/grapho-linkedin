@@ -1,6 +1,6 @@
 @extends('frontend.employer.master')
 
-@section('title', 'Create Posts')
+@section('title', isset($post) ? trans('common.update') : '' .' Posts')
 
 @section('body')
     <div class="container-fluid py-5">
@@ -43,28 +43,28 @@
                                         </div>
                                     @endif
                                 </div>
-                                <div class="mt-2 row">
-                                    <div class="col-md-3">
+{{--                                <div class="mt-2 row">--}}
+{{--                                    <div class="col-md-3">--}}
 
-                                        <div>
+{{--                                        <div>--}}
 {{--                                            <div class="material-switch">--}}
 {{--                                                <input id="someSwitchOptionInfo" {{ $isShown ? 'disabled' : '' }} name="status" type="checkbox" {{ isset($post) && $post->status == 0 ? '' : 'checked' }} />--}}
 {{--                                                <label for="someSwitchOptionInfo" class="label-info"></label>--}}
 {{--                                            </div>--}}
 
-                                            <label for="flexSwitchCheckChecked" class="d-inline-flex" id="form-check-label">{{ trans('common.status') }}</label>
-                                            <br>
-                                            <div class="form-check form-switch d-inline-flex">
-                                                <input class="form-check-input" name="status" type="checkbox" role="switch" id="flexSwitchCheckChecked" {{ isset($post) && $post->status == 0 ? '' : 'checked' }}>
+{{--                                            <label for="flexSwitchCheckChecked" class="d-inline-flex" id="form-check-label">{{ trans('common.status') }}</label>--}}
+{{--                                            <br>--}}
+{{--                                            <div class="form-check form-switch d-inline-flex">--}}
+{{--                                                <input class="form-check-input" name="status" type="checkbox" role="switch" id="flexSwitchCheckChecked" {{ isset($post) && $post->status == 0 ? '' : 'checked' }}>--}}
 {{--                                                <label class="form-check-label" for="flexSwitchCheckChecked">Checked switch checkbox input</label>--}}
-                                            </div>
+{{--                                            </div>--}}
 
-                                        </div>
-                                    </div>
-                                </div>
+{{--                                        </div>--}}
+{{--                                    </div>--}}
+{{--                                </div>--}}
                                 @if(!$isShown)
                                     <div>
-                                        <input type="submit" class="btn btn-success btn-sm float-end" value="{{ isset($post) ? trans('common.update') : trans('common.add') }} {{ trans('employer.post') }}" />
+                                        <input type="submit" class="btn btn-success btn-sm float-end" value="{{ isset($post) ? trans('common.update') : '' }} {{ trans('employer.post') }}" />
                                     </div>
                                 @endif
                             </form>

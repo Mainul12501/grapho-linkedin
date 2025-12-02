@@ -117,6 +117,7 @@ Route::middleware([
         Route::get('close-job/{jobTask}/{status}', [JobTaskController::class, 'closeJob'])->name('close-job');
         Route::get('set-follow-history', [FollowerHistroyController::class, 'store'])->name('set-follow-history');
         Route::get('my-notifications', [EmployerViewController::class, 'myNotifications'])->name('my-notifications');
+        Route::get('employee-suggestions', [EmployerViewController::class, 'employeeSuggestions'])->name('employee-suggestions');
 
         Route::post('update-settings', [EmployerViewController::class, 'updateSettings'])->name('update-settings');
         Route::post('update-company-info', [EmployerViewController::class, 'updateCompanyInfo'])->name('update-company-info');

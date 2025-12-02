@@ -5,10 +5,10 @@
 @section('body')
 
     <div class="container-fluid p-4">
-        <h4 class="fw-bold mb-2 f-s-23">{{ trans('employer.my_jobs') }}</h4>
-        <p class="text-secondary mb-4 small">
-            {{ trans('employer.see_all_posted_jobs') }}
-        </p>
+        <h4 class="fw-bold mb-4 f-s-23">{{ trans('employer.applicants') }}</h4>
+{{--        <p class="text-secondary mb-4 small">--}}
+{{--            {{ trans('employer.see_all_posted_jobs') }}--}}
+{{--        </p>--}}
 
         <div class="row g-4">
             @forelse($jobTasks as $jobTask)

@@ -60,7 +60,8 @@ class Post extends Model
         if ($request->has('images'))
             $post->images = ViewHelper::saveImagePathInJson($request->file('images'), 'post-image', 'post', 600, 500, $post->images ?? null);
         $post->description = $request->description;
-        $post->status = $request->status == 'on' ? 1 : 0;
+//        $post->status = $request->status == 'on' ? 1 : 0;
+        $post->status = 1;
         $post->user_type = $loggedUser->user_type;
         $post->save();
         return $post;

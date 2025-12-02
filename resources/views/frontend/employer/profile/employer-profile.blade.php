@@ -152,7 +152,7 @@
                             @forelse($employeeDetails->employeeEducations as $education)
                                 <div class="card p-4 shadow-sm rounded-3" style="border-radius: 0px!important;">
                                     <div class="d-flex align-items-start mb-3 gap-3">
-                                        <img src="{{ asset( $education?->universityName?->logo ?? (isset($siteSetting) ? $siteSetting->common_institute_logo : '/frontend/company-vector.jpg')) }}" alt="institute Logo" style=" object-fit: contain; border-radius: 50%" height="60"  />
+                                        <img src="{{ asset( $education?->universityName?->logo ?? (isset($siteSetting) ? $siteSetting->common_institute_logo : '/frontend/book.png')) }}" alt="institute Logo" style=" object-fit: contain; border-radius: 50%; height: 45px; width: 60px"   />
                                         <div>
                                             <h6 class="mb-0 fw-bold">{{ $education?->institute_name ?? 'Institute Name' }}</h6>
                                             <small class="text-muted">{{ $education?->educationDegreeName?->degree_name ?? 'Degree Name' }} - {{ $education?->field_of_study ?? '' }} &bull; CGPA {{ $education->cgpa ?? 0 }}</small><br />                                            <small class="text-muted">Jan 2017 - Jul 2024</small><br />

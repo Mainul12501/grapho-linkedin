@@ -17,6 +17,7 @@ class PostController extends Controller
      */
     public function index()
     {
+        return redirect(route('employer.home'));
         $posts = Post::where(['user_id' => ViewHelper::loggedUser()->id])->latest()->get();
         if (str()->contains(url()->current(), '/api/'))
         {
@@ -78,7 +79,7 @@ class PostController extends Controller
                 $webNotification->save();
 
 
-                return ViewHelper::returnRedirectWithMessage(route('employer.posts.index'), 'success','Post created successfully');
+                return ViewHelper::returnRedirectWithMessage(route('employer.home'), 'success','Post created successfully');
             } else {
                 return ViewHelper::returEexceptionError('Something went wrong. Please try again.');
             }
