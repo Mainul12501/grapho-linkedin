@@ -544,8 +544,8 @@
                             <a href="{{ file_exists($employeeDocument->file) ? asset($employeeDocument->file) : '' }}" download="">
 
                                 @if( explode('/', $employeeDocument->file_type)[1] == 'image' )
-                                    <img style="max-width: 105px; max-height: 105px;" src="{{ isset($employeeDocument->file_thumb) ? asset($employeeDocument->file_thumb) : 'https://icons.iconarchive.com/icons/icons8/windows-8/512/Very-Basic-Image-File-icon.png' }}" alt="Company Logo" class="companyLogo" />
-                                    <img style="width: 40px; height: 42px" src="{{ isset($employeeDocument->file_thumb) ? asset($employeeDocument->file_thumb) : 'https://icons.iconarchive.com/icons/icons8/windows-8/512/Very-Basic-Image-File-icon.png'}}" alt="Company Logo" class="mobileLogo" />
+                                    <img style="max-width: 105px; max-height: 105px;" src="{{ isset($employeeDocument->file_thumb) ? asset($employeeDocument->file_thumb) : asset('frontend/photo.png') }}" alt="Company Logo" class="companyLogo" />
+                                    <img style="width: 40px; height: 42px" src="{{ isset($employeeDocument->file_thumb) ? asset($employeeDocument->file_thumb) : asset('frontend/photo.png')}}" alt="Company Logo" class="mobileLogo" />
                                 @elseif( explode('/', $employeeDocument->file_type)[1] == 'pdf' )
                                     <img style="max-width: 105px; max-height: 105px;" src="https://www.iconpacks.net/icons/2/free-pdf-icon-3375-thumb.png" alt="Company Logo" class="companyLogo" />
                                     <img style="width: 40px; height: 42px" src="https://www.iconpacks.net/icons/2/free-pdf-icon-3375-thumb.png" alt="Company Logo" class="mobileLogo" />
@@ -553,8 +553,8 @@
                                     <img style="max-width: 105px; max-height: 105px;" src="https://files.softicons.com/download/toolbar-icons/mono-general-icons-2-by-custom-icon-design/ico/document.ico" alt="Company Logo" class="companyLogo" />
                                     <img style="width: 40px; height: 42px" src="https://files.softicons.com/download/toolbar-icons/mono-general-icons-2-by-custom-icon-design/ico/document.ico" alt="Company Logo" class="mobileLogo" />
                                 @else
-                                    <img style="max-width: 105px; max-height: 105px;" src="{{ asset('/') }}frontend/employee/images/profile/CV.png" alt="Company Logo" class="companyLogo" />
-                                    <img style="width: 40px; height: 42px" src="{{ asset('/') }}frontend/employee/images/profile/CV.png" alt="Company Logo" class="mobileLogo" />
+                                    <img style="max-width: 105px; max-height: 105px;" src="{{ asset('/frontend/photo.png') }}" alt="Company Logo" class="companyLogo" />
+                                    <img style="width: 40px; height: 42px" src="{{ asset('/frontend/photo.png') }}" alt="Company Logo" class="mobileLogo" />
                                 @endif
                             </a>
                         </div>
@@ -841,7 +841,7 @@
 
                         <div class="mb-4">
                             <label for="passingYear" class="form-label">{{ trans('employee.passing_year') }}</label>
-                            <input type="text" required class="form-control" name="passing_year" id="passingYear" placeholder="{{ trans('auth.type_here') }}" />
+                            <input type="number" min="1940" max="{{ date('Y') }}" required class="form-control" name="passing_year" id="passingYear" placeholder="{{ trans('auth.type_here') }}" />
                         </div>
 
 

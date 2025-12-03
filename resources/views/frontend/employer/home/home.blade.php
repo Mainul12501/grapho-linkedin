@@ -31,7 +31,7 @@
                                 <div class="row">
                                     <div class="col-12">
                                         <div>
-                                            <h3>Employee Suggestions</h3>
+                                            <h3>Suggested Profiles</h3>
                                         </div>
                                         <div class="employee-suggestions">
                                             <div class="owl-carousel owl-theme" >

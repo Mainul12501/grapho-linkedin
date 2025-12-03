@@ -62,16 +62,22 @@
                             @if($employerView)
                                 <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#employerCompanyEditModal">Edit</button>
                             @endif
-                            @if(!$employerView)
-                                <div class="text-warning">
-                                    <a href="{{ route('twilio.view') }}" class="f-s-18" title="Video Call"><i class="fa-solid text-success fa-video"></i></a>
-                                    <a href="{{ url('/chat/'.$companyDetails->id) }}" class="f-s-18" title="Send Message"><i class="fa-brands text-success fa-telegram"></i></a>
-                                </div>
-                            @endif
+{{--                            @if(!$employerView)--}}
+{{--                                <div class="text-warning">--}}
+{{--                                    <a href="{{ route('twilio.view') }}" class="f-s-18" title="Video Call"><i class="fa-solid text-success fa-video"></i></a>--}}
+{{--                                    <a href="{{ url('/chat/'.$companyDetails->id) }}" class="f-s-18" title="Send Message"><i class="fa-brands text-success fa-telegram"></i></a>--}}
+{{--                                </div>--}}
+{{--                            @endif--}}
                         </div>
                         <div class=" companyProfilecontainer__right-part pb-4 pt-1 px-4">
                             <div class="mb-4">
-                                {!! $companyDetails->company_overview ?? strip_tags('<p class="f-s-30">Company Overview Not found</p>') !!}
+                                <div id="short-overview">
+
+                                    {!! str()->words($companyDetails->company_overview, 25, '<span id="show-full-btn" style="color: #FFCB11; cursor: pointer">  View all</span>') ?? strip_tags('<p class="f-s-30">Company Overview Not found</p>') !!}
+                                </div>
+                                <div id="long-overview" style="display: none;">
+                                    {!! $companyDetails->company_overview ?? strip_tags('<p class="f-s-30">Company Overview Not found</p>') !!} <span id="show-less-btn" style="color: #FFCB11; cursor: pointer"> ...View less</span>
+                                </div>
                             </div>
 
                             <div class="d-flex flex-wrap gap-4 companyProfilecontainer__footer-info justify-content-between">
@@ -94,6 +100,40 @@
             </div>
         </div>
     </div>
+
+    @if(isset($_GET['view']) && $_GET['view'] == 'employer')
+        <div class="row">
+            <div class="col-10 mx-auto">
+                <h3>{{ $companyDetails->name ?? '' }}Activities</h3>
+
+                <!-- Job Cards -->
+                <div class="row gy-3" id="item-container">
+                    <!-- Job Card -->
+                    @if(isset($paginatedData))
+                        @include('frontend.employer.home.activity-content')
+                    @endif
+
+                    {{--                        <div class="col-12 text-center align-content-center">--}}
+                    {{--                            @if(count($paginatedData) > 10)--}}
+                    {{--                                {!! $paginatedData->links() !!}--}}
+                    {{--                            @endif--}}
+                    {{--                        </div>--}}
+
+                    <div id="loader" class="text-center my-3" style="display:none;">
+                        <img src="{{ asset('frontend/spinner.gif') }}" width="40"> Loading...
+                    </div>
+
+                    <div id="no-more-data" class="text-center my-2 text-muted" style="display:none;">
+                        No more results
+                    </div>
+
+
+                </div>
+
+            </div>
+        </div>
+    @endif
+
 @endsection
 
 @section('modal')
@@ -478,5 +518,56 @@
 
             $('#employerCompanyEditModal .modal-body').prepend(summaryHtml);
         }
+    </script>
+
+{{--    load contents on scroll--}}
+    <script>
+        let page = 1;
+        let loading = false;
+        let lastPage = {{ $paginatedData->lastPage() }};
+
+        function loadMoreData() {
+            if (loading || page >= lastPage) return;
+
+            loading = true;
+            page++;
+            $("#loader").show();
+
+            $.ajax({
+                url: "?page=" + page+"&view=employer&employer_id={{ $companyDetails->id }}",
+                type: "GET",
+                success: function(res) {
+                    if ($.trim(res) === "") {
+                        $("#no-more-data").show();
+                        return;
+                    }
+
+                    $("#item-container").append(res);
+                },
+                complete: function() {
+                    loading = false;
+                    $("#loader").hide();
+                }
+            });
+        }
+
+        // Detect scroll bottom
+        $(window).scroll(function() {
+            if ($(window).scrollTop() + $(window).height() + 200 >= $(document).height()) {
+                loadMoreData();
+            }
+        });
+    </script>
+
+{{--    show hide overview--}}
+    <script>
+        $(document).on('click', '#show-full-btn', function () {
+            $('#short-overview').css('display', 'none');
+            $('#long-overview').css('display', 'block');
+        })
+        $(document).on('click', '#show-less-btn', function () {
+            $('#short-overview').css('display', 'block');
+            $('#long-overview').css('display', 'none');
+        })
     </script>
 @endpush

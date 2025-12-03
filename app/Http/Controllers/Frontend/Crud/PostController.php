@@ -165,7 +165,7 @@ class PostController extends Controller
             if ($post)
             {
                 Toastr::success('Post Updated successfully');
-                return redirect(route('employer.posts.index'));
+                return redirect(route('employer.dashboard'));
             } else {
                 return ViewHelper::returEexceptionError('Something went wrong. Please try again.');
             }

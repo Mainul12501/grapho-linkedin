@@ -46,74 +46,40 @@
                 <section class="col-lg-9 col-md-8">
                     <!-- Open Jobs Header -->
                     <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
-                        <h5 class="fw-bold mb-0">{{ trans('employer.open_jobs') }}</h5>
-                        <a href="{{ route('employer.my-jobs') }}" class="text-decoration-none small fw-semibold d-flex align-items-center showall">
-                            {{ trans('employee.show_all') }} <img src="{{ asset('/') }}frontend/employer/images/employersHome/arrow-right 1.png" alt="" class="ms-2">
-                        </a>
+                        <h5 class="fw-bold mb-0">Activities</h5>
+{{--                        <a href="{{ route('employer.my-jobs') }}" class="text-decoration-none small fw-semibold d-flex align-items-center showall">--}}
+{{--                            {{ trans('employee.show_all') }} <img src="{{ asset('/') }}frontend/employer/images/employersHome/arrow-right 1.png" alt="" class="ms-2">--}}
+{{--                        </a>--}}
                     </div>
 
                     <!-- Job Cards -->
-                    <div class="row gy-3">
+                    <div class="row gy-3" id="item-container">
                         <!-- Job Card -->
-                        @forelse($jobTasks as $jobTask)
-                            <div class="col-12">
-                                <article class="job-card">
-                                    <div class="job-details <!--flex-grow-1-->">
-                                        <h6 class="job-title" onclick="showJobDetails({{ $jobTask->id }}, `{{ $jobTask->job_title }}`)" style="cursor: pointer;">{{ $jobTask->job_title ?? trans('common.job_title') }}</h6>
-                                        <div class="job-badges d-flex flex-wrap gap-2">
-                                            <span class="badge bg-light text-secondary">{{ $jobTask?->jobType?->name ?? trans('common.full_time') }}</span>
-                                            <span class="badge bg-light text-secondary">{{ $jobTask?->jobLocationType?->name ?? trans('common.on_site') }}</span>
-{{--                                            <span class="badge bg-light text-secondary">Day Shift</span>--}}
-                                        </div>
-                                    </div>
+                        @include('frontend.employer.home.activity-content')
+{{--                        <div class="col-12 text-center align-content-center">--}}
+{{--                            @if(count($paginatedData) > 10)--}}
+{{--                                {!! $paginatedData->links() !!}--}}
+{{--                            @endif--}}
+{{--                        </div>--}}
 
-                                    <div class="job-info">
-                                        <div class="mb-2"><img src="{{ asset('/') }}frontend/employer/images/employersHome/postdOn.png" alt="" class="me-2">{{ trans('employer.posted_on') }} {{ $jobTask->created_at->format('d M, Y') ?? '16 Feb, 2025' }}</div>
-                                        <div class="mb-2"><img src="{{ asset('/') }}frontend/employer/images/employersHome/Dedline.png" alt="" class="me-2">{{ trans('employer.deadline') }} {{ \Illuminate\Support\Carbon::parse($jobTask->deadline)->format('d M, Y') ?? '16 Feb, 2025' }}</div>
-                                        <div><img src="{{ asset('/') }}frontend/employer/images/employersHome/24application.png" alt="" class="me-2"><a href="{{ route('employer.my-job-applicants', $jobTask->id) }}" class="text-decoration-underline">{{ $jobTask->employeeAppliedJobs->count() ?? 0 }} {{ trans('employer.applicants') }}</a></div>
-                                    </div>
-
-                                    <div class="job-actions dropdown">
-                                        <button class="btn btn-link p-0 text-secondary" type="button"
-                                                data-bs-toggle="dropdown" aria-expanded="false">
-                                            <img src="{{ asset('/') }}frontend/employer/images/employersHome/three dot.png" alt="">
-                                        </button>
-                                        <ul class="dropdown-menu dropdown-menu-end">
-{{--                                            <li><a class="dropdown-item" href="{{ route('employer.job-tasks.edit', $jobTask->id) }}">{{ trans('common.edit') }}</a></li>--}}
-                                            <li>
-                                                <form action="{{ route('employer.job-tasks.destroy', $jobTask->id) }}" method="post">
-                                                    @csrf
-                                                    @method('delete')
-                                                    <button class="dropdown-item data-delete-form" type="submit">{{ trans('common.delete') }}</button>
-                                                </form>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </article>
-                            </div>
-                        @empty
-                            <div class="col-12">
-                                <p style="font-size: 36px;">{{ trans('employer.no_published_job_yet') }}</p>
-                            </div>
-                        @endforelse
-                        <div class="col-12 text-center align-content-center">
-                            @if(count($jobTasks) > 10)
-                                {!! $jobTasks->links() !!}
-                            @endif
+                        <div id="loader" class="text-center my-3" style="display:none;">
+                            <img src="{{ asset('frontend/spinner.gif') }}" width="40"> Loading...
                         </div>
 
-
+                        <div id="no-more-data" class="text-center my-2 text-muted" style="display:none;">
+                            No more results
+                        </div>
 
 
                     </div>
 
                     <!-- Top talent picks -->
-                    <div class="d-flex justify-content-between align-items-center mt-5 mb-3 flex-wrap">
-                        <h5 class="fw-bold mb-0">{{ trans('employer.browse_talents_find_match') }}</h5>
-                        <a href="{{ route('employer.head-hunt') }}" class="text-decoration-none small fw-semibold d-flex align-items-center showall">
-                            {{ trans('employer.head_hunt') }} <img src="{{ asset('/') }}frontend/employer/images/employersHome/arrow-right 1.png" alt="" class="ms-2">
-                        </a>
-                    </div>
+{{--                    <div class="d-flex justify-content-between align-items-center mt-5 mb-3 flex-wrap">--}}
+{{--                        <h5 class="fw-bold mb-0">{{ trans('employer.browse_talents_find_match') }}</h5>--}}
+{{--                        <a href="{{ route('employer.head-hunt') }}" class="text-decoration-none small fw-semibold d-flex align-items-center showall">--}}
+{{--                            {{ trans('employer.head_hunt') }} <img src="{{ asset('/') }}frontend/employer/images/employersHome/arrow-right 1.png" alt="" class="ms-2">--}}
+{{--                        </a>--}}
+{{--                    </div>--}}
 
 {{--                    <div class="row g-3">--}}
 {{--                        <!-- Talent Card 1 -->--}}
@@ -275,5 +241,44 @@
             })
         }
     </script>
+
+    <script>
+        let page = 1;
+        let loading = false;
+        let lastPage = {{ $paginatedData->lastPage() }};
+
+        function loadMoreData() {
+            if (loading || page >= lastPage) return;
+
+            loading = true;
+            page++;
+            $("#loader").show();
+
+            $.ajax({
+                url: "?page=" + page,
+                type: "GET",
+                success: function(res) {
+                    if ($.trim(res) === "") {
+                        $("#no-more-data").show();
+                        return;
+                    }
+
+                    $("#item-container").append(res);
+                },
+                complete: function() {
+                    loading = false;
+                    $("#loader").hide();
+                }
+            });
+        }
+
+        // Detect scroll bottom
+        $(window).scroll(function() {
+            if ($(window).scrollTop() + $(window).height() + 200 >= $(document).height()) {
+                loadMoreData();
+            }
+        });
+    </script>
+
 @endpush
 

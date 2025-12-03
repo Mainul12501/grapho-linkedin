@@ -84,10 +84,49 @@ class EmployerViewController extends Controller
 
     public function dashboard()
     {
+        // Load relationships efficiently
+        $jobTasks = JobTask::with(['jobType', 'jobLocationType', 'employeeAppliedJobs'])
+            ->where(['user_id' => ViewHelper::loggedUser()->id, 'status' => 1])
+            ->where('is_softly_deleted', 0)
+            ->get()
+            ->map(function ($job) {
+                $job->type = 'job';
+                $job->display_title = $job->job_title; // For unified access
+                return $job;
+            });
+
+        $posts = Post::where(['user_id' => ViewHelper::loggedUser()->id, 'status' => 1])
+            ->get()
+            ->map(function ($post) {
+                $post->type = 'post';
+                $post->display_title = $post->title; // For unified access
+                return $post;
+            });
+
+// Merge and sort
+        $merged = $jobTasks->concat($posts)->sortByDesc('created_at')->values();
+
+// Manual pagination
+        $perPage = 10;
+        $currentPage = request()->get('page', 1);
+        $items = $merged->slice(($currentPage - 1) * $perPage, $perPage)->values();
+
+        $paginatedData = new \Illuminate\Pagination\LengthAwarePaginator(
+            $items,
+            $merged->count(),
+            $perPage,
+            $currentPage,
+            ['path' => request()->url(), 'query' => request()->query()]
+        );
+
         $data = [
-            'jobTasks' => JobTask::where(['user_id' => ViewHelper::loggedUser()->id, 'status' => 1])->where('is_softly_deleted', 0)->paginate(10),
+//            'jobTasks' => JobTask::where(['user_id' => ViewHelper::loggedUser()->id, 'status' => 1])->where('is_softly_deleted', 0)->paginate(10),
 //            'employees' => User::where(['user_type' => 'employee', 'is_open_for_hire' => 1])->take(3)->get(['id', 'name', 'profile_title', 'address', 'profile_image']),
+            'paginatedData' => $paginatedData
         ];
+        if (request()->ajax()) {
+            return view('frontend.employer.home.activity-content', $data)->render();
+        }
         return ViewHelper::checkViewForApi($data, 'frontend.employer.home.dashboard');
         return view('frontend.employer.home.dashboard', $data);
     }
@@ -468,10 +507,45 @@ class EmployerViewController extends Controller
         $loggedUser = ViewHelper::loggedUser();
         if (isset($request->company_id) && isset($request->view)) {
             $companyDetails = EmployerCompany::find($request->company_id);
+            $jobTasks = JobTask::with(['jobType', 'jobLocationType', 'employeeAppliedJobs'])
+                ->where(['user_id' => $companyDetails?->ownerUserInfo?->id, 'status' => 1])
+                ->where('is_softly_deleted', 0)
+                ->get()
+                ->map(function ($job) {
+                    $job->type = 'job';
+                    $job->display_title = $job->job_title; // For unified access
+                    return $job;
+                });
+
+            $posts = Post::where(['user_id' => $companyDetails?->ownerUserInfo?->id, 'status' => 1])
+                ->get()
+                ->map(function ($post) {
+                    $post->type = 'post';
+                    $post->display_title = $post->title; // For unified access
+                    return $post;
+                });
+
+// Merge and sort
+            $merged = $jobTasks->concat($posts)->sortByDesc('created_at')->values();
+
+// Manual pagination
+            $perPage = 10;
+            $currentPage = request()->get('page', 1);
+            $items = $merged->slice(($currentPage - 1) * $perPage, $perPage)->values();
+
+            $paginatedData = new \Illuminate\Pagination\LengthAwarePaginator(
+                $items,
+                $merged->count(),
+                $perPage,
+                $currentPage,
+                ['path' => request()->url(), 'query' => request()->query()]
+            );
         } else {
             $companyDetails = EmployerCompany::where(['user_id' => ViewHelper::loggedUser()->id])->first();
+            $paginatedData = null;
         }
         $this->data = [
+            'paginatedData' => $paginatedData,
             'employerView' => $employerView,
             'loggedUser' => $loggedUser,
             'companyDetails' => $companyDetails,
