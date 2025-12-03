@@ -22,7 +22,7 @@ class CallInitiated implements ShouldBroadcastNow
      */
     public function __construct(Call $call)
     {
-        $this->call = $call->load('caller', 'receiver');
+        $this->call = $call->load('caller.employerCompany', 'receiver');
     }
 
     /**
@@ -56,7 +56,7 @@ class CallInitiated implements ShouldBroadcastNow
             'call_type' => $this->call->call_type,
             'caller' => [
                 'id' => $this->call->caller->id,
-                'name' => $this->call->caller->name,
+                'name' => $this->call->caller->employerCompany->name ?? $this->call->caller->name,
                 'profile_photo_url' => $this->call->caller->profile_photo_url,
             ],
         ];

@@ -92,7 +92,8 @@
         }
 
         .employee-mobile-drawer .bottom-nav .active a {
-            color: #0d6efd;
+            /*color: #0d6efd;*/
+            color: #FFCB11;
             font-weight: 600;
         }
 
@@ -109,12 +110,14 @@
             transform: translateX(-50%);
             width: 40px;
             height: 3px;
-            background: #0d6efd;
+            /*background: #0d6efd;*/
+            background: #FFCB11;
             border-radius: 0 0 3px 3px;
         }
 
         .employee-mobile-drawer .bottom-nav a:hover {
-            color: #0d6efd;
+            /*color: #0d6efd;*/
+            color: #FFCB11;
         }
 
         .employee-mobile-drawer .bottom-nav a:hover img {
@@ -257,8 +260,10 @@
 
         .employee-mobile-drawer .drawer-item:hover {
             background: #f8f9fa;
-            border-left-color: #0d6efd;
-            color: #0d6efd;
+            /*border-left-color: #0d6efd;*/
+            border-left-color: #FFCB11;
+            /*color: #0d6efd;*/
+            color: #FFCB11;
         }
 
         .employee-mobile-drawer .drawer-item:hover::before {
@@ -368,6 +373,10 @@
         .employee-mobile-drawer .bottom-nav .active::after {
             top: -8px!important;
         }
+
+        /*mobile menu color fix*/
+        .drawer-menu a {font-weight: bolder;}
+        .employee-mobile-drawer .drawer-item i {color: #FFCB11!important;}
     </style>
     @yield('style')
     @stack('style')
@@ -386,8 +395,8 @@
     <div class="drawer-overlay" id="drawerOverlay"></div>
 
     <!-- Side Drawer -->
-    <div class="side-drawer" id="sideDrawer">
-        <div class="drawer-header">
+    <div class="side-drawer" id="sideDrawer" >
+        <div class="drawer-header" style="background: #FFCB11!important;">
             <h5 class="drawer-title">
                 <i class="fas fa-user-circle"></i>
                 Menu
@@ -479,7 +488,7 @@
         <div class="text-center mobileInbox">
             <a href="#" id="openDrawer">
                 <img src="{{ asset('/frontend/employee/images/header images/MobileMessageIcon.png') }}" alt="Options" />
-                <span class="mt-1">Options</span>
+                <span class="mt-1">Menu</span>
             </a>
         </div>
     </div>
