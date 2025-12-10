@@ -16,6 +16,7 @@ class IsSuperAdminMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
+        $loggedInUser = ViewHelper::loggedUser();
         if ($loggedInUser->user_type == 'super_admin'){
             return $next($request);
         } else {

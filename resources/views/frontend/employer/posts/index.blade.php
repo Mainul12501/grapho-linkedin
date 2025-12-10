@@ -8,22 +8,26 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header pt-3">
-                        <h4 class="float-start">{{ auth()->user()->name ?? 'Employer Name' }} Posts</h4>
-                        <p class="float-end">
-                            <a href="{{ route('employer.posts.create') }}" class="btn btn-sm btn-success">Create</a>
-                        </p>
+                        <h4 class="float-start">{{ auth()->user()?->employerCompanies[0]?->name ?? 'Company' }} {{ trans('employer.post') }}s</h4>
+                        @if(!\App\Helpers\ViewHelper::checkIfUserApprovedOrBlocked(auth()->user()))
+                            <p class="float-end">
+                                <a href="{{ route('employer.posts.create') }}" class="btn btn-sm btn-success">{{ trans('common.add') }}</a>
+                            </p>
+                        @endif
+
                     </div>
                     <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table" id="responsive-datatable">
+                        <div class="table-responsive-md">
+{{--                            <table class="table" id="responsive-datatable">--}}
+                            <table class="table" id="restab">
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>Images</th>
-                                        <th>Title</th>
-                                        <th>Content</th>
-                                        <th>Status</th>
-                                        <th>Action</th>
+                                        <th>{{ trans('common.title') }}s</th>
+                                        <th>{{ trans('common.title') }}</th>
+                                        <th>{{ trans('common.title') }}</th>
+                                        <th>{{ trans('common.status') }}</th>
+                                        <th>{{ trans('common.action') }}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -41,7 +45,7 @@
                                             </td>
                                             <td>{{ $post->title ?? '' }}</td>
                                             <td>{!! str()->words($post->description, 30) ?? '' !!}</td>
-                                            <td>{{ $post->status == 1 ? 'Published' : 'Unpublished' }}</td>
+                                            <td>{{ $post->status == 1 ? trans('published') : trans('common.unpublished') }}</td>
                                             <td class="">
                                                 <a href="{{ route('employer.posts.show', $post->id) }}" class="btn btn-sm btn-primary">
                                                     <i class="fa-solid fa-eye text-white"></i>
@@ -78,13 +82,22 @@
 @endpush
 @push('script')
 
-    @include('backend.includes.assets.plugin-files.datatable')
+{{--    @include('backend.includes.assets.plugin-files.datatable')--}}
+<link rel="stylesheet" href="//cdn.datatables.net/2.3.4/css/dataTables.dataTables.min.css">
+<script src="//cdn.datatables.net/2.3.4/js/dataTables.min.js"></script>
+<script>
+    let table = new DataTable('#resTab', {
+        responsive: true
+    });
+</script>
+
+
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         function deletePost(formElement) {
             event.preventDefault();
             Swal.fire({
-                title: "Are you sure?",
+                title: "{{ trans('common.are_you_sure') }}",
                 text: "You won't be able to revert this!",
                 icon: "warning",
                 showCancelButton: true,

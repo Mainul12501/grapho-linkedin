@@ -1,6 +1,6 @@
 @extends('backend.master')
 
-@section('title', '{{ $user->name }} Jobs')
+@section('title', "$user->name Jobs")
 
 @section('body')
     <div class="row py-5">
@@ -35,7 +35,7 @@
                         @foreach($jobs as $job)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
-                                <td>{{ $job->job_title ?? '' }}</td>
+                                <td><a href="javascript:void(0)" class="nav-link text-success view-job" data-job-id="{{ $job->id }}">{{ $job->job_title ?? '' }}</a></td>
                                 <td>
                                     <span>Company : {{ $job?->employerCompany?->name ?? '' }}</span> <br>
                                     <span>Type : {{ $job?->jobType?->name ?? '' }}</span> <br>
@@ -61,22 +61,26 @@
                                 <td>{{ $job->status == 1 ? 'Published' : 'Unpublished' }}</td>
                                 <td class="">
 {{--                                    @can('edit-permission')--}}
-
-{{--                                    <form class="d-inline" action="{{ route('change-user-approve-status', ['user' => $job->id, 'status' => 1]) }}" method="post">--}}
-{{--                                        @csrf--}}
-{{--                                        <button type="submit" class="btn btn-sm btn-warning">--}}
-{{--                                            <i class="fa-solid fa-check"></i>--}}
-{{--                                        </button>--}}
-{{--                                    </form>--}}
+                                    @if($job->is_softly_deleted == 1)
+                                        <form class="d-inline" action="{{ route('job-soft-delete-status', ['jobTask' => $job->id, 'status' => 0]) }}" method="post">
+                                            @csrf
+                                            <button type="submit" class="btn btn-sm btn-success" title="Unblock the Job">
+                                                <i class="fa-solid fa-check"></i>
+                                            </button>
+                                        </form>
+                                    @endif
 
 {{--                                    @endcan--}}
 {{--                                    @can('delete-permission')--}}
-{{--                                        <form class="d-inline" action="{{ route('change-user-approve-status', ['user' => $job->id, 'status' => 2]) }}" method="post" >--}}
-{{--                                            @csrf--}}
-{{--                                            <button type="submit" class="btn btn-sm btn-danger data-delete-form">--}}
-{{--                                                <i class="fa-solid fa-trash"></i>--}}
-{{--                                            </button>--}}
-{{--                                        </form>--}}
+                                    @if($job->is_softly_deleted == 0)
+                                        <form class="d-inline" action="{{ route('job-soft-delete-status', ['jobTask' => $job->id, 'status' => 1]) }}" method="post" >
+                                            @csrf
+                                            <button type="submit" title="Soft Delete Job" class="btn btn-sm btn-danger data-delete-form">
+                                                <i class="fa-solid fa-trash"></i>
+                                            </button>
+                                        </form>
+                                    @endif
+
 {{--                                    @endcan--}}
                                 </td>
                             </tr>
@@ -87,12 +91,35 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="showJob">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">View Job</h5>
+                    <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">x</button>
+                </div>
+                <div class="modal-body" id="appendJobHere">
+                    <p>Modal body text goes here.</p>
+                </div>
+
+            </div>
+        </div>
+    </div>
 @endsection
 
 @push('style')
     <!-- DataTables -->
     <link href="{{ asset('/') }}backend/assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
     <link href="{{ asset('/') }}backend/assets/libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <style>
+        .p-t-5 .nav-link {
+            color: green!important;
+            font-size: 18px!important;
+            padding: 0px 3px 5px 0px !important;
+        }
+        .job-type .badge {background-color: gray}
+    </style>
 @endpush
 
 @push('script')
@@ -119,4 +146,18 @@
 {{--        // $('#datatable-buttons_wrapper').DataTable();--}}
 {{--    </script>--}}
     @include('backend.includes.assets.plugin-files.datatable')
+
+<script>
+    $(document).on('click', '.view-job', function () {
+        var jobId = $(this).attr('data-job-id');
+        $.ajax({
+            url: "/get-job-details/"+jobId+"?render=1",
+            method: "GET",
+            success: function (response) {
+                $('#appendJobHere').empty().append(response);
+                $('#showJob').modal('show');
+            }
+        })
+    })
+</script>
 @endpush

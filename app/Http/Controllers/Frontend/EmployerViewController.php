@@ -13,6 +13,7 @@ use App\Models\Backend\JobLocationType;
 use App\Models\Backend\JobTask;
 use App\Models\Backend\JobType;
 use App\Models\Backend\Post;
+use App\Models\Backend\SiteSetting;
 use App\Models\Backend\SkillsCategory;
 use App\Models\Backend\SubscriptionPlan;
 use App\Models\Backend\UniversityName;
@@ -21,6 +22,7 @@ use App\Models\Backend\WebNotification;
 use App\Models\User;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Illuminate\View\View;
@@ -54,9 +56,15 @@ class EmployerViewController extends Controller
             ->take(10)
             ->get();
 
-
+        $isApiRequest = false;
+        if (str()->contains(url()->current(), '/api/'))
+        {
+            $isApiRequest = true;
+        }
         foreach ($posts as $post) {
             $post['follow_history_status'] = ViewHelper::checkFollowHistory($post->user_id, ViewHelper::loggedUser()->id) ?? false;
+            if ($isApiRequest)
+            $post['image_array'] = json_decode($post->images);
         }
 //        return response()->json($posts);
 //        return $posts;
@@ -68,6 +76,7 @@ class EmployerViewController extends Controller
         }
         $data = [
             'advertisements' => Advertisement::where(['status' => 1])->latest()->inRandomOrder()->paginate(10),
+            'employees' => User::where(['user_type' => 'employee', 'is_open_for_hire' => 1])->take(5)->get(['id', 'name', 'profile_title', 'address', 'profile_image']),
         ];
         return ViewHelper::checkViewForApi($data, 'frontend.employer.home.home');
         return view('frontend.employer.home.home', $data);
@@ -75,30 +84,78 @@ class EmployerViewController extends Controller
 
     public function dashboard()
     {
+        // Load relationships efficiently
+        $jobTasks = JobTask::with(['jobType', 'jobLocationType', 'employeeAppliedJobs'])
+            ->where(['user_id' => ViewHelper::loggedUser()->id, 'status' => 1])
+            ->where('is_softly_deleted', 0)
+            ->get()
+            ->map(function ($job) {
+                $job->type = 'job';
+                $job->display_title = $job->job_title; // For unified access
+                return $job;
+            });
+
+        $posts = Post::where(['user_id' => ViewHelper::loggedUser()->id, 'status' => 1])
+            ->get()
+            ->map(function ($post) {
+                $post->type = 'post';
+                $post->display_title = $post->title; // For unified access
+                return $post;
+            });
+
+// Merge and sort
+        $merged = $jobTasks->concat($posts)->sortByDesc('created_at')->values();
+
+// Manual pagination
+        $perPage = 10;
+        $currentPage = request()->get('page', 1);
+        $items = $merged->slice(($currentPage - 1) * $perPage, $perPage)->values();
+
+        $paginatedData = new \Illuminate\Pagination\LengthAwarePaginator(
+            $items,
+            $merged->count(),
+            $perPage,
+            $currentPage,
+            ['path' => request()->url(), 'query' => request()->query()]
+        );
+
         $data = [
-            'jobTasks' => JobTask::where(['user_id' => ViewHelper::loggedUser()->id, 'status' => 1])->paginate(10),
-            'employees' => User::where(['user_type' => 'employee', 'is_open_for_hire' => 1])->take(3)->get(['id', 'name', 'profile_title', 'address', 'profile_image']),
+//            'jobTasks' => JobTask::where(['user_id' => ViewHelper::loggedUser()->id, 'status' => 1])->where('is_softly_deleted', 0)->paginate(10),
+//            'employees' => User::where(['user_type' => 'employee', 'is_open_for_hire' => 1])->take(3)->get(['id', 'name', 'profile_title', 'address', 'profile_image']),
+            'paginatedData' => $paginatedData
         ];
+        if (request()->ajax()) {
+            return view('frontend.employer.home.activity-content', $data)->render();
+        }
         return ViewHelper::checkViewForApi($data, 'frontend.employer.home.dashboard');
         return view('frontend.employer.home.dashboard', $data);
     }
 
     public function myJobs(Request $request)
     {
+        if (ViewHelper::checkIfUserApprovedOrBlocked(auth()->user()))
+        {
+            return ViewHelper::returnRedirectWithMessage(route('employer.dashboard'),  'error','Your account is blocked or has not approved yet. Please contact with Likewise.');
+        }
+        $loggedUser = ViewHelper::loggedUser();
+        if ($loggedUser->user_type == 'employer')
+            $jobUserId = $loggedUser->id;
+        elseif ($loggedUser->user_type == 'sub_employer')
+            $jobUserId = $loggedUser->user_id;
         if ($request->has('job_status')) {
             if ($request->job_status == 'closed') {
-                $jobs = JobTask::where(['user_id' => ViewHelper::loggedUser()->id, 'status' => 0])->paginate(10);
+                $jobs = JobTask::where(['user_id' => $jobUserId, 'status' => 0])->latest()->where('is_softly_deleted', 0)->paginate(10);
             } else {
-                $jobs = JobTask::where(['user_id' => ViewHelper::loggedUser()->id, 'status' => 1])->paginate(10);
+                $jobs = JobTask::where(['user_id' => $jobUserId, 'status' => 1])->latest()->where('is_softly_deleted', 0)->paginate(10);
             }
         } elseif (isset($request->search_text)) {
             $jobs = JobTask::where([
-                'user_id' => ViewHelper::loggedUser()->id,
+                'user_id' => $jobUserId,
                 'status' => 1,
 
-            ])->where('job_title', 'LIKE', "%{$request->search_text}%")->paginate(10);
+            ])->where('job_title', 'LIKE', "%{$request->search_text}%")->latest()->where('is_softly_deleted', 0)->paginate(10);
         } else {
-            $jobs = JobTask::where(['user_id' => ViewHelper::loggedUser()->id, 'status' => 1])->paginate(10);
+            $jobs = JobTask::where(['user_id' => $jobUserId, 'status' => 1])->latest()->where('is_softly_deleted', 0)->paginate(10);
         }
         if (ViewHelper::checkIfRequestFromApi()) {
             foreach ($jobs as $job) {
@@ -110,7 +167,9 @@ class EmployerViewController extends Controller
             'jobLocations' => JobLocationType::where(['status' => 1])->get(['id', 'name']),
             'universityNames' => UniversityName::where(['status' => 1])->get(['id', 'name']),
             'fieldOfStudies' => FieldOfStudy::where(['status' => 1])->get(['id', 'field_name']),
-            'skillCategories' => SkillsCategory::where(['status' => 1])->get(['id', 'category_name']),
+            'skillCategories' => SkillsCategory::where(['status' => 1])->with(['skills' => function ($skills) {
+                return $skills->select('id', 'skills_category_id', 'skill_name', 'slug')->where('status', 1);
+            }])->get(['id', 'category_name']),
             'publishedJobs' => $jobs,
             'industries' => Industry::where(['status' => 1])->get(['id', 'name', 'slug']),
         ];
@@ -120,7 +179,11 @@ class EmployerViewController extends Controller
 
     public function myJobWiseApplicants()
     {
-        $jobTasks = JobTask::where(['user_id' => ViewHelper::loggedUser()->id, 'status' => 1])->get(['id', 'job_title']);
+        if (ViewHelper::checkIfUserApprovedOrBlocked(auth()->user()))
+        {
+            return ViewHelper::returnRedirectWithMessage(route('employer.dashboard'),  'error','Your account is blocked or has not approved yet. Please contact with Likewise.');
+        }
+        $jobTasks = JobTask::where(['user_id' => ViewHelper::loggedUser()->id, 'status' => 1])->where('is_softly_deleted', 0)->get(['id', 'job_title']);
         if (ViewHelper::checkIfRequestFromApi()) {
             foreach ($jobTasks as $jobTask) {
                 $jobTask->total_applicants = $jobTask->employeeAppliedJobs()->count() ?? 0;
@@ -140,10 +203,10 @@ class EmployerViewController extends Controller
 //            return redirect(route('employer.my-job-applicants', ['jobTask' => $jobTask->id, 'status' => 'pending']));
 //        }
         $applicants = $jobTask->employeeAppliedJobs()->with(['user'])->get();
-        $pendingApplicants = $applicants->where('status', 'pending');
-        $approvedApplicants = $applicants->where('status', 'approved');
-        $rejectedApplicants = $applicants->where('status', 'rejected');
-        $shortListedApplicants = $applicants->where('status', 'shortlisted');
+        $pendingApplicants = $applicants->where('status', 'pending')->values();
+        $approvedApplicants = $applicants->where('status', 'approved')->values();
+        $rejectedApplicants = $applicants->where('status', 'rejected')->values();
+        $shortListedApplicants = $applicants->where('status', 'shortlisted')->values();
         $this->data = [
             'jobTask' => $jobTask,
 //            'applicants' => $jobTask->employeeAppliedJobs()->where(['status' => 'pending'])->with(['user'])->get(),
@@ -158,14 +221,28 @@ class EmployerViewController extends Controller
 
     public function headHunt(Request $request)
     {
+        if (ViewHelper::checkIfUserApprovedOrBlocked(auth()->user()))
+        {
+            return ViewHelper::returnRedirectWithMessage(route('employer.dashboard'),  'error','Your account is blocked or has not approved yet. Please contact with Likewise.');
+        }
         $employees = User::query()->with([
-            'universityName',
+            'universityName' => function ($universityName) {
+                $universityName->select('id', 'name', 'slug');
+            },
             'industry',
             'fieldOfStudy',
-            'jobTypes',
-            'jobLocationTypes',
-            'employeeSkills',
-            'employeeWorkExperiences',
+            'jobTypes' => function ($jobType) {
+                $jobType->select('id', 'name', 'slug');
+            },
+            'jobLocationTypes' => function ($jobLocationTypes) {
+                $jobLocationTypes->select('id', 'name', 'slug');
+            },
+            'employeeSkills' => function ($skills) {
+                $skills->select('id', 'skills_category_id', 'skill_name', 'slug');
+            },
+            'employeeWorkExperiences' => function ($employeeWorkExperiences) {
+                $employeeWorkExperiences->select('id', 'user_id', 'title', 'duration');
+            },
             'employeeEducations'
         ]);
 
@@ -318,226 +395,56 @@ class EmployerViewController extends Controller
             'district'
         ])->paginate(21);
 
-        $data = [
-            'employees' => $employees,
-            'jobTypes' => JobType::where(['status' => 1])->get(['id', 'name', 'slug']),
-            'universityNames' => UniversityName::where(['status' => 1])->get(['id', 'name', 'slug']),
-            'industries' => Industry::where(['status' => 1])->get(['id', 'name', 'slug']),
-            'jobLocations' => JobLocationType::where(['status' => 1])->get(['id', 'name', 'slug']),
-            'fieldOfStudies' => FieldOfStudy::where(['status' => 1])->get(['id', 'field_name', 'slug']),
-            'skillCategories' => SkillsCategory::where(['status' => 1])->with('skills')->get(['id', 'category_name', 'slug']),
-            // Pass current filters back to the view for maintaining state
-            'currentFilters' => [
-                'filters' => $filters,
-                'cgpa' => $request->input('cgpa'),
-                'experience' => $request->input('experience'),
-                'search_text' => $request->input('search_text'),
-            ]
-        ];
+        if (str()->contains(url()->current(), '/api/'))
+        {
+            $data = [
+                'employees' => $employees,
+
+                // Pass current filters back to the view for maintaining state
+                'currentFilters' => [
+                    'filters' => $filters,
+                    'cgpa' => $request->input('cgpa'),
+                    'experience' => $request->input('experience'),
+                    'search_text' => $request->input('search_text'),
+                ]
+            ];
+        } else {
+            $data = [
+                'employees' => $employees,
+                'jobTypes' => JobType::where(['status' => 1])->get(['id', 'name', 'slug']),
+                'universityNames' => UniversityName::where(['status' => 1])->get(['id', 'name', 'slug']),
+                'industries' => Industry::where(['status' => 1])->get(['id', 'name', 'slug']),
+                'jobLocations' => JobLocationType::where(['status' => 1])->get(['id', 'name', 'slug']),
+                'fieldOfStudies' => FieldOfStudy::where(['status' => 1])->get(['id', 'field_name', 'slug']),
+                'skillCategories' => SkillsCategory::where(['status' => 1])->with('skills')->get(['id', 'category_name', 'slug']),
+                // Pass current filters back to the view for maintaining state
+                'currentFilters' => [
+                    'filters' => $filters,
+                    'cgpa' => $request->input('cgpa'),
+                    'experience' => $request->input('experience'),
+                    'search_text' => $request->input('search_text'),
+                ]
+            ];
+        }
+
+
 
         return ViewHelper::checkViewForApi($data, 'frontend.employer.jobs.head-hunt');
         return \view('frontend.employer.jobs.head-hunt');
     }
 
-    public function headHunt_backup(Request $request)
+    public function getHeadHuntFilterOptions()
     {
-        $employees = User::query()->with([
-            'universityName',
-            'industry',
-            'fieldOfStudy',
-            'jobTypes',
-            'jobLocationTypes'
-        ]);
-
-        // Helper function to ensure array input
-        $ensureArray = function ($value) {
-            if (empty($value)) return [];
-            // In the new Blade, it seems values are sent as a single string of comma-separated values.
-            // Let's handle that case. If the value is a string, split it. Otherwise, assume it's an array.
-            if (is_string($value)) {
-                return explode(',', $value);
-            }
-            return is_array($value) ? $value : [$value];
-        };
-
-        // Get all filters from the request
-        $filters = $request->input('filters', []);
-
-        // Workplace Type (Job Type) filter
-        if (isset($filters['job_type']) && !empty($filters['job_type'])) {
-            $jobTypes = $ensureArray($filters['job_type']);
-            $employees = $employees->whereHas('jobTypes', function ($query) use ($jobTypes) {
-                $query->whereIn('slug', $jobTypes);
-            });
-        }
-
-        // University filter
-        if (isset($filters['university_name']) && !empty($filters['university_name'])) {
-            $universities = $ensureArray($filters['university_name']);
-            $employees = $employees->whereHas('universityName', function ($q) use ($universities) {
-                $q->whereIn('slug', $universities);
-            });
-        }
-
-        // District filter
-        if (isset($filters['location']) && !empty($filters['location'])) {
-            $districts = $ensureArray($filters['location']);
-            $employees = $employees->whereIn('district', $districts);
-        }
-
-        $employees = $employees->where(['user_type' => 'employee', 'is_open_for_hire' => 1])->select(['id', 'name', 'profile_title', 'address', 'profile_image'])->paginate(21);
-
-        $data = [
-            'employees' => $employees,
+        return response()->json([
             'jobTypes' => JobType::where(['status' => 1])->get(['id', 'name', 'slug']),
             'universityNames' => UniversityName::where(['status' => 1])->get(['id', 'name', 'slug']),
             'industries' => Industry::where(['status' => 1])->get(['id', 'name', 'slug']),
             'jobLocations' => JobLocationType::where(['status' => 1])->get(['id', 'name', 'slug']),
             'fieldOfStudies' => FieldOfStudy::where(['status' => 1])->get(['id', 'field_name', 'slug']),
             'skillCategories' => SkillsCategory::where(['status' => 1])->with('skills')->get(['id', 'category_name', 'slug']),
-        ];
-
-        return ViewHelper::checkViewForApi($data, 'frontend.employer.jobs.head-hunt');
-        return \view('frontend.employer.jobs.head-hunt');
-    }
-
-    public function headHuntBackup(Request $request)
-    {
-        $employees = User::query()->with([
-            'universityName',
-            'industry',
-            'fieldOfStudy',
-            'jobTypes',
-            'jobLocationTypes'
         ]);
-
-        // Helper function to ensure array input
-        $ensureArray = function ($value) {
-            if (empty($value)) return [];
-            return is_array($value) ? $value : [$value];
-        };
-
-// Search text filter
-        if ($request->filled('search_text')) {
-            $searchText = $request->input('search_text');
-            $employees = $employees->where(function ($query) use ($searchText) {
-                $query->where('name', 'like', "%$searchText%")
-                    ->orWhereHas('universityName', function ($q) use ($searchText) {
-                        $q->where('name', 'like', "%$searchText%");
-                    })
-                    ->orWhereHas('industry', function ($q) use ($searchText) {
-                        $q->where('name', 'like', "%$searchText%");
-                    })
-                    ->orWhereHas('fieldOfStudy', function ($q) use ($searchText) {
-                        $q->where('field_name', 'like', "%$searchText%");
-                    })
-                    ->orWhereHas('jobTypes', function ($q) use ($searchText) {
-                        $q->where('name', 'like', "%$searchText%");
-                    })
-                    ->orWhereHas('jobLocationTypes', function ($q) use ($searchText) {
-                        $q->where('name', 'like', "%$searchText%");
-                    });
-            });
-        }
-
-        if ($request->filled('gender')) {
-            $employees = $employees->where('gender', $request->gender);
-        }
-        if ($request->filled('district')) {
-            $employees = $employees->where('district', $request->district);
-        }
-
-        // CGPA filter (minimum value)
-        if ($request->filled('cgpa')) {
-            $minCgpa = (float)$request->input('cgpa');
-            $employees = $employees->whereHas('employeeEducations', function ($query) use ($minCgpa) {
-                $query->where('cgpa', '>=', $minCgpa)
-                    ->orderBy('cgpa', 'desc'); // Get the highest CGPA for each user
-            });
-        }
-
-// Experience filter (minimum years)
-        if ($request->filled('experience')) {
-            $minExperience = (float)$request->input('experience');
-            $employees = $employees->whereHas('employeeWorkExperiences', function ($query) use ($minExperience) {
-                $query->select('user_id')
-                    ->groupBy('user_id')
-                    ->havingRaw('SUM(duration) >= ?', [$minExperience]);
-            });
-        }
-
-// Job Type filter
-        if ($request->filled('job_type')) {
-            $jobTypes = $ensureArray($request->input('job_type'));
-            $employees = $employees->where(function ($query) use ($jobTypes) {
-                $query->whereHas('jobTypes', function ($q) use ($jobTypes) {
-                    $q->whereIn('slug', $jobTypes);
-                })->orWhereDoesntHave('jobTypes');
-            });
-        }
-
-// Job Location filter
-        if ($request->filled('job_location')) {
-            $jobLocations = $ensureArray($request->input('job_location'));
-            $employees = $employees->where(function ($query) use ($jobLocations) {
-                $query->whereHas('jobLocationTypes', function ($q) use ($jobLocations) {
-                    $q->whereIn('slug', $jobLocations);
-                })->orWhereDoesntHave('jobLocationTypes');
-            });
-        }
-
-// University filter
-        if ($request->filled('university_name')) {
-            $universities = $ensureArray($request->input('university_name'));
-            $employees = $employees->where(function ($query) use ($universities) {
-                $query->whereHas('universityName', function ($q) use ($universities) {
-                    $q->whereIn('slug', $universities);
-                })->orWhereDoesntHave('universityName');
-            });
-        }
-
-// Industry filter
-        if ($request->filled('industry')) {
-            $industries = $ensureArray($request->input('industry'));
-            $employees = $employees->where(function ($query) use ($industries) {
-                $query->whereHas('industry', function ($q) use ($industries) {
-                    $q->whereIn('slug', $industries);
-                })->orWhereDoesntHave('industry');
-            });
-        }
-
-// Field of Study filter
-        if ($request->filled('field_of_study')) {
-            $fields = $ensureArray($request->input('field_of_study'));
-            $employees = $employees->where(function ($query) use ($fields) {
-                $query->whereHas('fieldOfStudy', function ($q) use ($fields) {
-                    $q->whereIn('slug', $fields);
-                })->orWhereDoesntHave('fieldOfStudy');
-            });
-        }
-
-// Skills filter
-        if ($request->filled('skills')) {
-            $skills = $ensureArray($request->input('skills'));
-            $employees = $employees->whereHas('skills', function ($query) use ($skills) {
-                $query->whereIn('slug', $skills);
-            });
-        }
-
-        $employees = $employees->where(['user_type' => 'employee', 'is_open_for_hire' => 1])->select(['id', 'name', 'profile_title', 'address', 'profile_image'])->paginate(21);
-
-        $data = [
-            'employees' => $employees,
-            'industries' => Industry::where(['status' => 1])->get(['id', 'name', 'slug']),
-            'jobTypes' => JobType::where(['status' => 1])->get(['id', 'name', 'slug']),
-            'jobLocations' => JobLocationType::where(['status' => 1])->get(['id', 'name', 'slug']),
-            'universityNames' => UniversityName::where(['status' => 1])->get(['id', 'name', 'slug']),
-            'fieldOfStudies' => FieldOfStudy::where(['status' => 1])->get(['id', 'field_name', 'slug']),
-            'skillCategories' => SkillsCategory::where(['status' => 1])->with('skills')->get(['id', 'category_name', 'slug']),
-        ];
-        return ViewHelper::checkViewForApi($data, 'frontend.employer.jobs.head-hunt');
-        return view('frontend.employer.jobs.head-hunt');
     }
+
 
     public function employeeProfile($userId)
     {
@@ -600,10 +507,45 @@ class EmployerViewController extends Controller
         $loggedUser = ViewHelper::loggedUser();
         if (isset($request->company_id) && isset($request->view)) {
             $companyDetails = EmployerCompany::find($request->company_id);
+            $jobTasks = JobTask::with(['jobType', 'jobLocationType', 'employeeAppliedJobs'])
+                ->where(['user_id' => $companyDetails?->ownerUserInfo?->id, 'status' => 1])
+                ->where('is_softly_deleted', 0)
+                ->get()
+                ->map(function ($job) {
+                    $job->type = 'job';
+                    $job->display_title = $job->job_title; // For unified access
+                    return $job;
+                });
+
+            $posts = Post::where(['user_id' => $companyDetails?->ownerUserInfo?->id, 'status' => 1])
+                ->get()
+                ->map(function ($post) {
+                    $post->type = 'post';
+                    $post->display_title = $post->title; // For unified access
+                    return $post;
+                });
+
+// Merge and sort
+            $merged = $jobTasks->concat($posts)->sortByDesc('created_at')->values();
+
+// Manual pagination
+            $perPage = 10;
+            $currentPage = request()->get('page', 1);
+            $items = $merged->slice(($currentPage - 1) * $perPage, $perPage)->values();
+
+            $paginatedData = new \Illuminate\Pagination\LengthAwarePaginator(
+                $items,
+                $merged->count(),
+                $perPage,
+                $currentPage,
+                ['path' => request()->url(), 'query' => request()->query()]
+            );
         } else {
             $companyDetails = EmployerCompany::where(['user_id' => ViewHelper::loggedUser()->id])->first();
+            $paginatedData = null;
         }
         $this->data = [
+            'paginatedData' => $paginatedData,
             'employerView' => $employerView,
             'loggedUser' => $loggedUser,
             'companyDetails' => $companyDetails,
@@ -650,6 +592,40 @@ class EmployerViewController extends Controller
 //            }
             $appliedJob->status = $status;
             $appliedJob->save();
+
+
+            $webNotification = new WebNotification();
+            $webNotification->viewer_id = $loggedUser->id;
+            $webNotification->viewed_user_id = $user->id;
+            $webNotification->notification_type = 'accept_application';
+            $webNotification->msg = "$loggedUser->name has updated your job: $jobTask->job_title status to $status.";
+            $webNotification->save();
+
+            if (isset($user->email))
+            {
+                $msg = '';
+                if ($status == 'shortlisted')
+                    $msg = "Dear $user->name, Congratulations! We're pleased to inform you that your application for $jobTask->job_title has been shortlisted.";
+                elseif ($status == 'pending')
+                    $msg = "Dear $user->name, Thank you for applying to $jobTask->job_title at LikewiseBD. We have successfully received your application and it is currently under review.";
+                elseif ($status == 'approved')
+                    $msg = "Dear $user->name, We are delighted to inform you that you have been selected for job $jobTask->job_title at LikewiseBD!";
+                elseif ($status == 'rejected')
+                    $msg = "Dear $user->name, Thank you for your interest in the $jobTask->job_title position at LikewiseBD and for taking the time to apply.
+After careful consideration, we regret to inform you that we have decided to move forward with other candidates whose qualifications more closely match our current needs.";
+                $data = [
+                    'user'   => $user,
+                    'request'   => $request,
+                    'msg'   => $msg,
+                    'status'   => $status,
+                    'siteSetting'   => SiteSetting::first(),
+                ];
+                Mail::send('frontend.employer.jobs.job-status-change-mail', $data, function ($message) use ($data, $user, $status){
+                    $message->to($user->email, 'Like Wise Bd')->subject("Job Status Changed to $status");
+                });
+            }
+
+
             return ViewHelper::returnSuccessMessage('Employee job application status updated successfully');
         } catch (\Exception $e) {
             return ViewHelper::returEexceptionError($e->getMessage());
@@ -739,8 +715,8 @@ class EmployerViewController extends Controller
         $user = ViewHelper::loggedUser();
         $validator = Validator::make($request->all(), [
             'name' => 'required',
-            'email' => ['email', 'unique:users'],
-            'mobile' => ['required', 'unique:users'],
+            'email' => ['email', 'unique:users,email'],
+            'mobile' => ['required', 'regex:/^01[3-9]\d{8}$/', 'unique:users,mobile'],
             'password' => 'required|min:6',
         ]);
         if ($validator->fails()) {
@@ -761,7 +737,8 @@ class EmployerViewController extends Controller
             $subUser->organization_name = $user->organization_name;
             $subUser->employer_agent_active_status = 'active';
             $subUser->save();
-            return ViewHelper::returnSuccessMessage('Sub user created successfully');
+            $subUser->roles()->sync(5);
+            return ViewHelper::returnSuccessMessage('Sub Employer created successfully');
         } catch (\Exception $e) {
             return ViewHelper::returEexceptionError($e->getMessage());
         }
@@ -852,5 +829,29 @@ class EmployerViewController extends Controller
         ];
         return ViewHelper::checkViewForApi($this->data, 'frontend.employer.config.my-subscriptions');
         return \view('frontend.employer.config.my-subscriptions');
+    }
+
+    public function myNotifications()
+    {
+        $loggedUser = ViewHelper::loggedUser();
+        $webNotifications = WebNotification::where(['status' => 1])->where('viewed_user_id', $loggedUser->id)->paginate(20);
+        $newNotifications = $webNotifications->where('is_seen', 0)->count();
+        $data = [
+            'notifications' => $webNotifications,
+            'newNotifications' => $newNotifications,
+
+        ];
+        return ViewHelper::checkViewForApi($data, 'frontend.employee.base-functionalities.my-notifications');
+        return \view('frontend.employee.base-functionalities.my-notifications');
+    }
+
+    public function employeeSuggestions()
+    {
+        $employees = User::where(['user_type' => 'employee'])->latest()->select(['id', 'name', 'profile_title', 'address', 'profile_image'])->paginate(20);
+        $data = [
+            'employees' => $employees,
+        ];
+        return ViewHelper::checkViewForApi($data, 'frontend.employer.home.suggested-employees');
+        return \view('frontend.employer.home.suggested-employees');
     }
 }

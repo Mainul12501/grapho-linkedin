@@ -53,37 +53,38 @@
 {{--        <img src="{{ asset(isset($siteSetting->logo) ? $siteSetting->logo : '/frontend/employee/images/authentication images/Compnay logo.png') }}" alt="site logo" class="w-25" style="width: 115px; height: 28px">--}}
 {{--    </a>--}}
 
-    <h1>Log in to your account</h1>
-    <p>Welcome back! Please enter your details</p>
+
+    <h1>{{ trans('auth.login_to_your_account') }}</h1>
+    <p>{{ trans('auth.welcome_back') }}</p>
 
 
     <div class="p-2 email-div">
         <a href="{{ route('auth.socialite.redirect', ['provider' => 'google', 'user' => 'Employee']) }}" class="signupBtn mb-3">
             <img src="{{ asset('/') }}frontend/employee/images/authentication images/googleIcon.png" alt="" class="me-2">
-            <span>Log in with Google</span>
+            <span>{{ trans('auth.log_in_with_google') }}</span>
         </a>
 
         <a href="javascript:void(0)" class="signupBtn mobileBtn">
             <img src="{{ asset('/') }}frontend/employee/images/authentication images/smartphone 1.png" alt="" class="me-2">
-            <span>Use mobile number</span>
+            <span>{{ trans('auth.use_mobile_number') }}</span>
         </a>
 
         <div class="signUpOr text-center pt-2">
-            <span>OR</span>
+            <span>{{ trans('auth.or') }}</span>
         </div>
 
         <form action="{{ route('auth.custom-login') }}" method="post">
             @csrf
             <input type="hidden" name="login_method" value="email">
             <div id="signInWithEmail">
-                <label for="signUpMail">Email address</label>
+                <label for="signUpMail">{{ trans('auth.email_address') }}</label>
                 <div>
-                    <input type="text" name="email" id="signUpMail" placeholder="Type here" class="w-100">
+                    <input type="text" name="email" id="signUpMail" placeholder="{{ trans('auth.type_here') }}" class="w-100">
                 </div>
 
-                <label for="supPassword">Password</label>
+                <label for="supPassword">{{ trans('auth.password') }}</label>
                 <div class="input-wrapper">
-                    <input type="password" name="password" id="supPassword" placeholder="Type here" class="w-100">
+                    <input type="password" name="password" id="supPassword" placeholder="{{ trans('auth.type_here') }}" class="w-100">
                     <span class="toggle-icon">
                         <img id="show" class="" src="{{ asset('/') }}frontend/employee/images/authentication images/eye.png" alt="">
                         <span id="hide" class="d-none">👁</span>
@@ -95,15 +96,15 @@
                     <div class="row w-100">
                         <div class="col-6 d-flex align-items-center">
                             <input type="checkbox" name="remember_me" class="me-2">
-                            <span>Remember me</span>
+                            <span>{{ trans('auth.remember_me') }}</span>
                         </div>
                         <div class="col-6 d-flex align-items-center justify-content-end ">
-                            <a href="{{ route('auth.forgot-password-page') }}" class="text-decoration-none"><span>Forgot Password?</span></a>
+                            <a href="{{ route('auth.forgot-password-page') }}" class="text-decoration-none"><span>{{ trans('auth.forgot_password') }}</span></a>
                         </div>
                     </div>
                 </div>
 
-                <a href=""> <button type="submit">Sign In</button></a>
+                <a href=""> <button type="submit">{{ trans('auth.sign_in') }}</button></a>
             </div>
         </form>
     </div>
@@ -111,7 +112,7 @@
     <div class="p-2 mobile-div d-none">
         <a href="javascript:void(0)" class="signupArrow text-decoration-none mb-4">
             <img src="{{ asset('/') }}frontend/employee/images/authentication images/leftArrow.png" alt="" class="me-2">
-            <span>Log in with mobile number</span>
+            <span>{{ trans('auth.log_in_with_mobile_number') }}</span>
         </a>
 
         <form action="{{ route('auth.custom-login') }}" method="post">
@@ -120,8 +121,8 @@
             <div class="beforeContinue">
                 <div class="loginbyMobile text-center mb-4 mt-3">
                     <img src="{{ asset('/') }}frontend/employee/images/authentication images/loginwithmobile.png" alt="">
-                    <h3>Enter your mobile number</h3>
-                    <p>We will send you a verification code in this number.</p>
+                    <h3>{{ trans('auth.enter_your_mobile_number') }}</h3>
+                    <p>{{ trans('auth.we_will_send_verification_code') }}</p>
                 </div>
 
                 <div class="p-2">
@@ -138,7 +139,7 @@
                         <input type="tel" id="phoneInput" name="mobile" value="" class="phone-input">
                     </div>
 
-                    <button type="button" id="continueBtn">Continue</button>
+                    <button type="button" id="continueBtn">{{ trans('auth.continue') }}</button>
                 </div>
             </div>
 
@@ -146,9 +147,9 @@
             <div class="afterContinue">
                 <div class="loginbyMobile text-center mb-4 mt-3">
                     <img src="{{ asset('/') }}frontend/employee/images/authentication images/loginwithmobile.png" alt="">
-                    <h3>Enter verification code</h3>
-                    <p class="mb-0">OTP has been sent to <span id="otpMobile">+8801653523779</span></p>
-                    <a href="" class="" id="changeNumber">Change number</a>
+                    <h3>{{ trans('auth.enter_verification_code') }}</h3>
+                    <p class="mb-0">{{ trans('auth.otp_has_been_sent') }} <span id="otpMobile">+8801653523779</span></p>
+                    <a href="" class="" id="changeNumber">{{ trans('auth.change_number') }}</a>
                 </div>
 
                 <div class="otp-container">
@@ -160,14 +161,14 @@
                 </div>
 
                 <div class="p-2">
-                    <button type="submit">Log in</button>
+                    <button type="submit">{{ trans('index.login') }}</button>
                 </div>
             </div>
         </form>
     </div>
 
     <div class="mt-4">
-        <span class="">Don't have an account? <a href="{{ route('auth.set-registration-role') }}" class="fw-bold text-dark text-decoration-none">Sign Up</a></span>
+        <span class="">{{ trans('auth.dont_have_account') }} <a href="{{ route('auth.set-registration-role') }}" class="fw-bold text-dark text-decoration-none">{{ trans('auth.sign_up') }}</a></span>
     </div>
 
 
@@ -252,6 +253,8 @@
     })
 </script>
 {!! $siteSetting->meta_footer ?? '' !!}
+<script src="https://js.pusher.com/7.2.0/pusher.min.js"></script>
+@include('frontend.zegocloud.incoming-call-popup')
 </body>
 
 </html>

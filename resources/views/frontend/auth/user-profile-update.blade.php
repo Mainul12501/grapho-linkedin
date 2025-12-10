@@ -22,7 +22,7 @@
                     <div class="modal-header custom-modal-header">
                         <div class="title-wrap">
                             <span class="step-badge" id="stepBadge">Step 1 of 4</span>
-                            <h2 id="wizTitle" style="margin:0;font-size:18px">Edit Contact Information</h2>
+                            <h2 id="wizTitle" style="margin:0;font-size:18px">{{ trans('employee.edit_contact_information') }}</h2>
                         </div>
                         <button class="btn-ghost" id="closeX" style="display: none" aria-label="Close">✕</button>
                         <button class="btn-ghost btn btn-success" id="" type="button" style="cursor: pointer" aria-label="Close" onclick="document.getElementById('logoutForm').submit()">Logout</button>
@@ -38,9 +38,9 @@
                             <span class="error" id="errorMsg" style="display: none"></span>
                         </div>
                         <div class="right-actions">
-                            <button class="btn" id="prevBtn">Previous</button>
-                            <button class="btn btn-secondary" id="skipBtn">Skip</button>
-                            <button class="btn btn-primary" id="nextBtn">Next</button>
+                            <button class="btn" id="prevBtn">{{ trans('common.previous') }}</button>
+                            <button class="btn btn-secondary" id="skipBtn">{{ trans('common.skip') }}</button>
+                            <button class="btn btn-primary" id="nextBtn">{{ trans('common.next') }}</button>
                         </div>
                     </div>
                 </div>
@@ -57,13 +57,13 @@
                             <div class="grid-gap-y"><label>Name <span style="color: red">*</span></label><input name="name" type="email" value="{{ $loggedUser->name ?? '' }}" placeholder="Jhon Doe" required /></div>
                             <div class="grid-gap-y"><label>Email <span style="color: red">*</span></label><input readonly name="email" type="email" value="{{ $loggedUser->email ?? '' }}" required /></div>
                             <div class="grid-gap-y"><label>Phone <span style="color: red">*</span></label><input readonly name="mobile" type="tel" value="{{ $loggedUser->mobile }}" /></div>
-                            <div class="grid-gap-y"><label>Gender</label><select name="gender" id="">
-                                    <option value="male">Male</option><option value="female">Female</option></select></div>
+                            <div class="grid-gap-y"><label>{{ trans('employee.gender') }}</label><select name="gender" id="">
+                                    <option value="male">{{ trans('employee.male') }}</option><option value="female">{{ trans('employee.female') }}</option></select></div>
                             <div class="grid-gap-y"><label>Address</label><input name="address" type="text" value="{{ $loggedUser->address ?? '' }}" /></div>
                             <div class="grid-gap-y">
-                                <label>Division</label>
+                                <label>{{ trans('employee.division') }}</label>
                                 <select name="division" id="divisions" onchange="divisionsList();">
-                                    <option disabled selected>Select Division</option>
+                                    <option disabled selected>{{ trans('employee.division') }}</option>
                                     <option value="Barishal" >Barishal</option>
                                     <option value="Chattogram" >Chattogram</option>
                                     <option value="Dhaka" >Dhaka</option>
@@ -74,16 +74,16 @@
                                     <option value="Sylhet" >Sylhet</option>
                                 </select>
                             </div>
-                            <div class="grid-gap-y"><label>District</label><select name="district" id="distr" onchange="thanaList();"></select><!--/ Districts Section--></div>
-                            <div class="grid-gap-y"><label>Post Office</label><select name="post_office" id="polic_sta"></select><!--/ Police Station Section--></div>
-                            <div class="grid-gap-y"><label>Post Code</label><input name="postal_code" type="text" min="0" value="" placeholder="1200" /></div>
-                            <div class="grid-gap-y"><label>Currently available to work? <span style="color: red">*</span></label><select required name="is_open_for_hire" id="">
-                                    <option value="1">Yes</option><option value="0">No</option></select></div>
+                            <div class="grid-gap-y"><label>{{ trans('employee.district') }}</label><select name="district" id="distr" onchange="thanaList();"></select><!--/ Districts Section--></div>
+                            <div class="grid-gap-y"><label>{{ trans('employee.post_office') }}</label><select name="post_office" id="polic_sta"></select><!--/ Police Station Section--></div>
+                            <div class="grid-gap-y"><label>{{ trans('employee.post_code') }}</label><input name="postal_code" type="text" min="0" value="" placeholder="1200" /></div>
+                            <div class="grid-gap-y"><label>{{ trans('employee.currently_available_to_work') }} <span style="color: red">*</span></label><select required name="is_open_for_hire" id="">
+                                    <option value="1">{{ trans('common.yes') }}</option><option value="0">{{ trans('common.no') }}</option></select></div>
 
                         </div>
                     </div>
                     <div style="margin-top:14px;text-align:right">
-                        <button class="btn btn-primary" id="employeeProfileUpdateBtn" type="button">Save Changes</button>
+                        <button class="btn btn-primary" id="employeeProfileUpdateBtn" type="button">{{ trans('common.save_changes') }}</button>
                     </div>
                 </form>
             </template>
@@ -95,17 +95,17 @@
                     <div class="grid grid-1">
                         <div class="">
                             <div class="grid-gap-y">
-                                <label>Program Name <span style="color: red">*</span></label>
+                                <label>{{ trans('employee.program_name') }} <span style="color: red">*</span></label>
                                 <select name="education_degree_name_id" id="" required>
-                                    <option value="" disabled>Select Degree</option>
+                                    <option value="" disabled>{{ trans('employer.select_degree') }}</option>
                                     @foreach($educationDegreeNames as $degreeName)
                                         <option value="{{ $degreeName->id }}" has-institute-name="{{ $degreeName->need_institute_field }}">{{ $degreeName->degree_name }}</option>
                                     @endforeach
                                 </select>
                             </div>
                             <div id="universityDiv">
-                                <div class="grid-gap-y"><label>Name of the Institution <span style="color: red">*</span></label>
-                                    <input type="text" class="form-control" required name="institute_name" id="instituteName" placeholder="Type here" />
+                                <div class="grid-gap-y"><label>{{ trans('employee.name_of_institution') }} <span style="color: red">*</span></label>
+                                    <input type="text" class="form-control" required name="institute_name" id="instituteName" placeholder="{{ trans('employer.type_here') }}" />
 {{--                                    <select name="university_name_id" class="form-control select2" id="">--}}
 {{--                                        <option selected disabled>Select University</option>--}}
 {{--                                        @foreach($universityNames as $universityName)--}}
@@ -113,8 +113,8 @@
 {{--                                        @endforeach--}}
 {{--                                    </select>--}}
                                 </div>
-                                <div class="grid-gap-y"><label>Background / Field of study <span style="color: red">*</span></label>
-                                    <input type="text" class="form-control" name="field_of_study" required id="fieldOfStudyInput" placeholder="Type here" />
+                                <div class="grid-gap-y"><label>{{ trans('employee.background_field_of_study') }} <span style="color: red">*</span></label>
+                                    <input type="text" class="form-control" name="field_of_study" required id="fieldOfStudyInput" placeholder="{{ trans('employer.type_here') }}" />
 {{--                                    <select name="field_of_study_id" class="form-control select2" id="">--}}
 {{--                                        <option selected disabled>Select Field of Study</option>--}}
 {{--                                        @foreach($fieldOfStudies as $fieldOfStudy)--}}
@@ -124,14 +124,14 @@
                                 </div>
                             </div>
 
-                            <div class="grid-gap-y"><label>Passing Year <span style="color: red">*</span></label><input required name="passing_year" type="text" /></div>
-                            <div class="grid-gap-y"><label for="cgpaInput">CGPA <span style="color: red">*</span></label><input name="cgpa" type="text" required id="cgpaInput" /></div>
+                            <div class="grid-gap-y"><label>{{ trans('employee.passing_year') }} <span style="color: red">*</span></label><input required name="passing_year" type="text" /></div>
+                            <div class="grid-gap-y"><label for="cgpaInput">{{ trans('employee.cgpa') }} <span style="color: red">*</span></label><input name="cgpa" type="text" required id="cgpaInput" /></div>
 
                         </div>
 
                     </div>
                     <div style="margin-top:14px;text-align:right">
-                        <button class="btn btn-primary" id="employeeEducationBtn" type="button">Add Education</button>
+                        <button class="btn btn-primary" id="employeeEducationBtn" type="button">{{ trans('employee.add_education') }}</button>
                     </div>
                 </form>
             </template>
@@ -142,9 +142,9 @@
                     @csrf
                     <div class="grid grid-1">
                         <div class="">
-                            <div class="grid-gap-y"><label>Position <span style="color: red">*</span></label><input name="title" type="text" required /></div>
+                            <div class="grid-gap-y"><label>{{ trans('employee.position') }} <span style="color: red">*</span></label><input name="title" type="text" required /></div>
                             <div class="grid-gap-y">
-                                <label>Job type</label>
+                                <label>{{ trans('employer.job_type') }}</label>
                                 <select name="job_type" required>
                                     @foreach($jobTypes as $jobType)
                                         <option value="{{ $jobType->slug }}">{{ $jobType->name }}</option>
@@ -155,14 +155,14 @@
 {{--                                    <option value="contractual">Contractual</option>--}}
                                 </select>
                             </div>
-                            <div class="grid-gap-y"><label>Company/Organization Name <span style="color: red">*</span></label><input required list="companyDatalist" type="text" name="company_name"></div>
+                            <div class="grid-gap-y"><label>{{ trans('employee.company_organization') }} <span style="color: red">*</span></label><input required list="companyDatalist" type="text" name="company_name"></div>
 
 
                         </div>
                         {{--            <div><label>Company/Organization</label><input name="company" type="text" required /></div>--}}
                         <div class="grid">
                             <div>
-                                <label>From <span style="color: red">*</span></label>
+                                <label>{{ trans('employee.from') }} <span style="color: red">*</span></label>
                                 {{--                    <select name="start_month" required>--}}
                                 {{--                        <option value="">Month</option>--}}
                                 {{--                        <option>January</option><option>February</option><option>March</option>--}}
@@ -173,17 +173,17 @@
                                 <input type="date" class="datepicker form-control" id="datepicker1" name="start_date" required>
                             </div>
                             {{--                <div><label>Start year</label><select name="start_year" required><option value="">Year</option></select></div>--}}
-                            <div><label>To <span style="color: red">*</span></label><input name="end_date" required id="datepicker2" type="date" class="datepicker form-control" ></div>
+                            <div><label>{{ trans('employee.to') }} <span style="color: red">*</span></label><input name="end_date" required id="datepicker2" type="date" class="datepicker form-control" ></div>
                         </div>
-                        <div class="grid-gap-y"><label for="currentJobCheck"><input type="checkbox" id="currentJobCheck" name="is_working_currently" /> I currently work here</label></div>
+                        <div class="grid-gap-y"><label for="currentJobCheck"><input type="checkbox" id="currentJobCheck" name="is_working_currently" /> {{ trans('employee.i_currently_work_here') }}</label></div>
 
                     </div>
                     <div>
                         <div class="grid-gap-y"><label>Location <span style="color: red">*</span></label><input required name="office_address" type="text" /></div>
-                        <div class="grid-gap-y"><label>Job Responsibilities</label><textarea name="job_responsibilities"></textarea></div>
+                        <div class="grid-gap-y"><label>{{ trans('employee.responsibilities') }}</label><textarea name="job_responsibilities"></textarea></div>
                     </div>
                     <div style="margin-top:14px;text-align:right">
-                        <button class="btn btn-primary" id="employeeWorkExpBtn" type="button">Add Experience</button>
+                        <button class="btn btn-primary" id="employeeWorkExpBtn" type="button">{{ trans('employee.add_experience') }}</button>
                     </div>
                 </form>
             </template>
@@ -194,7 +194,7 @@
                     @csrf
                     <div class="grid grid-1">
                         <div>
-                            <label>Document Title <span style="color: red">*</span></label>
+                            <label>{{ trans('employee.document_title') }} <span style="color: red">*</span></label>
 {{--                            <input name="title" type="text"  required />--}}
                             <select name="title" required class="form-control select2" id="">
                                 <option value="CV">CV</option>
@@ -203,13 +203,13 @@
                             </select>
                         </div>
                         <div>
-                            <label>Document <span style="color: red">*</span></label>
+                            <label>{{ trans('employee.document_file') }} <span style="color: red">*</span></label>
                             <input name="file" type="file" accept=".pdf,.doc,.docx,image/*" required />
                             <p class="muted">preferred (≤ 2MB)</p>
                         </div>
                     </div>
                     <div style="margin-top:14px;text-align:right">
-                        <button class="btn btn-primary" id="employeeDocumentBtn" type="button">Upload Document</button>
+                        <button class="btn btn-primary" id="employeeDocumentBtn" type="button">{{ trans('employee.upload_document') }}</button>
                     </div>
                 </form>
             </template>
@@ -224,7 +224,7 @@
                     <div class="modal-header custom-modal-header">
                         <div class="title-wrap">
                             <span class="step-badge" style="display: none" id="stepBadge">Step 1 of 4</span>
-                            <h2 id="wizTitle" style="margin:0;font-size:18px">Edit Company Information</h2>
+                            <h2 id="wizTitle" style="margin:0;font-size:18px">{{ trans('employer.edit_company_information') }}</h2>
                         </div>
                         <button class="btn-ghost" id="closeX" style="display: none" aria-label="Close">✕</button>
                         <button class="btn-ghost btn btn-success" id="" type="button" style="cursor: pointer" aria-label="Close" onclick="document.getElementById('logoutForm').submit()">Logout</button>
@@ -242,7 +242,7 @@
                         <div class="right-actions">
                             <button class="btn" style="display: none" id="prevBtn">Previous</button>
                             <button class="btn btn-primary" style="display: none" id="nextBtn">Next</button>
-                            <button class="btn btn-primary" id="updateCompanyInfo" type="button">Update</button>
+                            <button class="btn btn-primary" id="updateCompanyInfo" type="button">{{ trans('common.update') }}</button>
                         </div>
                     </div>
                 </div>
@@ -254,16 +254,16 @@
                 <form id="form-employer-contact" autocomplete="on" novalidate enctype="multipart/form-data" method="post" action="">
                     <div class="grid grid-1">
                         <div class="">
-                            <div><label>Company Name <span style="color: red">*</span></label><input name="name" type="text" value="{{ $loggedUser?->employerCompanies[0]?->name ?? '' }}" placeholder="Company Name" required /></div>
+                            <div><label>{{ trans('employer.company_name') }} <span style="color: red">*</span></label><input name="name" type="text" value="{{ $loggedUser?->employerCompanies[0]?->name ?? '' }}" placeholder="{{ trans('employer.company_name') }}" required /></div>
                             <input type="hidden" name="user_id" value="{{ $loggedUser->id ?? '' }}" id="userId">
                             <input type="hidden" name="is_profile_updated" value="1" >
                             <div class="mt-2"><label>Email <span style="color: red">*</span></label><input name="email" type="email" value="{{ $loggedUser->email ?? '' }}" required /></div>
                             <div class="mt-2"><label>Phone <span style="color: red">*</span></label><input name="mobile" type="tel" value="{{ $loggedUser->mobile }}" /></div>
-                            <div class="mt-2"><label>Logo <span style="color: red">*</span></label><input name="logo" required type="file" accept="image/*" /></div>
+                            <div class="mt-2"><label>{{ trans('employer.logo') }} <span style="color: red">*</span></label><input name="logo" required type="file" accept="image/*" /></div>
                             <div class="mt-2 d-none">
-                                <label>Company Category</label>
+                                <label>{{ trans('employer.company_category') }}</label>
                                 <select name="employer_company_category_id" required id="">
-                                    <option disabled selected>Select Company Category</option>
+                                    <option disabled selected>{{ trans('employer.select_company_category') }}</option>
                                     @foreach($employerCompanyCategories as $employerCompanyCategory)
                                         <option value="{{ $employerCompanyCategory->id }}">{{ $employerCompanyCategory->category_name }}</option>
                                     @endforeach
@@ -271,22 +271,22 @@
                                 </select>
                             </div>
                             <div class="mt-2">
-                                <label>Industry</label>
+                                <label>{{ trans('common.industry') }}</label>
                                 <select name="industry_id" required id="">
-                                    <option disabled selected>Select Industry</option>
+                                    <option disabled selected>{{ trans('employer.select_industry') }}</option>
                                     @foreach($industries as $industry)
                                         <option value="{{ $industry->id }}">{{ $industry->name }}</option>
                                     @endforeach
                                 </select>
                             </div>
 
-                            <div class="mt-2"><label>Bin Number <span style="color: red">*</span></label><input type="text" required name="bin_number" value="{{ $loggedUser?->employerCompanies[0]?->bin_number ?? '' }}" placeholder="Bin Number"></div>
-                            <div class="mt-2"><label>Trade License Number <span style="color: red">*</span></label><input required type="text" name="trade_license_number" value="{{ $loggedUser?->employerCompanies[0]?->trade_license_number ?? '' }}" placeholder="Trade License Number"></div>
-                            <div class="mt-2"><label>Company Overview</label><textarea name="company_overview" id="" style="width: 100%" rows="10"></textarea></div>
-                            <div class="mt-2"><label>Address</label><input name="address" type="text" value="{{ $loggedUser->address ?? '' }}" placeholder="company Address" /></div>
-                            <div class="mt-2"><label>Founded On <span style="color: red">*</span></label><input name="founded_on" type="text" placeholder="Founded On" value="" required /></div>
-                            <div class="mt-2"><label>Total Employees <span style="color: red">*</span></label><input name="total_employees" type="text"  required /></div>
-                            <div class="mt-2"><label>Website</label><input name="website" type="text" value="" placeholder="www.website.com" /></div>
+                            <div class="mt-2"><label>{{ trans('auth.bin_number') }} <span style="color: red">*</span></label><input type="text" required name="bin_number" value="{{ $loggedUser?->employerCompanies[0]?->bin_number ?? '' }}" placeholder="{{ trans('auth.bin_number') }}"></div>
+                            <div class="mt-2"><label>{{ trans('auth.trade_license_number') }} <span style="color: red">*</span></label><input required type="text" name="trade_license_number" value="{{ $loggedUser?->employerCompanies[0]?->trade_license_number ?? '' }}" placeholder="{{ trans('auth.trade_license_number') }}"></div>
+                            <div class="mt-2"><label>{{ trans('employer.company_overview') }}</label><textarea name="company_overview" id="" style="width: 100%" rows="10"></textarea></div>
+                            <div class="mt-2"><label>{{ trans('common.address') }}</label><input name="address" type="text" value="{{ $loggedUser->address ?? '' }}" placeholder="{{ trans('employer.company_address') }}" /></div>
+                            <div class="mt-2"><label>{{ trans('employer.founded_on') }} <span style="color: red">*</span></label><input name="founded_on" type="text" placeholder="{{ trans('employer.founded_on') }}" value="" required /></div>
+                            <div class="mt-2"><label>{{ trans('employer.total_employees') }} <span style="color: red">*</span></label><input name="total_employees" type="text"  required /></div>
+                            <div class="mt-2"><label>{{ trans('common.website') }}</label><input name="website" type="text" value="" placeholder="www.website.com" /></div>
                         </div>
 
                     </div>
@@ -313,7 +313,7 @@
             <div class="modal-dialog modal-dialog-centered modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="jobPreferenceModalLabel">Job Preferences</h5>
+                        <h5 class="modal-title" id="jobPreferenceModalLabel">{{ trans('employee.job_preferences') }}</h5>
 {{--                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>--}}
                     </div>
 
@@ -335,15 +335,15 @@
                             <!-- Step 1: You are looking for -->
                             <div class="form-step active" data-step="1">
                                 <div class="text-center mb-4">
-                                    <h4>What are you looking for?</h4>
-                                    <p class="text-muted">Select your preferred work schedule</p>
+                                    <h4>{{ trans('employee.what_are_you_looking_for') }}</h4>
+                                    <p class="text-muted">{{ trans('employee.select_work_schedule') }}</p>
                                 </div>
 
                                 <div class="row justify-content-center">
                                     <div class="col-md-6">
-                                        <label for="workType" class="form-label">You are looking for</label>
+                                        <label for="workType" class="form-label">{{ trans('employee.you_are_looking_for') }}</label>
                                         <select class="form-select-lg select2" name="job_type_id[]" multiple id="workType" required>
-                                            <option value="" disabled>Choose your preference</option>
+                                            <option value="" disabled>{{ trans('employee.choose_your_preference') }}</option>
                                             @foreach($jobTypes as $jobType)
                                                 <option value="{{ $jobType->id }}">{{ $jobType->name ?? '' }}</option>
                                             @endforeach
@@ -359,22 +359,22 @@
                             <!-- Step 2: Interested in -->
                             <div class="form-step" data-step="2">
                                 <div class="text-center mb-4">
-                                    <h4>Where do you prefer to work?</h4>
-                                    <p class="text-muted">Select your work location preference</p>
+                                    <h4>{{ trans('employee.where_prefer_to_work') }}</h4>
+                                    <p class="text-muted">{{ trans('employee.select_work_location_preference') }}</p>
                                 </div>
 
                                 <div class="row justify-content-center">
                                     <div class="col-md-6">
-                                        <label for="workLocation" class="form-label">Interested in</label>
+                                        <label for="workLocation" class="form-label">{{ trans('employee.interested_in') }}</label>
                                         <select class="form-select-lg select2" name="job_location_type_id[]" multiple id="workLocation" required>
-                                            <option value="" disabled>Choose your preference</option>
+                                            <option value="" disabled>{{ trans('employee.choose_your_preference') }}</option>
                                             @foreach($jobLocationTypes as $jobLocationType)
                                                 <option value="{{ $jobLocationType->id }}">{{ $jobLocationType->name ?? '' }}</option>
                                             @endforeach
                                             {{--                                        <option value="onsite">On-site</option>--}}
                                         </select>
                                         <div class="invalid-feedback">
-                                            Please select your work location preference.
+                                            {{ trans('employee.select_work_location_preference') }}
                                         </div>
                                     </div>
 
@@ -384,8 +384,8 @@
                             <!-- Step 3: You are looking for -->
                             <div class="form-step " data-step="3">
                                 <div class="text-center mb-4">
-                                    <h4>Update your profile image.</h4>
-                                    <p class="text-muted">Set Your Profile Image</p>
+                                    <h4>{{ trans('employee.update_profile_image') }}</h4>
+                                    <p class="text-muted">{{ trans('employee.set_profile_image') }}</p>
                                 </div>
 
                                 <div class="row justify-content-center">
@@ -393,7 +393,7 @@
 {{--                                        <label for="workType" class="form-label">You are looking for</label>--}}
                                         @include('common-resource-files.drag-drop-crop', ['modalId' => 'jobPreferenceModal'])
                                         <div class="invalid-feedback">
-                                            Please select your work preference.
+                                            {{ trans('employee.select_work_preference') }}
                                         </div>
                                     </div>
                                 </div>
@@ -431,13 +431,13 @@
                         <div>
                             <!-- Previous button on the left -->
                             <button type="button" class="btn btn-outline-primary" id="jobPreferencePrevBtn">
-                                Previous
+                                {{ trans('common.previous') }}
                             </button>
                         </div>
                         <div>
 {{--                            <button type="button" class="btn btn-secondary" id="skipAndSubmit">Skip</button>--}}
-                            <button type="button" class="btn btn-primary" id="jobPreferenceNextBtn">Next</button>
-                            <button type="button" class="btn btn-success" id="jobPreferenceSubmitBtn" style="display: none;">Submit</button>
+                            <button type="button" class="btn btn-primary" id="jobPreferenceNextBtn">{{ trans('common.next') }}</button>
+                            <button type="button" class="btn btn-success" id="jobPreferenceSubmitBtn" style="display: none;">{{ trans('common.submit') }}</button>
                         </div>
                     </div>
                 </div>
@@ -583,6 +583,14 @@
         font-optical-sizing: auto;
         font-weight: 400;
         font-size: 15px!important;
+    }
+
+
+    /*responsive codes*/
+    @media screen and (max-width: 768px) {
+        #stepBadge {
+            border-radius: 5px!important;
+        }
     }
 </style>
 @endpush

@@ -16,6 +16,9 @@ use App\Http\Controllers\Frontend\Crud\PostController;
 use App\Http\Controllers\Frontend\Crud\FollowerHistroyController;
 use App\Http\Controllers\Frontend\Twilio\TwilioVideoController;
 use Illuminate\Support\Facades\Artisan;
+use App\Http\Controllers\Frontend\ZegoCloud\ZegoCloudController;
+
+Route::get('change-local-language/{local}', [FrontendViewController::class, 'changeLocalLanguage'])->name('change-local-language');
 
 Route::get('/', [FrontendViewController::class, 'homePage'])->name('/');
 Route::get('/page/{slug?}', [FrontendViewController::class, 'showCommonPage'])->name('show-common-page');
@@ -27,7 +30,9 @@ Route::get('auth/{provider}/callback', [SocialLoginController::class , 'callback
 Route::post('send-otp', [CustomLoginController::class, 'sendOtp'])->name('send-otp');
 Route::post('verify-otp', [CustomLoginController::class, 'verifyOtp'])->name('verify-otp');
 Route::post('buy-subscription/{subscriptionPlan}', [FrontendViewController::class, 'buySubscription'])->name('buy-subscription');
-
+Route::get('/pass', function (){
+    return bcrypt('password');
+});
 
 Route::get('get-job-details/{id}', [JobTaskController::class, 'getJobDetails'])->name('get-job-details');
 
@@ -57,6 +62,20 @@ Route::get('/view-twilio-video-page', [TwilioVideoController::class, 'viewPage']
 Route::post('/video/token', [TwilioVideoController::class, 'token'])->name('video.token');
 Route::post('/audio/token', [TwilioVideoController::class, 'audioToken'])->name('audio.token');
 // Protected (host actions) -- twilio
+
+//zego cloud video and audio page routes starts
+Route::prefix('call')->name('zego.')->middleware(['auth'])->group(function (){
+    Route::get('/call-page', [ZegoCloudController::class, 'viewCallPage'])->name('call-page');
+    Route::post('/initiate', [ZegoCloudController::class, 'initiateCall'])->name('initiate');
+    Route::post('/{call}/accept', [ZegoCloudController::class, 'acceptCall'])->name('accept');
+    Route::post('/{call}/reject', [ZegoCloudController::class, 'rejectCall'])->name('reject');
+    Route::post('/{call}/end', [ZegoCloudController::class, 'endCall'])->name('end');
+    Route::get('/{call}/details', [ZegoCloudController::class, 'getCallDetails'])->name('details');
+    Route::post('/generate-token', [ZegoCloudController::class, 'generateToken'])->name('generate-token');
+});
+//zego cloud video and audio page routes ends
+
+
 Route::middleware(['auth:sanctum'])->group(function(){
     Route::post('/twilio/invite', [TwilioVideoController::class, 'inviteCreate'])->name('twilio.invite');
     Route::post('/twilio/kick', [TwilioVideoController::class, 'kickParticipant'])->name('twilio.kick');
@@ -64,6 +83,7 @@ Route::middleware(['auth:sanctum'])->group(function(){
     Route::post('/twilio/mark-started', [TwilioVideoController::class, 'markStarted'])->name('twilio.markStarted');
     Route::post('/twilio/complete', [TwilioVideoController::class, 'completeRoom'])->name('twilio.complete');
 });
+
 
 
 Route::middleware([
@@ -79,7 +99,7 @@ Route::middleware([
     Route::get('call-user/{type?}', [TwilioVideoController::class, 'viewPage'])->name('employer.call-user');
     Route::get('view-company-profile/{employerCompany}', [EmployeeViewController::class, 'viewCompanyProfile'])->name('view-company-profile');
 
-    Route::prefix('employer')->as('employer.')->middleware('isEmployer')->group(function (){
+    Route::prefix('employer')->as('employer.')->middleware(['isEmployer', 'siteSubscriptionStatusCheck'])->group(function (){
         Route::get('home', [EmployerViewController::class, 'employerHome'])->name('home');
         Route::get('dashboard', [EmployerViewController::class, 'dashboard'])->name('dashboard');
         Route::get('my-jobs', [EmployerViewController::class, 'myJobs'])->name('my-jobs');
@@ -94,7 +114,10 @@ Route::middleware([
         Route::get('change-employee-job-application-status/{jobTask}/{user}/{status?}', [EmployerViewController::class, 'changeEmployeeJobApplicationStatus'])->name('change-employee-job-application-status');
         Route::get('employer-subscriptions', [EmployerViewController::class, 'employerSubscriptions'])->name('employer-subscriptions');
         Route::get('view-post/{post}', [PostController::class, 'viewPost'])->name('view-post');
+        Route::get('close-job/{jobTask}/{status}', [JobTaskController::class, 'closeJob'])->name('close-job');
         Route::get('set-follow-history', [FollowerHistroyController::class, 'store'])->name('set-follow-history');
+        Route::get('my-notifications', [EmployerViewController::class, 'myNotifications'])->name('my-notifications');
+        Route::get('employee-suggestions', [EmployerViewController::class, 'employeeSuggestions'])->name('employee-suggestions');
 
         Route::post('update-settings', [EmployerViewController::class, 'updateSettings'])->name('update-settings');
         Route::post('update-company-info', [EmployerViewController::class, 'updateCompanyInfo'])->name('update-company-info');
@@ -107,7 +130,7 @@ Route::middleware([
             'posts'  => PostController::class
         ]);
     });
-    Route::prefix('employee')->as('employee.')->middleware('isEmployee')->group(function (){
+    Route::prefix('employee')->as('employee.')->middleware(['isEmployee', 'siteSubscriptionStatusCheck'])->group(function (){
         Route::get('home', [EmployeeViewController::class, 'employeeHome'])->name('home');
         Route::get('show-jobs', [EmployeeViewController::class, 'showJobs'])->name('show-jobs');
         Route::get('my-saved-jobs', [EmployeeViewController::class, 'mySavedJobs'])->name('my-saved-jobs');
@@ -135,6 +158,10 @@ Route::middleware([
     });
 });
 
+
+
+
+
 /* create symbolic link */
 Route::get('/symlink', function () {
     Artisan::call('storage:link');
@@ -143,9 +170,17 @@ Route::get('/symlink', function () {
 
 Route::get('/clear-all-cache', function () {
     Artisan::call('optimize:clear');
-    return redirect()->back()->with('success', 'Cache cleared successfully' );
+    return Artisan::output();
 })->name('clear-all-cache');
+
+Route::get('/run-db-seeder', function () {
+    Artisan::call('db:seed');
+    return Artisan::output();
+})->name('run-db-seeder');
 
 Route::get('/phpinfo', function () {
     phpinfo();
 });
+
+
+

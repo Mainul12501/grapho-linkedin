@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Frontend\Crud;
 use App\Helpers\ViewHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Backend\Post;
+use App\Models\Backend\WebNotification;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -16,7 +17,18 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::where(['user_id' => ViewHelper::loggedUser()->id])->get();
+        return redirect(route('employer.home'));
+        $posts = Post::where(['user_id' => ViewHelper::loggedUser()->id])->latest()->get();
+        if (str()->contains(url()->current(), '/api/'))
+        {
+            foreach ($posts as $post)
+            {
+                if (isset($post->images))
+                {
+                    $post['image_array'] = json_decode($post->images);
+                }
+            }
+        }
         $data = ['posts' => $posts];
         return ViewHelper::checkViewForApi($data, 'frontend.employer.posts.index');
         return view('frontend.employer.posts.index');
@@ -27,6 +39,10 @@ class PostController extends Controller
      */
     public function create()
     {
+        if (ViewHelper::checkIfUserApprovedOrBlocked(auth()->user()))
+        {
+            return ViewHelper::returnRedirectWithMessage(route('employer.dashboard'),  'error','Your account is blocked or has not approved yet. Please contact with Likewise.');
+        }
         return view('frontend.employer.posts.create', [
             'isShown'   => false,
         ]);
@@ -37,6 +53,10 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
+        if (ViewHelper::checkIfUserApprovedOrBlocked(auth()->user()))
+        {
+            return ViewHelper::returnRedirectWithMessage(route('employer.dashboard'),  'error','Your account is blocked or has not approved yet. Please contact with Likewise.');
+        }
         $validator = Validator::make($request->all(), [
             'title' => 'required'
         ]);
@@ -50,7 +70,16 @@ class PostController extends Controller
             $post = Post::updateOrCreatePost($request);
             if ($post)
             {
-                return ViewHelper::returnRedirectWithMessage(route('employer.posts.index'), 'success','Post created successfully');
+                $loggedUser = ViewHelper::loggedUser();
+                $webNotification = new WebNotification();
+//                $webNotification->viewer_id = $loggedUser->id;
+//                $webNotification->viewed_user_id = $user->id;
+                $webNotification->notification_type = 'new_post';
+                $webNotification->msg = "$loggedUser->name has posted a new post.";
+                $webNotification->save();
+
+
+                return ViewHelper::returnRedirectWithMessage(route('employer.home'), 'success','Post created successfully');
             } else {
                 return ViewHelper::returEexceptionError('Something went wrong. Please try again.');
             }
@@ -85,6 +114,10 @@ class PostController extends Controller
         $data = [
             'post'  => $post,
         ];
+        if (\request()->ajax() && isset($_GET['req_from']) && $_GET['req_from'] == 'admin')
+        {
+            return view('backend.user-management.view-post', $data)->render();
+        }
         return ViewHelper::checkViewForApi($data, 'frontend.employer.home.view-post');
          return view('frontend.employer.home.view-post');
     }
@@ -94,6 +127,10 @@ class PostController extends Controller
      */
     public function edit(string $id)
     {
+        if (ViewHelper::checkIfUserApprovedOrBlocked(auth()->user()))
+        {
+            return ViewHelper::returnRedirectWithMessage(route('employer.dashboard'),  'error','Your account is blocked or has not approved yet. Please contact with Likewise.');
+        }
         $data = [
             'isShown'   => false,
             'post' => Post::find($id)
@@ -110,6 +147,10 @@ class PostController extends Controller
      */
     public function update(Request $request, Post $post/*string $id*/)
     {
+        if (ViewHelper::checkIfUserApprovedOrBlocked(auth()->user()))
+        {
+            return ViewHelper::returnRedirectWithMessage(route('employer.dashboard'),  'error','Your account is blocked or has not approved yet. Please contact with Likewise.');
+        }
         $validator = Validator::make($request->all(), [
             'title' => 'required'
         ]);
@@ -124,7 +165,7 @@ class PostController extends Controller
             if ($post)
             {
                 Toastr::success('Post Updated successfully');
-                return redirect(route('employer.posts.index'));
+                return redirect(route('employer.dashboard'));
             } else {
                 return ViewHelper::returEexceptionError('Something went wrong. Please try again.');
             }
@@ -139,6 +180,10 @@ class PostController extends Controller
      */
     public function destroy(Post $post/*string $id*/)
     {
+        if (ViewHelper::checkIfUserApprovedOrBlocked(auth()->user()))
+        {
+            return ViewHelper::returnRedirectWithMessage(route('employer.dashboard'),  'error','Your account is blocked or has not approved yet. Please contact with Likewise.');
+        }
         $post->delete();
         return ViewHelper::returnSuccessMessage('Post Deleted successfully');
     }

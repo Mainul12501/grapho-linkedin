@@ -25,7 +25,7 @@
             <a href="{{ url()->previous() }}" class="nav-link">
                 <button type="button" class="btn p-0 d-flex align-items-center topSettingButton" aria-label="Back">
                     <img src="{{ asset('/frontend/employer/images/employersHome/leftarrow.png') }}" alt="" class="me-2">
-                    <span >Company profile</span>
+                    <span >{{ trans('employee.company') }} {{ trans('common.title') }}</span>
                 </button>
             </a>
         </div>
@@ -83,7 +83,7 @@
         <div class="col-md-8 col-12">
             <div class="card">
                 <div class="d-flex justify-content-between align-items-center mb-3 companyProfilecontainer__topbar p-4">
-                    <h6 class="mb-0 fw-semibold">Company overview</h6>
+                    <h6 class="mb-0 fw-semibold">{{ trans('employer.company_overview') }}</h6>
                 </div>
                 <div class=" companyProfilecontainer__right-part p-4">
                     <div class="mb-4 text-muted">
@@ -92,15 +92,15 @@
 
                     <div class="d-flex flex-wrap gap-4 companyProfilecontainer__footer-info justify-content-between">
                         <div>
-                            <div class="fw-semibold">Industry</div>
+                            <div class="fw-semibold">{{ trans('common.industry') }}</div>
                             <div>{{ $employerCompany?->industry?->name ?? 'Industry Name' }}</div>
                         </div>
                         <div>
-                            <div class="fw-semibold">Number of employees</div>
+                            <div class="fw-semibold">{{ trans('employer.total_employees') }}</div>
                             <div>{{ $employerCompany->total_employees ?? 0 }}</div>
                         </div>
                         <div>
-                            <div class="fw-semibold">Founded on</div>
+                            <div class="fw-semibold">{{ trans('employer.founded_on') }}</div>
                             <div>{{ $employerCompany->founded_on ?? '1971' }}</div>
                         </div>
                     </div>

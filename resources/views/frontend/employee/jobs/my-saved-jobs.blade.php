@@ -6,7 +6,7 @@
 
 
     <section class="bg-white forSmall smallTop">
-        <a href=""><img src="{{ asset('/') }}frontend/employee/images/profile/leftArrowDark.png" alt="" class="me-2"> Saved jobs</a>
+        <a href="{{ route('employee.my-profile') }}"><img src="{{ asset('/') }}frontend/employee/images/profile/leftArrowDark.png" alt="" class="me-2"> {{ trans('employee.jobs_saved') }}</a>
     </section>
 
     <!-- Main Content -->
@@ -18,8 +18,8 @@
         <!-- Right Scrollable Jobs -->
         <section class="w-100 profileOptionRight">
 
-            <h1 class="forLarge">Saved jobs</h1>
-            <p class="">You have {{ count($savedJobs) ?? 0 }} saved jobs</p>
+            <h1 class="forLarge">{{ trans('employee.jobs_saved') }}</h1>
+            <p class="">{{ trans('employee.you_have_applied_to_jobs', ['count' => count($savedJobs) ?? 0]) }}</p>
 
             <div class="right-panel w-100">
                 @forelse($savedJobs as $key => $savedJob)
@@ -33,8 +33,8 @@
                                     <img style="width: 40px; height: 42px" src="{{ asset(isset($savedJob?->employerCompany?->logo) ? $savedJob?->employerCompany?->logo : '/frontend/company-vector.jpg') }}"
                                          alt="Company Logo" class="mobileLogo" />
                                     <div class="paddingforMobile">
-                                        <h3><a href="{{ route('employee.show-jobs', ['job_task' => $savedJob->id]) }}" style="text-decoration: none; color: black">{{ $savedJob->job_title ?? 'Job Title' }}</a></h3>
-                                        <p>{{ $savedJob->employerCompany?->name ?? 'Company Name' }}</p>
+                                        <h3><a href="{{ route('employee.show-jobs', ['job_task' => $savedJob->id]) }}" style="text-decoration: none; color: black">{{ $savedJob->job_title ?? trans('common.job_title') }}</a></h3>
+                                        <p>{{ $savedJob->employerCompany?->name ?? trans('common.company_name') }}</p>
                                     </div>
                                 </div>
                                 <div>
@@ -58,29 +58,31 @@
                                 </div>
                             </div>
                             <div class="jobTypeBtn">
-                                <button class="btn">{{ $savedJob?->jobType?->name ?? 'Job Type' }}</button>
-                                <button class="btn">{{ $savedJob?->jobLocationType?->name ?? 'Job Location Type' }}</button>
+                                <button class="btn">{{ $savedJob?->jobType?->name ?? trans('common.job_type') }}</button>
+                                <button class="btn">{{ $savedJob?->jobLocationType?->name ?? trans('common.job_location') }}</button>
 {{--                                <button class="btn">Day Shift</button>--}}
                             </div>
                             <div class="jobDesc">
-                                <p>Gulshan, Dhaka</p>
-                                <p>{{ $savedJob->required_experience ?? 0 }}+ years of experience</p>
+                                <p>{{ $savedJob?->employerCompany?->address ?? trans('common.company_address') }}</p>
+                                <p>{{ $savedJob->required_experience ?? 0 }}+ {{ trans('employee.years_of_experience') }}</p>
                                 @if(isset($savedJob->salary_range_start))
-                                    <p>Salary: Tk. {{ $savedJob->salary_range_start }} - {{ $savedJob->salary_range_end }}</p>
+                                    <p>{{ trans('employee.salary') }}: Tk. {{ $savedJob->salary_range_start }} - {{ $savedJob->salary_range_end }}</p>
                                 @else
-                                    <p>Salary: {{ $savedJob->job_pref_salary_payment_type }} Tk. {{ $savedJob->salary_amount }}</p>
+                                    <p>{{ trans('employee.salary') }}: {{ $savedJob->job_pref_salary_payment_type }} Tk. {{ $savedJob->salary_amount }}</p>
                                 @endif
 
                             </div>
                             <div class="jobApply d-flex justify-content-between mt-2">
                                 <div>
-                                    @if(!$savedJob->isApplied)
-                                        <form action="{{ route('employee.apply-job', $savedJob->id) }}" method="post">
-                                            @csrf
-                                            <button type="submit" class="btn">Easy Apply</button>
-                                        </form>
+                                    @if(!\App\Helpers\ViewHelper::checkIfUserApprovedOrBlocked(auth()->user()))
+                                        @if(!$savedJob['isApplied']['isApplied'])
+                                            <form action="{{ route('employee.apply-job', $savedJob->id) }}" method="post">
+                                                @csrf
+                                                <button type="submit" class="btn">{{ trans('employee.easy_apply') }}</button>
+                                            </form>
+                                        @endif
                                     @endif
-                                    <img src="{{ asset('/') }}frontend/employee/images/profile/savedMarkIcon.png" alt="Bookmark" class="bookmarkIcon" />
+{{--                                    <img src="{{ asset('/') }}frontend/employee/images/profile/savedMarkIcon.png" alt="Bookmark" class="bookmarkIcon" />--}}
                                 </div>
 {{--                                <div>--}}
 {{--                                    <img src="{{ asset('/') }}frontend/employee/images/contentImages/closeIcon.png" data-job-id="{{ $savedJob->id }}" alt="Close" class="closeIcon" />--}}
@@ -91,7 +93,7 @@
                 @empty
                     <div class="row">
                         <div class="col-12">
-                            <span>No Saved Jobs Yet.</span>
+                            <span class="text-center d-block mx-auto">{{ trans('employee.havent_applied_any_job') }}</span>
                         </div>
                     </div>
                 @endforelse
@@ -152,6 +154,12 @@
 {{--                        </div>--}}
 {{--                    </div>--}}
 {{--                </div>--}}
+
+
+
+
+
+
             </div>
 
 
@@ -170,15 +178,15 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content text-center">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="closeConfirmLabel">Are you sure?</h5>
+                    <h5 class="modal-title" id="closeConfirmLabel">{{ trans('common.are_you_sure') }}</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     Do you really want to close this job suggestion?
                 </div>
                 <div class="modal-footer justify-content-center">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
-                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Yes</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ trans('common.no') }}</button>
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">{{ trans('common.yes') }}</button>
                 </div>
             </div>
         </div>
@@ -194,13 +202,13 @@
         $(document).on('click', '.closeIcon', function () {
             var jobId = $(this).attr('data-job-id');
             Swal.fire({
-                title: "Are you sure?",
+                title: "{{ trans('common.are_you_sure') }}",
                 text: "You won't be able to revert this!",
                 icon: "warning",
                 showCancelButton: true,
                 confirmButtonColor: "#3085d6",
                 cancelButtonColor: "#d33",
-                confirmButtonText: "Yes, delete it!"
+                confirmButtonText: "{{ trans('common.yes') }}, delete it!"
             }).then((result) => {
                 if (result.isConfirmed) {
                     sendAjaxRequest('employee/delete-saved-job/'+jobId, 'GET').then(function (response) {

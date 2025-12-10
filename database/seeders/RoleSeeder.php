@@ -50,6 +50,14 @@ class RoleSeeder extends Seeder
                 'is_default'    => 1,
                 'status'        =>  1
             ],
+            [
+                'id'            => 5,
+                'title'         => 'Sub Employer',
+                'note'          => '',
+                'slug'          => 'sub-employer',
+                'is_default'    => 1,
+                'status'        =>  1
+            ],
 
         ]);
     }

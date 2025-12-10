@@ -39,6 +39,7 @@ class SiteSetting extends Model
         'country_code',
         'site_name',
         'subscription_system_status',
+        'common_institute_logo',
     ];
 
     protected $searchableFields = ['*'];
@@ -55,8 +56,9 @@ class SiteSetting extends Model
         $siteSetting->site_title    = $request->site_title;
         $siteSetting->site_description  = $request->site_description;
         $siteSetting->logo  = imageUpload($request->file('logo'), 'site-setting', 'logo', 300, 300, $siteSetting->logo ?? null);
-        $siteSetting->site_icon = imageUpload($request->file('site_icon'), 'site-setting', 'site_icon', 50, 50, $siteSetting->site_icon ?? null);
+        $siteSetting->site_icon = imageUpload($request->file('site_icon'), 'site-setting', 'site_icon', 300, 150, $siteSetting->site_icon ?? null);
         $siteSetting->favicon   = imageUpload($request->file('favicon'), 'site-setting', 'favicon', 16, 16, $siteSetting->favicon ?? null);
+        $siteSetting->common_institute_logo   = imageUpload($request->file('common_institute_logo'), 'site-setting', 'common_institute_logo', 100, 100, $siteSetting->common_institute_logo ?? null);
         $siteSetting->meta_header   = $request->meta_header;
         $siteSetting->meta_footer   = $request->meta_footer;
         $siteSetting->meta_title    = $request->meta_title;

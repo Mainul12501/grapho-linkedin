@@ -12,12 +12,12 @@
 
         <!-- Right Scrollable Jobs -->
         <section class="w-100 profileOptionRight card card-body">
-            <h1 class="forLarge">Subscription</h1>
+            <h1 class="forLarge">{{ trans('employee.subscription') }}</h1>
             @if(isset($loggedUser?->subscriptionPlan?->title))
                 <div class="right-panel w-100 subscription">
                     <div class="subscription-card">
                         <div class="subscription-info">
-                            <p class="fw-bold float-start">Current plan : </p>
+                            <p class="fw-bold float-start">{{ trans('employee.subscription') }} : </p>
                             <p class="float-start">{{ $loggedUser?->subscriptionPlan?->title ?? 'Plan Title' }}, expires on {{ \Illuminate\Support\Carbon::parse($loggedUser->subscription_end_date)->format('d M, Y') }}</p>
                         </div>
 {{--                        <button class="view-invoice">View invoice</button>--}}
@@ -34,7 +34,7 @@
                 <div class="planWrapper row <!--justify-content-between-->">
 
                     @forelse($subscriptionPlans as $key => $subscriptionPlan)
-                        <div class="col-12 col-md-4 planOne ">
+                        <div class="col-12 col-md-4 planOne py-2">
                             <div class="card card-body p-4">
                                 <p class="olanDuration">{{ $subscriptionPlan->title ?? '' }}</p>
                                 <h2 class="planPrive">Tk. {{ $subscriptionPlan->price ?? 0 }}</h2>
@@ -42,7 +42,7 @@
                                 @if($subscriptionPlan->id != $loggedUser->subscription_plan_id)
                                     <form id="subsForm{{$key}}" action="{{ route('buy-subscription', $subscriptionPlan->id) }}" method="post">
                                         @csrf
-                                        <button type="submit" onsubmit="return confirm('Are you sure to Purchase this plan. Your previous plan will be replaced if exists.')" class="btn w-100 text-white my-3 py-3" style="background-color: #FFCB11; color: black!important; border-radius: 20px;">Subscribe</button>
+                                        <button type="submit" onsubmit="return confirm('Are you sure to Purchase this plan. Your previous plan will be replaced if exists.')" class="btn w-100 text-white my-3 py-3" style="background-color: #FFCB11; color: black!important; border-radius: 20px;">{{ trans('employee.subscription') }}</button>
                                     </form>
                                 @else
                                     <button type="button" disabled class="btn w-100 bg-dark text-white my-3 py-3" style="border-radius: 20px">Already Purchased</button>

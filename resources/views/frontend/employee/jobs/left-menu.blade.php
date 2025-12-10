@@ -5,7 +5,7 @@
             <div class="icon">
                 <img src="{{ asset('/') }}frontend/employee/images/profile/bookMarkColor.png" alt="Saved jobs" />
             </div>
-            <div class="text">Saved jobs</div>
+            <div class="text">{{ trans('employee.my_saved_jobs') }}</div>
         </div>
     </a>
 
@@ -14,7 +14,7 @@
             <div class="icon">
                 <img src="{{ asset('/') }}frontend/employee/images/header images/Myapplications.png" alt="My applications" />
             </div>
-            <div class="text">My applications</div>
+            <div class="text">{{ trans('employee.my_applications') }}</div>
         </div>
     </a>
 
@@ -23,7 +23,7 @@
             <div class="icon">
                 <img src="{{ asset('/') }}frontend/employee/images/header images/Profilerviewers.png" alt="Profiler viewers" />
             </div>
-            <div class="text">Profiler viewers</div>
+            <div class="text">{{ trans('employee.profiler_viewers') }}</div>
         </div>
     </a>
 
@@ -32,7 +32,7 @@
             <div class="icon">
                 <img src="{{ asset('/') }}frontend/employee/images/header images/Subscription.png" alt="Subscription" />
             </div>
-            <div class="text">Subscription</div>
+            <div class="text">{{ trans('employee.subscription') }}</div>
         </div>
     </a>
 
@@ -41,7 +41,7 @@
             <div class="icon">
                 <img src="{{ asset('/') }}frontend/employee/images/header images/Settings.png" alt="Settings" />
             </div>
-            <div class="text">Settings</div>
+            <div class="text">{{ trans('employee.settings') }}</div>
         </div>
     </a>
 </aside>

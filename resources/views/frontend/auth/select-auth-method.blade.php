@@ -41,6 +41,13 @@
                 overflow-y: scroll;
             }
         }
+        @media only screen and (max-width: 768px) {
+            .loginCard p {
+                font-weight: 400!important;
+                font-size: 18px!important;
+            }
+            #hir {font-size: 13px!important;}
+        }
     </style>
 </head>
 
@@ -49,20 +56,23 @@
 <!-- Card Container -->
 <div class="card loginCard">
     <!-- Company Logo -->
-    <img src="{{ asset(isset($siteSetting->logo) ? $siteSetting->logo : '/frontend/employee/images/authentication images/Compnay logo.png') }}" alt="Company Logo" style="height: 41px; width: 166px">
+    <img src="{{ asset(isset($siteSetting->site_icon) ? $siteSetting->site_icon : '/frontend/employee/images/authentication images/Compnay logo.png') }}" alt="Company Logo" style="height: 41px; width: 166px">
 
     <!-- Call to Action -->
-    <p>Hiring or looking for opportunities?</p>
+{{--    <p>{{ trans('auth.hiring_or_looking_opportunities') }}</p>--}}
+    <p id="hir">Hiring or looking for opportunities?</p>
 
     <!-- Buttons for Log In and Create Account -->
-    <a href="{{ route('auth.set-login-role') }}"><button class="btn login" style="border-radius: 15px;">Log in</button></a>
-    <a href="{{ route('auth.set-registration-role') }}"><button class="btn createAccount" style="border-radius: 15px;">Create account</button></a>
+    <a href="{{ route('auth.set-login-role') }}"><button class="btn login" style="border-radius: 15px;">{{ trans('auth.log_in') }}</button></a>
+    <a href="{{ route('auth.set-registration-role') }}"><button class="btn createAccount" style="border-radius: 15px;">{{ trans('auth.create_account') }}</button></a>
 </div>
 
 <!-- Bootstrap 5 JS and Popper.js (Bootstrap 5 no longer needs jQuery) -->
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
 {!! $siteSetting->meta_footer ?? '' !!}
+<script src="https://js.pusher.com/7.2.0/pusher.min.js"></script>
+@include('frontend.zegocloud.incoming-call-popup')
 </body>
 
 </html>

@@ -12,11 +12,13 @@ use App\Models\Backend\JobTask;
 use App\Models\Backend\JobType;
 use App\Models\Backend\SkillsCategory;
 use App\Models\Backend\UniversityName;
+use App\Models\Backend\WebNotification;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\View\View;
 use phpseclib3\System\SSH\Agent\Identity;
+use PHPUnit\Util\PHP\Job;
 
 class JobTaskController extends Controller
 {
@@ -51,6 +53,10 @@ class JobTaskController extends Controller
      */
     public function store(Request $request)
     {
+        if (ViewHelper::checkIfUserApprovedOrBlocked(auth()->user()))
+        {
+            return ViewHelper::returnRedirectWithMessage(route('employer.dashboard'), 'error', 'Your account is blocked or has not approved yet. Please contact with admin.');
+        }
         $validator = Validator::make($request->all(),[
             'job_title' => 'required'
         ]);
@@ -81,13 +87,22 @@ class JobTaskController extends Controller
             $jobTask->slug = str_replace(' ', '-', $request->job_title);
             $jobTask->save();
 
-
             if ($jobTask)
             {
                 $jobTask->employerPrefferableUniversityNames()->sync($request->university_preference);
                 $jobTask->employerPrefferableFieldOfStudyNames()->sync($request->field_of_study_preference);
                 $jobTask->jobRequiredskills()->sync($request->required_skills);
+
+                $loggedUser = ViewHelper::loggedUser();
+                $webNotification = new WebNotification();
+//                $webNotification->viewer_id = $loggedUser->id;
+//                $webNotification->viewed_user_id = $user->id;
+                $webNotification->notification_type = 'new_job';
+                $webNotification->msg = "$loggedUser->name has placed a new job.";
+                $webNotification->save();
+
             }
+
             return ViewHelper::returnSuccessMessage('Job Created Successfully.');
         } catch (\Exception $exception)
         {
@@ -109,6 +124,14 @@ class JobTaskController extends Controller
      */
     public function edit(JobTask  $jobTask/*string $id*/)
     {
+        if (ViewHelper::checkIfUserApprovedOrBlocked(auth()->user()))
+        {
+            return ViewHelper::returnRedirectWithMessage(route('employer.dashboard'), 'error', 'Your account is blocked or has not approved yet. Please contact with admin.');
+        }
+        $jobTask->load([
+            'employerPrefferableUniversityNames',
+            'employerPrefferableFieldOfStudyNames'
+        ]);
         $data = [
             'jobTask' => $jobTask,
             'jobTypes'  => JobType::where(['status' => 1])->get(['id', 'name']),
@@ -145,6 +168,10 @@ class JobTaskController extends Controller
      */
     public function update(Request $request, JobTask $jobTask/*string $id*/)
     {
+        if (ViewHelper::checkIfUserApprovedOrBlocked(auth()->user()))
+        {
+            return ViewHelper::returnRedirectWithMessage(route('employer.dashboard'),  'error','Your account is blocked or has not approved yet. Please contact with Likewise.');
+        }
 //        return $request->all();
         $validator = Validator::make($request->all(),[
             'job_title' => 'required'
@@ -157,7 +184,7 @@ class JobTaskController extends Controller
         try {
             //        $jobTask = JobTask::createOrUpdateJobTask($request);
 //            $jobTask = new JobTask();
-            $jobTask->user_id = ViewHelper::loggedUser()->id;
+//            $jobTask->user_id = ViewHelper::loggedUser()->id;
             $jobTask->job_title = $request->job_title;
             $jobTask->job_type_id = $request->job_type_id;
             $jobTask->job_location_type_id = $request->job_location_type_id;
@@ -199,6 +226,10 @@ class JobTaskController extends Controller
      */
     public function destroy(JobTask $jobTask)
     {
+        if (ViewHelper::checkIfUserApprovedOrBlocked(auth()->user()))
+        {
+            return ViewHelper::returnRedirectWithMessage(route('employer.dashboard'), 'error', 'Your account is blocked or has not approved yet. Please contact with admin.');
+        }
         $jobTask->employerPrefferableUniversityNames()->detach();
         $jobTask->employerPrefferableFieldOfStudyNames()->detach();
         $jobTask->jobRequiredskills()->detach();
@@ -241,5 +272,44 @@ class JobTaskController extends Controller
             return response()->json(['status' => 'error', 'msg' => 'Job not found.']);
     }
 
+    public function changeJobSoftDeleteStatus(Request $request, JobTask $jobTask, $status = 0)
+    {
+        $jobTask->is_softly_deleted = $status;
+        $jobTask->save();
+        $saveNofi = true;
+        if ($status == 0)
+        {
+            $notiMsg = "Congrats!! your job: $jobTask->job_title is unblocked by Likewise.";
+            $msg = 'Job deleted successfully';
+        } elseif ($status == 1)
+        {
+            $notiMsg = "Your job: $jobTask->job_title is blocked by Likewise.";
+            $msg = 'Job unblocked successfully';
+        } else {
+            $saveNofi = false;
+            $msg = 'Something went wrong. Please try again.';
+        }
+        if ($saveNofi)
+        {
+            $webNotification = new WebNotification();
+            $webNotification->viewed_user_id = $jobTask->user_id;
+            $webNotification->msg = $notiMsg;
+            $webNotification->save();
+        }
 
+        return ViewHelper::returnSuccessMessage($msg);
+    }
+
+    public function closeJob(JobTask $jobTask, $status = 0)
+    {
+        $jobTask->status = $status;
+        $jobTask->save();
+        if ($status == 0)
+        {
+            $msg = 'Job Closed Successfully.';
+        } else {
+            $msg = 'Job Opened Successfully.';
+        }
+        return ViewHelper::returnSuccessMessage($msg);
+    }
 }

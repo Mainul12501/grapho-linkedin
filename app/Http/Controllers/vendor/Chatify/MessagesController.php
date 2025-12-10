@@ -221,9 +221,10 @@ class MessagesController extends Controller
     public function getContacts(Request $request)
     {
         // get all users that received/sent message from/to [Auth user]
-        $users = Message::join('users',  function ($join) {
+        $users = Message::join('users', function ($join) {
             $join->on('ch_messages.from_id', '=', 'users.id')
-                ->orOn('ch_messages.to_id', '=', 'users.id');
+                ->orOn('ch_messages.to_id', '=', 'users.id')
+                ->where('users.is_open_for_hire',1); // only open user will return;
         })
         ->where(function ($q) {
             $q->where('ch_messages.from_id', Auth::user()->id)
@@ -357,7 +358,7 @@ class MessagesController extends Controller
         } else {
             $records = User::where('id','!=',Auth::user()->id)
                 ->where('name', 'LIKE', "%{$input}%")
-                ->paginate($request->per_page ?? $this->perPage)
+                ->paginate($request->per_page ?? $this->perPage);
         }
 
         foreach ($records->items() as $record) {

@@ -2,6 +2,24 @@
 
 use Illuminate\Support\Str;
 
+$dbHost = '127.0.0.1';
+$dbPort = '3306';
+$dbName = 'grapho_linkedin';
+$dbUserName = 'root';
+$dbPassword = '';
+if ($_SERVER['HTTP_HOST'] == 'likewisebd.com'  )
+{
+    $dbName = 'twowheel_grapho';
+    $dbUserName = 'twowheel_grapho';
+    $dbPassword = 'twowheel_grapho';
+} elseif ($_SERVER['HTTP_HOST'] == 'admin.likewisebd.com')
+{
+    $dbName = 'twowheel_likewise_data';
+    $dbUserName = 'twowheel_likewise_data';
+    $dbPassword = 'twowheel_likewise_data';
+}
+
+
 return [
 
     /*
@@ -46,11 +64,11 @@ return [
         'mysql' => [
             'driver' => 'mysql',
             'url' => env('DB_URL'),
-            'host' => env('DB_HOST', '127.0.0.1'),
-            'port' => env('DB_PORT', '3306'),
-            'database' => env('DB_DATABASE', 'laravel'),
-            'username' => env('DB_USERNAME', 'root'),
-            'password' => env('DB_PASSWORD', ''),
+            'host' => $dbHost ?? env('DB_HOST', '127.0.0.1'),
+            'port' => $dbPort ?? env('DB_PORT', '3306'),
+            'database' => $dbName ?? env('DB_DATABASE', 'laravel'),
+            'username' => $dbUserName ?? env('DB_USERNAME', 'root'),
+            'password' => $dbPassword ?? env('DB_PASSWORD', ''),
             'unix_socket' => env('DB_SOCKET', ''),
             'charset' => env('DB_CHARSET', 'utf8mb4'),
             'collation' => env('DB_COLLATION', 'utf8mb4_unicode_ci'),

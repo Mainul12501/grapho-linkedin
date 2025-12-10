@@ -16,8 +16,8 @@
 
         <!-- Right Scrollable Jobs -->
         <section class="w-100 profileOptionRight">
-            <h1 class="forLarge">Profile viewers</h1>
-            <p class="">You have {{ count($myProfileViewers) ?? 0 }} profile viewers</p>
+            <h1 class="forLarge">{{ trans('employee.profiler_viewers') }}</h1>
+            <p class="">You have {{ count($myProfileViewers) ?? 0 }} {{ trans('employee.profiler_viewers') }}</p>
             <div class="right-panel w-100 profileViewer">
 
                 <!-- Row 1 -->
@@ -30,7 +30,7 @@
                                 <span>{{ $myProfileViewer?->employerCompany?->address ?? 'Company Address' }}</span>
                             </div>
                         </div>
-                        <div class="time">Viewed {{ \Illuminate\Support\Carbon::now()->diffForHumans(\Illuminate\Support\Carbon::parse($myProfileViewer?->created_at)) ?? 0 }} </div>
+                        <div class="time">Viewed {{ \Illuminate\Support\Carbon::parse($myProfileViewer?->created_at)->diffForHumans() ?? 0 }} </div>
                     </div>
                 @endforeach
             </div>

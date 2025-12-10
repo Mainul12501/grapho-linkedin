@@ -10,6 +10,7 @@ return Application::configure(basePath: dirname(__DIR__))
         web: __DIR__.'/../routes/web.php',
         api: __DIR__.'/../routes/api.php',
         commands: __DIR__.'/../routes/console.php',
+        channels: __DIR__.'/../routes/channels.php',
         health: '/up',
         then: function () {
             Route::middleware('web')
@@ -23,6 +24,7 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->web([
             \App\Http\Middleware\AuthGates::class,
+            \App\Http\Middleware\SetLocalLanguageMiddleware::class,
         ]);
         $middleware->alias([
             'isEmployee'    => \App\Http\Middleware\IsEmployeeMiddleware::class,
@@ -31,7 +33,9 @@ return Application::configure(basePath: dirname(__DIR__))
             'isSuperAdmin'    => \App\Http\Middleware\IsSuperAdminMiddleware::class,
             'CheckUserSubscriptionValidity'    => \App\Http\Middleware\CheckUserSubscriptionValidityMiddleware::class,
             'redirectToHomeOnSessionOut'    => \App\Http\Middleware\RedirectToHomeOnSessionOut::class,
+            'setLocalLang'    => \App\Http\Middleware\SetLocalLanguageMiddleware::class,
             'auth-page' => \App\Http\Middleware\AuthPageAuthenticationMiddleware::class,
+            'siteSubscriptionStatusCheck' => \App\Http\Middleware\SiteSubscriptionStatusCheck::class,
         ]);
         $middleware->validateCsrfTokens(except: [
             'sslcommerz/*'

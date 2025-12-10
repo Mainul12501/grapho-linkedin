@@ -5,9 +5,11 @@ namespace App\Http\Controllers\Backend\UserManagement;
 use App\DataTables\UsersDataTable;
 use App\Helpers\ViewHelper;
 use App\Http\Controllers\Controller;
+use App\Models\Backend\SubscriptionPlan;
 use App\Models\User;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 
 class UserController extends Controller
 {
@@ -22,6 +24,8 @@ class UserController extends Controller
 //        if ($request->ajax()) {
 //            return $usersDataTable->render('backend.user-management.index', $this->data);
 //        }
+
+        $subscriptions = SubscriptionPlan::take(3)->get();
         if ($request->user_type == 'admin')
         {
             $this->users = User::where(['user_type' => 'admin'])->get();
@@ -29,19 +33,22 @@ class UserController extends Controller
         {
             if ($request->has('show_sub_employer') && $request->show_sub_employer == 1 && $request->has('employer_id'))
             {
-                $this->users = User::where(['user_type' => 'sub_employer', 'user_id' => $request->employer_id])->get();
+                $this->users = User::where(['user_type' => 'sub_employer', 'user_id' => $request->employer_id])->where('is_approved', 1)->get();
             } else {
-                $this->users = User::where(['user_type' => 'employer'])->get();
+                $this->users = User::where(['user_type' => 'employer'])->where('is_approved', 1)->get();
             }
+            $subscriptions = SubscriptionPlan::where(['status' => 1, 'subscription_for' => 'employer'])->get(['id', 'title', 'subscription_for', 'duration_in_days']);
         } elseif ($request->user_type == 'employee')
         {
-            $this->users = User::where(['user_type' => 'employee'])->get();
+            $this->users = User::where(['user_type' => 'employee'])->where('is_approved', 1)->get();
+            $subscriptions = SubscriptionPlan::where(['status' => 1, 'subscription_for' => 'employee'])->get(['id', 'title', 'subscription_for', 'duration_in_days']);
         } else {
             $this->users = User::take(200)->get();
         }
         $this->data = [
             'users' => $this->users,
             'userType' => $request->user_type ?? 'all',
+            'subscriptions' => $subscriptions
         ];
         return ViewHelper::checkViewForApi($this->data, 'backend.user-management.user.index');
         return view('backend.user-management.user.index');
@@ -139,5 +146,48 @@ class UserController extends Controller
         ];
         return ViewHelper::checkViewForApi($this->data, 'backend.user-management.view-employer-jobs');
         return view('backend.user-management.view-employer-jobs');
+    }
+    public function viewEmployerPosts(User $user)
+    {
+        $this->data = [
+            'user' => $user,
+            'posts' => $user->posts()->get(),
+        ];
+        return ViewHelper::checkViewForApi($this->data, 'backend.user-management.view-employer-posts');
+        return view('backend.user-management.view-employer-posts');
+    }
+
+    public function setUserSubscriptionPlan(Request $request)
+    {
+        $user = User::find($request->user_id);
+        if ($user)
+        {
+            $subscription = SubscriptionPlan::find($request->subscription_id);
+            if ($subscription)
+            {
+                $user->subscription_plan_id = $request->subscription_id;
+                $user->subscription_started_from = now();
+                $user->subscription_end_date = Carbon::parse(now())->addDays($subscription->duration_in_days);
+                $user->save();
+                return response()->json([
+                    'status' => 'success',
+                    'msg'   => 'Subscription Plan changed successfully.',
+                ]);
+            }else {
+                return response()->json([
+                    'status' => 'error',
+                    'msg'   => 'User not found',
+                ]);
+            }
+        } else {
+            return response()->json([
+                'status' => 'error',
+                'msg'   => 'User not found',
+            ]);
+        }
+        return response()->json([
+            'status' => 'error',
+            'msg'   => 'Something went wrong. Please try again.',
+        ]);
     }
 }

@@ -15,18 +15,22 @@ use App\Http\Controllers\Frontend\Crud\EmployeeDocumentsController;
 use App\Http\Controllers\Frontend\Twilio\TwilioVideoController;
 use App\Http\Controllers\Frontend\Crud\PostController;
 use App\Http\Controllers\Frontend\Crud\FollowerHistroyController;
+use App\Http\Controllers\Api\Mobile\ZegoCloudMobileController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
 Route::get('/page/{slug?}', [FrontendViewController::class, 'showCommonPage']);
+Route::get('/check-block-approve-status', [FrontendViewController::class, 'checkBlockApproveStatus']);
 Route::post('send-otp', [CustomLoginController::class, 'sendOtp'])->name('send-otp');
 Route::post('verify-otp', [CustomLoginController::class, 'verifyOtp']);
+Route::post('login-with-google-app', [CustomLoginController::class, 'loginWithGoogleApp']);
 Route::post('buy-subscription/{subscriptionPlan}', [FrontendViewController::class, 'buySubscription']);
 
 Route::get('employee-profile/{employeeId}', [EmployerViewController::class, 'employeeProfile']);
 Route::get('get-job-details/{id}', [JobTaskController::class, 'getJobDetails']);
+Route::get('get-site-settings', [FrontendViewController::class, 'getSiteSetting']);
 
 Route::prefix('auth')->name('auth.')->group(function (){
     Route::get('select-auth-method', [CustomLoginController::class, 'selectAuthMethod']);
@@ -76,6 +80,7 @@ Route::middleware([
         Route::get('my-job-wise-applicants', [EmployerViewController::class, 'myJobWiseApplicants']);
         Route::get('my-job-applicants/{jobTask}', [EmployerViewController::class, 'myJobApplicants']);
         Route::get('head-hunt', [EmployerViewController::class, 'headHunt']);
+        Route::get('get-head-hunt-filter-options', [EmployerViewController::class, 'getHeadHuntFilterOptions']);
         Route::get('employer-user-management', [EmployerViewController::class, 'employerUserManagement']);
         Route::get('settings', [EmployerViewController::class, 'settings']);
         Route::get('company-profile', [EmployerViewController::class, 'companyProfile']);
@@ -120,5 +125,27 @@ Route::middleware([
             'employee-educations' => EmployeeEducationController::class,
             'employee-documents'    => EmployeeDocumentsController::class,
         ]);
+    });
+
+    // Mobile App API Routes for ZegoCloud Calling
+    Route::prefix('mobile/call')->name('mobile.call.')->group(function () {
+        // Device registration
+        Route::post('/register-device', [ZegoCloudMobileController::class, 'registerDevice']);
+        Route::post('/update-online-status', [ZegoCloudMobileController::class, 'updateOnlineStatus']);
+
+        // Call management
+        Route::post('/initiate', [ZegoCloudMobileController::class, 'initiateCall']);
+        Route::post('/{callId}/accept', [ZegoCloudMobileController::class, 'acceptCall']);
+        Route::post('/{callId}/reject', [ZegoCloudMobileController::class, 'rejectCall']);
+        Route::post('/{callId}/end', [ZegoCloudMobileController::class, 'endCall']);
+
+        // Call information
+        Route::get('/active-calls', [ZegoCloudMobileController::class, 'getActiveCalls']);
+        Route::get('/call-history', [ZegoCloudMobileController::class, 'getCallHistory']);
+        Route::get('/{callId}/details', [ZegoCloudMobileController::class, 'getCallDetails']);
+        Route::get('/user/{userId}/availability', [ZegoCloudMobileController::class, 'checkUserAvailability']);
+
+        // ZegoCloud configuration
+        Route::post('/generate-token', [ZegoCloudMobileController::class, 'generateToken']);
     });
 });

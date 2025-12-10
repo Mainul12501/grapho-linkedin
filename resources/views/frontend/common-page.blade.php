@@ -25,10 +25,10 @@
     <div class="offcanvas-body d-flex flex-column justify-content-between">
         <ul class="navbar-nav mb-3">
 {{--            <li class="nav-item"><a class="nav-link custom-hover" href="#">Community</a></li>--}}
-            <li class="nav-item"><a class="nav-link custom-hover" href="#">Jobs</a></li>
-            <li class="nav-item"><a class="nav-link custom-hover" href="#">Companies</a></li>
-            <li class="nav-item"><a class="nav-link custom-hover" href="#">Salaries</a></li>
-            <li class="nav-item"><a class="nav-link custom-hover" href="#">For Employers</a></li>
+            <li class="nav-item"><a class="nav-link custom-hover" href="#">{{ trans('home.jobs') }}</a></li>
+            <li class="nav-item"><a class="nav-link custom-hover" href="#">{{ trans('home.companies') }}</a></li>
+            <li class="nav-item"><a class="nav-link custom-hover" href="#">{{ trans('home.salaries') }}</a></li>
+            <li class="nav-item"><a class="nav-link custom-hover" href="#">{{ trans('home.for_employers') }}</a></li>
         </ul>
 
         <!-- Notification Icon & Sign In in offcanvas -->
@@ -36,7 +36,7 @@
             @if(auth()->check())
                 <a href="#" onclick="event.preventDefault(); document.getElementsByClassName('logoutForm')[0].submit()" class="btn btn-dark d-flex align-items-center gap-2 px-3 py-2 rounded-3">
 {{--                    <img src="{{ asset('/') }}frontend/home-landing/images/signin.png" alt="Login" width="20px">--}}
-                    <span>Logout</span>
+                    <span>{{ trans('auth.logout') }}</span>
                 </a>
                 <form action="{{ route('logout') }}" method="post" class="logoutForm">
                     @csrf
@@ -44,7 +44,7 @@
             @else
                 <a href="{{ route('auth.select-auth-method') }}" class="btn btn-dark d-flex align-items-center gap-2 px-3 py-2 rounded-3">
                     <img src="{{ asset('/') }}frontend/home-landing/images/signin.png" alt="Login" width="20px">
-                    <span>Sign In</span>
+                    <span>{{ trans('auth.sign_in') }}</span>
                 </a>
             @endif
 
@@ -69,9 +69,9 @@
         <!-- Mobile notification bell and hamburger grouped -->
         <div class="d-flex align-items-center gap-2 d-lg-none">
             <!-- Notification Bell -->
-            <button class="btn btn-link p-0">
-                <img src="{{ asset('/') }}frontend/home-landing/images/notificationbell.png" alt="Notifications" width="30px">
-            </button>
+{{--            <a href="#" class="btn btn-link p-0">--}}
+{{--                <img src="{{ asset('/') }}frontend/home-landing/images/notificationbell.png" alt="Notifications" width="30px">--}}
+{{--            </a>--}}
             <!-- Hamburger -->
             <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
                 <span class="navbar-toggler-icon"></span>
@@ -97,7 +97,7 @@
             @if(auth()->check())
                 <a href="#" onclick="event.preventDefault(); document.getElementsByClassName('logoutForm')[0].submit()" class="btn btn-dark d-flex align-items-center gap-2 px-3 py-2 rounded-3">
                     {{--                    <img src="{{ asset('/') }}frontend/home-landing/images/signin.png" alt="Login" width="20px">--}}
-                    <span>Logout</span>
+                    <span>{{ trans('auth.logout') }}</span>
                 </a>
                 <form action="{{ route('logout') }}" method="post" class="logoutForm">
                     @csrf
@@ -105,7 +105,7 @@
             @else
                 <a href="{{ route('auth.select-auth-method') }}" class="btn btn-dark d-flex align-items-center gap-2 px-3 py-2 rounded-3">
                     <img src="{{ asset('/') }}frontend/home-landing/images/signin.png" alt="Login" width="20px">
-                    <span>Sign In</span>
+                    <span>{{ trans('auth.sign_in') }}</span>
                 </a>
             @endif
         </div>
@@ -141,17 +141,24 @@
 {{--                    <li><a href="#" class="text-decoration-none text-dark">Contact Us</a></li>--}}
 {{--                    <li><a href="#" class="text-decoration-none text-dark">Guides</a></li>--}}
 {{--                </ul>--}}
-                <p class="" style="text-align: justify">Grapho is job hub.. More content here..</p>
+                <p class="" style="text-align: justify">{{ trans('home.site_description') }}</p>
             </div>
             <div class="col-md-2 mb-3">
-                <h6 class="fw-semibold">Employers</h6>
+                <h6 class="fw-semibold">{{ trans('home.employers') }}</h6>
                 <ul class="list-unstyled small">
-                    <li><a href="{{ url('auth/user-registration-page?user=Employer') }}" class="text-decoration-none text-dark">Get a Free Employer Account</a></li>
-                    <li><a href="{{ url('auth/user-registration-page?user=Employer') }}" class="text-decoration-none text-dark">Employer Center</a></li>
+                    @if(!auth()->check())
+                        <li><a href="{{ url('auth/user-registration-page?user=Employer') }}" class="text-decoration-none text-dark">{{ trans('home.get_free_employer_account') }}</a></li>
+                        <li><a href="{{ url('auth/user-registration-page?user=Employer') }}" class="text-decoration-none text-dark">{{ trans('home.employer_center') }}</a></li>
+                    @elseif(auth()->user()->user_type == 'employer')
+                        <li><a href="{{ route('employer.dashboard') }}" class="text-decoration-none text-dark">{{ trans('home.dashboard') }}</a></li>
+                        <li><a href="{{ route('employer.my-jobs') }}" class="text-decoration-none text-dark">{{ trans('home.jobs') }}</a></li>
+                    @else
+                        <li><a href="{{ url('/') }}" class="text-decoration-none text-dark">{{ trans('home.home') }}</a></li>
+                    @endif
                 </ul>
             </div>
             <div class="col-md-3 mb-3">
-                <h6 class="fw-semibold">Pages</h6>
+                <h6 class="fw-semibold">{{ trans('home.pages') }}</h6>
                 <ul class="list-unstyled small">
                     @foreach($commonPages as $commonPage)
                         <li><a href="#" class="text-decoration-none text-dark">{{ $commonPage->title ?? 'page name' }}</a></li>
@@ -166,16 +173,16 @@
                 </ul>
             </div>
             <div class="col-md-2 mb-3">
-                <h6 class="fw-semibold">Work With Us</h6>
+                <h6 class="fw-semibold">{{ trans('home.work_with_us') }}</h6>
                 <ul class="list-unstyled small">
-                    <li><a href="{{ url('auth/user-registration-page?user=Employer') }}" class="text-decoration-none text-dark">Advertisers</a></li>
-                    <li><a href="{{ url('auth/user-registration-page?user=Employee') }}" class="text-decoration-none text-dark">Careers</a></li>
+                    <li><a href="{{ url('auth/user-registration-page?user=Employer') }}" class="text-decoration-none text-dark">{{ trans('home.advertisers') }}</a></li>
+                    <li><a href="{{ url('auth/user-registration-page?user=Employee') }}" class="text-decoration-none text-dark">{{ trans('home.careers') }}</a></li>
                 </ul>
             </div>
 
             <div class="col-md-3 mb-3 d-flex flex-column align-items-start justify-content-between">
                 <div class="mb-2">
-                    <span class="small">Download the App</span>
+                    <span class="small">{{ trans('home.download_app') }}</span>
                     <div class="d-inline-flex gap-2 ms-2">
                         <a href="{{ isset($siteSetting) ? $siteSetting->apk_link : 'javascript:void(0)' }}" aria-label="Download on Android">
                             <img src="{{ asset('/') }}frontend/home-landing/images/android.png" alt="Android" style="width: 30px;">
@@ -206,9 +213,9 @@
                     </a>
                 </div>
 
-                <select class="form-select form-select-sm w-auto" aria-label="Select country">
-                    <option value="en">English</option>
-                    <option value="bn">Bangla</option>
+                <select class="form-select form-select-sm w-auto" aria-label="Select country" id="changeLocalLangOption">
+                    <option value="en" {{ session('locale') == 'en' ? 'selected' : '' }} data-url="{{ route('change-local-language', ['local' => 'English']) }}">{{ trans('home.english') }}</option>
+                    <option value="bn" {{ session('locale') == 'bn' ? 'selected' : '' }} data-url="{{ route('change-local-language', ['local' => 'Bangla']) }}">{{ trans('home.bangla') }}</option>
                 </select>
             </div>
         </div>
@@ -225,7 +232,7 @@
 {{--        </div>--}}
 
         <div class="text-center mt-2 small text-muted">
-            Copyright &copy; 2008-2025. Grapho LLC.
+            Copyright &copy; 2008-2025. {{ isset($siteSetting) ? $siteSetting->site_title : 'Likewise Bd' }} LLC.
         </div>
     </div>
 </footer>
@@ -249,8 +256,8 @@
                                             <img src="{{ asset('frontend/employee/images/authentication images/employeeIcon.png') }}" alt="" class="userSelectOptionIcon">
                                         </div>
                                         <div class="col-9">
-                                            <h5>Employer</h5>
-                                            <p>Looking to scale your team.</p>
+                                            <h5>{{ trans('auth.employer') }}</h5>
+                                            <p>{{ trans('auth.employer_description') }}</p>
                                         </div>
                                         <div class="col-1">
                                             <img src="{{ asset('frontend/employee/images/authentication images/arrow-right 1.png') }}" alt="" class="arrowIcon">
@@ -264,8 +271,8 @@
                                             <img src="{{ asset('frontend/employee/images/authentication images/jobSeekerIcon.png') }}" alt="" class="userSelectOptionIcon">
                                         </div>
                                         <div class="col-9">
-                                            <h5>Job-seeker</h5>
-                                            <p>Looking for job opportunities.</p>
+                                            <h5>{{ trans('auth.job_seeker') }}</h5>
+                                            <p>{{ trans('auth.job_seeker_description') }}</p>
                                         </div>
                                         <div class="col-1">
                                             <img src="{{ asset('frontend/employee/images/authentication images/arrow-right 1.png') }}" alt="" class="arrowIcon">
@@ -289,5 +296,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
 {!! $siteSetting->meta_footer ?? '' !!}
+<script src="https://js.pusher.com/7.2.0/pusher.min.js"></script>
+@include('frontend.zegocloud.incoming-call-popup')
 </body>
 </html>

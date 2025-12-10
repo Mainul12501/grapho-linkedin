@@ -150,6 +150,15 @@
                                     <img src="{{ asset($basicSetting->favicon) }}" alt="" style="height: 16px" />
                                 @endif
                             </div>
+                            <div class="col-md-6 mt-2">
+                                <label for="">Common Institute Icon</label>
+                                @if(!isset($isShown))
+                                    <input type="file" name="common_institute_logo" class="form-control" accept="image/*" />
+                                @endif
+                                @if(isset($basicSetting->common_institute_logo))
+                                    <img src="{{ asset($basicSetting->common_institute_logo) }}" alt="" style="height: 60px" />
+                                @endif
+                            </div>
 
                         </div>
                         <div class="mt-2">
@@ -169,6 +178,122 @@
                     </form>
                 </div>
             </div>
+
+            <div class="card">
+                <div class="card-header bg-primary">
+                    <h4 class="text-white float-start">Vendor Credentials</h4>
+                </div>
+                <div class="card-body">
+                    <div>
+                        <form class="" id="vendorCredentialsForm" method="post" action="{{ route('update-vendor-credentials') }}">
+                            @csrf
+                            <div class="mt-2">
+                                <p class="fw-bold pb-2 border-bottom">Alpha SMS Gateway</p>
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" id="alphaFloatingInput" name="SMS_ALPHA_SMS_API_KEY" value="{{ env('SMS_ALPHA_SMS_API_KEY') ?? '' }}" placeholder="ukshdkhudfus.........">
+                                    <label for="alphaFloatingInput">API Key</label>
+                                </div>
+                            </div>
+                            <div class="mt-2">
+                                <p class="fw-bold pb-2 border-bottom">SMTP Mail Gateway</p>
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" id="mailerHost" name="MAIL_HOST" value="{{ env('MAIL_HOST') ?? '' }}" placeholder="admin@admin.com">
+                                    <label for="mailerHost">Mailer Host</label>
+                                </div>
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" id="mailerPort" name="MAIL_PORT" value="{{ env('MAIL_PORT') ?? '' }}" placeholder="682">
+                                    <label for="mailerPort">Mailer Port</label>
+                                </div>
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" id="mailerusername" name="MAIL_USERNAME" value="{{ env('MAIL_USERNAME') ?? '' }}" placeholder="username">
+                                    <label for="mailerusername">Mailer Username</label>
+                                </div>
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" id="mailerpassword" name="MAIL_PASSWORD" value="{{ env('MAIL_PASSWORD') ?? '' }}" placeholder="Password">
+                                    <label for="mailerpassword">Mailer Password</label>
+                                </div>
+                                {{--                        <div class="form-floating mb-3">--}}
+                                {{--                            <input type="text" class="form-control" id="mailermailfrom_address" name="mailer_mailfrom_address" value="{{ env('MAIL_FROM_ADDRESS') ?? '' }}" placeholder="support@domain.com">--}}
+                                {{--                            <label for="mailermailfrom_address">Mailer Port</label>--}}
+                                {{--                        </div>--}}
+                            </div>
+                            <div class="mt-2">
+                                <p class="fw-bold pb-2 border-bottom">Google Auth Credentials</p>
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" id="googleClientId" name="GOOGLE_CLIENT_ID" value="{{ env('GOOGLE_CLIENT_ID') ?? '' }}" placeholder="admin@admin.com">
+                                    <label for="googleClientId">Client ID</label>
+                                </div>
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" id="googleClientSecret" name="GOOGLE_CLIENT_SECRET" value="{{ env('GOOGLE_CLIENT_SECRET') ?? '' }}" placeholder="682">
+                                    <label for="googleClientSecret">Client Secret</label>
+                                </div>
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" id="googleRedirectUrl" name="GOOGLE_REDIRECT" value="{{ env('GOOGLE_REDIRECT') ?? '' }}" placeholder="username">
+                                    <label for="googleRedirectUrl">Redirect Url</label>
+                                </div>
+                            </div>
+                            <div class="mt-2">
+                                <p class="fw-bold pb-2 border-bottom">Pusher Credentials</p>
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" id="pusherAppKey" name="PUSHER_APP_KEY" value="{{ env('PUSHER_APP_KEY') ?? '' }}" placeholder="admin@admin.com">
+                                    <label for="pusherAppKey">APP Key</label>
+                                </div>
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" id="pusherAppSecret" name="PUSHER_APP_SECRET" value="{{ env('PUSHER_APP_SECRET') ?? '' }}" placeholder="682">
+                                    <label for="pusherAppSecret">App Secret</label>
+                                </div>
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" id="pusherAppId" name="PUSHER_APP_ID" value="{{ env('PUSHER_APP_ID') ?? '' }}" placeholder="username">
+                                    <label for="pusherAppId">App ID</label>
+                                </div>
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" id="pusherAppCluster" name="PUSHER_APP_CLUSTER" value="{{ env('PUSHER_APP_CLUSTER') ?? '' }}" placeholder="username">
+                                    <label for="pusherAppCluster">App Cluster</label>
+                                </div>
+                            </div>
+                            <div class="mt-2">
+                                <p class="fw-bold pb-2 border-bottom">Twilio Credentials</p>
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" id="twilioApiSid" name="TWILIO_ACCOUNT_SID" value="{{ env('TWILIO_ACCOUNT_SID') ?? '' }}" placeholder="admin@admin.com">
+                                    <label for="twilioApiSid">Account SID</label>
+                                </div>
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" id="twilioApiKey" name="TWILIO_API_KEY" value="{{ env('TWILIO_API_KEY') ?? '' }}" placeholder="682">
+                                    <label for="twilioApiKey">API Key</label>
+                                </div>
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" id="twilioApiSecret" name="TWILIO_API_SECRET" value="{{ env('TWILIO_API_SECRET') ?? '' }}" placeholder="username">
+                                    <label for="twilioApiSecret">API Secret</label>
+                                </div>
+                            </div>
+                            <div class="mt-2">
+                                <p class="fw-bold pb-2 border-bottom">SSLCommerze Credentials</p>
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" id="mailerHost" name="SSLC_STORE_ID" value="{{ env('SSLC_STORE_ID') ?? '' }}" placeholder="sheyure5we78">
+                                    <label for="mailerHost">Store ID</label>
+                                </div>
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" id="mailerPort" name="SSLC_STORE_PASSWORD" value="{{ env('SSLC_STORE_PASSWORD') ?? '' }}" placeholder="jewhriwue7234hf">
+                                    <label for="mailerPort">Store Password</label>
+                                </div>
+                                <div class="form-floating mb-3">
+                                    <select class="form-select" id="floatingSelect" name="SSLC_TESTMODE" aria-label="Floating label select example">
+                                        <option selected disabled>Select Mode</option>
+                                        <option value="TRUE" {{ env('SSLC_TESTMODE') == 'TRUE' ? 'selected' : '' }}>TRUE</option>
+                                        <option value="FALSE" {{ env('SSLC_TESTMODE') == 'FALSE' ? 'selected' : '' }}>FALSE</option>
+                                    </select>
+                                    <label for="floatingSelect">Test Mode Status</label>
+                                </div>
+                            </div>
+
+
+                            <div class="mt-2">
+                                <button type="button" id="vendorCredentialsFormSubmitBtn" class="btn btn-warning">Update</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -179,6 +304,23 @@
 @push('script')
     @include('common-resource-files.selectize')
     @include('common-resource-files.summernote')
+
+    <script>
+        $(document).on('click', '#vendorCredentialsFormSubmitBtn', function () {
+            event.preventDefault();
+            $.ajax({
+                url: "{{ route('update-vendor-credentials') }}",
+                method: "POST",
+                data: $('#vendorCredentialsForm').serialize(),
+                success: function (response) {
+                    if (response.status == 'success')
+                        toastr.success(response.msg);
+                    else
+                        toastr.error('Something went wrong. Please try again');
+                }
+            })
+        })
+    </script>
     <!--tinymce js-->
 {{--    <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.3.2/tinymce.min.js" integrity="sha512-9w/jRiVYhkTCGR//GeGsRss1BJdvxVj544etEHGG1ZPB9qxwF7m6VAeEQb1DzlVvjEZ8Qv4v8YGU8xVPPgovqg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>--}}
 
