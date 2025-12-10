@@ -94,21 +94,21 @@
                     @foreach($topJobsForEmployee as $topJobForEmployee)
                         <div class="row jobCard border-bottom">
                             <div class="col-md-2 col-lg-1 pe-0">
-                                <a href="{{ route('view-company-profile', $topJobForEmployee->id) }}">
+                                <a href="{{ route('view-company-profile', ['employerCompany' => $topJobForEmployee->id, 'view' => 'employee']) }}">
                                     <img src="{{ asset($topJobForEmployee?->employerCompany?->logo ?? '/frontend/company-vector.jpg') }}" alt="Company Logo" class="companyLogo img-fluid" style="height: 65px; border-radius: 50%;" />
                                 </a>
                             </div>
                             <div class="col-md-10 col-lg-11">
                                 <div class="jobPosition d-flex justify-content-between">
                                     <div class="d-flex">
-                                        <a href="{{ route('view-company-profile', ['employerCompany' => $topJobForEmployee->employer_company_id]) }}">
+                                        <a href="{{ route('view-company-profile', ['employerCompany' => $topJobForEmployee->employer_company_id, 'view' => 'employee']) }}">
                                             <img style="width: 40px; height: 42px" src="{{ asset($topJobForEmployee?->employerCompany?->logo ?? '/frontend/company-vector.jpg') }}"
                                                  alt="Company Logo" class="mobileLogo" />
                                         </a>
 
                                         <div class="paddingforMobile">
                                             <h3  style="cursor: pointer;">{{ $topJobForEmployee->job_title  ?? trans('common.job_title') }} <span class="text-success" onclick="showJobDetails({{ $topJobForEmployee->id }}, `{{ $topJobForEmployee->job_title }}`)" >{{ trans('common.view') }}</span></h3>
-                                            <p class="text-muted"><a class="text-muted nav-link" href="{{ route('view-company-profile', ['employerCompany' => $topJobForEmployee->employer_company_id]) }}">{{ $topJobForEmployee?->employerCompany?->name ?? trans('common.company_name') }}</a></p>
+                                            <p class="text-muted"><a class="text-muted nav-link" href="{{ route('view-company-profile', ['employerCompany' => $topJobForEmployee->employer_company_id, 'view' => 'employee']) }}">{{ $topJobForEmployee?->employerCompany?->name ?? trans('common.company_name') }}</a></p>
                                         </div>
                                     </div>
 {{--                                    <div class="dropdown">--}}
@@ -175,35 +175,35 @@
             <div class="right-panel w-100 mb-5">
                 <div class="rightPanelHeadinfo">
                     <h2>{{ trans('employee.more_jobs') }}</h2>
-                    <p>{{ trans('employee.jobs_people_network_hiring') }}</p>
+{{--                    <p>{{ trans('employee.jobs_people_network_hiring') }}</p>--}}
                 </div>
 
                 @foreach($moreJobsForEmployee as $topJobForEmployee)
                     <div class="row jobCard border-bottom">
                         <div class="col-md-2 col-lg-1 pe-0" style="border-radius: 50%">
-                            <a href="{{ route('view-company-profile', $topJobForEmployee->employer_company_id) }}"><img style="cursor: pointer" src="{{ asset($topJobForEmployee?->employerCompany?->logo ?? '/frontend/employee/images/contentImages/companyLogoFor job.png') }}" alt="Company Logo" class="companyLogo" /></a>
+                            <a href="{{ route('view-company-profile', ['employerCompany' => $topJobForEmployee->employer_company_id, 'view' => 'employee']) }}"><img style="cursor: pointer" src="{{ asset($topJobForEmployee?->employerCompany?->logo ?? '/frontend/employee/images/contentImages/companyLogoFor job.png') }}" alt="Company Logo" class="companyLogo" /></a>
                         </div>
                         <div class="col-md-10 col-lg-11">
                             <div class="jobPosition d-flex justify-content-between">
                                 <div class="d-flex">
-                                    <a href="{{ route('view-company-profile', $topJobForEmployee->employer_company_id) }}">
+                                    <a href="{{ route('view-company-profile', ['employerCompany' => $topJobForEmployee->employer_company_id, 'view' => 'employee']) }}">
                                         <img style="width: 40px; height: 42px" src="{{ asset($topJobForEmployee?->employerCompany?->logo ?? '/frontend/employee/images/contentImages/companyLogoFor job.png') }}"
                                              alt="Company Logo" class="mobileLogo" />
                                     </a>
 
                                     <div class="paddingforMobile">
                                         <h3  style="cursor: pointer;">{{ $topJobForEmployee->job_title  ?? trans('common.job_title') }} <span class="text-success" onclick="showJobDetails({{ $topJobForEmployee->id }}, `{{ $topJobForEmployee->job_title }}`)">{{ trans('common.view') }}</span></h3>
-                                        <p class="text-muted"><a class="nav-link text-muted" href="{{ route('view-company-profile', $topJobForEmployee->employer_company_id) }}">{{ $topJobForEmployee?->employerCompany?->name ?? trans('common.company_name') }}</a></p>
+                                        <p class="text-muted"><a class="nav-link text-muted" href="{{ route('view-company-profile', ['employerCompany' => $topJobForEmployee->employer_company_id, 'view' => 'employee']) }}">{{ $topJobForEmployee?->employerCompany?->name ?? trans('common.company_name') }}</a></p>
                                     </div>
                                 </div>
-                                <div class="dropdown">
-                                    <img src="{{ asset('/') }}frontend/employee/images/contentImages/threedot.png" alt="Options" class="threeDot" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <ul class="dropdown-menu dropdown-menu-end" style="">
-                                        <li><a class="dropdown-item" href="{{ route('employee.save-job', $topJobForEmployee->id) }}">{{ trans('common.save_job') }}</a></li>
-                                        <li><a class="dropdown-item" href="#">{{ trans('common.share') }}</a></li>
-                                        <li><a class="dropdown-item" href="#">{{ trans('common.report') }}</a></li>
-                                    </ul>
-                                </div>
+{{--                                <div class="dropdown">--}}
+{{--                                    <img src="{{ asset('/') }}frontend/employee/images/contentImages/threedot.png" alt="Options" class="threeDot" role="button" data-bs-toggle="dropdown" aria-expanded="false">--}}
+{{--                                    <ul class="dropdown-menu dropdown-menu-end" style="">--}}
+{{--                                        <li><a class="dropdown-item" href="{{ route('employee.save-job', $topJobForEmployee->id) }}">{{ trans('common.save_job') }}</a></li>--}}
+{{--                                        <li><a class="dropdown-item" href="#">{{ trans('common.share') }}</a></li>--}}
+{{--                                        <li><a class="dropdown-item" href="#">{{ trans('common.report') }}</a></li>--}}
+{{--                                    </ul>--}}
+{{--                                </div>--}}
                             </div>
                             <div class="jobTypeBtn">
                                 <button class="btn">{{ $topJobForEmployee?->jobType?->name ?? trans('common.full_time') }}</button>
@@ -433,7 +433,8 @@
         }
         .modal .job-type {margin-bottom: 10px}
 
-
+        .share-profile-btn {background-color: #ffcb11 !important}
+        .easy-apply-modal .cancel-btn {background-color: #0d6efd !important; color: white;}
         /*for mobile device*/
 
 

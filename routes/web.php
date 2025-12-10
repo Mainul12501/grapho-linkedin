@@ -17,6 +17,7 @@ use App\Http\Controllers\Frontend\Crud\FollowerHistroyController;
 use App\Http\Controllers\Frontend\Twilio\TwilioVideoController;
 use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\Frontend\ZegoCloud\ZegoCloudController;
+use App\Http\Controllers\Frontend\ZegoCloud\ZegoCloudMessagingController;
 
 Route::get('change-local-language/{local}', [FrontendViewController::class, 'changeLocalLanguage'])->name('change-local-language');
 
@@ -85,6 +86,19 @@ Route::middleware(['auth:sanctum'])->group(function(){
 });
 
 
+//zego-cloud msg integration test
+Route::middleware([
+    'auth:sanctum',
+    config('jetstream.auth_session'),
+    'verified',
+    'redirectToHomeOnSessionOut',
+])->prefix('zego')->name('zego-message.')->group(function (){
+    Route::get('/chat', [ZegoCloudMessagingController::class, 'index'])->name('chat');
+    Route::post('/get-token', [ZegoCloudMessagingController::class, 'getToken'])->name('get-token');
+    Route::get('/get-contacts', [ZegoCloudMessagingController::class, 'getContacts'])->name('get-contacts');
+    Route::get('/diagnostic', [ZegoCloudMessagingController::class, 'diagnostic'])->name('diagnostic');
+});
+
 
 Route::middleware([
     'auth:sanctum',
@@ -94,6 +108,8 @@ Route::middleware([
 ])->group(function () {
 
     Route::get('auth/user-profile-update', [CustomLoginController::class, 'userProfileUpdate'])->name('auth.user-profile-update');
+    Route::post('update-fcm-token', [CustomLoginController::class, 'updateFcmToken'])->name('update-fcm-token');
+    Route::post('update-zego-caller-id', [CustomLoginController::class, 'updateZegoCallerId'])->name('update-zego-caller-id');
 
     Route::post('auth/user-password-update', [CustomLoginController::class, 'userPasswordUpdate'])->name('auth.user-password-update');
     Route::get('call-user/{type?}', [TwilioVideoController::class, 'viewPage'])->name('employer.call-user');

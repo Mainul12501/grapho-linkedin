@@ -16,6 +16,8 @@ use App\Http\Controllers\Frontend\Twilio\TwilioVideoController;
 use App\Http\Controllers\Frontend\Crud\PostController;
 use App\Http\Controllers\Frontend\Crud\FollowerHistroyController;
 use App\Http\Controllers\Api\Mobile\ZegoCloudMobileController;
+use App\Http\Controllers\Api\ZegoCloudApiController;
+use App\Http\Controllers\Frontend\ZegoCloud\ZegoCloudController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -31,6 +33,8 @@ Route::post('buy-subscription/{subscriptionPlan}', [FrontendViewController::clas
 Route::get('employee-profile/{employeeId}', [EmployerViewController::class, 'employeeProfile']);
 Route::get('get-job-details/{id}', [JobTaskController::class, 'getJobDetails']);
 Route::get('get-site-settings', [FrontendViewController::class, 'getSiteSetting']);
+
+Route::post('/call/initiate', [ZegoCloudController::class, 'initiateCall']);
 
 Route::prefix('auth')->name('auth.')->group(function (){
     Route::get('select-auth-method', [CustomLoginController::class, 'selectAuthMethod']);
@@ -67,6 +71,8 @@ Route::middleware([
 //    'verified',
 ])->group(function () {
 
+    Route::post('update-zego-caller-id', [CustomLoginController::class, 'updateZegoCallerId']);
+    Route::post('update-fcm-token', [CustomLoginController::class, 'updateFcmToken']);
     Route::get('auth/user-profile-update', [CustomLoginController::class, 'userProfileUpdate']);
     Route::get('call-user/{type?}', [TwilioVideoController::class, 'viewPage']);
     Route::get('view-company-profile/{employerCompany}', [EmployeeViewController::class, 'viewCompanyProfile']);
@@ -147,5 +153,21 @@ Route::middleware([
 
         // ZegoCloud configuration
         Route::post('/generate-token', [ZegoCloudMobileController::class, 'generateToken']);
+    });
+
+    // Mobile App API Routes for ZegoCloud Messaging (ZIM)
+    Route::prefix('zego/messaging')->name('zego.messaging.')->group(function () {
+        // Authentication
+        Route::post('/token', [ZegoCloudApiController::class, 'getToken']);
+        Route::post('/verify-token', [ZegoCloudApiController::class, 'verifyToken']);
+
+        // User Management
+        Route::get('/profile', [ZegoCloudApiController::class, 'getProfile']);
+        Route::post('/update-online-status', [ZegoCloudApiController::class, 'updateOnlineStatus']);
+
+        // Contacts
+        Route::get('/contacts', [ZegoCloudApiController::class, 'getContacts']);
+        Route::get('/users/{user_id}', [ZegoCloudApiController::class, 'getUserDetails']);
+        Route::post('/search-users', [ZegoCloudApiController::class, 'searchUsers']);
     });
 });

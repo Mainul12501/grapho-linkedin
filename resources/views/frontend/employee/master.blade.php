@@ -92,8 +92,8 @@
         }
 
         .employee-mobile-drawer .bottom-nav .active a {
-            /*color: #0d6efd;*/
-            color: #FFCB11;
+            color: #0d6efd;
+            /*color: #FFCB11;*/
             font-weight: 600;
         }
 
@@ -110,14 +110,14 @@
             transform: translateX(-50%);
             width: 40px;
             height: 3px;
-            /*background: #0d6efd;*/
-            background: #FFCB11;
+            background: #0d6efd;
+            /*background: #FFCB11;*/
             border-radius: 0 0 3px 3px;
         }
 
         .employee-mobile-drawer .bottom-nav a:hover {
-            /*color: #0d6efd;*/
-            color: #FFCB11;
+            color: #0d6efd;
+            /*color: #FFCB11;*/
         }
 
         .employee-mobile-drawer .bottom-nav a:hover img {
@@ -260,10 +260,10 @@
 
         .employee-mobile-drawer .drawer-item:hover {
             background: #f8f9fa;
-            /*border-left-color: #0d6efd;*/
-            border-left-color: #FFCB11;
-            /*color: #0d6efd;*/
-            color: #FFCB11;
+            border-left-color: #0d6efd;
+            /*border-left-color: #FFCB11;*/
+            color: #0d6efd;
+            /*color: #FFCB11;*/
         }
 
         .employee-mobile-drawer .drawer-item:hover::before {
@@ -376,7 +376,7 @@
 
         /*mobile menu color fix*/
         .drawer-menu a {font-weight: bolder;}
-        .employee-mobile-drawer .drawer-item i {color: #FFCB11!important;}
+        /*.employee-mobile-drawer .drawer-item i {color: #FFCB11!important;}*/
     </style>
     @yield('style')
     @stack('style')
@@ -396,9 +396,9 @@
 
     <!-- Side Drawer -->
     <div class="side-drawer" id="sideDrawer" >
-        <div class="drawer-header" style="background: #FFCB11!important;">
+        <div class="drawer-header" style="">
             <h5 class="drawer-title">
-                <i class="fas fa-user-circle"></i>
+                <i class="fa-solid fa-bars"></i>
                 Menu
             </h5>
             <button class="drawer-close" id="closeDrawer">
@@ -487,7 +487,8 @@
 
         <div class="text-center mobileInbox">
             <a href="#" id="openDrawer">
-                <img src="{{ asset('/frontend/employee/images/header images/MobileMessageIcon.png') }}" alt="Options" />
+{{--                <img src="{{ asset('/frontend/employee/images/header images/MobileMessageIcon.png') }}" alt="Options" />--}}
+                <i class="fa-solid fa-bars fa-2x"></i>
                 <span class="mt-1">Menu</span>
             </a>
         </div>

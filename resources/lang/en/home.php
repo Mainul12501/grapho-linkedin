@@ -12,7 +12,7 @@ return [
     'get_ahead_with_likewisebd' => 'Get ahead with LikeWiseBD',
     'serving_trusted_insights' => "We're serving up trusted insights and anonymous conversation, so you'll have the goods you need to succeed.",
     'join_work_community' => 'Join your work community',
-    'find_and_apply_to_jobs' => 'Find and apply to jobs',
+    'find_and_apply_to_jobs' => 'Find and apply',
     'search_company_reviews' => 'Search company reviews',
     'compare_salaries' => 'Compare salaries',
     'start_your_search' => 'Start your search',

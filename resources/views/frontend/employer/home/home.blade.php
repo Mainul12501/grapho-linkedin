@@ -65,7 +65,7 @@
                                                                     <i class="bi bi-arrow-up-right-circle"></i>
 {{--                                                                    <img src="{{ isset($siteSettin) ? asset($siteSettin->logo) : '' }}" alt="site-logo" style="height: 54px; width: 54px">--}}
                                                                 </div>
-                                                                <h6 class="mb-1">View more talents</h6>
+                                                                <h6 class="mb-1">View more profiles</h6>
                                                                 <p class="mb-0 text-muted small">Discover more profiles on LikewiseBD</p>
                                                             </article>
                                                         </a>
@@ -114,6 +114,7 @@
         @media screen and (max-width: 768px){
             #appendContentHere {padding-left: 10px!important;}
             .mobile-search-float-left-0 {float: none!important;}
+            .talent-meta {display: none}
         }
         /*.owl-nav {display: none;}*/
         /*.owl-dots {display: none;}*/
@@ -372,7 +373,9 @@
         })
     </script>
     <script>
-        equalizeHeights('item');
+        setTimeout(function () {
+            equalizeHeights('item');
+        }, 1000);
     </script>
     <script>
         var startNumber = 0;

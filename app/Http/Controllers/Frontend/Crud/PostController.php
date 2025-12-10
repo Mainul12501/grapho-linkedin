@@ -17,7 +17,25 @@ class PostController extends Controller
      */
     public function index()
     {
-        return redirect(route('employer.home'));
+        if (ViewHelper::checkIfRequestFromApi())
+        {
+            $posts = Post::where(['user_id' => ViewHelper::loggedUser()->id])->with('employer')->latest()->paginate(10);
+//            if (str()->contains(url()->current(), '/api/'))
+//            {
+                foreach ($posts as $post)
+                {
+                    if (isset($post->images))
+                    {
+                        $post['image_array'] = json_decode($post->images);
+                    }
+                }
+//            }
+            $data = ['posts' => $posts];
+            return ViewHelper::checkViewForApi($data, 'frontend.employer.posts.index');
+        } else {
+            return redirect(route('employer.home'));
+        }
+
         $posts = Post::where(['user_id' => ViewHelper::loggedUser()->id])->latest()->get();
         if (str()->contains(url()->current(), '/api/'))
         {

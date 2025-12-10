@@ -227,6 +227,8 @@ class CustomLoginController extends Controller
             $user->organization_name     = $request->organization_name;
             $user->user_type     = $request->user_type;
             $user->gender     = $request->gender;
+            $user->zego_caller_id     = $request->zego_caller_id;
+            $user->fcm_token     = $request->fcm_token;
             $user->is_approved     = $request->user_type == 'Employer' ? 0 : 1;
             $user->user_slug     = str_replace(' ', '-', $request->name);
             $user->password     = bcrypt($request->password);
@@ -282,8 +284,8 @@ class CustomLoginController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'login_method'   => 'required',
-            'email'    => $request->login_method == 'email' ? 'required|email' : '',
-            'password'    => $request->login_method == 'email' ? 'required|min:6' : '',
+            'email'     => $request->login_method == 'email' ? 'required|email' : '',
+            'password'  => $request->login_method == 'email' ? 'required|min:6' : '',
             'mobile'    => $request->login_method == 'mobile' ? 'required' : '',
             'user_otp'  => $request->login_method == 'mobile' ? 'required' : '',
         ]);
@@ -527,5 +529,27 @@ class CustomLoginController extends Controller
         }
         Auth::login($user);
         return $this->redirectsAfterLogin($user);
+    }
+
+    public function updateFcmToken(Request $request)
+    {
+        $loggedUser = ViewHelper::loggedUser();
+        $loggedUser->fcm_token  = $request->fcm_token;
+        $loggedUser->save();
+        return response()->json([
+            'status'    => 'success',
+            'msg'   => 'FCM Token updated successfully',
+        ]);
+    }
+
+    public function updateZegoCallerId(Request $request)
+    {
+        $loggedUser = ViewHelper::loggedUser();
+        $loggedUser->zego_caller_id  = $request->zego_caller_id;
+        $loggedUser->save();
+        return response()->json([
+            'status'    => 'success',
+            'msg'   => 'Zego Caller ID updated successfully.',
+        ]);
     }
 }

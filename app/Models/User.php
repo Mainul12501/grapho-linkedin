@@ -84,6 +84,8 @@ class User extends Authenticatable
         'device_platform',
         'is_online',
         'last_seen',
+        'fcm_token',
+        'zego_caller_id',
     ];
 
     /**

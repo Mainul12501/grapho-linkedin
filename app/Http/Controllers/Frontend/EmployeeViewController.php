@@ -17,6 +17,7 @@ use App\Models\Backend\Industry;
 use App\Models\Backend\JobLocationType;
 use App\Models\Backend\JobTask;
 use App\Models\Backend\JobType;
+use App\Models\Backend\Post;
 use App\Models\Backend\SubscriptionPlan;
 use App\Models\Backend\UniversityName;
 use App\Models\Backend\UserProfileView;
@@ -76,18 +77,13 @@ class EmployeeViewController extends Controller
             $job->isApplied = ViewHelper::getJobSaveApplyInfo($job->id)['isApplied'] ?? false;
         }
 
+        $appliedJobIds = $loggedUser->appliedJobsWithJobDetails()
+            ->pluck('job_task_id');
 
-//        foreach ($topJobsForEmployee as $job) {
-//            $job->isSaved = ViewHelper::getJobSaveApplyInfo($job->id)['isSaved'] ?? false;
-//            $job->isApplied = ViewHelper::getJobSaveApplyInfo($job->id)['isApplied'] ?? false;
-//        }
-//        $moreJobsForEmployee = JobTask::where(['status' => 1])->with('employerCompany', 'jobType')->take(5)->inRandomOrder()->get();
-//        foreach ($moreJobsForEmployee as $jobx) {
-//            $jobx->isSaved = ViewHelper::getJobSaveApplyInfo($jobx->id)['isSaved'] ?? false;
-//            $jobx->isApplied = ViewHelper::getJobSaveApplyInfo($jobx->id)['isApplied'] ?? false;
-//        }
+        $savedJobs = $loggedUser->employeeSavedJobs()->whereNotIn('job_tasks.id', $appliedJobIds)->count();
+
         $data = [
-            'totalSavedJobs' => ViewHelper::loggedUser()->employeeSavedJobs()->count() ?? 0,
+            'totalSavedJobs' => $savedJobs ?? 0,
             'totalAppliedApplications' => ViewHelper::loggedUser()->employeeAppliedJobs()->count() ?? 0,
             'totalViewedEmployers' => ViewHelper::loggedUser()->viewedEmployers()->count() ?? 0,
             'topJobsForEmployee' => $topJobsForEmployee,
@@ -100,13 +96,63 @@ class EmployeeViewController extends Controller
     public function getTotalSavedJobs(Request $request)
     {
         $loggedUser = ViewHelper::loggedUser();
-        return response()->json($loggedUser->employeeSavedJobs()->count() ?? 0);
+        $appliedJobIds = $loggedUser->appliedJobsWithJobDetails()
+            ->pluck('job_task_id');
+
+        $savedJobs = $loggedUser->employeeSavedJobs()->whereNotIn('job_tasks.id', $appliedJobIds)->count();
+        return response()->json($savedJobs ?? 0);
     }
 
     public function viewCompanyProfile(EmployerCompany $employerCompany, Request $request)
     {
+        $jobTasks = JobTask::with(['jobType', 'jobLocationType', 'employeeAppliedJobs'])
+            ->where(['user_id' => $employerCompany?->ownerUserInfo?->id, 'status' => 1])
+            ->where('is_softly_deleted', 0)
+            ->get()
+            ->map(function ($job) {
+                $job->type = 'job';
+                $job->display_title = $job->job_title; // For unified access
+                return $job;
+            });
+
+        $posts = Post::where(['user_id' => $employerCompany?->ownerUserInfo?->id, 'status' => 1])
+            ->get()
+            ->map(function ($post) {
+                $post->type = 'post';
+                $post->display_title = $post->title; // For unified access
+                return $post;
+            });
+
+// Merge and sort
+        $merged = $jobTasks->concat($posts)->sortByDesc('created_at')->values();
+
+        if (count($merged) > 0)
+        {
+            $perPage = 10;
+            $currentPage = request()->get('page', 1);
+            $items = $merged->slice(($currentPage - 1) * $perPage, $perPage)->values();
+
+            $paginatedData = new \Illuminate\Pagination\LengthAwarePaginator(
+                $items,
+                $merged->count(),
+                $perPage,
+                $currentPage,
+                ['path' => request()->url(), 'query' => request()->query()]
+            );
+        } else {
+            $paginatedData = new \Illuminate\Pagination\LengthAwarePaginator(
+                collect([]),
+                0,
+                10,
+                1,
+                ['path' => request()->url(), 'query' => request()->query()]
+            );
+        }
+
+
         $data = [
             'employerCompany' => $employerCompany,
+            'paginatedData' => $paginatedData
         ];
         return ViewHelper::checkViewForApi($data, 'frontend.employee.jobs.company-profile');
         return \view('frontend.employee.jobs.company-profile');

@@ -226,14 +226,17 @@ class JobTaskController extends Controller
      */
     public function destroy(JobTask $jobTask)
     {
+
         if (ViewHelper::checkIfUserApprovedOrBlocked(auth()->user()))
         {
             return ViewHelper::returnRedirectWithMessage(route('employer.dashboard'), 'error', 'Your account is blocked or has not approved yet. Please contact with admin.');
         }
+
         $jobTask->employerPrefferableUniversityNames()->detach();
         $jobTask->employerPrefferableFieldOfStudyNames()->detach();
         $jobTask->jobRequiredskills()->detach();
         $jobTask->delete();
+        return ViewHelper::returnSuccessMessage('Your Job Deleted successfully.');
         Toastr::success('Your Job Deleted sucessfully.');
         return back();
     }

@@ -17,22 +17,26 @@
                     <div><img src="{{ asset('/') }}frontend/employer/images/employersHome/24application.png" alt="" class="me-2"><a href="{{ route('employer.my-job-applicants', $singleData->id) }}" class="text-decoration-underline">{{ $singleData->employeeAppliedJobs->count() ?? 0 }} {{ trans('employer.applicants') }}</a></div>
                 </div>
 
-                <div class="job-actions dropdown">
-                    <button class="btn btn-link p-0 text-secondary" type="button"
-                            data-bs-toggle="dropdown" aria-expanded="false">
-                        <img src="{{ asset('/') }}frontend/employer/images/employersHome/three dot.png" alt="">
-                    </button>
-                    <ul class="dropdown-menu dropdown-menu-end">
-                        {{--                                            <li><a class="dropdown-item" href="{{ route('employer.job-tasks.edit', $singleData->id) }}">{{ trans('common.edit') }}</a></li>--}}
-                        <li>
-                            <form action="{{ route('employer.job-tasks.destroy', $singleData->id) }}" method="post">
-                                @csrf
-                                @method('delete')
-                                <button class="dropdown-item data-delete-form" type="submit">{{ trans('common.delete') }}</button>
-                            </form>
-                        </li>
-                    </ul>
-                </div>
+                @if(isset($_GET['view']) && $_GET['view'] != 'employee')
+                    <div class="job-actions dropdown">
+                        <button class="btn btn-link p-0 text-secondary" type="button"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                            <img src="{{ asset('/') }}frontend/employer/images/employersHome/three dot.png" alt="">
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            {{--                                            <li><a class="dropdown-item" href="{{ route('employer.job-tasks.edit', $singleData->id) }}">{{ trans('common.edit') }}</a></li>--}}
+                            <li>
+                                <form action="{{ route('employer.job-tasks.destroy', $singleData->id) }}" method="post">
+                                    @csrf
+                                    @method('delete')
+                                    <button class="dropdown-item data-delete-form" type="submit">{{ trans('common.delete') }}</button>
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
+                @endif
+
+
             </article>
         @elseif($singleData->type == 'post')
             <div class="card card-body p-0">
@@ -53,19 +57,22 @@
                                     <h3>{{ $singleData->title ?? '' }}</h3>
                                 </div>
                                 <div class="col-1">
-                                    <div class="dropdown">
-                                        <span class="dropdown-toggle" style="cursor:pointer;" data-bs-toggle="dropdown"><img src="{{ asset('frontend/employer/images/employersHome/three dot.png') }}" alt="dot"></span>
-                                        <ul class="dropdown-menu">
-                                            <li><a class="dropdown-item" href="{{ route('employer.posts.edit', $singleData->id) }}">Edit</a></li>
-                                            <li>
-                                                <form action="{{ route('employer.posts.destroy', $singleData->id) }}" method="post">
-                                                    @csrf
-                                                    @method('delete')
-                                                    <button type="submit" class="dropdown-item data-delete-form" href="#">Delete</button>
-                                                </form>
-                                            </li>
-                                        </ul>
-                                    </div>
+                                    @if(isset($_GET['view']) && $_GET['view'] != 'employee')
+                                        <div class="dropdown">
+                                            <span class="dropdown-toggle" style="cursor:pointer;" data-bs-toggle="dropdown"><img src="{{ asset('frontend/employer/images/employersHome/three dot.png') }}" alt="dot"></span>
+                                            <ul class="dropdown-menu">
+                                                <li><a class="dropdown-item" href="{{ route('employer.posts.edit', $singleData->id) }}">Edit</a></li>
+                                                <li>
+                                                    <form action="{{ route('employer.posts.destroy', $singleData->id) }}" method="post">
+                                                        @csrf
+                                                        @method('delete')
+                                                        <button type="submit" class="dropdown-item data-delete-form" href="#">Delete</button>
+                                                    </form>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    @endif
+
                                 </div>
                             </div>
                             <div class="pt-3">

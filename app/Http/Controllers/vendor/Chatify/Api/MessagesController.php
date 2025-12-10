@@ -2,11 +2,13 @@
 
 namespace Chatify\Http\Controllers\Api;
 
+use App\Helpers\ViewHelper;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Response;
 use App\Models\ChMessage as Message;
 use App\Models\ChFavorite as Favorite;
+use App\Models\ChatifyDeletedConversation;
 use Chatify\Facades\ChatifyMessenger as Chatify;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -29,7 +31,7 @@ class MessagesController extends Controller
     {
         return Chatify::pusherAuth(
             $request->user(),
-            Auth::user(),
+            ViewHelper::loggedUser(),
             $request['channel_name'],
             $request['socket_id']
         );
@@ -43,7 +45,6 @@ class MessagesController extends Controller
      */
     public function idFetchData(Request $request)
     {
-        return auth()->user();
         // Favorite
         $favorite = Chatify::inFavorite($request['id']);
 
@@ -131,7 +132,7 @@ class MessagesController extends Controller
             // send to database
             $message = Chatify::newMessage([
                 'type' => $request['type'],
-                'from_id' => Auth::user()->id,
+                'from_id' => ViewHelper::loggedUser()->id,
                 'to_id' => $request['id'],
                 'body' => htmlentities(trim($request['message']), ENT_QUOTES, 'UTF-8'),
                 'attachment' => ($attachment) ? json_encode((object)[
@@ -144,9 +145,9 @@ class MessagesController extends Controller
             $messageData = Chatify::parseMessage($message);
 
             // send to user using pusher
-            if (Auth::user()->id != $request['id']) {
+            if (ViewHelper::loggedUser()->id != $request['id']) {
                 Chatify::push("private-chatify.".$request['id'], 'messaging', [
-                    'from_id' => Auth::user()->id,
+                    'from_id' => ViewHelper::loggedUser()->id,
                     'to_id' => $request['id'],
                     'message' => $messageData
                 ]);
@@ -208,15 +209,21 @@ class MessagesController extends Controller
     public function getContacts(Request $request)
     {
         // get all users that received/sent message from/to [Auth user]
+        // excluding conversations that current user has deleted
         $users = Message::join('users',  function ($join) {
             $join->on('ch_messages.from_id', '=', 'users.id')
                 ->orOn('ch_messages.to_id', '=', 'users.id');
         })
-        ->where(function ($q) {
-            $q->where('ch_messages.from_id', Auth::user()->id)
-            ->orWhere('ch_messages.to_id', Auth::user()->id);
+        ->leftJoin('chatify_deleted_conversations', function ($join) {
+            $join->on('users.id', '=', 'chatify_deleted_conversations.contact_id')
+                ->where('chatify_deleted_conversations.user_id', '=', ViewHelper::loggedUser()->id);
         })
-        ->where('users.id','!=',Auth::user()->id)
+        ->where(function ($q) {
+            $q->where('ch_messages.from_id', ViewHelper::loggedUser()->id)
+            ->orWhere('ch_messages.to_id', ViewHelper::loggedUser()->id);
+        })
+        ->where('users.id','!=',ViewHelper::loggedUser()->id)
+        ->whereNull('chatify_deleted_conversations.id') // Exclude deleted conversations
         ->select('users.*',DB::raw('MAX(ch_messages.created_at) max_created_at'))
         ->orderBy('max_created_at', 'desc')
         ->groupBy('users.id')
@@ -256,7 +263,7 @@ class MessagesController extends Controller
      */
     public function getFavorites(Request $request)
     {
-        $favorites = Favorite::where('user_id', Auth::user()->id)->get();
+        $favorites = Favorite::where('user_id', ViewHelper::loggedUser()->id)->get();
         foreach ($favorites as $favorite) {
             $favorite->user = User::where('id', $favorite->favorite_id)->first();
         }
@@ -275,7 +282,7 @@ class MessagesController extends Controller
     public function search(Request $request)
     {
         $input = trim(filter_var($request['input']));
-        $records = User::where('id','!=',Auth::user()->id)
+        $records = User::where('id','!=',ViewHelper::loggedUser()->id)
                     ->where('name', 'LIKE', "%{$input}%")
                     ->paginate($request->per_page ?? $this->perPage);
 
@@ -310,7 +317,7 @@ class MessagesController extends Controller
     }
 
     /**
-     * Delete conversation
+     * Delete conversation (Hard Delete - for both users)
      *
      * @param Request $request
      * @return void
@@ -326,6 +333,71 @@ class MessagesController extends Controller
         ], 200);
     }
 
+    /**
+     * Delete conversation for me (Soft Delete - only for current user)
+     * Like Facebook Messenger's "Delete for Me" feature
+     *
+     * If BOTH users have deleted the conversation, then permanently delete all messages
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function deleteConversationForMe(Request $request)
+    {
+        try {
+            $currentUserId = ViewHelper::loggedUser()->id;
+            $contactId = $request['id'];
+
+            // Mark this conversation as deleted for the current user
+            ChatifyDeletedConversation::updateOrCreate(
+                [
+                    'user_id' => $currentUserId,
+                    'contact_id' => $contactId
+                ],
+                [
+                    'deleted_at' => now()
+                ]
+            );
+
+            // Check if the other user has also deleted this conversation
+            $otherUserDeleted = ChatifyDeletedConversation::where('user_id', $contactId)
+                ->where('contact_id', $currentUserId)
+                ->exists();
+
+            // If BOTH users have deleted the conversation, permanently delete all messages
+            if ($otherUserDeleted) {
+                // Permanently delete all messages between these two users
+                $deleted = Chatify::deleteConversation($contactId);
+
+                // Also remove the deletion records since messages are now permanently deleted
+                ChatifyDeletedConversation::where(function($query) use ($currentUserId, $contactId) {
+                    $query->where('user_id', $currentUserId)
+                          ->where('contact_id', $contactId);
+                })->orWhere(function($query) use ($currentUserId, $contactId) {
+                    $query->where('user_id', $contactId)
+                          ->where('contact_id', $currentUserId);
+                })->delete();
+
+                return Response::json([
+                    'deleted' => 1,
+                    'permanent' => true,
+                    'message' => 'Conversation permanently deleted (both users deleted it)'
+                ], 200);
+            }
+
+            return Response::json([
+                'deleted' => 1,
+                'permanent' => false,
+                'message' => 'Conversation deleted for you'
+            ], 200);
+        } catch (\Exception $e) {
+            return Response::json([
+                'deleted' => 0,
+                'message' => 'Failed to delete conversation: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
     public function updateSettings(Request $request)
     {
         $msg = null;
@@ -334,14 +406,14 @@ class MessagesController extends Controller
         // dark mode
         if ($request['dark_mode']) {
             $request['dark_mode'] == "dark"
-                ? User::where('id', Auth::user()->id)->update(['dark_mode' => 1])  // Make Dark
-                : User::where('id', Auth::user()->id)->update(['dark_mode' => 0]); // Make Light
+                ? User::where('id', ViewHelper::loggedUser()->id)->update(['dark_mode' => 1])  // Make Dark
+                : User::where('id', ViewHelper::loggedUser()->id)->update(['dark_mode' => 0]); // Make Light
         }
 
         // If messenger color selected
         if ($request['messengerColor']) {
             $messenger_color = trim(filter_var($request['messengerColor']));
-            User::where('id', Auth::user()->id)
+            User::where('id', ViewHelper::loggedUser()->id)
                 ->update(['messenger_color' => $messenger_color]);
         }
         // if there is a [file]
@@ -354,15 +426,15 @@ class MessagesController extends Controller
             if ($file->getSize() < Chatify::getMaxUploadSize()) {
                 if (in_array(strtolower($file->extension()), $allowed_images)) {
                     // delete the older one
-                    if (Auth::user()->avatar != config('chatify.user_avatar.default')) {
-                        $path = Chatify::getUserAvatarUrl(Auth::user()->avatar);
+                    if (ViewHelper::loggedUser()->avatar != config('chatify.user_avatar.default')) {
+                        $path = Chatify::getUserAvatarUrl(ViewHelper::loggedUser()->avatar);
                         if (Chatify::storage()->exists($path)) {
                             Chatify::storage()->delete($path);
                         }
                     }
                     // upload
                     $avatar = Str::uuid() . "." . $file->extension();
-                    $update = User::where('id', Auth::user()->id)->update(['avatar' => $avatar]);
+                    $update = User::where('id', ViewHelper::loggedUser()->id)->update(['avatar' => $avatar]);
                     $file->storeAs(config('chatify.user_avatar.folder'), $avatar, config('chatify.storage_disk_name'));
                     $success = $update ? 1 : 0;
                 } else {
@@ -392,7 +464,7 @@ class MessagesController extends Controller
     public function setActiveStatus(Request $request)
     {
         $activeStatus = $request['status'] > 0 ? 1 : 0;
-        $status = User::where('id', Auth::user()->id)->update(['active_status' => $activeStatus]);
+        $status = User::where('id', ViewHelper::loggedUser()->id)->update(['active_status' => $activeStatus]);
         return Response::json([
             'status' => $status,
         ], 200);

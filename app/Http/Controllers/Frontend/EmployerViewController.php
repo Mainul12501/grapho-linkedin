@@ -542,7 +542,13 @@ class EmployerViewController extends Controller
             );
         } else {
             $companyDetails = EmployerCompany::where(['user_id' => ViewHelper::loggedUser()->id])->first();
-            $paginatedData = null;
+            $paginatedData = new \Illuminate\Pagination\LengthAwarePaginator(
+                collect([]),
+                0,
+                10,
+                1,
+                ['path' => request()->url(), 'query' => request()->query()]
+            );
         }
         $this->data = [
             'paginatedData' => $paginatedData,

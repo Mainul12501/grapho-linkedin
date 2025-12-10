@@ -59,6 +59,7 @@
         @media screen and (max-width: 768px) {
             .mobile-no-border{border-bottom: 0px}
             .mobile-col-9-no-padding {padding-right: 0px!important;}
+            .hide-on-mobile {display: none}
         }
     </style>
 </head>
@@ -188,6 +189,9 @@
             <img src="{{ asset('/') }}frontend/home-landing/images/5.png" alt="Mobile Illustration" class="img-fluid">
         </div>
 {{--        <h1 class="d-none d-lg-block text-center">{{ trans('home.your_work_people_are_here') }}</h1>--}}
+        <div class="text-center hide-on-mobile">
+            <img src="{{ isset($siteSetting) ? asset($siteSetting->logo) : '' }}" alt="" style="max-height: 100px">
+        </div>
         <h1 class="d-none d-lg-block text-center tiro-bangla-regular-italic">{{ trans('home.where_doors_knock_you') }}</h1>
 
         <div class="row justify-content-center align-items-center">
@@ -292,23 +296,23 @@
 
 
 <!-- Start Your Search Section -->
-<section class="text-center py-5 bg-light">
-    <div class="container">
-        <h3>{{ trans('home.start_your_search') }}</h3>
-        <p>{{ trans('home.need_inspiration') }}</p>
-        <input type="text" class="form-control mx-auto" placeholder="{{ trans('home.search_for_jobs_companies_salaries') }}" style="max-width: 600px;">
-    </div>
-</section>
+{{--<section class="text-center py-5 bg-light">--}}
+{{--    <div class="container">--}}
+{{--        <h3>{{ trans('home.start_your_search') }}</h3>--}}
+{{--        <p>{{ trans('home.need_inspiration') }}</p>--}}
+{{--        <input type="text" class="form-control mx-auto" placeholder="{{ trans('home.search_for_jobs_companies_salaries') }}" style="max-width: 600px;">--}}
+{{--    </div>--}}
+{{--</section>--}}
 
 <!-- Footer Section -->
 <footer class="pt-5 pb-3 bg-white">
     <div class="container">
         <div class="row mb-4">
             <div class="col-md-2 mb-3">
-                <a href="{{ route('/') }}" class="d-inline-block mb-3">
+{{--                <a href="{{ route('/') }}" class="d-inline-block mb-3">--}}
 {{--                    <img src="{{ asset('/') }}frontend/home-landing/images/Compnay logo.png" alt="">--}}
-                    <img src="{{ asset(isset($siteSetting) ? $siteSetting->logo : '') }}" alt="site-logo">
-                </a>
+{{--                    <img src="{{ asset(isset($siteSetting) ? $siteSetting->logo : '') }}" alt="site-logo">--}}
+{{--                </a>--}}
 {{--                <ul class="list-unstyled small">--}}
 {{--                    <li><a href="#" class="text-decoration-none text-dark">About / Press</a></li>--}}
 {{--                    <li><a href="#" class="text-decoration-none text-dark">Awards</a></li>--}}
@@ -317,7 +321,7 @@
 {{--                    <li><a href="#" class="text-decoration-none text-dark">Contact Us</a></li>--}}
 {{--                    <li><a href="#" class="text-decoration-none text-dark">Guides</a></li>--}}
 {{--                </ul>--}}
-                <p class="" style="text-align: justify">{{ trans('home.grapho_description') }}</p>
+{{--                <p class="" style="text-align: justify">{{ trans('home.grapho_description') }}</p>--}}
             </div>
             <div class="col-md-2 mb-3">
                 <h6 class="fw-semibold">{{ trans('home.employers') }}</h6>

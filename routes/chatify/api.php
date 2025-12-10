@@ -58,12 +58,17 @@ Route::get('/search', 'MessagesController@search')->name('api.search');
 Route::post('/shared', 'MessagesController@sharedPhotos')->name('api.shared');
 
 /**
- * Delete Conversation
+ * Delete Conversation (Hard Delete)
  */
 Route::post('/deleteConversation', 'MessagesController@deleteConversation')->name('api.conversation.delete');
 
 /**
- * Delete Conversation
+ * Delete Conversation For Me (Soft Delete)
+ */
+Route::post('/deleteConversationForMe', 'MessagesController@deleteConversationForMe')->name('api.conversation.delete.for.me');
+
+/**
+ * Update Settings
  */
 Route::post('/updateSettings', 'MessagesController@updateSettings')->name('api.avatar.update');
 

@@ -3,7 +3,7 @@
 return [
     'open_to_work' => 'Open to work',
     'offline' => 'Offline',
-    'my_saved_jobs' => 'My saved jobs',
+    'my_saved_jobs' => 'Saved jobs',
     'saved_text' => 'saved',
     'my_applications' => 'My applications',
     'applications' => 'applications',

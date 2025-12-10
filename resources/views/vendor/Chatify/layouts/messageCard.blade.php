@@ -6,10 +6,17 @@ $timeAndSeen = "<span data-time='$created_at' class='message-time'>
 ?>
 
 <div class="message-card @if($isSender) mc-sender @endif" data-id="{{ $id }}">
-    {{-- Delete Message Button --}}
+    {{-- Delete Message Dropdown --}}
     @if ($isSender)
-        <div class="actions">
-            <i class="fas fa-trash delete-btn" data-id="{{ $id }}"></i>
+        <div class="message-dropdown">
+            <button class="dropdown-toggle" type="button" data-message-id="{{ $id }}">
+                <i class="fas fa-ellipsis-v"></i>
+            </button>
+            <div class="dropdown-menu">
+                <a href="javascript:void(0);" class="dropdown-item delete-message-item" data-id="{{ $id }}">
+                    <i class="fas fa-trash"></i> Delete Message
+                </a>
+            </div>
         </div>
     @endif
     {{-- Card --}}

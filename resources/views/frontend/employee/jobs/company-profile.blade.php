@@ -15,6 +15,12 @@
     <!-- Your Custom CSS -->
     <link rel="stylesheet" href="{{ asset('/frontend/employer/style.css') }}" />
     <title>Company profile</title>
+    <style>
+        .companyProfilecontainer__contact-item img {
+            height: 40px;
+            width: 40px;
+        }
+    </style>
 </head>
 
 <body class=" employeeSettings">
@@ -25,7 +31,7 @@
             <a href="{{ url()->previous() }}" class="nav-link">
                 <button type="button" class="btn p-0 d-flex align-items-center topSettingButton" aria-label="Back">
                     <img src="{{ asset('/frontend/employer/images/employersHome/leftarrow.png') }}" alt="" class="me-2">
-                    <span >{{ trans('employee.company') }} {{ trans('common.title') }}</span>
+                    <span >{{ $employerCompany->name ?? 'LikewiseBd' }}</span>
                 </button>
             </a>
         </div>
@@ -87,7 +93,14 @@
                 </div>
                 <div class=" companyProfilecontainer__right-part p-4">
                     <div class="mb-4 text-muted">
-                        {!!  $employerCompany->company_overview ?? 'Company Overview' !!}
+{{--                        {!!  $employerCompany->company_overview ?? 'Company Overview' !!}--}}
+                        <div id="short-overview">
+
+                            {!! str()->words($employerCompany->company_overview, 25, '<span id="show-full-btn" style="color: #FFCB11; cursor: pointer">  View all</span>') ?? strip_tags('<p class="f-s-30">Company Overview Not found</p>') !!}
+                        </div>
+                        <div id="long-overview" style="display: none;">
+                            {!! $employerCompany->company_overview ?? strip_tags('<p class="f-s-30">Company Overview Not found</p>') !!} <span id="show-less-btn" style="color: #FFCB11; cursor: pointer"> ...View less</span>
+                        </div>
                     </div>
 
                     <div class="d-flex flex-wrap gap-4 companyProfilecontainer__footer-info justify-content-between">
@@ -109,13 +122,57 @@
         </div>
     </div>
 
+
+{{--    activities--}}
+    <div class="row mt-3">
+        <div class="col-10 mx-auto">
+            <h3>{{ $employerCompany->name ?? '' }}Activities</h3>
+
+            <!-- Job Cards -->
+            <div class="row gy-3" id="item-container">
+                <!-- Job Card -->
+                @if(isset($paginatedData))
+                    @include('frontend.employer.home.activity-content')
+                @endif
+
+                {{--                        <div class="col-12 text-center align-content-center">--}}
+                {{--                            @if(count($paginatedData) > 10)--}}
+                {{--                                {!! $paginatedData->links() !!}--}}
+                {{--                            @endif--}}
+                {{--                        </div>--}}
+
+                <div id="loader" class="text-center my-3" style="display:none;">
+                    <img src="{{ asset('frontend/spinner.gif') }}" width="40"> Loading...
+                </div>
+
+                <div id="no-more-data" class="text-center my-2 text-muted" style="display:none;">
+                    No more results
+                </div>
+
+
+            </div>
+
+        </div>
+    </div>
+
 </div>
 
 
-
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 <!-- Bootstrap Bundle JS (with Popper)  -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <!-- Your Custom JS -->
 <script src="{{ asset('/frontend/employee/script.js') }}"></script>
+{{--    show hide overview--}}
+<script>
+    $(document).on('click', '#show-full-btn', function () {
+        $('#short-overview').css('display', 'none');
+        $('#long-overview').css('display', 'block');
+    })
+    $(document).on('click', '#show-less-btn', function () {
+        $('#short-overview').css('display', 'block');
+        $('#long-overview').css('display', 'none');
+    })
+</script>
 </body>
 </html>

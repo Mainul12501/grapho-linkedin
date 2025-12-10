@@ -12,7 +12,7 @@
     <style>
         .site-base-color-bg {background-color: #FFCB11!important;}
         .drawer-menu a span {font-weight: bolder}
-        .drawer-menu a i {color: #FFCB11!important;}
+        /*.drawer-menu a i {color: #FFCB11!important;}*/
     </style>
 </head>
 
@@ -70,13 +70,13 @@
 
         <!-- Side Drawer -->
         <div class="side-drawer" id="sideDrawer">
-            <div class="drawer-header " style="background: #FFCB11!important;">
+            <div class="drawer-header bg-primary" style="background: rgba(var(--bs-primary-rgb),var(--bs-bg-opacity))!important; height: 55px;">
                 <h5 class="drawer-title">
                     <i class="fas fa-bars me-2"></i>{{--{{ trans('employee.options') }}--}} Menu
                 </h5>
                 <button class="drawer-close" id="closeDrawer">
                     {{--                <i class="fas fa-times"></i>--}}
-                    <img src="{{ asset('/frontend/close.png') }}" alt="close icon" style="max-height: 20px;">
+                    <img src="{{ asset('/frontend/close.png') }}" alt="close icon" style="max-height: 12px;">
                 </button>
             </div>
 

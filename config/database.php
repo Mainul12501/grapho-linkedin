@@ -7,17 +7,17 @@ $dbPort = '3306';
 $dbName = 'grapho_linkedin';
 $dbUserName = 'root';
 $dbPassword = '';
-if ($_SERVER['HTTP_HOST'] == 'likewisebd.com'  )
-{
-    $dbName = 'twowheel_grapho';
-    $dbUserName = 'twowheel_grapho';
-    $dbPassword = 'twowheel_grapho';
-} elseif ($_SERVER['HTTP_HOST'] == 'admin.likewisebd.com')
-{
-    $dbName = 'twowheel_likewise_data';
-    $dbUserName = 'twowheel_likewise_data';
-    $dbPassword = 'twowheel_likewise_data';
-}
+//if ($_SERVER['HTTP_HOST'] == 'likewisebd.com'  )
+//{
+//    $dbName = 'twowheel_grapho';
+//    $dbUserName = 'twowheel_grapho';
+//    $dbPassword = 'twowheel_grapho';
+//} elseif ($_SERVER['HTTP_HOST'] == 'admin.likewisebd.com')
+//{
+//    $dbName = 'twowheel_likewise_data';
+//    $dbUserName = 'twowheel_likewise_data';
+//    $dbPassword = 'twowheel_likewise_data';
+//}
 
 
 return [

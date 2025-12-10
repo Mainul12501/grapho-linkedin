@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Response;
 use App\Models\User;
 use App\Models\ChMessage as Message;
 use App\Models\ChFavorite as Favorite;
+use App\Models\ChatifyDeletedConversation;
 use Chatify\Facades\ChatifyMessenger as Chatify;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -221,16 +222,22 @@ class MessagesController extends Controller
     public function getContacts(Request $request)
     {
         // get all users that received/sent message from/to [Auth user]
+        // excluding conversations that current user has deleted
         $users = Message::join('users', function ($join) {
             $join->on('ch_messages.from_id', '=', 'users.id')
                 ->orOn('ch_messages.to_id', '=', 'users.id')
                 ->where('users.is_open_for_hire',1); // only open user will return;
+        })
+        ->leftJoin('chatify_deleted_conversations', function ($join) {
+            $join->on('users.id', '=', 'chatify_deleted_conversations.contact_id')
+                ->where('chatify_deleted_conversations.user_id', '=', Auth::user()->id);
         })
         ->where(function ($q) {
             $q->where('ch_messages.from_id', Auth::user()->id)
             ->orWhere('ch_messages.to_id', Auth::user()->id);
         })
         ->where('users.id','!=',Auth::user()->id)
+        ->whereNull('chatify_deleted_conversations.id') // Exclude deleted conversations
         ->select('users.*',DB::raw('MAX(ch_messages.created_at) max_created_at'))
         ->orderBy('max_created_at', 'desc')
         ->groupBy('users.id')
@@ -403,7 +410,7 @@ class MessagesController extends Controller
     }
 
     /**
-     * Delete conversation
+     * Delete conversation (Hard Delete - for both users)
      *
      * @param Request $request
      * @return JsonResponse
@@ -417,6 +424,71 @@ class MessagesController extends Controller
         return Response::json([
             'deleted' => $delete ? 1 : 0,
         ], 200);
+    }
+
+    /**
+     * Delete conversation for me (Soft Delete - only for current user)
+     * Like Facebook Messenger's "Delete for Me" feature
+     *
+     * If BOTH users have deleted the conversation, then permanently delete all messages
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function deleteConversationForMe(Request $request)
+    {
+        try {
+            $currentUserId = Auth::user()->id;
+            $contactId = $request['id'];
+
+            // Mark this conversation as deleted for the current user
+            ChatifyDeletedConversation::updateOrCreate(
+                [
+                    'user_id' => $currentUserId,
+                    'contact_id' => $contactId
+                ],
+                [
+                    'deleted_at' => now()
+                ]
+            );
+
+            // Check if the other user has also deleted this conversation
+            $otherUserDeleted = ChatifyDeletedConversation::where('user_id', $contactId)
+                ->where('contact_id', $currentUserId)
+                ->exists();
+
+            // If BOTH users have deleted the conversation, permanently delete all messages
+            if ($otherUserDeleted) {
+                // Permanently delete all messages between these two users
+                $deleted = Chatify::deleteConversation($contactId);
+
+                // Also remove the deletion records since messages are now permanently deleted
+                ChatifyDeletedConversation::where(function($query) use ($currentUserId, $contactId) {
+                    $query->where('user_id', $currentUserId)
+                          ->where('contact_id', $contactId);
+                })->orWhere(function($query) use ($currentUserId, $contactId) {
+                    $query->where('user_id', $contactId)
+                          ->where('contact_id', $currentUserId);
+                })->delete();
+
+                return Response::json([
+                    'deleted' => 1,
+                    'permanent' => true,
+                    'message' => 'Conversation permanently deleted (both users deleted it)'
+                ], 200);
+            }
+
+            return Response::json([
+                'deleted' => 1,
+                'permanent' => false,
+                'message' => 'Conversation deleted for you'
+            ], 200);
+        } catch (\Exception $e) {
+            return Response::json([
+                'deleted' => 0,
+                'message' => 'Failed to delete conversation: ' . $e->getMessage()
+            ], 500);
+        }
     }
 
     /**

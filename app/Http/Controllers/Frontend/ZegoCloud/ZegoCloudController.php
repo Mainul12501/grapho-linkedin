@@ -6,6 +6,7 @@ use App\Events\CallAccepted;
 use App\Events\CallEnded;
 use App\Events\CallInitiated;
 use App\Events\CallRejected;
+use App\Helpers\ViewHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Backend\Call;
 use App\Models\User;
@@ -45,7 +46,7 @@ class ZegoCloudController extends Controller
             'call_type' => 'required|in:audio,video',
         ]);
 
-        $caller = Auth::user();
+        $caller = ViewHelper::loggedUser();
         $receiver = User::findOrFail($request->receiver_id);
 
         if ($caller->id === $receiver->id) {

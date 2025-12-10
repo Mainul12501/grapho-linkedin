@@ -102,7 +102,7 @@
     </div>
 
     @if(isset($_GET['view']) && $_GET['view'] == 'employer')
-        <div class="row">
+        <div class="row mt-3">
             <div class="col-10 mx-auto">
                 <h3>{{ $companyDetails->name ?? '' }}Activities</h3>
 
