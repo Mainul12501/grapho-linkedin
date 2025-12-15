@@ -126,7 +126,7 @@
 {{--    activities--}}
     <div class="row mt-3">
         <div class="col-10 mx-auto">
-            <h3>{{ $employerCompany->name ?? '' }}Activities</h3>
+            <h3>{{ $employerCompany->name ?? '' }} Activities</h3>
 
             <!-- Job Cards -->
             <div class="row gy-3" id="item-container">

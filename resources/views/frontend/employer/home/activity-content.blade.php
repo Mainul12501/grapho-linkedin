@@ -14,7 +14,9 @@
                 <div class="job-info">
                     <div class="mb-2"><img src="{{ asset('/') }}frontend/employer/images/employersHome/postdOn.png" alt="" class="me-2">{{ trans('employer.posted_on') }} {{ $singleData->created_at->format('d M, Y') ?? '16 Feb, 2025' }}</div>
                     <div class="mb-2"><img src="{{ asset('/') }}frontend/employer/images/employersHome/Dedline.png" alt="" class="me-2">{{ trans('employer.deadline') }} {{ \Illuminate\Support\Carbon::parse($singleData->deadline)->format('d M, Y') ?? '16 Feb, 2025' }}</div>
-                    <div><img src="{{ asset('/') }}frontend/employer/images/employersHome/24application.png" alt="" class="me-2"><a href="{{ route('employer.my-job-applicants', $singleData->id) }}" class="text-decoration-underline">{{ $singleData->employeeAppliedJobs->count() ?? 0 }} {{ trans('employer.applicants') }}</a></div>
+                    @if(isset($_GET['view']) && $_GET['view'] != 'employee')
+                        <div><img src="{{ asset('/') }}frontend/employer/images/employersHome/24application.png" alt="" class="me-2"><a href="{{ route('employer.my-job-applicants', $singleData->id) }}" class="text-decoration-underline">{{ $singleData->employeeAppliedJobs->count() ?? 0 }} {{ trans('employer.applicants') }}</a></div>
+                    @endif
                 </div>
 
                 @if(isset($_GET['view']) && $_GET['view'] != 'employee')
@@ -39,14 +41,14 @@
 
             </article>
         @elseif($singleData->type == 'post')
-            <div class="card card-body p-0">
+            <div class="card card-body p-0" style="max-height: 200px;">
                 <div class="row">
                     <div class="col-md-4">
                         <div>
                             @if(isset($singleData->images))
-                                <img src="{{ asset(json_decode($singleData->images)[0]) }}" alt="post img" class="card-img" style=" border-top-right-radius: 0px; border-bottom-right-radius: 0px;">
+                                <img src="{{ asset(json_decode($singleData->images)[0]) }}" alt="post img" class="card-img img-fluid" style=" border-top-right-radius: 0px; border-bottom-right-radius: 0px; max-height: 200px;">
                             @else
-                                <img src="{{ asset('frontend/photo.png') }}" alt="post img" class="card-img" style=" border-top-right-radius: 0px; border-bottom-right-radius: 0px;">
+                                <img src="{{ asset('frontend/photo.png') }}" alt="post img" class="card-img img-fluid" style=" border-top-right-radius: 0px; border-bottom-right-radius: 0px; max-height: 200px;">
                             @endif
                         </div>
                     </div>

@@ -178,6 +178,10 @@ class User extends Authenticatable
     {
         return $this->belongsTo(EmployerCompany::class, 'employer_company_id');
     }
+    public function employerCompanyInfo()
+    {
+        return $this->hasOne(EmployerCompany::class, 'user_id');
+    }
 
     public function employerCompanies()
     {

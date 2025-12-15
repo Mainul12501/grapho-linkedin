@@ -162,6 +162,7 @@ Route::middleware([
         Route::get('get-total-saved-jobs', [EmployeeViewController::class, 'getTotalSavedJobs'])->name('get-total-saved-jobs');
 
 
+        Route::post('make-msg-seen/{web_notification_id}', [EmployeeViewController::class, 'makeMsgSeen'])->name('make-msg-seen');
         Route::post('apply-job/{jobTask}', [EmployeeViewController::class, 'applyJob'])->name('apply-job');
         Route::post('update-profile/{user}', [EmployeeViewController::class, 'updateProfile'])->name('update-profile');
         Route::post('update-employee-info', [EmployeeViewController::class, 'updateEmployeeInfo'])->name('update-employee-info');

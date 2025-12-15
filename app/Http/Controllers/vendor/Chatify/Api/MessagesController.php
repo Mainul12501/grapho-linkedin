@@ -1,6 +1,7 @@
 <?php
 
-namespace Chatify\Http\Controllers\Api;
+//namespace Chatify\Http\Controllers\Api;
+namespace App\Http\Controllers\vendor\Chatify\Api;
 
 use App\Helpers\ViewHelper;
 use Illuminate\Http\Request;
@@ -30,7 +31,7 @@ class MessagesController extends Controller
     public function pusherAuth(Request $request)
     {
         return Chatify::pusherAuth(
-            $request->user(),
+            ViewHelper::loggedUser(),
             ViewHelper::loggedUser(),
             $request['channel_name'],
             $request['socket_id']

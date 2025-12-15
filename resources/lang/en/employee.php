@@ -7,7 +7,7 @@ return [
     'saved_text' => 'saved',
     'my_applications' => 'My applications',
     'applications' => 'applications',
-    'profiler_viewers' => 'Profiler viewers',
+    'profiler_viewers' => 'Profile viewers',
     'viewers' => 'viewers',
     'top_job_picks_for_you' => 'Top job picks for you',
     'based_on_profile_preferences' => 'Based on your profile, preferences, and activities like applies, searches, and saves',

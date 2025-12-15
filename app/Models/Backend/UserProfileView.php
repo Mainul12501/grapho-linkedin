@@ -6,6 +6,7 @@ use App\Models\Backend\EmployerCompany;
 use App\Models\Scopes\Searchable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\User;
 
 class UserProfileView extends Model
 {

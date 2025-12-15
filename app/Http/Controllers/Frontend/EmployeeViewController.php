@@ -337,23 +337,39 @@ class EmployeeViewController extends Controller
         return \view('frontend.employee.jobs.my-saved-jobs');
     }
 
-    public function myApplications()
+    public function myApplications(Request $request)
     {
         $user = ViewHelper::loggedUser();
 //        return $user->employeeAppliedJobs;
+        $myApplications = $user->appliedJobsWithJobDetails()
+            ->latest()
+            ->paginate(10);
+        if ($request->ajax()) {
+            return view(
+                'frontend.employee.jobs.partials.my-applications-items',
+                compact('myApplications')
+            )->render();
+        }
         $data = [
 //            'myApplications'    => $user->employeeAppliedJobs
 //            'myApplications'    => $user->appliedJobs
-            'myApplications' => $user->appliedJobsWithJobDetails
+            'myApplications' => $myApplications
         ];
         return ViewHelper::checkViewForApi($data, 'frontend.employee.jobs.my-applications');
         return \view('frontend.employee.jobs.my-applications');
     }
 
-    public function myProfileViewers()
+    public function myProfileViewers(Request $request)
     {
         $user = ViewHelper::loggedUser();
-        $profileViewerIds = UserProfileView::where(['employee_id' => $user->id, 'viewed_by' => 'employer'])->with('employerCompany')->get();
+        $profileViewerIds = UserProfileView::where(['employee_id' => $user->id, 'viewed_by' => 'employer'])->with('employer.employerCompanyInfo')->paginate(10);
+        // 👇 When scrolling (AJAX request)
+        if ($request->ajax()) {
+            return view(
+                'frontend.employee.base-functionalities.partials.profile-viewer-items',
+                compact('profileViewerIds')
+            )->render();
+        }
         $data = [
             'myProfileViewers' => $profileViewerIds
         ];
@@ -404,11 +420,18 @@ class EmployeeViewController extends Controller
         return \view('frontend.employee.base-functionalities.my-profile');
     }
 
-    public function myNotifications()
+    public function myNotifications(Request $request)
     {
         $loggedUser = ViewHelper::loggedUser();
-        $webNotifications = WebNotification::where(['status' => 1])->where('viewed_user_id', $loggedUser->id)->paginate(20);
+        $webNotifications = WebNotification::where(['status' => 1])->where('viewed_user_id', $loggedUser->id)->paginate(10);
         $newNotifications = $webNotifications->where('is_seen', 0)->count();
+        // 👇 When loading more via scroll
+        if ($request->ajax()) {
+            return view(
+                'frontend.employee.base-functionalities.partials.notification-items',
+                compact('webNotifications')
+            )->render();
+        }
         $data = [
             'notifications' => $webNotifications,
             'newNotifications' => $newNotifications,
@@ -580,6 +603,25 @@ class EmployeeViewController extends Controller
             return ViewHelper::returnSuccessMessage('Data Updated successfully.');
         } else {
             return ViewHelper::returEexceptionError('Employee Not Found');
+        }
+    }
+
+    public function makeMsgSeen($webNotificationId)
+    {
+        try {
+            $webNotification = WebNotification::find($webNotificationId);
+            $webNotification->is_seen   = 1;
+            $webNotification->save();
+            return response()->json([
+                'status'    => 'success',
+                'msg'   => 'Notification checked.',
+            ]);
+        } catch (\Exception $exception)
+        {
+            return response()->json([
+                'status'    => 'error',
+                'msg'   => 'something went wrong. Please try again.',
+            ]);
         }
     }
 }

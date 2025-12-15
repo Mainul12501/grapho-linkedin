@@ -22,6 +22,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
+use Laravel\Sanctum\PersonalAccessToken;
 
 class CustomLoginController extends Controller
 {
@@ -550,6 +551,27 @@ class CustomLoginController extends Controller
         return response()->json([
             'status'    => 'success',
             'msg'   => 'Zego Caller ID updated successfully.',
+        ]);
+    }
+
+    public function switchUserAuthGuard(Request $request)
+    {
+        return Auth::check();
+        // Find token
+        $accessToken = PersonalAccessToken::findToken($request->token);
+        $user = $accessToken->tokenable;
+
+        // Login user into the web guard (session-based)
+        Auth::guard('web')->login($user);
+        return Auth::user();
+
+
+        $loggedUser = ViewHelper::loggedUser();
+        $user = User::find($loggedUser->id);
+        Auth::login($user);
+        return response()->json([
+            'status'    => 'success',
+            'user'  => $user
         ]);
     }
 }

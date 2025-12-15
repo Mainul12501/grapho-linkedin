@@ -71,6 +71,8 @@ Route::middleware([
 //    'verified',
 ])->group(function () {
 
+    Route::get('switch-user-auth-guard', [CustomLoginController::class, 'switchUserAuthGuard']);
+
     Route::post('update-zego-caller-id', [CustomLoginController::class, 'updateZegoCallerId']);
     Route::post('update-fcm-token', [CustomLoginController::class, 'updateFcmToken']);
     Route::get('auth/user-profile-update', [CustomLoginController::class, 'userProfileUpdate']);

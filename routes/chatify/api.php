@@ -1,11 +1,13 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\vendor\Chatify\Api\MessagesController;
 
 /**
  * Authentication for pusher private channels
  */
-Route::post('/chat/auth', 'MessagesController@pusherAuth')->name('api.pusher.auth');
+//Route::post('/chat/auth', 'MessagesController@pusherAuth')->name('api.pusher.auth');
+Route::post('/chat/auth', [MessagesController::class, 'pusherAuth'])->name('api.pusher.auth');
 
 /**
  *  Fetch info for specific id [user/group]
