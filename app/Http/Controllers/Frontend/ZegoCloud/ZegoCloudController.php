@@ -6,6 +6,7 @@ use App\Events\CallAccepted;
 use App\Events\CallEnded;
 use App\Events\CallInitiated;
 use App\Events\CallRejected;
+use App\Helpers\FirebaseHelper;
 use App\Helpers\ViewHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Backend\Call;
@@ -65,6 +66,19 @@ class ZegoCloudController extends Controller
 
         broadcast(new CallInitiated($call))->toOthers();
 
+        // Send Firebase push notification to receiver
+        if ($receiver->fcm_token) {
+            FirebaseHelper::sendIncomingCallNotification(
+                receiverId: $receiver->id,
+                callerName: $caller->name,
+                callerId: $caller->id,
+                callId: $call->id,
+                roomId: $roomId,
+                callType: $request->call_type,
+                callerPhoto: $caller->profile_photo_url
+            );
+        }
+
         return response()->json([
             'success' => true,
             'call' => $call,
@@ -97,6 +111,18 @@ class ZegoCloudController extends Controller
         ]);
 
         broadcast(new CallAccepted($call))->toOthers();
+
+        // Send Firebase push notification to caller
+        $caller = $call->caller;
+        if ($caller->fcm_token) {
+            FirebaseHelper::sendCallAcceptedNotification(
+                callerId: $caller->id,
+                receiverName: $user->name,
+                receiverId: $user->id,
+                callId: $call->id,
+                roomId: $call->room_id
+            );
+        }
 
         return response()->json([
             'success' => true,
@@ -131,6 +157,17 @@ class ZegoCloudController extends Controller
 
         broadcast(new CallRejected($call))->toOthers();
 
+        // Send Firebase push notification to caller
+        $caller = $call->caller;
+        if ($caller->fcm_token) {
+            FirebaseHelper::sendCallRejectedNotification(
+                callerId: $caller->id,
+                receiverName: $user->name,
+                receiverId: $user->id,
+                callId: $call->id
+            );
+        }
+
         return response()->json(['success' => true]);
     }
 
@@ -162,6 +199,18 @@ class ZegoCloudController extends Controller
 
         $targetUserId = $user->id === $call->caller_id ? $call->receiver_id : $call->caller_id;
         broadcast(new CallEnded($call, $targetUserId))->toOthers();
+
+        // Send Firebase push notification to the other user
+        $targetUser = User::find($targetUserId);
+        if ($targetUser && $targetUser->fcm_token) {
+            FirebaseHelper::sendCallEndedNotification(
+                userId: $targetUser->id,
+                otherUserName: $user->name,
+                otherUserId: $user->id,
+                callId: $call->id,
+                duration: $duration
+            );
+        }
 
         return response()->json(['success' => true]);
     }

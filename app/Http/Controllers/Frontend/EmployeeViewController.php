@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Frontend;
 
+use App\Helpers\FirebaseHelper;
 use App\Helpers\ViewHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Frontend\Crud\JobTaskController;
@@ -532,6 +533,9 @@ class EmployeeViewController extends Controller
                 $webNotification->notification_type = 'accept_application';
                 $webNotification->msg = "$loggedUser->name has applied to your job: $jobTask->job_title.";
                 $webNotification->save();
+
+                // send notification to firebase
+                FirebaseHelper::sendJobApplicationNotification($jobTask->user_id, $loggedUser->name ?? 'employee', $loggedUser->id, $jobTask->job_title, $jobTask->id );
 
                 return ViewHelper::returnSuccessMessage('You applied for this job successfully.');
             } catch (\Exception $exception) {

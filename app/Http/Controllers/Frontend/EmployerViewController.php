@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Helpers\ViewHelper;
+use App\Helpers\FirebaseHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Backend\Advertisement;
 use App\Models\Backend\EmployerCompany;
@@ -459,6 +460,9 @@ class EmployerViewController extends Controller
                     $newProfileView->viewed_by = 'employer';
                     $newProfileView->employer_company_id = $loggedUser?->employerCompany?->id;
                     $newProfileView->save();
+
+                    // Send Firebase push notification to the viewed user's mobile device
+                    FirebaseHelper::sendProfileViewNotification($userId, $loggedUser->name, $loggedUser->id);
                 }
             }
             $webNotification = new WebNotification();
@@ -467,6 +471,8 @@ class EmployerViewController extends Controller
             $webNotification->notification_type = 'view_profile';
             $webNotification->msg = "$loggedUser->name have viewed your profile.";
             $webNotification->save();
+
+
         }
         $employee = User::with('employeeEducations', 'employeeDocuments', 'employeeWorkExperiences')->find($userId);
         return ViewHelper::returnBackViewAndSendDataForApiAndAjax(['employeeDetails' => $employee], 'frontend.employer.profile.employer-profile');
@@ -599,6 +605,8 @@ class EmployerViewController extends Controller
             $appliedJob->status = $status;
             $appliedJob->save();
 
+             // send notification to firebase
+            FirebaseHelper::sendCustomNotification($user->id, 'Job status changed', "$loggedUser->name has updated your job: $jobTask->job_title status to $status.", 'new_message');
 
             $webNotification = new WebNotification();
             $webNotification->viewer_id = $loggedUser->id;

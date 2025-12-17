@@ -6,22 +6,16 @@ use App\Events\CallAccepted;
 use App\Events\CallEnded;
 use App\Events\CallInitiated;
 use App\Events\CallRejected;
+use App\Helpers\FirebaseHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Backend\Call;
 use App\Models\User;
-use App\Services\PushNotificationService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
 class ZegoCloudMobileController extends Controller
 {
-    protected $pushNotificationService;
-
-    public function __construct(PushNotificationService $pushNotificationService)
-    {
-        $this->pushNotificationService = $pushNotificationService;
-    }
 
     /**
      * Register or update device token for push notifications
@@ -107,13 +101,16 @@ class ZegoCloudMobileController extends Controller
         // Broadcast the call event
         broadcast(new CallInitiated($call))->toOthers();
 
-        // Send push notification to receiver if they have a device token
-        if ($receiver->device_token) {
-            $this->pushNotificationService->sendCallNotification(
-                $receiver,
-                $caller,
-                $call,
-                'incoming'
+        // Send Firebase push notification to receiver
+        if ($receiver->fcm_token) {
+            FirebaseHelper::sendIncomingCallNotification(
+                receiverId: $receiver->id,
+                callerName: $caller->name,
+                callerId: $caller->id,
+                callId: $call->id,
+                roomId: $roomId,
+                callType: $request->call_type,
+                callerPhoto: $caller->profile_photo_url
             );
         }
 
@@ -190,14 +187,14 @@ class ZegoCloudMobileController extends Controller
         // Broadcast the call rejected event
         broadcast(new CallRejected($call))->toOthers();
 
-        // Notify caller that call was rejected
+        // Send Firebase push notification to caller
         $caller = $call->caller;
-        if ($caller->device_token) {
-            $this->pushNotificationService->sendCallNotification(
-                $caller,
-                $user,
-                $call,
-                'rejected'
+        if ($caller->fcm_token) {
+            FirebaseHelper::sendCallRejectedNotification(
+                callerId: $caller->id,
+                receiverName: $user->name,
+                receiverId: $user->id,
+                callId: $call->id
             );
         }
 
@@ -236,14 +233,15 @@ class ZegoCloudMobileController extends Controller
         // Broadcast the call ended event
         broadcast(new CallEnded($call, $targetUserId))->toOthers();
 
-        // Notify the other party
+        // Send Firebase push notification to the other user
         $targetUser = User::find($targetUserId);
-        if ($targetUser && $targetUser->device_token) {
-            $this->pushNotificationService->sendCallNotification(
-                $targetUser,
-                $user,
-                $call,
-                'ended'
+        if ($targetUser && $targetUser->fcm_token) {
+            FirebaseHelper::sendCallEndedNotification(
+                userId: $targetUser->id,
+                otherUserName: $user->name,
+                otherUserId: $user->id,
+                callId: $call->id,
+                duration: $duration
             );
         }
 
