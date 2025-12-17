@@ -155,7 +155,7 @@ class ViewHelper
         if (str_contains(url()->current(), '/api/'))
         {
             $loggedUser = auth('sanctum')->user();
-            if ($loggedUser->user_type == 'employer')
+            if ($loggedUser && $loggedUser->user_type == 'employer')
             {
                 return $loggedUser->load('employerCompanies');
             } else {

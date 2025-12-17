@@ -32,7 +32,8 @@ Route::post('send-otp', [CustomLoginController::class, 'sendOtp'])->name('send-o
 Route::post('verify-otp', [CustomLoginController::class, 'verifyOtp'])->name('verify-otp');
 Route::post('buy-subscription/{subscriptionPlan}', [FrontendViewController::class, 'buySubscription'])->name('buy-subscription');
 Route::get('/pass', function (){
-    return bcrypt('password');
+    return \App\Helpers\ViewHelper::loggedUser();
+//    return bcrypt('password');
 });
 
 Route::get('get-job-details/{id}', [JobTaskController::class, 'getJobDetails'])->name('get-job-details');
@@ -113,6 +114,7 @@ Route::middleware([
 
     Route::post('auth/user-password-update', [CustomLoginController::class, 'userPasswordUpdate'])->name('auth.user-password-update');
     Route::get('call-user/{type?}', [TwilioVideoController::class, 'viewPage'])->name('employer.call-user');
+    Route::get('employee-view-post/{post}', [EmployeeViewController::class, 'employeeViewPost'])->name('employee-view-post');
     Route::get('view-company-profile/{employerCompany}', [EmployeeViewController::class, 'viewCompanyProfile'])->name('view-company-profile');
 
     Route::prefix('employer')->as('employer.')->middleware(['isEmployer', 'siteSubscriptionStatusCheck'])->group(function (){

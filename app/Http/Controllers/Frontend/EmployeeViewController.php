@@ -44,31 +44,49 @@ class EmployeeViewController extends Controller
 
         $loggedUser = ViewHelper::loggedUser();
 
-        $topJobsForEmployee = JobTask::where(['status' => 1])
-            ->whereDoesntHave('employeeAppliedJobs', function($query) use ($loggedUser) {
-                $query->where('employee_applied_jobs.user_id', $loggedUser->id);
-            })
-            ->whereDoesntHave('employeeSavedJobs', function($query) use ($loggedUser) {
-                $query->where('job_task_user.user_id', $loggedUser->id);
-            })
-            ->with('employerCompany', 'jobType')
-            ->where('is_softly_deleted', 0)
-            ->latest()
-            ->take(5)
-            ->get();
 
-        $moreJobsForEmployee = JobTask::where(['status' => 1])
-            ->whereDoesntHave('employeeAppliedJobs', function($query) use ($loggedUser) {
-                $query->where('employee_applied_jobs.user_id', $loggedUser->id);
-            })
-            ->whereDoesntHave('employeeSavedJobs', function($query) use ($loggedUser) {
-                $query->where('job_task_user.user_id', $loggedUser->id);
-            })
-            ->with('employerCompany', 'jobType')
-            ->where('is_softly_deleted', 0)
-            ->inRandomOrder()
-            ->take(5)
-            ->get();
+        if (ViewHelper::checkIfRequestFromApi())
+        {
+            $topJobsForEmployee = JobTask::where(['status' => 1])
+                ->with('employerCompany', 'jobType', 'jobLocationType')
+                ->where('is_softly_deleted', 0)
+                ->latest()
+                ->take(5)
+                ->get();
+
+            $moreJobsForEmployee = JobTask::where(['status' => 1])
+                ->with('employerCompany', 'jobType', 'jobLocationType')
+                ->where('is_softly_deleted', 0)
+                ->inRandomOrder()
+                ->take(5)
+                ->get();
+        } else {
+            $topJobsForEmployee = JobTask::where(['status' => 1])
+                ->whereDoesntHave('employeeAppliedJobs', function($query) use ($loggedUser) {
+                    $query->where('employee_applied_jobs.user_id', $loggedUser->id);
+                })
+                ->whereDoesntHave('employeeSavedJobs', function($query) use ($loggedUser) {
+                    $query->where('job_task_user.user_id', $loggedUser->id);
+                })
+                ->with('employerCompany', 'jobType', 'jobLocationType')
+                ->where('is_softly_deleted', 0)
+                ->latest()
+                ->take(5)
+                ->get();
+
+            $moreJobsForEmployee = JobTask::where(['status' => 1])
+                ->whereDoesntHave('employeeAppliedJobs', function($query) use ($loggedUser) {
+                    $query->where('employee_applied_jobs.user_id', $loggedUser->id);
+                })
+                ->whereDoesntHave('employeeSavedJobs', function($query) use ($loggedUser) {
+                    $query->where('job_task_user.user_id', $loggedUser->id);
+                })
+                ->with('employerCompany', 'jobType', 'jobLocationType')
+                ->where('is_softly_deleted', 0)
+                ->inRandomOrder()
+                ->take(5)
+                ->get();
+        }
 
         $allJobs = $topJobsForEmployee->merge($moreJobsForEmployee);
         foreach ($allJobs as $job)
@@ -325,8 +343,13 @@ class EmployeeViewController extends Controller
 
         $appliedJobIds = $loggedUser->appliedJobsWithJobDetails()
             ->pluck('job_task_id');
+        if (ViewHelper::checkIfRequestFromApi())
+        {
+            $savedJobs = $loggedUser->employeeSavedJobs()->get();
+        } else {
+            $savedJobs = $loggedUser->employeeSavedJobs()->whereNotIn('job_tasks.id', $appliedJobIds)->get();
+        }
 
-        $savedJobs = $loggedUser->employeeSavedJobs()->whereNotIn('job_tasks.id', $appliedJobIds)->get();
         foreach ($savedJobs as $savedJob) {
             $savedJob->isApplied = ViewHelper::getJobSaveApplyInfo($savedJob->id);
         }
@@ -623,5 +646,23 @@ class EmployeeViewController extends Controller
                 'msg'   => 'something went wrong. Please try again.',
             ]);
         }
+    }
+
+    public function employeeViewPost(Post $post, Request $request)
+    {
+        $post = Post::with(['employer' => function ($employer) {
+            $employer->select('id', 'name', 'employer_company_id')->with(['employerCompany' => function ($employerCompany) {
+                $employerCompany->select('id', 'user_id', 'logo');
+            }]);
+        }])->find($post->id);
+        $data = [
+            'post'  => $post,
+        ];
+        if (\request()->ajax() && isset($_GET['req_from']) && $_GET['req_from'] == 'admin')
+        {
+            return view('backend.user-management.view-post', $data)->render();
+        }
+        return ViewHelper::checkViewForApi($data, 'frontend.employee.home.view-post');
+        return view('frontend.employee.home.view-post');
     }
 }

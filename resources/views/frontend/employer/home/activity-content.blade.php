@@ -46,9 +46,9 @@
                     <div class="col-md-4">
                         <div>
                             @if(isset($singleData->images))
-                                <img src="{{ asset(json_decode($singleData->images)[0]) }}" alt="post img" class="card-img img-fluid" style=" border-top-right-radius: 0px; border-bottom-right-radius: 0px; max-height: 200px;">
+                                <a href="{{ route('employee-view-post', $singleData->id) }}"><img src="{{ asset(json_decode($singleData->images)[0]) }}" alt="post img" class="card-img img-fluid" style=" border-top-right-radius: 0px; border-bottom-right-radius: 0px; max-height: 200px;"></a>
                             @else
-                                <img src="{{ asset('frontend/photo.png') }}" alt="post img" class="card-img img-fluid" style=" border-top-right-radius: 0px; border-bottom-right-radius: 0px; max-height: 200px;">
+                                <a href="{{ route('employee-view-post', $singleData->id) }}"><img src="{{ asset('frontend/photo.png') }}" alt="post img" class="card-img img-fluid" style=" border-top-right-radius: 0px; border-bottom-right-radius: 0px; max-height: 200px;"></a>
                             @endif
                         </div>
                     </div>
@@ -56,7 +56,7 @@
                         <div class="">
                             <div class="row">
                                 <div class="col-11">
-                                    <h3>{{ $singleData->title ?? '' }}</h3>
+                                    <a href="{{ route('employee-view-post', $singleData->id) }}" class="" style="text-decoration: none;"><h3>{{ $singleData->title ?? '' }}</h3></a>
                                 </div>
                                 <div class="col-1">
                                     @if(isset($_GET['view']) && $_GET['view'] != 'employee')
@@ -96,3 +96,4 @@
         <p style="font-size: 36px;">No Published Activity Yet</p>
     </div>
 @endforelse
+
