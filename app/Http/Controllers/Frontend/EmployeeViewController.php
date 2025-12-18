@@ -142,6 +142,17 @@ class EmployeeViewController extends Controller
                 return $post;
             });
 
+        if (ViewHelper::checkIfRequestFromApi())
+        {
+            foreach ($posts as $post)
+            {
+                if (isset($post->images))
+                {
+                    $post['image_path'] =  json_decode($post->images);
+                }
+            }
+        }
+
 // Merge and sort
         $merged = $jobTasks->concat($posts)->sortByDesc('created_at')->values();
 
@@ -304,6 +315,7 @@ class EmployeeViewController extends Controller
 
         if (count($jobTasks) > 0) {
             foreach ($jobTasks as $jobTask) {
+                $getJobSaveApplyInfo = ViewHelper::getJobSaveApplyInfo($jobTask->id);
                 $jobTask->isSaved = $getJobSaveApplyInfo['isSaved'] ?? false;
                 $jobTask->isApplied = $getJobSaveApplyInfo['isApplied'] ?? false;
             }

@@ -345,7 +345,7 @@ class FirebaseHelper
                     'sound' => 'default',
                     'priority' => 'high',
                     'click_action' => 'FLUTTER_NOTIFICATION_CLICK',
-                    'channel_id' => 'incoming_calls',
+                    'channel_id' => 'likewise',
                 ],
             ],
             'apns' => [
@@ -353,7 +353,7 @@ class FirebaseHelper
                     'aps' => [
                         'sound' => 'default',
                         'badge' => 1,
-                        'category' => 'INCOMING_CALL',
+                        'category' => 'likewise',
                         'alert' => [
                             'title' => $title,
                             'body' => $body,
