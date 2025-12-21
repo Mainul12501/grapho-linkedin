@@ -130,7 +130,8 @@ class JobTaskController extends Controller
         }
         $jobTask->load([
             'employerPrefferableUniversityNames',
-            'employerPrefferableFieldOfStudyNames'
+            'employerPrefferableFieldOfStudyNames',
+            'jobRequiredskills'
         ]);
         $data = [
             'jobTask' => $jobTask,

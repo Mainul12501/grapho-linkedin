@@ -70,6 +70,11 @@ Route::post('/deleteConversation', 'MessagesController@deleteConversation')->nam
 Route::post('/deleteConversationForMe', 'MessagesController@deleteConversationForMe')->name('api.conversation.delete.for.me');
 
 /**
+ * Delete Message
+ */
+Route::post('/deleteMessage', 'MessagesController@deleteMessage')->name('api.message.delete');
+
+/**
  * Update Settings
  */
 Route::post('/updateSettings', 'MessagesController@updateSettings')->name('api.avatar.update');

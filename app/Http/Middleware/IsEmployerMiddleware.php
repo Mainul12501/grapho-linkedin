@@ -20,7 +20,7 @@ class IsEmployerMiddleware
         if ($loggedInUser->user_type == 'employer' || $loggedInUser->user_type == 'sub_employer'){
             return $next($request);
         } else {
-            return ViewHelper::returnRedirectWithMessage(route('/'), 'error', 'Access Denied! You are not authorized to access that page.');
+            return ViewHelper::returnRedirectWithMessage(route('/'), 'error', 'Access Denied! You are not authorized to access that page.',);
         }
     }
 }

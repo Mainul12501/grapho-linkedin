@@ -38,7 +38,6 @@
                     </div>
                 @endif
 
-
             </article>
         @elseif($singleData->type == 'post')
             <div class="card card-body p-0" style="max-height: 200px;">
@@ -48,7 +47,7 @@
                             @if(isset($singleData->images))
                                 <a href="{{ route('employee-view-post', $singleData->id) }}"><img src="{{ asset(json_decode($singleData->images)[0]) }}" alt="post img" class="card-img img-fluid" style=" border-top-right-radius: 0px; border-bottom-right-radius: 0px; max-height: 200px;"></a>
                             @else
-                                <a href="{{ route('employee-view-post', $singleData->id) }}"><img src="{{ asset('frontend/photo.png') }}" alt="post img" class="card-img img-fluid" style=" border-top-right-radius: 0px; border-bottom-right-radius: 0px; max-height: 200px;"></a>
+                                <a href="{{ route('employee-view-post', $singleData->id) }}"><img src="{{ asset('frontend/photo.png') }}" alt="post img" class="card-img px-3 img-fluid" style=" border-top-right-radius: 0px; border-bottom-right-radius: 0px; max-height: 200px;"></a>
                             @endif
                         </div>
                     </div>

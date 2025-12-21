@@ -4,6 +4,7 @@
 namespace App\Http\Controllers\vendor\Chatify\Api;
 
 use App\Helpers\ViewHelper;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Response;
@@ -16,7 +17,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-
 
 class MessagesController extends Controller
 {
@@ -327,6 +327,23 @@ class MessagesController extends Controller
     {
         // delete
         $delete = Chatify::deleteConversation($request['id']);
+
+        // send the response
+        return Response::json([
+            'deleted' => $delete ? 1 : 0,
+        ], 200);
+    }
+
+    /**
+     * Delete message
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function deleteMessage(Request $request)
+    {
+        // delete
+        $delete = Chatify::deleteMessage($request['id']);
 
         // send the response
         return Response::json([

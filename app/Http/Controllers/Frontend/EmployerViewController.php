@@ -54,8 +54,13 @@ class EmployerViewController extends Controller
                     $query->select('id', 'name', 'logo');
                 }]);
         }])
-            ->take(10)
-            ->get();
+            ->take(10);
+        if (ViewHelper::checkIfRequestFromApi())
+        {
+            $posts  = $posts->paginate(10);
+        } else {
+            $posts  = $posts->get();
+        }
 
         $isApiRequest = false;
         if (str()->contains(url()->current(), '/api/'))
@@ -145,23 +150,44 @@ class EmployerViewController extends Controller
             $jobUserId = $loggedUser->user_id;
         if ($request->has('job_status')) {
             if ($request->job_status == 'closed') {
-                $jobs = JobTask::where(['user_id' => $jobUserId, 'status' => 0])->latest()->where('is_softly_deleted', 0)->paginate(10);
+                $jobs = JobTask::where(['user_id' => $jobUserId, 'status' => 0])->with([
+                    'employerPrefferableUniversityNames:id,name',
+                    'employerPrefferableFieldOfStudyNames:id,field_name',
+                    'jobRequiredskills:id,skill_name,slug'
+                ])->latest()->where('is_softly_deleted', 0)->paginate(10);
             } else {
-                $jobs = JobTask::where(['user_id' => $jobUserId, 'status' => 1])->latest()->where('is_softly_deleted', 0)->paginate(10);
+                $jobs = JobTask::where(['user_id' => $jobUserId, 'status' => 1])->with([
+                    'employerPrefferableUniversityNames:id,name',
+                    'employerPrefferableFieldOfStudyNames:id,field_name',
+                    'jobRequiredskills:id,skill_name,slug'
+                ])->latest()->where('is_softly_deleted', 0)->paginate(10);
             }
         } elseif (isset($request->search_text)) {
             $jobs = JobTask::where([
                 'user_id' => $jobUserId,
                 'status' => 1,
 
-            ])->where('job_title', 'LIKE', "%{$request->search_text}%")->latest()->where('is_softly_deleted', 0)->paginate(10);
+            ])->where('job_title', 'LIKE', "%{$request->search_text}%")->with([
+                'employerPrefferableUniversityNames:id,name',
+                'employerPrefferableFieldOfStudyNames:id,field_name',
+                'jobRequiredskills:id,skill_name,slug'
+            ])->latest()->where('is_softly_deleted', 0)->paginate(10);
         } else {
-            $jobs = JobTask::where(['user_id' => $jobUserId, 'status' => 1])->latest()->where('is_softly_deleted', 0)->paginate(10);
+            $jobs = JobTask::where(['user_id' => $jobUserId, 'status' => 1])->with([
+                'employerPrefferableUniversityNames:id,name',
+                'employerPrefferableFieldOfStudyNames:id,field_name',
+                'jobRequiredskills:id,skill_name,slug'
+            ])->latest()->where('is_softly_deleted', 0)->paginate(10);
         }
+
         if (ViewHelper::checkIfRequestFromApi()) {
-            foreach ($jobs as $job) {
+//            foreach ($jobs as $job) {
+//                $job->total_applicants = $job->employeeAppliedJobs()->count();
+//            }
+            $jobs->getCollection()->transform(function ($job) {
                 $job->total_applicants = $job->employeeAppliedJobs()->count();
-            }
+                return $job;
+            });
         }
         $data = [
             'jobTypes' => JobType::where(['status' => 1])->get(['id', 'name']),

@@ -38,11 +38,6 @@ class EmployeeViewController extends Controller
 
     public function employeeHome()
     {
-//        $topJobsForEmployee = JobTask::where(['status' => 1])->with('employerCompany', 'jobType')->take(5)->latest()->get();
-//        $loggedUser = ViewHelper::loggedUser();
-//        $userSavedJobs = $loggedUser->employeeSavedJobs;
-//        $userAppliedJobs = $loggedUser->employeeAppliedJobs;
-
         $loggedUser = ViewHelper::loggedUser();
 
 

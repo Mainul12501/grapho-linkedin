@@ -97,6 +97,7 @@ Route::middleware([
         Route::get('employer-subscriptions', [EmployerViewController::class, 'employerSubscriptions']);
         Route::get('view-post/{post}', [PostController::class, 'viewPost']);
         Route::get('set-follow-history', [FollowerHistroyController::class, 'store']);
+        Route::get('close-job/{jobTask}/{status}', [JobTaskController::class, 'closeJob']);
 
         Route::post('update-settings', [EmployerViewController::class, 'updateSettings']);
         Route::post('update-company-info', [EmployerViewController::class, 'updateCompanyInfo']);

@@ -42,7 +42,7 @@
 <div class="container companyProfilecontainer mt-0 mt-md-3">
     <div class="row g-4">
         <!-- Left part -->
-        <div class="col-md-4 col-12">
+        <div class="col-sm-3 col-12">
             <div class="card d-flex flex-column  p-4 border rounded-3">
                 <div class="mb-3">
                     <img src="{{ asset( $employerCompany->logo ?? '/frontend/company-vector.jpg') }}" alt="Grameenphone Logo" class="companyProfilecontainer__logo" />
@@ -86,7 +86,7 @@
         </div>
 
         <!-- Right part -->
-        <div class="col-md-8 col-12">
+        <div class="col-sm-9">
             <div class="card">
                 <div class="d-flex justify-content-between align-items-center mb-3 companyProfilecontainer__topbar p-4">
                     <h6 class="mb-0 fw-semibold">{{ trans('employer.company_overview') }}</h6>
@@ -125,7 +125,7 @@
 
 {{--    activities--}}
     <div class="row mt-3">
-        <div class="col-10 mx-auto">
+        <div class="col-9 ms-auto">
             <h3>{{ $employerCompany->name ?? '' }} Activities</h3>
 
             <!-- Job Cards -->
@@ -135,26 +135,15 @@
                     @include('frontend.employer.home.activity-content')
                 @endif
 
-                {{--                        <div class="col-12 text-center align-content-center">--}}
-                {{--                            @if(count($paginatedData) > 10)--}}
-                {{--                                {!! $paginatedData->links() !!}--}}
-                {{--                            @endif--}}
-                {{--                        </div>--}}
-
                 <div id="loader" class="text-center my-3" style="display:none;">
                     <img src="{{ asset('frontend/spinner.gif') }}" width="40"> Loading...
                 </div>
-
                 <div id="no-more-data" class="text-center my-2 text-muted" style="display:none;">
                     No more results
                 </div>
-
-
             </div>
-
         </div>
     </div>
-
 </div>
 
 <div class="modal"  id="viewJobModal">
