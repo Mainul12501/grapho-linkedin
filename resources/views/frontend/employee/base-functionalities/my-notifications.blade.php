@@ -8,7 +8,7 @@
     <!-- Main Content -->
     <section class="notificationContent">
         <div class="container">
-            <h2>{{ trans('common.title') }}</h2>
+            <h2>{{ trans('employee.notifications') }}</h2>
             <h6>{{ trans('common.you') }} {{ trans('common.have') }} {{$newNotifications ?? 0 }} {{ trans('common.new') }} {{ trans('common.message') }}.</h6>
             <div class="notification-list" id="notification-container">
                 @include('frontend.employee.base-functionalities.partials.notification-items',['webNotifications' => $notifications])
@@ -42,14 +42,14 @@
                 @if(count($notifications) == 0)
                                         <!-- Another Notification Item -->
                                         <div class="notification-item notification-accepted">
-                                            <div class="notification-icon">
-                                                <img src="{{ asset('/') }}frontend/employee/images/notification/notificationLogo3.png" alt="Notification Icon" />
-                                            </div>
+{{--                                            <div class="notification-icon">--}}
+{{--                                                <img src="{{ asset('/') }}frontend/employee/images/notification/notificationLogo3.png" alt="Notification Icon" />--}}
+{{--                                            </div>--}}
                                             <div class="notification-content">
                                                 <p class="text-center"> {{ trans('common.no') }} {{ trans('common.message') }} {{ trans('common.available') }} {{ trans('common.yet') }}.</p>
-                                                <span class="time">8h ago</span>
+{{--                                                <span class="time">8h ago</span>--}}
                                             </div>
-                                            <div class="more-options"><img src="{{ asset('/') }}frontend/employee/images/contentImages/inboxThreeDotIcon.png" alt=""></div>
+{{--                                            <div class="more-options"><img src="{{ asset('/') }}frontend/employee/images/contentImages/inboxThreeDotIcon.png" alt=""></div>--}}
                                         </div>
                 @endif
 

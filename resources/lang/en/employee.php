@@ -77,7 +77,7 @@ return [
     'jobs' => 'jobs',
     'company' => 'Company',
     'applied_on' => 'Applied on',
-    'approved' => 'Approved',
+    'approved' => 'Accepted',
     'pending' => 'Pending',
     'shortlisted' => 'Shortlisted',
     'rejected' => 'Rejected',

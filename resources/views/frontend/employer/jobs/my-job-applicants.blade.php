@@ -23,19 +23,19 @@
                     </button>
                 </li>
                 <li class="nav-item mx-1 p-1" role="presentation">
-                    <button class="nav-link rounded-pill px-4 tab-btn-bg site-base-color-bg" id="shortlisted-tab" data-bs-toggle="tab"
+                    <button class="nav-link rounded-pill px-4 tab-btn-bg bg-primary text-white" id="shortlisted-tab" data-bs-toggle="tab"
                             data-bs-target="#shortlisted" type="button" role="tab" aria-controls="shortlisted" aria-selected="false">
                         {{ trans('employee.shortlisted') }}
                     </button>
                 </li>
                 <li class="nav-item mx-1 p-1" role="presentation">
-                    <button class="nav-link rounded-pill px-4 tab-btn-bg site-base-color-bg" id="rejected-tab" data-bs-toggle="tab" data-bs-target="#approved"
+                    <button class="nav-link rounded-pill px-4 tab-btn-bg bg-success text-white" id="rejected-tab" data-bs-toggle="tab" data-bs-target="#approved"
                             type="button" role="tab" aria-controls="rejected" aria-selected="false">
                         {{ trans('employee.approved') }}
                     </button>
                 </li>
                 <li class="nav-item mx-1 p-1" role="presentation">
-                    <button class="nav-link rounded-pill px-4 tab-btn-bg site-base-color-bg" id="rejected-tab" data-bs-toggle="tab" data-bs-target="#rejected"
+                    <button class="nav-link rounded-pill px-4 tab-btn-bg bg-danger text-white" id="rejected-tab" data-bs-toggle="tab" data-bs-target="#rejected"
                             type="button" role="tab" aria-controls="rejected" aria-selected="false">
                         {{ trans('employee.rejected') }}
                     </button>
@@ -119,7 +119,7 @@
                                      style="width: 48px; height: 48px; object-fit: cover;" />
                                 <div>
                                     <strong>{{ $pendingApplicant?->user?->name ?? 'User Name' }}</strong><br />
-                                    <small>{{ $pendingApplicant?->user?->versity ?? 'Update this field : University name' }}</small><br />
+                                    <small>{{ $pendingApplicant?->user?->employeeEducations[count($pendingApplicant?->user?->employeeEducations)-1]?->universityName?->name ?? '' }}</small><br />
                                     <small>CGPA: {{ $pendingApplicant?->user?->cgpa }}</small><br />
                                     <small>Applied on: {{ $pendingApplicant->created_at->format('D-m-Y') ?? '25-09-2024' }}</small>
                                 </div>
@@ -165,7 +165,7 @@
                                          style="width: 38px; height: 38px; object-fit: cover;" />
                                     {{ $shortListedApplicant?->user?->name ?? 'User Name' }}
                                 </td>
-                                <td>{{ $shortListedApplicant?->user?->versity ?? 'Update this field : University name' }}</td>
+                                <td>{{ $shortListedApplicant?->user?->employeeEducations[count($shortListedApplicant?->user?->employeeEducations)-1]?->universityName?->name ?? '' }}</td>
                                 <td>{{ $shortListedApplicant?->user?->cgpa }}</td>
                                 <td>{{ $shortListedApplicant->created_at->format('D-m-Y') ?? '25-09-2024' }}</td>
                                 <td>
@@ -214,7 +214,7 @@
                                  style="width: 48px; height: 48px; object-fit: cover;" />
                             <div>
                                 <strong>{{ $shortListedApplicant?->user?->name ?? 'User Name' }}</strong><br />
-                                <small>{{ $shortListedApplicant?->user?->versity ?? 'Update this field : University name' }}</small><br />
+                                <small>{{ $shortListedApplicant?->user?->employeeEducations[count($shortListedApplicant?->user?->employeeEducations)-1]?->universityName?->name ?? '' }}</small><br />
                                 <small>CGPA: {{ $shortListedApplicant?->user?->cgpa }}</small><br />
                                 <small>Applied on: {{ $shortListedApplicant->created_at->format('D-m-Y') ?? '25-09-2024' }}</small>
                             </div>
@@ -259,7 +259,7 @@
                                          style="width: 38px; height: 38px; object-fit: cover;" />
                                     {{ $rejectedApplicant?->user?->name ?? 'User Name' }}
                                 </td>
-                                <td>{{ $rejectedApplicant?->user?->versity ?? 'Update this field : University name' }}</td>
+                                <td>{{ $rejectedApplicant?->user?->employeeEducations[count($rejectedApplicant?->user?->employeeEducations)-1]?->universityName?->name ?? '' }}</td>
                                 <td>{{ $rejectedApplicant?->user?->cgpa }}</td>
                                 <td>{{ $rejectedApplicant->created_at->format('D-m-Y') ?? '25-09-2024' }}</td>
                                 <td>
@@ -293,7 +293,7 @@
                                  style="width: 48px; height: 48px; object-fit: cover;" />
                             <div>
                                 <strong>{{ $rejectedApplicant?->user?->name ?? 'User Name' }}</strong><br />
-                                <small>{{ $rejectedApplicant?->user?->versity ?? 'Update this field : University name' }}</small><br />
+                                <small>{{ $rejectedApplicant?->user?->employeeEducations[count($rejectedApplicant?->user?->employeeEducations)-1]?->universityName?->name ?? '' }}</small><br />
                                 <small>CGPA: {{ $rejectedApplicant?->user?->cgpa }}</small><br />
                                 <small>Applied on: {{ $rejectedApplicant->created_at->format('D-m-Y') ?? '25-09-2024' }}</small>
                             </div>
@@ -337,7 +337,7 @@
                                          style="width: 38px; height: 38px; object-fit: cover;" />
                                     {{ $approvedApplicant?->user?->name ?? 'User Name' }}
                                 </td>
-                                <td>{{ $approvedApplicant?->user?->versity ?? 'Update this field : University name' }}</td>
+                                <td>{{ $approvedApplicant?->user?->employeeEducations[count($approvedApplicant?->user?->employeeEducations)-1]?->universityName?->name ?? '' }}</td>
                                 <td>{{ $approvedApplicant?->user?->cgpa }}</td>
                                 <td>{{ $approvedApplicant->created_at->format('D-m-Y') ?? '25-09-2024' }}</td>
                                 <td>
@@ -373,7 +373,7 @@
                                  style="width: 48px; height: 48px; object-fit: cover;" />
                             <div>
                                 <strong>{{ $approvedApplicant?->user?->name ?? 'User Name' }}</strong><br />
-                                <small>{{ $approvedApplicant?->user?->versity ?? 'Update this field : University name' }}</small><br />
+                                <small>{{ $approvedApplicant?->user?->employeeEducations[count($approvedApplicant?->user?->employeeEducations)-1]?->universityName?->name ?? '' }}</small><br />
                                 <small>CGPA: {{ $approvedApplicant?->user?->cgpa }}</small><br />
                                 <small>Applied on: {{ $approvedApplicant->created_at->format('D-m-Y') ?? '25-09-2024' }}</small>
                             </div>

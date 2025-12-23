@@ -40,19 +40,19 @@
 
             </article>
         @elseif($singleData->type == 'post')
-            <div class="card card-body p-0" style="max-height: 200px;">
-                <div class="row">
-                    <div class="col-md-4">
+            <div class="card card-body p-0 post-card-container">
+                <div class="row g-0">
+                    <div class="col-12 col-md-4">
                         <div>
                             @if(isset($singleData->images))
-                                <a href="{{ route('employee-view-post', $singleData->id) }}"><img src="{{ asset(json_decode($singleData->images)[0]) }}" alt="post img" class="card-img img-fluid" style=" border-top-right-radius: 0px; border-bottom-right-radius: 0px; max-height: 200px;"></a>
+                                <a href="{{ route('employee-view-post', $singleData->id) }}"><img src="{{ asset(json_decode($singleData->images)[0]) }}" alt="post img" class="card-img img-fluid post-card-image"></a>
                             @else
-                                <a href="{{ route('employee-view-post', $singleData->id) }}"><img src="{{ asset('frontend/photo.png') }}" alt="post img" class="card-img px-3 img-fluid" style=" border-top-right-radius: 0px; border-bottom-right-radius: 0px; max-height: 200px;"></a>
+                                <a href="{{ route('employee-view-post', $singleData->id) }}"><img src="{{ asset('frontend/photo.png') }}" alt="post img" class="card-img px-3 img-fluid post-card-image"></a>
                             @endif
                         </div>
                     </div>
-                    <div class="col-md-8 py-3 position-relative">
-                        <div class="">
+                    <div class="col-12 col-md-8 py-3">
+                        <div class="ps-2">
                             <div class="row">
                                 <div class="col-11">
                                     <a href="{{ route('employee-view-post', $singleData->id) }}" class="" style="text-decoration: none;"><h3>{{ $singleData->title ?? '' }}</h3></a>
@@ -80,9 +80,9 @@
 
                                 {!! str()->words($singleData->description, 20, '<a style="text-decoration: none; color: #FFCB11" href="'.route('employer.view-post', $singleData->id).'">.....View Full Post</a>') ?? '' !!}
                             </div>
-                            <p class="position-absolute" style="bottom: 0px; right: 30px">
-                                <span class="float-right" >Posted on: {{ $singleData->created_at->diffForHumans() }}</span>
-                            </p>
+{{--                            <p class="position-absolute" style="bottom: 0px; right: 30px">--}}
+{{--                                <span class="float-right" >Posted on: {{ $singleData->created_at->diffForHumans() }}</span>--}}
+{{--                            </p>--}}
                         </div>
                     </div>
                 </div>

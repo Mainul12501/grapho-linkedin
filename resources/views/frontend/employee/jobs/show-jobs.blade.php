@@ -315,8 +315,8 @@
                             @endif
                                 @if(!$isSaved)
                                     <button style="padding: 6px 20px; background-color: #0d6efd; color: white" is-saved="no" class="save-btn btn btn-primary" data-job-id="{{ $singleJobTask->id }}"><img id="saveBtnImg{{ $singleJobTask->id }}" src="{{ asset('/frontend/employee/images/bookmark-white.png') }}" alt="Save Icon" class="save-icon"> <span id="saveBtnTxt{{ $singleJobTask->id }}">{{ trans('common.save') }}</span></button>
-                                @else
-                                    <button style="padding: 6px 20px;" is-saved="yes" class="save-btn btn btn-primary" data-job-id="{{ $singleJobTask->id }}"><img id="saveBtnImg{{ $singleJobTask->id }}" src="{{ asset('/frontend/bookmark-circle.png') }}" style="height: 20px; width: 20px" alt="Save Icon" class=""> <span id="saveBtnTxt{{ $singleJobTask->id }}">{{ trans('common.saved') }}</span></button>
+{{--                                @else--}}
+{{--                                    <button style="padding: 6px 20px;" is-saved="yes" class="save-btn btn btn-primary" data-job-id="{{ $singleJobTask->id }}"><img id="saveBtnImg{{ $singleJobTask->id }}" src="{{ asset('/frontend/bookmark-circle.png') }}" style="height: 20px; width: 20px" alt="Save Icon" class=""> <span id="saveBtnTxt{{ $singleJobTask->id }}">{{ trans('common.saved') }}</span></button>--}}
                                 @endif
                         </div>
 

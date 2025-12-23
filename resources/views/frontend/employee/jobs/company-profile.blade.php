@@ -91,7 +91,7 @@
                 <div class="d-flex justify-content-between align-items-center mb-3 companyProfilecontainer__topbar p-4">
                     <h6 class="mb-0 fw-semibold">{{ trans('employer.company_overview') }}</h6>
                 </div>
-                <div class=" companyProfilecontainer__right-part p-4">
+                <div class=" companyProfilecontainer__right-part p-4 overview-height" >
                     <div class="mb-4 text-muted">
 {{--                        {!!  $employerCompany->company_overview ?? 'Company Overview' !!}--}}
                         <div id="short-overview">
@@ -125,7 +125,7 @@
 
 {{--    activities--}}
     <div class="row mt-3">
-        <div class="col-9 ms-auto">
+        <div class="col-12 col-md-9 mx-auto-custom ms-auto">
             <h3>{{ $employerCompany->name ?? '' }} Activities</h3>
 
             <!-- Job Cards -->
@@ -163,7 +163,80 @@
     </div>
 </div>
 
+<style>
+    .apply-btn, .save-btn {
+        padding: 12px 20px;
+        margin: 10px 0;
+        background-color: #ffcb11;
+        border: none;
+        border-radius: 16px;
+        cursor: pointer;
+        display: inline-block;
+        font-weight: 600;
+        font-size: 18px;
+        line-height: 150%;
+        letter-spacing: -1%;
+        text-align: center;
+        color: #141c25;
+    }
+    .save-icon {
+        width: 20px;
+        height: 20px;
+        margin-right: 10px;
+        vertical-align: middle;
+        color: white!important;
+    }
+    .font-white {color: white!important;}
+    /* Post card responsive styles */
+    .post-card-container {
+        max-height: none;
+        overflow: hidden;
+    }
 
+    .post-card-image {
+        width: 100%;
+        height: auto;
+        max-height: none;
+        object-fit: cover;
+        border-radius: 0.375rem 0.375rem 0 0 !important;
+    }
+
+    /* Mobile-specific padding */
+    @media screen and (max-width: 767px) {
+        .post-card-container .py-3 {
+            padding-left: 1rem !important;
+            padding-right: 1rem !important;
+        }
+
+        .post-card-container h3 {
+            font-size: 1.25rem;
+        }
+    }
+
+    /* Desktop styles - horizontal layout */
+    @media screen and (min-width: 768px) {
+        .post-card-container {
+            max-height: 200px;
+        }
+
+        .post-card-image {
+            height: 200px;
+            max-height: 200px;
+            border-radius: 0.375rem 0 0 0.375rem !important;
+        }
+    }
+
+    @media screen and (max-width: 991px){
+        .mx-auto-custom {
+            margin-left: auto!important;
+            margin-right: auto!important;
+        }
+    }
+
+    @media screen and (min-width: 991px){
+        .overview-height {min-height: 350px!important;}
+    }
+</style>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 <!-- Bootstrap Bundle JS (with Popper)  -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

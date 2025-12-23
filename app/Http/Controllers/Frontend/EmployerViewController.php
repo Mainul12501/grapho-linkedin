@@ -57,7 +57,7 @@ class EmployerViewController extends Controller
             ->take(10);
         if (ViewHelper::checkIfRequestFromApi())
         {
-            $posts  = $posts->paginate(10);
+            $posts  = $posts->paginate(20);
         } else {
             $posts  = $posts->get();
         }

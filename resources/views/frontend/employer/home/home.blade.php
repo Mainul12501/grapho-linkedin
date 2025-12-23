@@ -36,7 +36,7 @@
                                         <div class="employee-suggestions">
                                             <div class="owl-carousel owl-theme" >
                                                 @foreach($employees as $employee)
-                                                    <div class="item">
+                                                    <div class="item pb-2">
                                                         <a href="{{ route('employee-profile', $employee->id) }}" style="text-decoration: none">
                                                             <article class="talent-card">
                                                                 <img src="{{ asset($employee->profile_image ?? '/frontend/user-vector-img.jpg') }}"
@@ -338,6 +338,61 @@
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
+
+    </style>
+
+    <style>
+        /* =========================
+   MOBILE & TABLET ONLY
+   ========================= */
+        @media (max-width: 991px) {
+
+            .employee-suggestions .owl-stage {
+                display: flex !important;
+                align-items: stretch;
+            }
+
+            .employee-suggestions .owl-item {
+                display: flex;
+                float: none !important; /* IMPORTANT */
+            }
+
+            .employee-suggestions .item {
+                /*display: flex;*/
+                height: 100%;
+                width: 100%;
+            }
+
+            .employee-suggestions .talent-card {
+                display: flex;
+                flex-direction: column;
+                height: 100%;
+                width: 100%;
+            }
+        }
+
+        /* =========================
+           DESKTOP FIX (PREVENT BREAK)
+           ========================= */
+        @media (min-width: 992px) {
+
+            .employee-suggestions .owl-stage {
+                display: block !important;
+            }
+
+            .employee-suggestions .owl-item {
+                display: block;
+            }
+
+            .employee-suggestions .item,
+            .employee-suggestions .talent-card {
+                height: auto;
+            }
+
+            /*.employee-suggestions .item { display: block!important; }*/
+        }
+
+
     </style>
 
 @endpush
@@ -373,9 +428,9 @@
         })
     </script>
     <script>
-        setTimeout(function () {
-            equalizeHeights('item');
-        }, 1000);
+        // setTimeout(function () {
+            // equalizeHeights('item');
+        // }, 1000);
     </script>
     <script>
         var startNumber = 0;
@@ -428,4 +483,8 @@
             })
         })
     </script>
+
+
+
+
 @endpush

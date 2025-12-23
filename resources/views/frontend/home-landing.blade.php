@@ -192,7 +192,7 @@
         <div class="text-center hide-on-mobile">
             <img src="{{ isset($siteSetting) ? asset($siteSetting->logo) : '' }}" alt="" style="max-height: 100px">
         </div>
-        <h1 class="d-none d-lg-block text-center tiro-bangla-regular-italic">{{ trans('home.where_doors_knock_you') }}</h1>
+        <h1 class="d-none d-lg-block text-center tiro-bangla-regular-italic">"{{ trans('home.where_doors_knock_you') }}"</h1>
 
         <div class="row justify-content-center align-items-center">
             <!-- Left Illustration (Hidden on mobile) -->

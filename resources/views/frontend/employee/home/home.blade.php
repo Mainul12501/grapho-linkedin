@@ -149,8 +149,8 @@
 
                                             @if(!auth()->user()?->employeeSavedJobs->contains($topJobForEmployee->id))
                                                 <button style="padding: 5px 20px; margin: 0px 8px!important; border-radius: 9px" is-saved="no" class="save-btn bg-primary text-white" data-job-id="{{ $topJobForEmployee->id }}"><img id="saveBtnImg{{ $topJobForEmployee->id }}" src="{{ asset('frontend/employee/images/bookmark-white.png') }}" alt="Save Icon" class="save-icon"> <span id="saveBtnTxt{{ $topJobForEmployee->id }}">{{ trans('common.save') }}</span></button>
-                                            @else
-                                                <button disabled style="padding: 5px 20px; margin: 0px 8px!important; border-radius: 9px" is-saved="yes" class="save-btn bg-gray-300 bg-light text-dark" data-job-id="{{ $topJobForEmployee->id }}"><img id="saveBtnImg{{ $topJobForEmployee->id }}" src="{{ asset('/frontend/employee/images/contentImages/saveIcon.png') }}" style="height: 20px; width: 20px" alt="Save Icon" class=""> <span id="saveBtnTxt{{ $topJobForEmployee->id }}">{{ trans('common.saved') }}</span></button>
+{{--                                            @else--}}
+{{--                                                <button disabled style="padding: 5px 20px; margin: 0px 8px!important; border-radius: 9px" is-saved="yes" class="save-btn bg-gray-300 bg-light text-dark" data-job-id="{{ $topJobForEmployee->id }}"><img id="saveBtnImg{{ $topJobForEmployee->id }}" src="{{ asset('/frontend/employee/images/contentImages/saveIcon.png') }}" style="height: 20px; width: 20px" alt="Save Icon" class=""> <span id="saveBtnTxt{{ $topJobForEmployee->id }}">{{ trans('common.saved') }}</span></button>--}}
                                             @endif
 
                                         </div>
@@ -226,8 +226,8 @@
                                         @endif
                                         @if(!auth()->user()?->employeeSavedJobs->contains($topJobForEmployee->id))
                                             <button style="padding: 5px 20px; margin: 0px 8px!important; border-radius: 9px;" is-saved="no" class="save-btn bg-primary text-white" data-job-id="{{ $topJobForEmployee->id }}"><img id="saveBtnImg{{ $topJobForEmployee->id }}" src="{{ asset('/frontend/employee/images/bookmark-white.png') }}" alt="Save Icon" class="save-icon"> <span id="saveBtnTxt{{ $topJobForEmployee->id }}">{{ trans('common.save') }}</span></button>
-                                        @else
-                                            <button disabled style="padding: 5px 20px; margin: 0px 8px!important; border-radius: 9px;" is-saved="yes" class="save-btn bg-light text-dark" data-job-id="{{ $topJobForEmployee->id }}"><img id="saveBtnImg{{ $topJobForEmployee->id }}" src="{{ asset('/frontend/employee/images/contentImages/saveIcon.png') }}" style="height: 20px; width: 20px" alt="Save Icon" class=""> <span id="saveBtnTxt{{ $topJobForEmployee->id }}">{{ trans('common.saved') }}</span></button>
+{{--                                        @else--}}
+{{--                                            <button disabled style="padding: 5px 20px; margin: 0px 8px!important; border-radius: 9px;" is-saved="yes" class="save-btn bg-light text-dark" data-job-id="{{ $topJobForEmployee->id }}"><img id="saveBtnImg{{ $topJobForEmployee->id }}" src="{{ asset('/frontend/employee/images/contentImages/saveIcon.png') }}" style="height: 20px; width: 20px" alt="Save Icon" class=""> <span id="saveBtnTxt{{ $topJobForEmployee->id }}">{{ trans('common.saved') }}</span></button>--}}
                                         @endif
                                     </div>
                                 @endif

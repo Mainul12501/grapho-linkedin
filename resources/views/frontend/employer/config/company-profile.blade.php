@@ -234,6 +234,23 @@
             </div>
         </div>
     </div>
+
+    <div class="modal"  id="viewJobModal">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="viewJobModalTitle">View Job</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="viewJobModalBody">
+                    <p>Modal body text goes here.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ trans('common.close') }}</button>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @push('style')
@@ -569,5 +586,35 @@
             $('#short-overview').css('display', 'block');
             $('#long-overview').css('display', 'none');
         })
+    </script>
+    <script>
+        {{--var base_url = "{!! url('/') !!}/";--}}
+
+        // let response;
+
+        function sendAjaxRequest(url, method, data = {}) {
+            return $.ajax({ // Return the Promise from $.ajax
+                url: base_url + url,
+                method: method,
+                data: data
+            })
+                .done(function (data) { // .done() for success
+                    // console.log(data.job.employer_company);
+                    // console.log('print from dno');
+                    // No need to assign to 'response' here, it's passed to .then()
+                })
+                .fail(function (error) { // .fail() for error
+                    toastr.error(error);
+                    // The error will also be propagated to the .catch() when called
+                });
+        }
+        function showJobDetails(jobId, jobTitle = 'View Job Title') {
+            sendAjaxRequest('get-job-details/'+jobId+'?render=1&show_apply=1', 'GET').then(function (response) {
+                // console.log(response);
+                $('#viewJobModalTitle').empty().append(jobTitle);
+                $('#viewJobModalBody').empty().append(response);
+                $('#viewJobModal').modal('show');
+            })
+        }
     </script>
 @endpush

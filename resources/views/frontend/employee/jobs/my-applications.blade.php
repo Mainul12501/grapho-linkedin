@@ -116,6 +116,8 @@
             }
             .appliedJobs {background-color: transparent}
         }
+
+        .pendingx {background-color: #FFCB11; }
     </style>
 @endpush
 

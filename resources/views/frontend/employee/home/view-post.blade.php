@@ -27,8 +27,10 @@
                             @if(isset($post->images))
                                 @if(count(json_decode($post->images)) > 1)
                                     @foreach(json_decode($post->images) as $image)
-                                        <div class="col-md-3">
-                                            <img src="{{ asset($image) }}" alt="post-img" style="height: 150px;" class="img-fluid " />
+                                        <div class="col-md-3 mt-2">
+                                            <div mbox-group="jqueryscript" class="zoom-img">
+                                                <a href="{{ asset($image) }}" class=""><img src="{{ asset($image) }}" alt="post-img" style="height: 150px;" class="img-fluid" /></a>
+                                            </div>
                                         </div>
                                     @endforeach
                                 @else
@@ -69,6 +71,12 @@
 
 
 @push('script')
-
+    <link rel="stylesheet" href="{{ asset('frontend/zoom-plugin/mbox.css') }}">
+    <script src="{{ asset('frontend/zoom-plugin/mbox.min.js') }}"></script>
+    <script>
+        $(document).ready(function () {
+            $('.zoom-img').mBox();
+        });
+    </script>
 @endpush
 

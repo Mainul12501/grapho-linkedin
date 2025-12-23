@@ -260,10 +260,13 @@ class JobTaskController extends Controller
             $user = ViewHelper::loggedUser();
             if ($user->roles[0]->id == 3 )
             {
-                $savedJobsIds = $user->employeeSavedJobs->pluck('id')->toArray();
-                $isSaved = in_array($id, $savedJobsIds);
-                if (EmployeeAppliedJob::where(['user_id' => $user->id, 'job_task_id' => $id])->first())
-                    $isApplied = true;
+//                $savedJobsIds = $user->employeeSavedJobs->pluck('id')->toArray();
+//                $isSaved = in_array($id, $savedJobsIds);
+//                if (EmployeeAppliedJob::where(['user_id' => $user->id, 'job_task_id' => $id])->first())
+//                    $isApplied = true;
+                $getJobSaveApplyInfo = ViewHelper::getJobSaveApplyInfo($id);
+                $isSaved = $getJobSaveApplyInfo['isSaved'];
+                $isApplied = $getJobSaveApplyInfo['isApplied'];
             }
         }
         if (isset($request->render) && $request->render == 1)

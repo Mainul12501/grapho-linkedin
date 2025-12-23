@@ -58,7 +58,8 @@
                 <span class="company-name">{{ $post?->employer?->employerCompany?->name ?? 'Employer Name' }}</span>
             </a>
 
-            <h4 class="post-title">{{ $post->title ?? '' }}</h4>
+            <h4 class="post-title"><a href="{{ route('employer.view-post', $post->id) }}" style="text-decoration: none;">{{ $post->title ?? '' }}</a></h4>
+
 
             @if(!\App\Helpers\ViewHelper::checkIfUserApprovedOrBlocked(auth()->user()))
                 <span class="follow-unfollow-btn">
@@ -81,7 +82,8 @@
                 @if(count(json_decode($post->images)) > 1)
                     @foreach(json_decode($post->images) as $image)
                         <div class="col-md-3 col-sm-6 col-6 mb-2">
-                            <img src="{{ asset($image) }}" alt="post-img" style="height: 150px; object-fit: cover;" class="img-fluid w-100" />
+                            <a href="{{ route('employer.view-post', $post->id) }}"><img src="{{ asset($image) }}" alt="post-img" style="height: 150px; object-fit: cover;" class="img-fluid w-100" /></a>
+
                         </div>
                     @endforeach
                 @else

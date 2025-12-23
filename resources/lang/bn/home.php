@@ -10,7 +10,7 @@ return [
     'dashboard' => 'ড্যাশবোর্ড',
     'logout' => 'লগআউট',
     'get_ahead_with_likewisebd' => 'LikeWiseBD এর সাথে এগিয়ে যান',
-    'serving_trusted_insights' => 'আমরা বিশ্বস্ত অন্তর্দৃষ্টি এবং বেনামী কথোপকথন পরিবেশন করছি, যাতে আপনার সফল হওয়ার জন্য প্রয়োজনীয় জিনিস থাকে।',
+    'serving_trusted_insights' => 'একইভাবে অনায়াসে সুযোগগুলি আনলক করুন',
     'join_work_community' => 'আপনার কাজের সম্প্রদায়ে যোগ দিন',
     'find_and_apply_to_jobs' => 'চাকরি খুঁজুন এবং আবেদন করুন',
     'search_company_reviews' => 'কোম্পানি রিভিউ খুঁজুন',

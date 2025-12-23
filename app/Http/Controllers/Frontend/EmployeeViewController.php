@@ -534,6 +534,9 @@ class EmployeeViewController extends Controller
                 $employeeAppliedJob->status = 'pending';
                 $employeeAppliedJob->save();
 
+                if ($loggedUser->employeeSavedJobs()->where('job_task_id', $jobTask->id)->exists())
+                    $loggedUser->employeeSavedJobs()->detach($jobTask->id);
+
                 $webNotification = new WebNotification();
                 $webNotification->viewer_id = $jobTask->id;
                 $webNotification->viewed_user_id = $loggedUser->id;
