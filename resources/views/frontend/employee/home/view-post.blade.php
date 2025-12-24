@@ -15,7 +15,7 @@
         </div>
         <div class="container-fluid">
             <div class="row g-4">
-                <div class="col-md-8 mx-auto" id="appendContentHere">
+                <div class="col-md-9 mx-auto" id="appendContentHere">
                     {{--                    contents appends here--}}
                     <div class="card card-body mt-2">
                         <div class="">
