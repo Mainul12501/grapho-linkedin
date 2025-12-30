@@ -197,7 +197,8 @@
         <div class="row justify-content-center align-items-center">
             <!-- Left Illustration (Hidden on mobile) -->
             <div class="col-lg-4 d-none d-lg-block">
-                <img src="{{ asset('/') }}frontend/home-landing/images/2.png" alt="Illustration Left" class="img-fluid">
+{{--                <img src="{{ asset('/') }}frontend/home-landing/images/2.png" alt="Illustration Left" class="img-fluid">--}}
+                <img src="{{ asset('/frontend/home-landing/images/left.jpeg') }}" alt="Illustration Left" class="img-fluid">
             </div>
 
             <!-- Main Content Container -->
@@ -247,7 +248,8 @@
 
             <!-- Right Illustration (Hidden on mobile) -->
             <div class="col-lg-4 d-none d-lg-block">
-                <img src="{{ asset('/') }}frontend/home-landing/images/3.png" alt="Illustration Right" class="img-fluid">
+{{--                <img src="{{ asset('/') }}frontend/home-landing/images/3.png" alt="Illustration Right" class="img-fluid">--}}
+                <img src="{{ asset('/frontend/home-landing/images/r8.jpeg') }}" alt="Illustration Right" class="img-fluid">
             </div>
         </div>
     </div>

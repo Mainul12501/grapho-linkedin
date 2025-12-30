@@ -35,7 +35,9 @@
                                     @endforeach
                                 @else
                                     <div class="col-12">
-                                        <img src="{{ asset(json_decode($post->images)[0]) }}" alt="post-img" style="max-height: 600px;" class="mx-auto img-fluid w-100" />
+                                        <div mbox-group="jqueryscript" class="zoom-img">
+                                            <img src="{{ asset(json_decode($post->images)[0]) }}" alt="post-img" style="max-height: 600px;" class="mx-auto img-fluid w-100" />
+                                        </div>
                                     </div>
                                 @endif
                             @endif

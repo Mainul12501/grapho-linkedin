@@ -105,6 +105,16 @@ class ViewHelper
             return back()->with('error', $message);
         }
     }
+    public static function returEexceptionErrorWithExtraMsg ($message = null, $customMsg = null)
+    {
+        if (str()->contains(url()->current(), '/api/') || \request()->ajax())
+        {
+            return response()->json(['error' => $message, 'status' => 'error', 'message' => $customMsg], 422);
+        } else {
+            Toastr::error($message);
+            return back()->with('error', $message);
+        }
+    }
     public static function returnRedirectWithMessage ($route, $messageType = 'success', $message = null)
     {
         if (str()->contains(url()->current(), '/api/') || \request()->ajax())

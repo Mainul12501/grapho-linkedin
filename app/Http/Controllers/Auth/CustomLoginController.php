@@ -213,7 +213,7 @@ class CustomLoginController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return ViewHelper::returEexceptionError($validator->errors());
+            return ViewHelper::returEexceptionErrorWithExtraMsg($validator->errors(), 'The given data was invalid');
         }
         if ($request->user_type == 'Employee')
             $request['role']    = 3;

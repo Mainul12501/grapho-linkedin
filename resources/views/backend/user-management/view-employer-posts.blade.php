@@ -1,6 +1,6 @@
 @extends('backend.master')
 
-@section('title', '{{ $user->name }} Posts')
+@section('title', "{{ $user->name }} Posts")
 
 @section('body')
     <div class="row py-5">

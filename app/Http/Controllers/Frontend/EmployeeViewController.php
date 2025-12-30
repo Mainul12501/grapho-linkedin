@@ -177,8 +177,37 @@ class EmployeeViewController extends Controller
 
         $data = [
             'employerCompany' => $employerCompany,
-            'paginatedData' => $paginatedData
+            'paginatedData' => $paginatedData,
+            'companyDetails' => $employerCompany,
         ];
+
+        if ($request->ajax()) {
+
+            // 🔹 FIRST PAGE & EMPTY → allow empty message
+            if ($paginatedData->isEmpty() && $request->get('page', 1) == 1) {
+                return response()->json([
+                    'html' => view('frontend.employer.home.activity-content', $data)->render(),
+                    'empty' => true,
+                    'first_page' => true
+                ]);
+            }
+
+            // 🔹 SCROLL PAGE & EMPTY → NO HTML
+            if ($paginatedData->isEmpty()) {
+                return response()->json([
+                    'html' => '',
+                    'empty' => true,
+                    'first_page' => false
+                ]);
+            }
+
+            // 🔹 Normal data
+            return response()->json([
+                'html' => view('frontend.employer.home.activity-content', $data)->render(),
+                'empty' => false
+            ]);
+        }
+
         return ViewHelper::checkViewForApi($data, 'frontend.employee.jobs.company-profile');
         return \view('frontend.employee.jobs.company-profile');
     }
@@ -672,7 +701,8 @@ class EmployeeViewController extends Controller
         $data = [
             'post'  => $post,
         ];
-        if (\request()->ajax() && isset($_GET['req_from']) && $_GET['req_from'] == 'admin')
+//        if (\request()->ajax() && isset($_GET['req_from']) && $_GET['req_from'] == 'admin')
+        if (\request()->ajax() )
         {
             return view('backend.user-management.view-post', $data)->render();
         }

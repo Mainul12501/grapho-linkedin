@@ -601,6 +601,38 @@ class EmployerViewController extends Controller
             'industries' => Industry::where(['status' => 1])->get(['id', 'name']),
             'employerCompanyCategories' => EmployerCompanyCategory::where(['status' => 1])->get(['id', 'category_name']),
         ];
+//        if ($request->ajax()) {
+//            return view('frontend.employer.home.activity-content', $this->data)->render();
+//        }
+        if ($request->ajax()) {
+
+            // 🔹 FIRST PAGE & EMPTY → allow empty message
+            if ($paginatedData->isEmpty() && $request->get('page', 1) == 1) {
+                return response()->json([
+                    'html' => view('frontend.employer.home.activity-content', compact('paginatedData'))->render(),
+                    'empty' => true,
+                    'first_page' => true
+                ]);
+            }
+
+            // 🔹 SCROLL PAGE & EMPTY → NO HTML
+            if ($paginatedData->isEmpty()) {
+                return response()->json([
+                    'html' => '',
+                    'empty' => true,
+                    'first_page' => false
+                ]);
+            }
+
+            // 🔹 Normal data
+            return response()->json([
+                'html' => view('frontend.employer.home.activity-content', compact('paginatedData'))->render(),
+                'empty' => false
+            ]);
+        }
+
+
+
         return ViewHelper::checkViewForApi($this->data, 'frontend.employer.config.company-profile');
         return view('frontend.employer.config.company-profile');
     }
