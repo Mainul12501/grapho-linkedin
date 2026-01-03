@@ -139,6 +139,7 @@ class ViewHelper
             return back();
         }
     }
+
     public static function returnSuccessMessage($message = null)
     {
         if (str()->contains(url()->current(), '/api/') || \request()->ajax())

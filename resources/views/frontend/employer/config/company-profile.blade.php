@@ -44,7 +44,7 @@
                                 <img src="{{ asset('/') }}frontend/employer/images/employersHome/profile website.png" alt="Website Icon" class="me-3" />
                                 <div>
                                     <div class="fw-semibold small mb-1">Website</div>
-                                    <a href="https://www.grameenphone.com" target="_blank" class="text-decoration-none small">{{ $companyDetails->website ?? 'company.com' }}</a>
+                                    <a href="https://www.grameenphone.com" target="_blank" class="text-decoration-none small">{{ $companyDetails->website ?? '' }}</a>
                                 </div>
                             </div>
                             @if($employerView)

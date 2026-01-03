@@ -544,8 +544,8 @@
                             <a href="{{ file_exists($employeeDocument->file) ? asset($employeeDocument->file) : '' }}" download="">
 
                                 @if( explode('/', $employeeDocument->file_type)[1] == 'image' )
-                                    <img style="max-width: 105px; max-height: 105px;" src="{{ isset($employeeDocument->file_thumb) ? asset($employeeDocument->file_thumb) : asset('frontend/photo.png') }}" alt="Company Logo" class="companyLogo" />
-                                    <img style="width: 40px; height: 42px" src="{{ isset($employeeDocument->file_thumb) ? asset($employeeDocument->file_thumb) : asset('frontend/photo.png')}}" alt="Company Logo" class="mobileLogo" />
+                                    <img style="max-width: 105px; max-height: 105px;" src="{{ isset($employeeDocument->file) ? asset($employeeDocument->file) : asset('frontend/photo.png') }}" alt="Company Logo" class="companyLogo" />
+                                    <img style="width: 40px; height: 42px" src="{{ isset($employeeDocument->file) ? asset($employeeDocument->file) : asset('frontend/photo.png')}}" alt="Company Logo" class="mobileLogo" />
                                 @elseif( explode('/', $employeeDocument->file_type)[1] == 'pdf' )
                                     <img style="max-width: 105px; max-height: 105px;" src="https://www.iconpacks.net/icons/2/free-pdf-icon-3375-thumb.png" alt="Company Logo" class="companyLogo" />
                                     <img style="width: 40px; height: 42px" src="https://www.iconpacks.net/icons/2/free-pdf-icon-3375-thumb.png" alt="Company Logo" class="mobileLogo" />

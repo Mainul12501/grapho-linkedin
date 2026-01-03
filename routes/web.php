@@ -118,24 +118,27 @@ Route::middleware([
     Route::get('view-company-profile/{employerCompany}', [EmployeeViewController::class, 'viewCompanyProfile'])->name('view-company-profile');
 
     Route::prefix('employer')->as('employer.')->middleware(['isEmployer', 'siteSubscriptionStatusCheck'])->group(function (){
-        Route::get('home', [EmployerViewController::class, 'employerHome'])->name('home');
-        Route::get('dashboard', [EmployerViewController::class, 'dashboard'])->name('dashboard');
-        Route::get('my-jobs', [EmployerViewController::class, 'myJobs'])->name('my-jobs');
-        Route::get('my-job-wise-applicants', [EmployerViewController::class, 'myJobWiseApplicants'])->name('my-job-wise-applicants');
-        Route::get('my-job-applicants/{jobTask}', [EmployerViewController::class, 'myJobApplicants'])->name('my-job-applicants');
-        Route::get('head-hunt', [EmployerViewController::class, 'headHunt'])->name('head-hunt');
-        Route::get('employer-user-management', [EmployerViewController::class, 'employerUserManagement'])->name('employer-user-management');
-        Route::get('get-employer-user-info/{user}', [EmployerViewController::class, 'employerUserInfo'])->name('get-employer-user-info');
-        Route::get('settings', [EmployerViewController::class, 'settings'])->name('settings');
-        Route::get('company-profile', [EmployerViewController::class, 'companyProfile'])->name('company-profile');
-        Route::get('change-sub-employer-status/{user}/{status}', [EmployerViewController::class, 'changeSubEmployerStatus'])->name('change-sub-employer-status');
-        Route::get('change-employee-job-application-status/{jobTask}/{user}/{status?}', [EmployerViewController::class, 'changeEmployeeJobApplicationStatus'])->name('change-employee-job-application-status');
-        Route::get('employer-subscriptions', [EmployerViewController::class, 'employerSubscriptions'])->name('employer-subscriptions');
-        Route::get('view-post/{post}', [PostController::class, 'viewPost'])->name('view-post');
-        Route::get('close-job/{jobTask}/{status}', [JobTaskController::class, 'closeJob'])->name('close-job');
-        Route::get('set-follow-history', [FollowerHistroyController::class, 'store'])->name('set-follow-history');
-        Route::get('my-notifications', [EmployerViewController::class, 'myNotifications'])->name('my-notifications');
-        Route::get('employee-suggestions', [EmployerViewController::class, 'employeeSuggestions'])->name('employee-suggestions');
+        Route::middleware('userProfileUpdateCheck')->group(function (){
+            Route::get('home', [EmployerViewController::class, 'employerHome'])->name('home');
+            Route::get('dashboard', [EmployerViewController::class, 'dashboard'])->name('dashboard');
+            Route::get('my-jobs', [EmployerViewController::class, 'myJobs'])->name('my-jobs');
+            Route::get('my-job-wise-applicants', [EmployerViewController::class, 'myJobWiseApplicants'])->name('my-job-wise-applicants');
+            Route::get('my-job-applicants/{jobTask}', [EmployerViewController::class, 'myJobApplicants'])->name('my-job-applicants');
+            Route::get('head-hunt', [EmployerViewController::class, 'headHunt'])->name('head-hunt');
+            Route::get('employer-user-management', [EmployerViewController::class, 'employerUserManagement'])->name('employer-user-management');
+            Route::get('get-employer-user-info/{user}', [EmployerViewController::class, 'employerUserInfo'])->name('get-employer-user-info');
+            Route::get('settings', [EmployerViewController::class, 'settings'])->name('settings');
+            Route::get('company-profile', [EmployerViewController::class, 'companyProfile'])->name('company-profile');
+            Route::get('change-sub-employer-status/{user}/{status}', [EmployerViewController::class, 'changeSubEmployerStatus'])->name('change-sub-employer-status');
+            Route::get('change-employee-job-application-status/{jobTask}/{user}/{status?}', [EmployerViewController::class, 'changeEmployeeJobApplicationStatus'])->name('change-employee-job-application-status');
+            Route::get('employer-subscriptions', [EmployerViewController::class, 'employerSubscriptions'])->name('employer-subscriptions');
+            Route::get('view-post/{post}', [PostController::class, 'viewPost'])->name('view-post');
+            Route::get('close-job/{jobTask}/{status}', [JobTaskController::class, 'closeJob'])->name('close-job');
+            Route::get('set-follow-history', [FollowerHistroyController::class, 'store'])->name('set-follow-history');
+            Route::get('my-notifications', [EmployerViewController::class, 'myNotifications'])->name('my-notifications');
+            Route::get('employee-suggestions', [EmployerViewController::class, 'employeeSuggestions'])->name('employee-suggestions');
+        });
+
 
         Route::post('update-settings', [EmployerViewController::class, 'updateSettings'])->name('update-settings');
         Route::post('update-company-info', [EmployerViewController::class, 'updateCompanyInfo'])->name('update-company-info');
@@ -149,19 +152,22 @@ Route::middleware([
         ]);
     });
     Route::prefix('employee')->as('employee.')->middleware(['isEmployee', 'siteSubscriptionStatusCheck'])->group(function (){
-        Route::get('home', [EmployeeViewController::class, 'employeeHome'])->name('home');
-        Route::get('show-jobs', [EmployeeViewController::class, 'showJobs'])->name('show-jobs');
-        Route::get('my-saved-jobs', [EmployeeViewController::class, 'mySavedJobs'])->name('my-saved-jobs');
-        Route::get('my-applications', [EmployeeViewController::class, 'myApplications'])->name('my-applications');
-        Route::get('my-profile-viewers', [EmployeeViewController::class, 'myProfileViewers'])->name('my-profile-viewers');
-        Route::get('my-subscriptions', [EmployeeViewController::class, 'mySubscriptions'])->name('my-subscriptions');
-        Route::get('settings', [EmployeeViewController::class, 'settings'])->name('settings');
-        Route::get('my-profile', [EmployeeViewController::class, 'myProfile'])->name('my-profile');
-        Route::get('my-notifications', [EmployeeViewController::class, 'myNotifications'])->name('my-notifications');
-        Route::get('save-job/{jobTask}', [EmployeeViewController::class, 'saveJob'])->name('save-job');
-        Route::get('delete-saved-job/{jobTask}', [EmployeeViewController::class, 'deleteSaveJob'])->name('delete-saved-job');
-        Route::get('change-job-active-status/{status}', [EmployeeViewController::class, 'changeJobActiveStatus'])->name('change-job-active-status');
-        Route::get('get-total-saved-jobs', [EmployeeViewController::class, 'getTotalSavedJobs'])->name('get-total-saved-jobs');
+        Route::middleware('userProfileUpdateCheck')->group(function (){
+            Route::get('home', [EmployeeViewController::class, 'employeeHome'])->name('home');
+            Route::get('show-jobs', [EmployeeViewController::class, 'showJobs'])->name('show-jobs');
+            Route::get('my-saved-jobs', [EmployeeViewController::class, 'mySavedJobs'])->name('my-saved-jobs');
+            Route::get('my-applications', [EmployeeViewController::class, 'myApplications'])->name('my-applications');
+            Route::get('my-profile-viewers', [EmployeeViewController::class, 'myProfileViewers'])->name('my-profile-viewers');
+            Route::get('my-subscriptions', [EmployeeViewController::class, 'mySubscriptions'])->name('my-subscriptions');
+            Route::get('settings', [EmployeeViewController::class, 'settings'])->name('settings');
+            Route::get('my-profile', [EmployeeViewController::class, 'myProfile'])->name('my-profile');
+            Route::get('my-notifications', [EmployeeViewController::class, 'myNotifications'])->name('my-notifications');
+            Route::get('save-job/{jobTask}', [EmployeeViewController::class, 'saveJob'])->name('save-job');
+            Route::get('delete-saved-job/{jobTask}', [EmployeeViewController::class, 'deleteSaveJob'])->name('delete-saved-job');
+            Route::get('change-job-active-status/{status}', [EmployeeViewController::class, 'changeJobActiveStatus'])->name('change-job-active-status');
+            Route::get('get-total-saved-jobs', [EmployeeViewController::class, 'getTotalSavedJobs'])->name('get-total-saved-jobs');
+
+        });
 
 
         Route::post('make-msg-seen/{web_notification_id}', [EmployeeViewController::class, 'makeMsgSeen'])->name('make-msg-seen');
@@ -199,6 +205,10 @@ Route::get('/run-db-seeder', function () {
 
 Route::get('/phpinfo', function () {
     phpinfo();
+});
+
+Route::get('/get-mid', function (){
+//    return \App\Helpers\CustomHelper::isApiRequest();
 });
 
 

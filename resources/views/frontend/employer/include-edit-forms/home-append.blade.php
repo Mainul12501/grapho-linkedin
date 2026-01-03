@@ -3,20 +3,17 @@
     <div class="card card-body mt-2">
         <div class="header-div">
             <a href="{{ route('employer.company-profile', ['view' => 'employer', 'company_id' => $post?->employer?->employerCompany?->id ]) }}"
-               style="text-decoration: none"
-               class="company-info">
+               style="text-decoration: none; flex-direction: inherit"
+               class="company-info" >
                 <span class="company-img">
                     <img src="{{ asset($post?->employer?->employerCompany?->logo ?? 'frontend/company-vector.jpg') }}"
                          alt="Company Logo">
                 </span>
-                <span class="company-name">{{ $post?->employer?->employerCompany?->name ?? 'Company Name' }}</span>
+                <span class="company-name ms-2">{{ $post?->employer?->employerCompany?->name ?? 'Company Name' }}</span>
             </a>
 
-            <h4 class="post-title"><a href="{{ route('employer.view-post', $post->id) }}" style="text-decoration: none;">{{ $post->title ?? '' }}</a></h4>
-
-
             @if(!\App\Helpers\ViewHelper::checkIfUserApprovedOrBlocked(auth()->user()))
-                <span class="follow-unfollow-btn">
+                <span class="follow-unfollow-btn ms-auto">
                     <button type="button"
                             data-employer-id="{{ $post->user_id }}"
                             data-employer-company-name="{{ $post?->employer?->employerCompany?->name ?? 'Company' }}"
@@ -50,6 +47,7 @@
 
 
         <div class="mt-2" style="text-align: justify">
+            <h4 class="post-title"><a href="{{ route('employer.view-post', $post->id) }}" style="text-decoration: none;">{{ $post->title ?? '' }}</a></h4>
             <p>
                 {!! \Illuminate\Support\Str::limit(strip_tags($post->description), 250, '... <a href="'. route('employer.view-post', $post->id) .'">See More</a>') !!}
             </p>

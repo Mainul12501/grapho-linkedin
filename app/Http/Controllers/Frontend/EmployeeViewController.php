@@ -608,11 +608,13 @@ class EmployeeViewController extends Controller
             'mobile.unique' => 'This mobile number is already registered',
             'mobile.regex' => 'Mobile number must be 11 digits and start with 01',
         ]);
+//        return 'hi';
         if ($validator->fails()) {
 //            Toastr::error($validator->errors());
             return ViewHelper::returEexceptionError($validator->errors());
             return back();
         }
+//        return 'hi';
         if (isset($request->prev_password) && isset($request->new_password)) {
             if (!Hash::check($request->prev_password, $user->password)) {
                 return ViewHelper::returEexceptionError('Password Mismatch. Please provide correct password.');

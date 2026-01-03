@@ -57,7 +57,7 @@
                                            onclick="showPostDetails({{ $singleData->id }}, '{{ $singleData->title }}')"
                                            class="grid-image-wrapper">
 
-                                            <img src="{{ asset($img) }}" alt="post img">
+                                            <img src="{{ asset($img) }}" alt="post img" style="max-height: 200px">
 
                                             {{-- +N overlay on 4th image --}}
                                             @if($index === 3 && $totalImages > 4)

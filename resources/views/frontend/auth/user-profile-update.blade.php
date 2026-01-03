@@ -56,7 +56,7 @@
                             <div class="grid-gap-y"><label>Title </label><input name="profile_title" type="text" placeholder="Mobile App Developer" value="{{ $loggedUser->profile_title ?? '' }}"  /></div>
                             <div class="grid-gap-y"><label>Name <span style="color: red">*</span></label><input name="name" type="email" value="{{ $loggedUser->name ?? '' }}" placeholder="Jhon Doe" required /></div>
                             <div class="grid-gap-y"><label>Email <span style="color: red">*</span></label><input readonly name="email" type="email" value="{{ $loggedUser->email ?? '' }}" required /></div>
-                            <div class="grid-gap-y"><label>Phone <span style="color: red">*</span></label><input readonly name="mobile" type="tel" value="{{ $loggedUser->mobile }}" /></div>
+                            <div class="grid-gap-y"><label>Phone <span style="color: red">*</span></label><input {{ isset($loggedUser->mobile) ? 'readonly' : '' }} name="mobile" type="tel" value="{{ $loggedUser->mobile }}" /></div>
                             <div class="grid-gap-y"><label>{{ trans('employee.gender') }}</label><select name="gender" id="">
                                     <option value="male">{{ trans('employee.male') }}</option><option value="female">{{ trans('employee.female') }}</option></select></div>
                             <div class="grid-gap-y"><label>Address</label><input name="address" type="text" value="{{ $loggedUser->address ?? '' }}" /></div>
@@ -258,7 +258,7 @@
                             <input type="hidden" name="user_id" value="{{ $loggedUser->id ?? '' }}" id="userId">
                             <input type="hidden" name="is_profile_updated" value="1" >
                             <div class="mt-2"><label>Email <span style="color: red">*</span></label><input name="email" type="email" value="{{ $loggedUser->email ?? '' }}" required /></div>
-                            <div class="mt-2"><label>Phone <span style="color: red">*</span></label><input name="mobile" type="tel" value="{{ $loggedUser->mobile }}" /></div>
+                            <div class="mt-2"><label>Phone <span style="color: red">*</span></label><input name="phone" type="tel" value="{{ $loggedUser->mobile }}" /></div>
                             <div class="mt-2"><label>{{ trans('employer.logo') }} <span style="color: red">*</span></label><input name="logo" required type="file" accept="image/*" /></div>
                             <div class="mt-2 d-none">
                                 <label>{{ trans('employer.company_category') }}</label>
@@ -342,10 +342,13 @@
                                 <div class="row justify-content-center">
                                     <div class="col-md-6">
                                         <label for="workType" class="form-label">{{ trans('employee.you_are_looking_for') }}</label>
+                                        @php
+                                            $userJobTypeIds = $loggedUser->jobTypes->pluck('id')->toArray();
+                                        @endphp
                                         <select class="form-select-lg select2" name="job_type_id[]" multiple id="workType" required>
                                             <option value="" disabled>{{ trans('employee.choose_your_preference') }}</option>
                                             @foreach($jobTypes as $jobType)
-                                                <option value="{{ $jobType->id }}">{{ $jobType->name ?? '' }}</option>
+                                                <option value="{{ $jobType->id }}" {{ in_array($jobType->id, $userJobTypeIds) ? 'selected' : '' }} >{{ $jobType->name ?? '' }}</option>
                                             @endforeach
                                             {{--                                        <option value="parttime">Part-time</option>--}}
                                         </select>
@@ -362,14 +365,16 @@
                                     <h4>{{ trans('employee.where_prefer_to_work') }}</h4>
                                     <p class="text-muted">{{ trans('employee.select_work_location_preference') }}</p>
                                 </div>
-
+                                @php
+                                    $userLocationTypeIds = $loggedUser->jobLocationTypes->pluck('id')->toArray();
+                                @endphp
                                 <div class="row justify-content-center">
                                     <div class="col-md-6">
                                         <label for="workLocation" class="form-label">{{ trans('employee.interested_in') }}</label>
                                         <select class="form-select-lg select2" name="job_location_type_id[]" multiple id="workLocation" required>
                                             <option value="" disabled>{{ trans('employee.choose_your_preference') }}</option>
                                             @foreach($jobLocationTypes as $jobLocationType)
-                                                <option value="{{ $jobLocationType->id }}">{{ $jobLocationType->name ?? '' }}</option>
+                                                <option value="{{ $jobLocationType->id }}"  {{ in_array($jobLocationType->id, $userLocationTypeIds) ? 'selected' : '' }}>{{ $jobLocationType->name ?? '' }}</option>
                                             @endforeach
                                             {{--                                        <option value="onsite">On-site</option>--}}
                                         </select>
@@ -885,9 +890,38 @@
                     });
             });
 
+            function workValidateRequiredFields(formId) {
+                let isValid = true;
+
+                $('#' + formId).find('input[required], select[required], textarea[required]').each(function () {
+                    const $field = $(this);
+
+                    // Skip end_date if "currently working" is checked
+                    if ($field.attr('name') === 'end_date' && $('#currentJobCheck').is(':checked')) {
+                        $field.removeClass('is-invalid');
+                        return true;
+                    }
+
+                    let value = $.trim($field.val());
+
+                    if (!value) {
+                        isValid = false;
+                        $field.addClass('is-invalid');
+                    } else {
+                        $field.removeClass('is-invalid');
+                    }
+                });
+
+                return isValid;
+            }
+
             $(document).on('click', '#employeeWorkExpBtn', function(e) {
                 e.preventDefault();
-
+//              ❌ Stop if validation fails
+                if (!workValidateRequiredFields('form-work')) {
+                    toastr.error('Please fill all required fields');
+                    return;
+                }
                 var formData = new FormData($('#form-work')[0]);
 
                 sendAjaxRequest('employee/employee-work-experiences', 'POST', formData, this)
@@ -914,9 +948,34 @@
                     });
             });
 
+            function educationValidateForm(formId) {
+                let isValid = true;
+
+                $('#' + formId).find('input[required], select[required]').each(function () {
+                    const $field = $(this);
+
+                    // Trim value for text inputs
+                    const value = $field.is('input')
+                        ? $.trim($field.val())
+                        : $field.val();
+
+                    if (!value) {
+                        isValid = false;
+                        $field.addClass('is-invalid');
+                    } else {
+                        $field.removeClass('is-invalid');
+                    }
+                });
+
+                return isValid;
+            }
+
             $(document).on('click', '#employeeEducationBtn', function(e) {
                 e.preventDefault();
-
+                if (!educationValidateForm('form-education')) {
+                    toastr.error('Please fill all required fields');
+                    return;
+                }
                 var formData = new FormData($('#form-education')[0]);
 
                 sendAjaxRequest('employee/employee-educations', 'POST', formData, this)

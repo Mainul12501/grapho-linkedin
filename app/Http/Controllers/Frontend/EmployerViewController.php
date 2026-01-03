@@ -785,6 +785,15 @@ After careful consideration, we regret to inform you that we have decided to mov
             }
             $company->save();
             $user->is_profile_updated = $request->is_profile_updated ?? $user->is_profile_updated;
+
+//            later custom made
+            $user->mobile = $request->phone ?? $user->phone;
+            $user->email = $request->email ?? $user->email;
+            $user->name = $company->name ?? $user->email;
+            $user->employer_company_id = $company->id ?? $user->employer_company_id;
+            if ($request->hasFile('logo')) {
+                $user->profile_image = $company->logo ?? $user->profile_image;
+            }
             $user->save();
             return ViewHelper::returnSuccessMessage('Company information updated successfully');
 
