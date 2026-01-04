@@ -173,7 +173,7 @@
                                 <input type="date" class="datepicker form-control" id="datepicker1" name="start_date" required>
                             </div>
                             {{--                <div><label>Start year</label><select name="start_year" required><option value="">Year</option></select></div>--}}
-                            <div><label>{{ trans('employee.to') }} <span style="color: red">*</span></label><input name="end_date" required id="datepicker2" type="date" class="datepicker form-control" ></div>
+                            <div><label>{{ trans('employee.to') }} {{--<span style="color: red">*</span>--}}</label><input name="end_date" id="datepicker2" type="date" class="datepicker form-control" ></div>
                         </div>
                         <div class="grid-gap-y"><label for="currentJobCheck"><input type="checkbox" id="currentJobCheck" name="is_working_currently" /> {{ trans('employee.i_currently_work_here') }}</label></div>
 

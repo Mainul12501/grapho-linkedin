@@ -39,7 +39,7 @@ class EmployeeWorkExperienceController extends Controller
         try {
 
             $workExperience = new EmployeeWorkExperience();
-            $workExperience->user_id    = auth()->id();
+            $workExperience->user_id    = ViewHelper::loggedUser()->id;
             $workExperience->title  = $request->title;
             $workExperience->company_name   = $request->company_name;
             if ($request->hasFile('company_logo'))

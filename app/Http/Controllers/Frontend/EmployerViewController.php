@@ -933,8 +933,8 @@ After careful consideration, we regret to inform you that we have decided to mov
             'newNotifications' => $newNotifications,
 
         ];
-        return ViewHelper::checkViewForApi($data, 'frontend.employee.base-functionalities.my-notifications');
-        return \view('frontend.employee.base-functionalities.my-notifications');
+        return ViewHelper::checkViewForApi($data, 'frontend.employer.profile.my-notifications');
+        return \view('frontend.employer.profile.my-notifications');
     }
 
     public function employeeSuggestions()

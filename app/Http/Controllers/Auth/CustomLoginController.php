@@ -371,7 +371,7 @@ class CustomLoginController extends Controller
         if ($loggedUser->is_profile_updated == 1)
         {
             Toastr::error('you already updated your profile');
-            return  redirect('/');
+//            return  redirect('/');
         }
 
         $data = [];
@@ -382,22 +382,22 @@ class CustomLoginController extends Controller
                 'employeeEducations'    => EmployeeEducation::where(['user_id' => auth()->id(), 'status' => 1])->get(),
                 'employeeDocuments'    => EmployeeDocument::where(['user_id' => auth()->id(), 'status' => 1])->get(),
                 'loggedUser'   => $loggedUser,
-                'educationDegreeNames'   => EducationDegreeName::where(['status' => 1])->get(['id', 'degree_name', 'need_institute_field']),
-                'universityNames'   => UniversityName::where(['status' => 1])->get(['id', 'name']),
-                'fieldOfStudies'   => FieldOfStudy::where(['status' => 1])->get(['id', 'field_name']),
-                'jobTypes'  => JobType::where(['status' => 1])->get(['id', 'name']),
-                'jobLocationTypes'   => JobLocationType::where(['status' => 1])->get(['id', 'name']),
-                'companyList'   => EmployerCompany::where(['status' => 1])->get(['id', 'name']),
+                'educationDegreeNames'   => EducationDegreeName::where(['status' => 1])->get(['id', 'degree_name', 'need_institute_field', 'slug']),
+                'universityNames'   => UniversityName::where(['status' => 1])->get(['id', 'name', 'slug']),
+                'fieldOfStudies'   => FieldOfStudy::where(['status' => 1])->get(['id', 'field_name', 'slug']),
+                'jobTypes'  => JobType::where(['status' => 1])->get(['id', 'name', 'slug']),
+                'jobLocationTypes'   => JobLocationType::where(['status' => 1])->get(['id', 'name', 'slug']),
+                'companyList'   => EmployerCompany::where(['status' => 1])->get(['id', 'name', 'slug']),
             ];
         } elseif ($loggedUser->user_type == 'employer')
         {
             $data = [
                 'loggedUser'    =>  $loggedUser,
                 'companyDetails'    => EmployerCompany::where(['user_id' => ViewHelper::loggedUser()->id])->first(),
-                'industries'    => Industry::where(['status' => 1])->get(['id', 'name']),
-                'employerCompanyCategories'    => EmployerCompanyCategory::where(['status' => 1])->get(['id', 'category_name']),
-                'companyList'   => EmployerCompany::where(['status' => 1])->get(['id', 'name']),
-                'jobTypes'  => JobType::where(['status' => 1])->get(['id', 'name']),
+                'industries'    => Industry::where(['status' => 1])->get(['id', 'name', 'slug']),
+                'employerCompanyCategories'    => EmployerCompanyCategory::where(['status' => 1])->get(['id', 'category_name', 'slug']),
+                'companyList'   => EmployerCompany::where(['status' => 1])->get(['id', 'name', 'slug']),
+                'jobTypes'  => JobType::where(['status' => 1])->get(['id', 'name', 'slug']),
             ];
         }
 

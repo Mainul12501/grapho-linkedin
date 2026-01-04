@@ -209,6 +209,7 @@ Route::get('/phpinfo', function () {
 
 Route::get('/get-mid', function (){
 //    return \App\Helpers\CustomHelper::isApiRequest();
+    return \App\Helpers\ViewHelper::loggedUser();
 });
 
 
