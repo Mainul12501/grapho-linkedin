@@ -953,9 +953,9 @@
 
             var jobTitle = $(parentModalId+'input[name="job_title"]').val();
 
-            var jobType = $(parentModalId+'label[for="'+$(parentModalId+'input[name="job_type_id"]').attr('id')+'"]').text();
-            var jobLocationType = $(parentModalId+'label[for="'+$('input[name="job_location_type_id"]').attr('id')+'"]').text();
-            var requiredExperience = $(parentModalId+'input[name="required_experience"]').val();
+            var jobType = $(parentModalId+'label[for="'+$(parentModalId+'input[name="job_type_id"]:checked').attr('id')+'"]').text();
+            var jobLocationType = $(parentModalId+'label[for="'+$('input[name="job_location_type_id"]:checked').attr('id')+'"]').text();
+            var requiredExperience = $(parentModalId+'input[name="required_experience"]:checked').val();
             // var description = $(parentModalId+'textarea[name="description"]').val();
             if (parentModalId == '#createJobModal ')
                 var description = CKEDITOR.instances['summernote'].getData();

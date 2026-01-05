@@ -21,7 +21,7 @@
 
                     <div class="">
                         <a href="{{ route('employer.my-jobs', ['show_modal' => 'create']) }}">
-                            <img src="{{ asset('/frontend/employer/images/post-jobs.jpeg') }}" style="max-height: 240px;" alt="" class="img-fluid">
+                            <img src="{{ asset('/frontend/employer/images/post-jobs.jpeg') }}" style="max-height: 240px;" alt="" class="img-fluid w-100">
                         </a>
                     </div>
 
@@ -37,7 +37,7 @@
 {{--                    </div>--}}
                     <div class="mt-4">
                         <a href="{{ route('employer.head-hunt') }}">
-                            <img src="{{ asset('/frontend/employer/images/22.jpeg') }}" style="max-height: 240px; width: 100%" alt="" class="img-fluid">
+                            <img src="{{ asset('/frontend/employer/images/22.jpeg') }}" style="max-height: 240px; width: 100%" alt="" class="img-fluid w-100">
                         </a>
                     </div>
                 </aside>

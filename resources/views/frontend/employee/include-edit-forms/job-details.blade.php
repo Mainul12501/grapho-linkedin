@@ -85,3 +85,15 @@
 <div class="job-requirements ms-0 text-muted" style="color: gray;">
     {{ $singleJobTask->gender ?? '' }}
 </div>
+
+@if($singleJobTask->jobRequiredskills->count() > 0)
+    <h5 class="fw-bold mt-3">Skills</h5>
+    <div>
+        <ul id="printUniversity" class="mb-0">
+            @foreach($singleJobTask->jobRequiredskills as $skill)
+                <li>{{ $skill->skill_name }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
+
