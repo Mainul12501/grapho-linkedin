@@ -52,6 +52,14 @@ class AdminViewController extends Controller
         $totalEmployers = User::where('user_type', 'employer')->count();
         $totalPosts = Post::count();
 
+        // Subscribed users
+        $subscribedEmployees = User::where('user_type', 'employee')
+            ->whereNotNull('subscription_plan_id')
+            ->count();
+        $subscribedEmployers = User::where('user_type', 'employer')
+            ->whereNotNull('subscription_plan_id')
+            ->count();
+
         // Transaction stats
         $thisMonthTransaction = OrderPayment::whereMonth('created_at', Carbon::now()->month)
             ->whereYear('created_at', Carbon::now()->year)
@@ -150,6 +158,8 @@ class AdminViewController extends Controller
             'totalEmployees' => $totalEmployees,
             'totalEmployers' => $totalEmployers,
             'totalPosts' => $totalPosts,
+            'subscribedEmployees' => $subscribedEmployees,
+            'subscribedEmployers' => $subscribedEmployers,
             'thisMonthTransaction' => $thisMonthTransaction,
             'totalTransaction' => $totalTransaction,
             'totalOrders' => $totalOrders,

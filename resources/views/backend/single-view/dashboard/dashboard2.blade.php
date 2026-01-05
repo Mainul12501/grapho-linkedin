@@ -113,36 +113,49 @@
 
     <!-- USER TYPE CARDS -->
     <div class="row">
-        <div class="col-lg-4 col-md-6">
+        <div class="col-lg-3 col-md-6">
             <div class="card">
                 <div class="card-body text-center">
                     <div class="avatar avatar-xl bg-primary-transparent text-primary rounded-circle mx-auto mb-3">
                         <i class="fe fe-user fs-24"></i>
                     </div>
                     <h4 class="fw-bold mb-1">{{ number_format($totalEmployees) }}</h4>
-                    <p class="text-muted mb-0">Employees</p>
+                    <p class="text-muted mb-2">Total Employees</p>
+                    <span class="badge bg-primary">{{ $subscribedEmployees }} Subscribed</span>
                 </div>
             </div>
         </div>
-        <div class="col-lg-4 col-md-6">
+        <div class="col-lg-3 col-md-6">
             <div class="card">
                 <div class="card-body text-center">
                     <div class="avatar avatar-xl bg-success-transparent text-success rounded-circle mx-auto mb-3">
                         <i class="fe fe-briefcase fs-24"></i>
                     </div>
                     <h4 class="fw-bold mb-1">{{ number_format($totalEmployers) }}</h4>
-                    <p class="text-muted mb-0">Employers</p>
+                    <p class="text-muted mb-2">Total Employers</p>
+                    <span class="badge bg-success">{{ $subscribedEmployers }} Subscribed</span>
                 </div>
             </div>
         </div>
-        <div class="col-lg-4 col-md-6">
+        <div class="col-lg-3 col-md-6">
+            <div class="card">
+                <div class="card-body text-center">
+                    <div class="avatar avatar-xl bg-info-transparent text-info rounded-circle mx-auto mb-3">
+                        <i class="fe fe-user-check fs-24"></i>
+                    </div>
+                    <h4 class="fw-bold mb-1">{{ number_format($subscribedEmployees) }}</h4>
+                    <p class="text-muted mb-0">Subscribed Employees</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
             <div class="card">
                 <div class="card-body text-center">
                     <div class="avatar avatar-xl bg-warning-transparent text-warning rounded-circle mx-auto mb-3">
-                        <i class="fe fe-file-text fs-24"></i>
+                        <i class="fe fe-award fs-24"></i>
                     </div>
-                    <h4 class="fw-bold mb-1">{{ number_format($totalPosts) }}</h4>
-                    <p class="text-muted mb-0">Posts</p>
+                    <h4 class="fw-bold mb-1">{{ number_format($subscribedEmployers) }}</h4>
+                    <p class="text-muted mb-0">Subscribed Employers</p>
                 </div>
             </div>
         </div>
