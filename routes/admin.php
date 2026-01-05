@@ -35,7 +35,7 @@ Route::middleware([
     'isAdmin'
 ])->group(function () {
 
-    Route::get('/dashboard', [AdminViewController::class, 'dashboard'])->name('dashboard');
+    Route::get('/dashboard', [AdminViewController::class, 'dashboard2'])->name('dashboard');
     Route::prefix('admin')->group(function () {
         Route::get('/pending-users', [UserController::class, 'PendingUsers'])->name('pending-users');
         Route::post('/change-user-approve-status/{user}/{status?}', [UserController::class, 'changeUserApproveStatus'])->name('change-user-approve-status');
