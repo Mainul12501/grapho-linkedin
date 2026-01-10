@@ -40,7 +40,17 @@
             font-weight: 600;
             font-style: normal;
         }
+        /*error styling*/
+        .is-invalid {
+            border-color: #dc3545 !important;
+            box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+        }
 
+        .error-message {
+            color: #dc3545;
+            font-size: 14px;
+            margin-top: 8px;
+        }
     </style>
 </head>
 
@@ -115,7 +125,7 @@
             <span>{{ trans('auth.log_in_with_mobile_number') }}</span>
         </a>
 
-        <form action="{{ route('auth.custom-login') }}" method="post">
+        <form action="{{ route('auth.custom-login') }}" method="post" id="mobileLoginForm">
             @csrf
             <input type="hidden" name="login_method" value="mobile">
             <div class="beforeContinue">
@@ -149,15 +159,15 @@
                     <img src="{{ asset('/') }}frontend/employee/images/authentication images/loginwithmobile.png" alt="">
                     <h3>{{ trans('auth.enter_verification_code') }}</h3>
                     <p class="mb-0">{{ trans('auth.otp_has_been_sent') }} <span id="otpMobile">+8801653523779</span></p>
-                    <a href="" class="" id="changeNumber">{{ trans('auth.change_number') }}</a>
+                    <a href="javascript:void(0)" class="" id="changeNumber">{{ trans('auth.change_number') }}</a>
                 </div>
 
-                <div class="otp-container">
+                <div class="otp-container" style="display: block">
 {{--                    <input type="text" class="otp-input" maxlength="1" />--}}
 {{--                    <input type="text" class="otp-input" maxlength="1" />--}}
 {{--                    <input type="text" class="otp-input" maxlength="1" />--}}
 {{--                    <input type="text" class="otp-input" maxlength="1" />--}}
-                    <input type="text" name="user_otp" value="0000" class="form-control">
+                    <input type="text" name="user_otp" value="" class="form-control">
                 </div>
 
                 <div class="p-2">
@@ -226,6 +236,40 @@
             }
         })
     })
+
+    // validate user otp required msg
+    $(document).ready(function() {
+        const $form = $('#mobileLoginForm');
+        const $otpInput = $('input[name="user_otp"]');
+
+        $form.on('submit', function(e) {
+            const otpValue = $otpInput.val().trim();
+
+            if (!otpValue) {
+                e.preventDefault();
+                $otpInput.addClass('is-invalid');
+
+                if (!$otpInput.parent().find('.error-message').length) {
+                    const errorMsg = '<span class="error-message text-danger mt-2" style="font-size: 14px;">Please enter the verification code</span>';
+                    $otpInput.parent().append(errorMsg);
+                }
+
+                $otpInput.focus();
+                return false;
+            }
+
+            $otpInput.removeClass('is-invalid');
+            $otpInput.parent().find('.error-message').remove();
+        });
+
+        $otpInput.on('input', function() {
+            if ($(this).val().trim()) {
+                $(this).removeClass('is-invalid');
+                $(this).parent().find('.error-message').remove();
+            }
+        });
+    });
+
     $(document).on('click', 'signupArrowx', function () {
         $('.signupArrowx').addClass('signupArrow').removeClass('signupArrowx');
         $('.afterContinue').addClass('d-none');

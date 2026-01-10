@@ -19,16 +19,17 @@
 <!-- Offcanvas Navbar for Mobile -->
 <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
     <div class="offcanvas-header">
-        <h5 class="offcanvas-title" id="offcanvasNavbarLabel"><img src="{{ asset('/') }}frontend/home-landing/images/Compnay logo.png" alt="" class="img-fluid"></h5>
+{{--        <h5 class="offcanvas-title" id="offcanvasNavbarLabel"><img src="{{ asset(isset($siteSetting) ? $siteSetting->logo : 'frontend/likewise.png') }}" alt="" class="img-fluid"></h5>--}}
+        <h5 class="offcanvas-title" id="offcanvasNavbarLabel"><img src="{{ asset('frontend/likewise.png') }}" alt="" class="img-fluid"></h5>
         <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
     <div class="offcanvas-body d-flex flex-column justify-content-between">
         <ul class="navbar-nav mb-3">
 {{--            <li class="nav-item"><a class="nav-link custom-hover" href="#">Community</a></li>--}}
-            <li class="nav-item"><a class="nav-link custom-hover" href="#">{{ trans('home.jobs') }}</a></li>
-            <li class="nav-item"><a class="nav-link custom-hover" href="#">{{ trans('home.companies') }}</a></li>
-            <li class="nav-item"><a class="nav-link custom-hover" href="#">{{ trans('home.salaries') }}</a></li>
-            <li class="nav-item"><a class="nav-link custom-hover" href="#">{{ trans('home.for_employers') }}</a></li>
+{{--            <li class="nav-item"><a class="nav-link custom-hover" href="#">{{ trans('home.jobs') }}</a></li>--}}
+            <li class="nav-item"><a class="nav-link custom-hover" href="{{ route('auth.set-login-role') }}">{{ trans('home.companies') }}</a></li>
+{{--            <li class="nav-item"><a class="nav-link custom-hover" href="#">{{ trans('home.salaries') }}</a></li>--}}
+            <li class="nav-item"><a class="nav-link custom-hover" href="{{ route('auth.set-login-role') }}">{{ trans('home.for_employers') }}</a></li>
         </ul>
 
         <!-- Notification Icon & Sign In in offcanvas -->
@@ -63,7 +64,7 @@
 
         <!-- Brand / Logo -->
         <a class="navbar-brand" href="{{ route('/') }}">
-            <img src="{{ asset('/') }}frontend/home-landing/images/Compnay logo.png" alt="">
+            <img src="{{ asset('frontend/likewise.png') }}" style="max-height: 30px" alt="">
         </a>
 
         <!-- Mobile notification bell and hamburger grouped -->
@@ -83,18 +84,22 @@
 {{--            <ul class="navbar-nav gap-3">--}}
 {{--                <li class="nav-item"><a class="nav-link custom-hover fw-semibold" href="#">Community</a></li>--}}
 {{--                <li class="nav-item"><a class="nav-link custom-hover fw-semibold" href="#">Jobs</a></li>--}}
-{{--                <li class="nav-item"><a class="nav-link custom-hover fw-semibold" href="#">Companies</a></li>--}}
+{{--                <li class="nav-item"><a class="nav-link custom-hover fw-semibold" href="{{ route('auth.set-login-role') }}">Companies</a></li>--}}
 {{--                <li class="nav-item"><a class="nav-link custom-hover fw-semibold" href="#">Salaries</a></li>--}}
-{{--                <li class="nav-item"><a class="nav-link custom-hover fw-semibold" href="#">For Employers</a></li>--}}
+{{--                <li class="nav-item"><a class="nav-link custom-hover fw-semibold" href="{{ route('auth.set-login-role') }}">For Employers</a></li>--}}
 {{--            </ul>--}}
         </div>
 
         <!-- Notification Icon & Sign In (hidden on mobile) -->
         <div class="d-flex align-items-center gap-3 d-none d-lg-flex">
-            <button class="btn btn-link p-0">
-                <img src="{{ asset('/') }}frontend/home-landing/images/notificationbell.png" alt="Notifications" width="30px">
-            </button>
+{{--            <button class="btn btn-link p-0">--}}
+{{--                <img src="{{ asset('/') }}frontend/home-landing/images/notificationbell.png" alt="Notifications" width="30px">--}}
+{{--            </button>--}}
             @if(auth()->check())
+                <a href="{{ auth()->user()->user_type == 'employee' ? route('employee.home') : (auth()->user()->user_type == 'employer' ? route('employer.home') : route('dashboard')) }}" class="btn btn-primary d-flex align-items-center gap-2 px-3 py-2 rounded-3">
+                    {{--                    <img src="{{ asset('/') }}frontend/home-landing/images/signin.png" alt="Login" width="20px">--}}
+                    <span>{{ trans('home.dashboard') }}</span>
+                </a>
                 <a href="#" onclick="event.preventDefault(); document.getElementsByClassName('logoutForm')[0].submit()" class="btn btn-dark d-flex align-items-center gap-2 px-3 py-2 rounded-3">
                     {{--                    <img src="{{ asset('/') }}frontend/home-landing/images/signin.png" alt="Login" width="20px">--}}
                     <span>{{ trans('auth.logout') }}</span>
@@ -118,7 +123,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-6 mx-auto">
-                <h2>{{ $page->title ?? 'Page Title Here' }}</h2>
+                <h2 class="text-center" style="margin-top: 100px;">{{ $page->title ?? 'Page Title Here' }}</h2>
             </div>
             <div class="col-md-12 mt-3">
                 <p style="text-align: justify">{!! $page->content ?? 'Page content here' !!}</p>
@@ -132,7 +137,7 @@
     <div class="container">
         <div class="row mb-4">
             <div class="col-md-2 mb-3">
-                <a href="{{ route('/') }}" class="d-inline-block mb-3"><img src="{{ asset('/') }}frontend/home-landing/images/Compnay logo.png" alt=""></a>
+{{--                <a href="{{ route('/') }}" class="d-inline-block mb-3"><img src="{{ asset('/') }}frontend/home-landing/images/Compnay logo.png" alt=""></a>--}}
 {{--                <ul class="list-unstyled small">--}}
 {{--                    <li><a href="#" class="text-decoration-none text-dark">About / Press</a></li>--}}
 {{--                    <li><a href="#" class="text-decoration-none text-dark">Awards</a></li>--}}
@@ -141,7 +146,7 @@
 {{--                    <li><a href="#" class="text-decoration-none text-dark">Contact Us</a></li>--}}
 {{--                    <li><a href="#" class="text-decoration-none text-dark">Guides</a></li>--}}
 {{--                </ul>--}}
-                <p class="" style="text-align: justify">{{ trans('home.site_description') }}</p>
+{{--                <p class="" style="text-align: justify">{{ trans('home.site_description') }}</p>--}}
             </div>
             <div class="col-md-2 mb-3">
                 <h6 class="fw-semibold">{{ trans('home.employers') }}</h6>
@@ -150,7 +155,7 @@
                         <li><a href="{{ url('auth/user-registration-page?user=Employer') }}" class="text-decoration-none text-dark">{{ trans('home.get_free_employer_account') }}</a></li>
                         <li><a href="{{ url('auth/user-registration-page?user=Employer') }}" class="text-decoration-none text-dark">{{ trans('home.employer_center') }}</a></li>
                     @elseif(auth()->user()->user_type == 'employer')
-                        <li><a href="{{ route('employer.dashboard') }}" class="text-decoration-none text-dark">{{ trans('home.dashboard') }}</a></li>
+                        <li><a href="{{ route('employer.dashboard', ['is_own' => 'true']) }}" class="text-decoration-none text-dark">{{ trans('home.dashboard') }}</a></li>
                         <li><a href="{{ route('employer.my-jobs') }}" class="text-decoration-none text-dark">{{ trans('home.jobs') }}</a></li>
                     @else
                         <li><a href="{{ url('/') }}" class="text-decoration-none text-dark">{{ trans('home.home') }}</a></li>
@@ -161,7 +166,7 @@
                 <h6 class="fw-semibold">{{ trans('home.pages') }}</h6>
                 <ul class="list-unstyled small">
                     @foreach($commonPages as $commonPage)
-                        <li><a href="#" class="text-decoration-none text-dark">{{ $commonPage->title ?? 'page name' }}</a></li>
+                        <li><a href="{{ route('show-common-page', $commonPage->slug) }}" class="text-decoration-none text-dark">{{ $commonPage->title ?? 'page name' }}</a></li>
                     @endforeach
 {{--                    <li><a href="#" class="text-decoration-none text-dark">Guidelines</a></li>--}}
 {{--                    <li><a href="#" class="text-decoration-none text-dark">Terms of Use</a></li>--}}
@@ -232,7 +237,7 @@
 {{--        </div>--}}
 
         <div class="text-center mt-2 small text-muted">
-            Copyright &copy; 2008-2025. {{ isset($siteSetting) ? $siteSetting->site_title : 'Likewise Bd' }} LLC.
+            Copyright &copy; {{ date('Y') }}. {{ isset($siteSetting) ? $siteSetting->site_title : 'Likewise Bd' }} LLC.
         </div>
     </div>
 </footer>
@@ -245,7 +250,7 @@
             <div class="modal-body ">
                 <div class="">
                     <div class="card shadow signupCard">
-                        <a href="{{ route('/') }}"><img src="{{ asset('frontend/employee/images/authentication images/Compnay logo.png') }}" alt="" class="signupLogo w-25"></a>
+                        <a href="{{ route('/') }}"><img src="{{ asset('frontend/likewise.png') }}" alt="" class="signupLogo w-25"></a>
 
 
                         <div class="userCard">

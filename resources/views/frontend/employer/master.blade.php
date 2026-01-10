@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>{{ isset($siteSetting) ? $siteSetting->site_title : 'Grapho' }} - @yield('title')</title>
+    <title>{{ isset($siteSetting) ? $siteSetting->site_title : 'LikewiseBd' }} - @yield('title')</title>
     @include('frontend.employer.includes.assets.css')
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
@@ -145,7 +145,7 @@
                 <span class="text-light-gray">{{ trans('home.home') }}</span>
             </a>
 
-            <a href="{{ route('employer.dashboard') }}" class="nav-link text-center flex-fill {{ request()->is('employer/dashboard') ? 'active' : '' }}">
+            <a href="{{ route('employer.dashboard', ['is_own' => 'true']) }}" class="nav-link text-center flex-fill {{ request()->is('employer/dashboard') ? 'active' : '' }}">
 {{--                <img src="{{ asset('/backend/assets/images/dashboard.png') }}" alt="" style="height: 22px">--}}
                 <img src="{{ asset('/frontend/employer/images/business.png') }}" alt="">
                 <span class="text-light-gray">{{ trans('home.dashboard') }}</span>

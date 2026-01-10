@@ -33,7 +33,7 @@
 
 <!-- Card Container -->
 <div class="card shadow signupCard">
-    <a href="{{ route('/') }}" class="mx-auto"><img  src="{{ asset(isset($siteSetting->site_icon) ? $siteSetting->site_icon : '/frontend/employee/images/authentication images/Compnay logo.png') }}" alt="site-logo" style="width: 115px; max-height: 50px; margin-bottom: 15px;" class="signupLogo "></a>
+    <a href="{{ route('/') }}" class="mx-auto"><img  src="{{ asset(isset($siteSetting->site_icon) ? $siteSetting->site_icon : '/frontend/likewise.png') }}" alt="site-logo" style="width: 115px; max-height: 50px; margin-bottom: 15px;" class="signupLogo "></a>
     <h4>{{ trans('auth.sign_up_today') }}</h4>
     <p>{{ trans('auth.hiring_or_looking_opportunities') }}</p>
 

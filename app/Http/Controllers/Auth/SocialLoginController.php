@@ -50,6 +50,7 @@ class SocialLoginController extends Controller
                 'user_slug'     => str_replace(' ', '-', $user->name),
                 'user_type'     => $userType,
                 'organization_name'     => $user->name.' company',
+                'is_approved'   => $userType == 'employer' ? 0 : 1,
             ]);
             if ($newUser && $userType == 'Employer')
             {

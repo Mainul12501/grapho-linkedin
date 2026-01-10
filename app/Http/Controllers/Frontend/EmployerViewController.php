@@ -141,7 +141,7 @@ class EmployerViewController extends Controller
     {
         if (ViewHelper::checkIfUserApprovedOrBlocked(auth()->user()))
         {
-            return ViewHelper::returnRedirectWithMessage(route('employer.dashboard'),  'error','Your account is blocked or has not approved yet. Please contact with Likewise.');
+            return ViewHelper::returnRedirectWithMessage(route('employer.dashboard', ['is_own' => 'true']),  'error','Your account is blocked or has not approved yet. Please contact with Likewise.');
         }
         $loggedUser = ViewHelper::loggedUser();
         if ($loggedUser->user_type == 'employer')
@@ -208,7 +208,7 @@ class EmployerViewController extends Controller
     {
         if (ViewHelper::checkIfUserApprovedOrBlocked(auth()->user()))
         {
-            return ViewHelper::returnRedirectWithMessage(route('employer.dashboard'),  'error','Your account is blocked or has not approved yet. Please contact with Likewise.');
+            return ViewHelper::returnRedirectWithMessage(route('employer.dashboard', ['is_own' => 'true']),  'error','Your account is blocked or has not approved yet. Please contact with Likewise.');
         }
         $jobTasks = JobTask::where(['user_id' => ViewHelper::loggedUser()->id, 'status' => 1])->where('is_softly_deleted', 0)->get(['id', 'job_title']);
         if (ViewHelper::checkIfRequestFromApi()) {
@@ -250,7 +250,7 @@ class EmployerViewController extends Controller
     {
         if (ViewHelper::checkIfUserApprovedOrBlocked(auth()->user()))
         {
-            return ViewHelper::returnRedirectWithMessage(route('employer.dashboard'),  'error','Your account is blocked or has not approved yet. Please contact with Likewise.');
+            return ViewHelper::returnRedirectWithMessage(route('employer.dashboard', ['is_own' => 'true']),  'error','Your account is blocked or has not approved yet. Please contact with Likewise.');
         }
         $employees = User::query()->with([
             'universityName' => function ($universityName) {

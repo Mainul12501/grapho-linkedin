@@ -54,7 +54,7 @@
                                 <div class="image-grid">
                                     @foreach(array_slice($images, 0, 4) as $index => $img)
                                         <a href="javascript:void(0)"
-                                           onclick="showPostDetails({{ $singleData->id }}, '{{ $singleData->title }}')"
+                                           onclick="showPostDetails({{ $singleData->id }},  @json($singleData->title))"
                                            class="grid-image-wrapper">
 
                                             <img src="{{ asset($img) }}" alt="post img" style="max-height: 200px">
@@ -90,7 +90,7 @@
                                     <a href="javascript:void(0)" onclick='showPostDetails({{ $singleData->id }}, @json($singleData->title))' class="" style="text-decoration: none;"><h6>{{ $singleData->title ?? '' }}</h6></a>
                                 </div>
                                 <div class="col-1">
-                                    @if(isset($_GET['view']) && $_GET['view'] != 'employee')
+                                    @if(isset($_GET['is_own']) && $_GET['is_own'] == 'true')
                                         <div class="dropdown">
                                             <span class="dropdown-toggle" style="cursor:pointer;" data-bs-toggle="dropdown"><img src="{{ asset('frontend/employer/images/employersHome/three dot.png') }}" alt="dot"></span>
                                             <ul class="dropdown-menu">

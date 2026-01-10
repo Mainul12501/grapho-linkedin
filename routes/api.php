@@ -30,6 +30,8 @@ Route::post('verify-otp', [CustomLoginController::class, 'verifyOtp']);
 Route::post('login-with-google-app', [CustomLoginController::class, 'loginWithGoogleApp']);
 Route::post('buy-subscription/{subscriptionPlan}', [FrontendViewController::class, 'buySubscription']);
 
+Route::get('search-skills', [JobTaskController::class, 'searchSkills']);
+
 Route::get('employee-profile/{employeeId}', [EmployerViewController::class, 'employeeProfile']);
 Route::get('get-job-details/{id}', [JobTaskController::class, 'getJobDetails']);
 Route::get('get-site-settings', [FrontendViewController::class, 'getSiteSetting']);
@@ -98,6 +100,7 @@ Route::middleware([
         Route::get('view-post/{post}', [PostController::class, 'viewPost']);
         Route::get('set-follow-history', [FollowerHistroyController::class, 'store']);
         Route::get('close-job/{jobTask}/{status}', [JobTaskController::class, 'closeJob']);
+        Route::get('my-notifications', [EmployerViewController::class, 'myNotifications']);
 
         Route::post('update-settings', [EmployerViewController::class, 'updateSettings']);
         Route::post('update-company-info', [EmployerViewController::class, 'updateCompanyInfo']);

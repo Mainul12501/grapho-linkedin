@@ -69,7 +69,7 @@
 <!-- Offcanvas Navbar for Mobile -->
 <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
     <div class="offcanvas-header">
-        <h5 class="offcanvas-title" id="offcanvasNavbarLabel"><img style="max-height: 100px;" src="{{ asset(\App\Models\Backend\SiteSetting::first()->logo ?? '/frontend/home-landing/images/Compnay logo.png') }}" alt="" class="img-fluid"></h5>
+        <h5 class="offcanvas-title" id="offcanvasNavbarLabel"><img style="max-height: 100px;" src="{{ asset('/frontend/likewise.png') }}" alt="" class="img-fluid"></h5>
         <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
     <div class="offcanvas-body d-flex flex-column justify-content-between">
@@ -117,7 +117,7 @@
 
         <!-- Brand / Logo -->
         <a class="navbar-brand py-0" href="{{ route('/') }}">
-            <img id="landingHomeLargeScreenLogo"  src="{{ asset(isset($siteSetting) ? $siteSetting->site_icon : '/frontend/home-landing/images/Compnay logo.png') }}" alt="" style="max-height: 45px;">
+            <img id="landingHomeLargeScreenLogo"  src="{{ asset('/frontend/likewise.png') }}" alt="" style="max-height: 30px;">
         </a>
         <style>
            @media  screen and (max-width: 426px) {
@@ -190,7 +190,8 @@
         </div>
 {{--        <h1 class="d-none d-lg-block text-center">{{ trans('home.your_work_people_are_here') }}</h1>--}}
         <div class="text-center hide-on-mobile">
-            <img src="{{ isset($siteSetting) ? asset($siteSetting->logo) : '' }}" alt="" style="max-height: 100px">
+{{--            <img src="{{ isset($siteSetting) ? asset($siteSetting->logo) : '' }}" alt="" style="max-height: 100px">--}}
+            <img src="{{ asset('frontend/likewise_black_i.png') }}" alt="" style="max-height: 40px">
         </div>
         <h1 class="d-none d-lg-block text-center tiro-bangla-regular-italic">"{{ trans('home.where_doors_knock_you') }}"</h1>
 
@@ -280,9 +281,10 @@
         <div class="col-6 col-md-3">
             <div class="d-flex flex-column align-items-center">
                 <div class="rounded-circle border d-flex justify-content-center align-items-center" style="width: 72px; height: 72px;">
-                    <img src="{{ asset(isset($siteSetting) ? $siteSetting->logo : '/frontend/home-landing/images/searchcompany.png') }}" alt="Company Reviews" style="width: 40px;">
+{{--                    <img src="{{ asset(isset($siteSetting) ? $siteSetting->logo : '/frontend/likewise.png') }}" alt="Company Reviews" style="width: 40px;">--}}
+                    <img src="{{ asset('/frontend/likewise_black_i.png') }}" alt="Company Reviews" style="width: 40px;">
                 </div>
-                <span class="mt-2">Get Your Work People</span>
+                <span class="mt-2">{{ trans('home.get_your_work_people') }}</span>
             </div>
         </div>
         <div class="col-6 col-md-3">
@@ -290,7 +292,7 @@
                 <div class="rounded-circle border d-flex justify-content-center align-items-center" style="width: 72px; height: 72px;">
                     <img src="{{ asset('/') }}frontend/home-landing/images/salary.png" alt="Salaries" style="width: 40px;">
                 </div>
-                <span class="mt-2">Easy Recruitments</span>
+                <span class="mt-2">{{ trans('home.easy_requirements') }}</span>
             </div>
         </div>
     </div>
@@ -332,7 +334,7 @@
                         <li><a href="{{ url('auth/user-registration-page?user=Employer') }}" class="text-decoration-none text-dark">{{ trans('home.get_free_employer_account') }}</a></li>
                         <li><a href="{{ url('auth/user-registration-page?user=Employer') }}" class="text-decoration-none text-dark">{{ trans('home.employer_center') }}</a></li>
                     @elseif(auth()->user()->user_type == 'employer')
-                        <li><a href="{{ route('employer.dashboard') }}" class="text-decoration-none text-dark">{{ trans('home.dashboard') }}</a></li>
+                        <li><a href="{{ route('employer.dashboard', ['is_own' => 'true']) }}" class="text-decoration-none text-dark">{{ trans('home.dashboard') }}</a></li>
                         <li><a href="{{ route('employer.my-jobs') }}" class="text-decoration-none text-dark">{{ trans('home.jobs') }}</a></li>
                     @else
                         <li><a href="{{ url('/') }}" class="text-decoration-none text-dark">{{ trans('home.home') }}</a></li>
@@ -428,7 +430,7 @@
                 <div class="">
                     <div class="card shadow signupCard">
                         <div class="card-header bg-transparent position-relative mobile-no-border">
-                            <a href="{{ route('/') }}"><img src="{{ asset('frontend/employee/images/authentication images/Compnay logo.png') }}" alt="" class="signupLogo w-25"></a>
+                            <a href="{{ route('/') }}"><img src="{{ asset('frontend/likewise.png') }}" alt="" class="signupLogo w-25"></a>
                             <button type="button" class="btn position-absolute btn-close" style="right: 5px" data-bs-dismiss="modal"></button>
                         </div>
 

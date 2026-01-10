@@ -3,10 +3,14 @@
     <div class="app-sidebar">
         <div class="side-header">
             <a class="header-brand1" href="{{ route('dashboard') }}">
-                <img src="{{ isset($siteSetting) ? asset($siteSetting->logo) : asset('/frontend/logo/logo-md.svg') }}" class="header-brand-img desktop-logo" alt="logo">
-                <img src="{{ isset($siteSetting) ? asset($siteSetting->logo) : asset('/frontend/logo/logo-md.svg') }}" class="header-brand-img toggle-logo" alt="logo">
-                <img src="{{ isset($siteSetting) ? asset($siteSetting->logo) : asset('/frontend/logo/logo-md.svg') }}" class="header-brand-img light-logo" alt="logo">
-                <img src="{{ isset($siteSetting) ? asset($siteSetting->logo) : asset('/frontend/logo/logo-md.svg') }}" class="header-brand-img light-logo1" alt="logo">
+{{--                <img src="{{ isset($siteSetting) ? asset($siteSetting->logo) : asset('/frontend/logo/logo-md.svg') }}" class="header-brand-img desktop-logo" style="min-width:100px; max-width: 120px" alt="logo">--}}
+                <img src="{{ asset('/frontend/likewise.png') }}" class="header-brand-img desktop-logo" style="min-width:100px; max-width: 120px" alt="logo">
+{{--                <img src="{{ isset($siteSetting) ? asset($siteSetting->logo) : asset('/frontend/logo/logo-md.svg') }}" class="header-brand-img toggle-logo" style="min-width:100px; max-width: 120px" alt="logo">--}}
+                <img src="{{ asset('/frontend/likewise.png') }}" class="header-brand-img toggle-logo" style="min-width:100px; max-width: 120px" alt="logo">
+{{--                <img src="{{ isset($siteSetting) ? asset($siteSetting->logo) : asset('/frontend/logo/logo-md.svg') }}" class="header-brand-img light-logo" style="min-width:100px; max-width: 120px" alt="logo">--}}
+                <img src="{{  asset('/frontend/likewise.png') }}" class="header-brand-img light-logo" style="min-width:100px; max-width: 120px" alt="logo">
+{{--                <img src="{{ isset($siteSetting) ? asset($siteSetting->logo) : asset('/frontend/logo/logo-md.svg') }}" class="header-brand-img light-logo1" style="min-width:100px; max-width: 120px" alt="logo">--}}
+                <img src="{{  asset('/frontend/likewise.png') }}" class="header-brand-img light-logo1" style="min-width:100px; max-width: 120px" alt="logo">
             </a><!-- LOGO -->
         </div>
         <div class="main-sidemenu">

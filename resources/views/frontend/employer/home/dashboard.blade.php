@@ -247,6 +247,8 @@
     <script>
         equalizeHeights('talent-card');
     </script>
+    <link rel="stylesheet" href="{{ asset('frontend/zoom-plugin/mbox.css') }}">
+    <script src="{{ asset('frontend/zoom-plugin/mbox.min.js') }}"></script>
     <script>
         function showJobDetails(jobId, jobTitle = 'View Job Title') {
             sendAjaxRequest('get-job-details/'+jobId+'?render=1&show_apply=0', 'GET').then(function (response) {

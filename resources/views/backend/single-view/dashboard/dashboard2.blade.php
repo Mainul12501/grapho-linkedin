@@ -92,7 +92,7 @@
                 <div class="card-body">
                     <div class="d-flex align-items-start">
                         <div class="flex-grow-1">
-                            <p class="mb-1 text-muted fw-semibold">Total Orders</p>
+                            <p class="mb-1 text-muted fw-semibold">Total Subscriber Request</p>
                             <h3 class="mb-1 fw-bold text-dark">{{ number_format($totalOrders) }}</h3>
                             <span class="badge bg-success-transparent text-success">
                                 <i class="fe fe-check"></i> {{ $completedOrders }} Completed
@@ -279,7 +279,7 @@
                         <div class="d-flex align-items-center justify-content-between mb-3">
                             <div class="d-flex align-items-center">
                                 <span class="bg-primary rounded-circle p-1 me-2"></span>
-                                <span>Total Orders</span>
+                                <span>Total Subscribers</span>
                             </div>
                             <span class="fw-bold">{{ $totalOrders }}</span>
                         </div>

@@ -19,7 +19,7 @@
                     {{--                    contents appends here--}}
                     <div class="card card-body mt-2">
                         <div class="">
-                            <span style="" class="mr-2"><img src="{{ asset($post?->employer?->employerCompany?->logo ?? 'frontend/employee/images/authentication images/Compnay logo.png') }}" style="height: 60px; border-radius: 50%; width: 60px " alt=""></span>
+                            <span style="" class="mr-2"><img src="{{ asset($post?->employer?->employerCompany?->logo ?? 'frontend/likewise.png') }}" style="height: 60px; border-radius: 50%; width: 60px " alt=""></span>
                             <span class="fw-bolder">{{ $post?->employer?->name ?? 'Employer Name' }}</span>
                             <span class="float-end my-auto mt-3">Posted: {{ $post->created_at->format('d-M-Y') }}</span>
                         </div>

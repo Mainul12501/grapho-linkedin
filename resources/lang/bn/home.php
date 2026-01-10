@@ -13,6 +13,8 @@ return [
     'serving_trusted_insights' => 'একইভাবে অনায়াসে সুযোগগুলি আনলক করুন',
     'join_work_community' => 'আপনার কাজের সম্প্রদায়ে যোগ দিন',
     'find_and_apply_to_jobs' => 'চাকরি খুঁজুন এবং আবেদন করুন',
+    'get_your_work_people' => 'আপনার কাজের মানুষ পান',
+    'easy_requirements' => 'সহজ নিয়োগ',
     'search_company_reviews' => 'কোম্পানি রিভিউ খুঁজুন',
     'compare_salaries' => 'বেতন তুলনা করুন',
     'start_your_search' => 'আপনার অনুসন্ধান শুরু করুন',

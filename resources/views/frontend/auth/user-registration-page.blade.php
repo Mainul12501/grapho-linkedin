@@ -105,7 +105,19 @@
                 <label for="signUpMail">{{ trans('auth.email_address') }}</label>
                 <div class="input-group">
                     <input type="text" id="signUpMail" placeholder="{{ trans('auth.type_here') }}" class=" signUpMail form-control" style="border-radius: 16px 0px 0px 16px">
-                    <span class="input-group-text signUpMail" id="sendOtpForEmailBtn" style="cursor: pointer; border-radius: 0px 16px 16px 0px">{{ trans('auth.send_otp') }}</span>
+                    <span class="input-group-text signUpMail" id="sendOtpForEmailBtn" style="cursor: pointer; border-radius: 0px 16px 16px 0px">
+                        {{ trans('auth.send_otp') }}
+                        <img src="{{ asset('frontend/spinner.gif') }}"
+                             id="emailOtpSpinner"
+                             class="ms-2 d-none"
+                             width="18"
+                             height="18"
+                             alt="loading">
+                    </span>
+{{--                    <span class="spinner-border spinner-grow-sm ms-2 d-none"--}}
+{{--                          id="emailOtpSpinner"--}}
+{{--                          role="status"--}}
+{{--                          aria-hidden="true"></span>--}}
                     <span class="text-danger" id="signUpMailError"></span>
                 </div>
 
@@ -329,12 +341,27 @@
         })
     })
     $(document).on('click', '#sendOtpForEmailBtn', function () {
+
+        let $btn = $(this);
+        let $spinner = $('#emailOtpSpinner');
+        let email = $('#signUpMail').val().trim();
+
+        if (email === '') {
+            toastr.error('Please enter email first.');
+            return;
+        }
+        if ($btn.hasClass('disabled')) return;
+        // ✅ Disable button + show spinner
+        $btn.addClass('disabled opacity-75');
+        $spinner.removeClass('d-none');
+
         $.ajax({
-            url: '{{ route('send-otp') }}',
+            url: "{{ route('send-otp') }}",
             type: 'POST',
             data: {
                 _token: '{{ csrf_token() }}',
                 email: $('#signUpMail').val(),
+                req_from: "register"
             },
             success: function (response) {
                 if (response.status == 'success')
@@ -348,6 +375,11 @@
             },
             error: function (xhr) {
                 toastr.error('An error occurred while sending the OTP.');
+            },
+            complete: function () {
+                // ✅ Always restore button state
+                $btn.removeClass('disabled opacity-75');
+                $spinner.addClass('d-none');
             }
         })
     })

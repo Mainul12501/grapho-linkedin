@@ -214,7 +214,7 @@ class EmployeeViewController extends Controller
 
     public function showJobs(Request $request)
     {
-        if (ViewHelper::checkIfUserApprovedOrBlocked(auth()->user()))
+        if (ViewHelper::checkIfUserApprovedOrBlocked(ViewHelper::loggedUser()))
         {
             return ViewHelper::returnRedirectWithMessage(route('employee.home', 'error', 'Your account is blocked or has not approved yet. Please contact with admin.'));
         }
@@ -422,7 +422,7 @@ class EmployeeViewController extends Controller
     public function myProfileViewers(Request $request)
     {
         $user = ViewHelper::loggedUser();
-        $profileViewerIds = UserProfileView::where(['employee_id' => $user->id, 'viewed_by' => 'employer'])->with('employer.employerCompanyInfo')->paginate(10);
+        $profileViewerIds = UserProfileView::where(['employee_id' => $user->id, 'viewed_by' => 'employer'])->latest()->with('employer.employerCompanyInfo')->paginate(10);
         // 👇 When scrolling (AJAX request)
         if ($request->ajax()) {
             return view(
@@ -465,9 +465,9 @@ class EmployeeViewController extends Controller
         $totalSavedJobs = $loggedUser->employeeSavedJobs->whereNotIn('id', $loggedUser->employeeAppliedJobs->pluck('id'))->count();
 
         $data = [
-            'workExperiences' => EmployeeWorkExperience::where(['user_id' => auth()->id(), 'status' => 1])->get(), // stringp tags for api
-            'employeeEducations' => EmployeeEducation::where(['user_id' => auth()->id(), 'status' => 1])->get(),
-            'employeeDocuments' => EmployeeDocument::where(['user_id' => auth()->id(), 'status' => 1])->get(),
+            'workExperiences' => EmployeeWorkExperience::where(['user_id' => ViewHelper::loggedUser()->id, 'status' => 1])->get(), // stringp tags for api
+            'employeeEducations' => EmployeeEducation::where(['user_id' => ViewHelper::loggedUser()->id, 'status' => 1])->get(),
+            'employeeDocuments' => EmployeeDocument::where(['user_id' => ViewHelper::loggedUser()->id, 'status' => 1])->get(),
             'employeeProfileDate' => $loggedUser,
             'educationDegreeNames' => EducationDegreeName::where(['status' => 1])->get(['id', 'degree_name', 'need_institute_field']),
             'universityNames' => UniversityName::where(['status' => 1])->get(['id', 'name']),

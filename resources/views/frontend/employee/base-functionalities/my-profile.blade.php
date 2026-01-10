@@ -102,158 +102,7 @@
                             <span class="editBio" data-bs-toggle="modal" data-bs-target="#editContactModal">{{ trans('employee.edit_contact_info') }}</span>
                         </h2>
 
-                        <!-- Modal for Edit Contact -->
-                        <div class="modal fade" id="editContactModal" tabindex="-1" aria-labelledby="editContactModalLabel"
-                             aria-hidden="true">
-                            <div class="modal-dialog custom-modal1 modal-lg">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="editContactModalLabel">
-                                            <img src="{{ asset('/') }}frontend/employee/images/profile/profileLeftArrow.png" alt="" class="me-1" />
-                                            {{ trans('employee.edit_contact_information') }}
-                                        </h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{{ trans('common.close') }}"></button>
-                                    </div>
-                                    <form action="{{ route('employee.update-profile', auth()->id()) }}" method="post" enctype="multipart/form-data" id="employeeUpdateProfile">
-                                        @csrf
-                                        <div class="modal-body">
-                                            <!-- Form for editing contact info -->
 
-                                                <div class="mb-3">
-                                                    <label for="nameInput" class="form-label">{{ trans('common.name') }}</label>
-                                                    <input type="text" name="name" class="form-control" id="nameInput" value="{!! auth()->user()->name ?? '' !!}" placeholder="{{ trans('auth.type_here') }}" />
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label for="emailInput" class="form-label">{{ trans('common.email') }}</label>
-                                                    <input type="email" name="email" class="form-control" id="emailInput" value="{!! auth()->user()->email ?? '' !!}" placeholder="{{ trans('auth.type_here') }}" />
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label for="phoneInput" class="form-label">{{ trans('common.phone') }}</label>
-                                                    <input type="tel" class="form-control" id="phoneInput" value="{!! auth()->user()->mobile ?? '' !!}" name="mobile" placeholder="{{ trans('auth.type_here') }}" />
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label for="phoneInput" class="form-label">{{ trans('employee.gender') }}</label>
-                                                    <select name="gender" class=" select2" id="">
-                                                        <option value="male" {{ auth()->user()->gender == 'male' ? 'selected' : '' }}>{{ trans('employee.male') }}</option>
-                                                        <option value="female" {{ auth()->user()->gender == 'female' ? 'selected' : '' }}>{{ trans('employee.female') }}</option>
-                                                    </select>
-                                                </div>
-                                            <div class="mb-3">
-                                                <label for="locationInput" class="form-label">{{ trans('common.address') }}</label>
-                                                <textarea name="address" class="form-control" id="locationInput" cols="30" rows="5">{!! auth()->user()->address ?? '' !!}</textarea>
-                                            </div>
-
-                                                <div class="mb-3">
-                                                    <label for="divisions" class="form-label">{{ trans('employee.division') }}</label>
-                                                    <select name="division" id="divisions" onchange="divisionsList()" class="form-control w-100" data-placeholder="Select Division">
-                                                        <option value="Barishal" {{ auth()->user()->division == 'Barishal' ? 'selected' : '' }}>Barishal</option>
-                                                        <option value="Chattogram" {{ auth()->user()->division == 'Chattogram' ? 'selected' : '' }}>Chattogram</option>
-                                                        <option value="Dhaka" {{ auth()->user()->division == 'Dhaka' ? 'selected' : '' }}>Dhaka</option>
-                                                        <option value="Khulna" {{ auth()->user()->division == 'Khulna' ? 'selected' : '' }}>Khulna</option>
-                                                        <option value="Mymensingh" {{ auth()->user()->division == 'Mymensingh' ? 'selected' : '' }}>Mymensingh</option>
-                                                        <option value="Rajshahi" {{ auth()->user()->division == 'Rajshahi' ? 'selected' : '' }}>Rajshahi</option>
-                                                        <option value="Rangpur" {{ auth()->user()->division == 'Rangpur' ? 'selected' : '' }}>Rangpur</option>
-                                                        <option value="Sylhet" {{ auth()->user()->division == 'Sylhet' ? 'selected' : '' }}>Sylhet</option>
-                                                    </select>
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label for="distr" class="form-label">{{ trans('employee.district') }}</label>
-                                                    <select name="district" id="distr" onchange="thanaList()" class="form-control w-100" data-placeholder="Select District">
-                                                        <option value="">{{ auth()->user()->district ?? '' }}</option>
-                                                    </select>
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label for="polic_sta" class="form-label">{{ trans('employee.post_office') }}</label>
-                                                    <select name="post_office" id="polic_sta"  class="form-control w-100" data-placeholder="Select District">
-                                                        <option value="">{{ auth()->user()->post_office ?? '' }}</option>
-                                                    </select>
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label for="polic_sta" class="form-label">{{ trans('employee.post_code') }}</label>
-                                                    <input type="text" name="postal_code" value="{{ auth()->user()->postal_code ?? '' }}" class="form-control" />
-                                                </div>
-                                            <div class="mb-3">
-                                                <label for="phoneInput" class="form-label">{{ trans('common.website') }}</label>
-                                                <input type="text" class="form-control" id="phoneInput" name="website" value="{!! auth()->user()->website ?? '' !!}" placeholder="{{ trans('auth.type_here') }}" />
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="profileImage" class="form-label">{{ trans('employee.profile_image') }}</label>
-{{--                                                <input type="file" class="form-control" id="profileImage" name="profile_image" />--}}
-
-{{--                                                drag drop crop start--}}
-                                                <!-- Drag & Drop Area -->
-                                                <!-- Drag & Drop Area -->
-                                                <div class="drag-drop-area" id="dragDropArea">
-                                                    <input type="file" class="file-input-hidden" id="profileImage" name="profile_image" accept="image/*">
-                                                    <div class="upload-content" id="uploadContent">
-                                                        <div class="upload-icon">📁</div>
-                                                        <h5>{{ trans('employee.drag_drop_image') }}</h5>
-                                                        <p class="text-muted">{{ trans('employee.or_click_to_browse') }}</p>
-                                                        <small class="text-muted">{{ trans('employee.supports_jpg_png_gif') }}</small>
-                                                    </div>
-                                                </div>
-
-                                                <!-- Image Preview & Cropping Area -->
-                                                <div class="preview-container" id="previewContainer" style="display: none;">
-                                                    <img id="imagePreview" style="max-width: 100%;">
-                                                </div>
-
-                                                <!-- Crop Controls -->
-                                                <div class="crop-controls mt-3" id="cropControls" style="display: none;">
-                                                    <div class="d-flex gap-2 justify-content-center">
-                                                        <button type="button" class="btn btn-outline-secondary btn-sm" id="resetCrop">
-                                                            🔄 {{ trans('employee.reset') }}
-                                                        </button>
-                                                        <button type="button" class="btn btn-outline-secondary btn-sm" id="rotateLeft">
-                                                            ↺ {{ trans('employee.rotate_left') }}
-                                                        </button>
-                                                        <button type="button" class="btn btn-outline-secondary btn-sm" id="rotateRight">
-                                                            ↻ {{ trans('employee.rotate_right') }}
-                                                        </button>
-                                                        <button type="button" class="btn btn-success btn-sm" id="cropImage">
-                                                            ✂️ {{ trans('employee.crop_image') }}
-                                                        </button>
-                                                        <button type="button" class="btn btn-success btn-sm" id="saveImage" style="display: none">
-                                                            ✂️ {{ trans('employee.save_image') }}
-                                                        </button>
-                                                    </div>
-                                                </div>
-
-                                                <!-- Final Preview -->
-                                                <div class="text-center mt-3" id="finalPreviewContainer" style="display: none;">
-                                                    <h6>Cropped Image:</h6>
-                                                    <img id="finalPreview" class="final-preview" alt="Cropped preview">
-                                                    <div class="mt-2">
-                                                        <button type="button" class="btn btn-outline-primary btn-sm" id="changeImage">
-                                                            {{ trans('employee.change_image') }}
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                                <!-- Hidden input for cropped image data -->
-                                                <input type="hidden" id="croppedImageData" name="cropped_image_data">
-
-                                                <!-- Add the preview container, crop controls, and final preview divs here -->
-                                                <!-- (Copy from the artifact above) -->
-{{--                                                drag drop crop end--}}
-
-
-
-
-
-                                            </div>
-                                        </div>
-                                        <div class="modal-footer justify-content-between">
-                                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-                                            {{ trans('common.close') }}
-                                        </button>
-                                        <button type="submit" class="btn btn-primary">
-                                            {{ trans('common.save_changes') }}
-                                        </button>
-                                    </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
 
 
                     </div>
@@ -543,9 +392,9 @@
                         <div class="col-2">
                             <a href="{{ file_exists($employeeDocument->file) ? asset($employeeDocument->file) : '' }}" download="">
 
-                                @if( explode('/', $employeeDocument->file_type)[1] == 'image' )
-                                    <img style="max-width: 105px; max-height: 105px;" src="{{ isset($employeeDocument->file) ? asset($employeeDocument->file) : asset('frontend/photo.png') }}" alt="Company Logo" class="companyLogo" />
-                                    <img style="width: 40px; height: 42px" src="{{ isset($employeeDocument->file) ? asset($employeeDocument->file) : asset('frontend/photo.png')}}" alt="Company Logo" class="mobileLogo" />
+                                @if( explode('/', $employeeDocument->file_type)[0] == 'image' )
+                                    <img style="max-width: 105px; max-height: 105px;" src="{{ isset($employeeDocument->file) ? asset($employeeDocument->file) : asset('frontend/photo.png') }}" alt="Company Logo" class="companyLogo w-100" />
+                                    <img style="width: 40px; height: 42px" src="{{ isset($employeeDocument->file) ? asset($employeeDocument->file) : asset('frontend/photo.png')}}" alt="Company Logo" class="mobileLogo w-100" />
                                 @elseif( explode('/', $employeeDocument->file_type)[1] == 'pdf' )
                                     <img style="max-width: 105px; max-height: 105px;" src="https://www.iconpacks.net/icons/2/free-pdf-icon-3375-thumb.png" alt="Company Logo" class="companyLogo" />
                                     <img style="width: 40px; height: 42px" src="https://www.iconpacks.net/icons/2/free-pdf-icon-3375-thumb.png" alt="Company Logo" class="mobileLogo" />
@@ -652,7 +501,157 @@
 
 @section('modal')
 
+    <!-- Modal for Edit Contact -->
+    <div class="modal fade" id="editContactModal" {{--tabindex="-1" aria-labelledby="editContactModalLabel" aria-hidden="true"--}}>
+        <div class="modal-dialog custom-modal1 modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editContactModalLabel">
+                        <img src="{{ asset('/') }}frontend/employee/images/profile/profileLeftArrow.png" alt="" class="me-1" />
+                        {{ trans('employee.edit_contact_information') }}
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{{ trans('common.close') }}"></button>
+                </div>
+                <form action="{{ route('employee.update-profile', auth()->id()) }}" method="post" enctype="multipart/form-data" id="employeeUpdateProfile">
+                    @csrf
+                    <div class="modal-body">
+                        <!-- Form for editing contact info -->
 
+                        <div class="mb-3">
+                            <label for="nameInput" class="form-label">{{ trans('common.name') }}</label>
+                            <input type="text" name="name" class="form-control" id="nameInput" value="{!! auth()->user()->name ?? '' !!}" placeholder="{{ trans('auth.type_here') }}" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="emailInput" class="form-label">{{ trans('common.email') }}</label>
+                            <input type="email" name="email" class="form-control" id="emailInput" value="{!! auth()->user()->email ?? '' !!}" placeholder="{{ trans('auth.type_here') }}" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="phoneInput" class="form-label">{{ trans('common.phone') }}</label>
+                            <input type="tel" class="form-control" id="phoneInput" value="{!! auth()->user()->mobile ?? '' !!}" name="mobile" placeholder="{{ trans('auth.type_here') }}" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="phoneInput" class="form-label">{{ trans('employee.gender') }}</label>
+                            <select name="gender" class=" select2" id="">
+                                <option value="male" {{ auth()->user()->gender == 'male' ? 'selected' : '' }}>{{ trans('employee.male') }}</option>
+                                <option value="female" {{ auth()->user()->gender == 'female' ? 'selected' : '' }}>{{ trans('employee.female') }}</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="locationInput" class="form-label">{{ trans('common.address') }}</label>
+                            <textarea name="address" class="form-control" id="locationInput" cols="30" rows="5">{!! auth()->user()->address ?? '' !!}</textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="divisions" class="form-label">{{ trans('employee.division') }}</label>
+                            <select name="division" id="divisions" onchange="divisionsList()" class="form-control w-100" data-placeholder="Select Division">
+                                <option value="Barishal" {{ auth()->user()->division == 'Barishal' ? 'selected' : '' }}>Barishal</option>
+                                <option value="Chattogram" {{ auth()->user()->division == 'Chattogram' ? 'selected' : '' }}>Chattogram</option>
+                                <option value="Dhaka" {{ auth()->user()->division == 'Dhaka' ? 'selected' : '' }}>Dhaka</option>
+                                <option value="Khulna" {{ auth()->user()->division == 'Khulna' ? 'selected' : '' }}>Khulna</option>
+                                <option value="Mymensingh" {{ auth()->user()->division == 'Mymensingh' ? 'selected' : '' }}>Mymensingh</option>
+                                <option value="Rajshahi" {{ auth()->user()->division == 'Rajshahi' ? 'selected' : '' }}>Rajshahi</option>
+                                <option value="Rangpur" {{ auth()->user()->division == 'Rangpur' ? 'selected' : '' }}>Rangpur</option>
+                                <option value="Sylhet" {{ auth()->user()->division == 'Sylhet' ? 'selected' : '' }}>Sylhet</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="distr" class="form-label">{{ trans('employee.district') }}</label>
+                            <select name="district" id="distr" onchange="thanaList()" class="form-control w-100" data-placeholder="Select District">
+                                <option value="">{{ auth()->user()->district ?? '' }}</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="polic_sta" class="form-label">{{ trans('employee.post_office') }}</label>
+                            <select name="post_office" id="polic_sta"  class="form-control w-100" data-placeholder="Select District">
+                                <option value="">{{ auth()->user()->post_office ?? '' }}</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="polic_sta" class="form-label">{{ trans('employee.post_code') }}</label>
+                            <input type="text" name="postal_code" value="{{ auth()->user()->postal_code ?? '' }}" class="form-control" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="phoneInput" class="form-label">{{ trans('common.website') }}</label>
+                            <input type="text" class="form-control" id="phoneInput" name="website" value="{!! auth()->user()->website ?? '' !!}" placeholder="{{ trans('auth.type_here') }}" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="profileImage" class="form-label">{{ trans('employee.profile_image') }}</label>
+                            {{--                                                <input type="file" class="form-control" id="profileImage" name="profile_image" />--}}
+
+                            {{--                                                drag drop crop start--}}
+                            <!-- Drag & Drop Area -->
+                            <!-- Drag & Drop Area -->
+                            <div class="drag-drop-area" id="dragDropArea">
+                                <input type="file" class="file-input-hidden" id="profileImage" name="profile_image" accept="image/*">
+                                <div class="upload-content" id="uploadContent">
+                                    <div class="upload-icon">📁</div>
+                                    <h5>{{ trans('employee.drag_drop_image') }}</h5>
+                                    <p class="text-muted">{{ trans('employee.or_click_to_browse') }}</p>
+                                    <small class="text-muted">{{ trans('employee.supports_jpg_png_gif') }}</small>
+                                </div>
+                            </div>
+
+                            <!-- Image Preview & Cropping Area -->
+                            <div class="preview-container" id="previewContainer" style="display: none;">
+                                <img id="imagePreview" style="max-width: 100%;">
+                            </div>
+
+                            <!-- Crop Controls -->
+                            <div class="crop-controls mt-3" id="cropControls" style="display: none;">
+                                <div class="d-flex gap-2 justify-content-center">
+                                    <button type="button" class="btn btn-outline-secondary btn-sm" id="resetCrop">
+                                        🔄 {{ trans('employee.reset') }}
+                                    </button>
+                                    <button type="button" class="btn btn-outline-secondary btn-sm" id="rotateLeft">
+                                        ↺ {{ trans('employee.rotate_left') }}
+                                    </button>
+                                    <button type="button" class="btn btn-outline-secondary btn-sm" id="rotateRight">
+                                        ↻ {{ trans('employee.rotate_right') }}
+                                    </button>
+                                    <button type="button" class="btn btn-success btn-sm" id="cropImage">
+                                        ✂️ {{ trans('employee.crop_image') }}
+                                    </button>
+                                    <button type="button" class="btn btn-success btn-sm" id="saveImage" style="display: none">
+                                        ✂️ {{ trans('employee.save_image') }}
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Final Preview -->
+                            <div class="text-center mt-3" id="finalPreviewContainer" style="display: none;">
+                                <h6>Cropped Image:</h6>
+                                <img id="finalPreview" class="final-preview" alt="Cropped preview">
+                                <div class="mt-2">
+                                    <button type="button" class="btn btn-outline-primary btn-sm" id="changeImage">
+                                        {{ trans('employee.change_image') }}
+                                    </button>
+                                </div>
+                            </div>
+                            <!-- Hidden input for cropped image data -->
+                            <input type="hidden" id="croppedImageData" name="cropped_image_data">
+
+                            <!-- Add the preview container, crop controls, and final preview divs here -->
+                            <!-- (Copy from the artifact above) -->
+                            {{--                                                drag drop crop end--}}
+
+
+
+
+
+                        </div>
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                            {{ trans('common.close') }}
+                        </button>
+                        <button type="submit" class="btn btn-primary">
+                            {{ trans('common.save_changes') }}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
     <!-- Modal for Add Work Experience -->
     <div class="modal fade" id="addWorkExperienceModal" tabindex="-1"
@@ -1007,7 +1006,7 @@
 
 
     <!-- Edit Bio Modal -->
-    <div class="modal fade" id="editBioModal" tabindex="-1" aria-labelledby="editBioModalLabel" aria-hidden="true">
+    <div class="modal fade" id="editBioModal" {{--tabindex="-1" aria-labelledby="editBioModalLabel" aria-hidden="true"--}}>
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
 
@@ -1243,12 +1242,35 @@
         dragDropArea.addEventListener('dragleave', handleDragLeave);
         fileInput.addEventListener('change', handleFileSelect);
 
-        document.getElementById('resetCrop').addEventListener('click', () => cropper.reset());
-        document.getElementById('rotateLeft').addEventListener('click', () => cropper.rotate(-90));
-        document.getElementById('rotateRight').addEventListener('click', () => cropper.rotate(90));
-        document.getElementById('cropImage').addEventListener('click', handleCropImage);
-        document.getElementById('changeImage').addEventListener('click', resetUpload);
-        document.getElementById('saveImage').addEventListener('click', handleSaveImage);
+        document.getElementById('resetCrop').addEventListener('click', (e) => {
+            e.preventDefault(); // ✅ PREVENT FORM SUBMIT
+            cropper.reset();
+        });
+
+        document.getElementById('rotateLeft').addEventListener('click', (e) => {
+            e.preventDefault(); // ✅ PREVENT FORM SUBMIT
+            cropper.rotate(-90);
+        });
+
+        document.getElementById('rotateRight').addEventListener('click', (e) => {
+            e.preventDefault(); // ✅ PREVENT FORM SUBMIT
+            cropper.rotate(90);
+        });
+
+        document.getElementById('cropImage').addEventListener('click', (e) => {
+            e.preventDefault(); // ✅ PREVENT FORM SUBMIT
+            handleCropImage();
+        });
+
+        document.getElementById('changeImage').addEventListener('click', (e) => {
+            e.preventDefault(); // ✅ PREVENT FORM SUBMIT
+            resetUpload();
+        });
+
+        document.getElementById('saveImage').addEventListener('click', (e) => {
+            e.preventDefault(); // ✅ PREVENT FORM SUBMIT
+            handleSaveImage();
+        });
 
         // Drag and Drop Functions
         function handleDragOver(e) {
@@ -1382,14 +1404,8 @@
                 return;
             }
 
-            // Here you can submit the form or handle the cropped image data
-            // The cropped image data is available in croppedImageData.value as base64
-
             console.log('Cropped image data:', croppedImageData.value);
-            alert('Image saved successfully! Check console for base64 data.');
-
-            // You can now submit this data to your server
-            // Example: Send via AJAX or submit the form
+            toastr.success('Image cropped successfully! Now click "Save Changes" to update.');
         }
 
         // Reset when modal is closed
@@ -1636,10 +1652,57 @@
             // Employee Profile Update Form
             $('#employeeUpdateProfile').on('submit', function(e) {
                 e.preventDefault();
-
+                e.stopPropagation(); // ✅ STOP EVENT BUBBLING
+                const $submitBtn = $(this).find('button[type="submit"]'); // ✅ target submit button
                 if (validateEmployeeProfileForm()) {
-                    // All validations passed - submit the form
-                    $(this).off('submit').submit();
+                    // Create FormData to handle file upload
+                    const formData = new FormData(this);
+// ✅ Disable button immediately
+                    $submitBtn.prop('disabled', true).text('Saving...');
+
+                    // If there's cropped image data, convert it to blob and add to FormData
+                    const croppedData = $('#croppedImageData').val();
+                    if (croppedData) {
+                        // Convert base64 to blob
+                        const arr = croppedData.split(',');
+                        const mime = arr[0].match(/:(.*?);/)[1];
+                        const bstr = atob(arr[1]);
+                        let n = bstr.length;
+                        const u8arr = new Uint8Array(n);
+                        while (n--) {
+                            u8arr[n] = bstr.charCodeAt(n);
+                        }
+                        const blob = new Blob([u8arr], { type: mime });
+
+                        // Replace profile_image with cropped version
+                        formData.delete('profile_image');
+                        formData.append('profile_image', blob, 'profile.jpg');
+                    }
+
+                    // Submit via AJAX
+                    $.ajax({
+                        url: $(this).attr('action'),
+                        method: 'POST',
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        beforeSend: function () {
+
+                        },
+                        success: function(response) {
+                            toastr.success('Profile updated successfully!');
+                            $('#editContactModal').modal('hide');
+                            setTimeout(() => location.reload(), 1500);
+                        },
+                        complete: function () {
+// ✅ Re-enable button after request finishes
+                            $submitBtn.prop('disabled', false).text('{{ trans("common.save_changes") }}');
+                        },
+                        error: function(xhr) {
+                            toastr.error('Failed to update profile. Please try again.');
+                            console.error(xhr.responseText);
+                        }
+                    });
                 }
             });
 
@@ -1789,6 +1852,7 @@
             $('.profileEdit').addClass('d-block');
             // $('#profileEdit').css('display', 'block');
         });
+
     </script>
 
 @endpush

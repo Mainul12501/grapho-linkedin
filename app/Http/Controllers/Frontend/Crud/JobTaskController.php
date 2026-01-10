@@ -55,7 +55,7 @@ class JobTaskController extends Controller
     {
         if (ViewHelper::checkIfUserApprovedOrBlocked(auth()->user()))
         {
-            return ViewHelper::returnRedirectWithMessage(route('employer.dashboard'), 'error', 'Your account is blocked or has not approved yet. Please contact with admin.');
+            return ViewHelper::returnRedirectWithMessage(route('employer.dashboard', ['is_own' => 'true']), 'error', 'Your account is blocked or has not approved yet. Please contact with admin.');
         }
         $validator = Validator::make($request->all(),[
             'job_title' => 'required'
@@ -76,7 +76,7 @@ class JobTaskController extends Controller
             $jobTask->is_custom_exp = $request->required_experience == 'custom' ? 1 : 0;
             $jobTask->required_experience = $request->required_experience == 'custom' ? $request->exp_range_start.'-'.$request->exp_range_end: $request->required_experience;
             $jobTask->job_pref_salary_payment_type = $request->job_pref_salary_payment_type;
-            $jobTask->salary_amount = $request->salary_amount;
+            $jobTask->salary_amount = $request->salary_amount ?? 0;
             $jobTask->salary_range_start = $request->salary_range_start;
             $jobTask->salary_range_end = $request->salary_range_end;
             $jobTask->description = $request->description;
@@ -126,7 +126,7 @@ class JobTaskController extends Controller
     {
         if (ViewHelper::checkIfUserApprovedOrBlocked(auth()->user()))
         {
-            return ViewHelper::returnRedirectWithMessage(route('employer.dashboard'), 'error', 'Your account is blocked or has not approved yet. Please contact with admin.');
+            return ViewHelper::returnRedirectWithMessage(route('employer.dashboard', ['is_own' => 'true']), 'error', 'Your account is blocked or has not approved yet. Please contact with admin.');
         }
         $jobTask->load([
             'employerPrefferableUniversityNames',
@@ -171,7 +171,7 @@ class JobTaskController extends Controller
     {
         if (ViewHelper::checkIfUserApprovedOrBlocked(auth()->user()))
         {
-            return ViewHelper::returnRedirectWithMessage(route('employer.dashboard'),  'error','Your account is blocked or has not approved yet. Please contact with Likewise.');
+            return ViewHelper::returnRedirectWithMessage(route('employer.dashboard', ['is_own' => 'true']),  'error','Your account is blocked or has not approved yet. Please contact with Likewise.');
         }
 //        return $request->all();
         $validator = Validator::make($request->all(),[
@@ -230,7 +230,7 @@ class JobTaskController extends Controller
 
         if (ViewHelper::checkIfUserApprovedOrBlocked(auth()->user()))
         {
-            return ViewHelper::returnRedirectWithMessage(route('employer.dashboard'), 'error', 'Your account is blocked or has not approved yet. Please contact with admin.');
+            return ViewHelper::returnRedirectWithMessage(route('employer.dashboard', ['is_own' => 'true']), 'error', 'Your account is blocked or has not approved yet. Please contact with admin.');
         }
 
         $jobTask->employerPrefferableUniversityNames()->detach();
@@ -318,5 +318,22 @@ class JobTaskController extends Controller
             $msg = 'Job Opened Successfully.';
         }
         return ViewHelper::returnSuccessMessage($msg);
+    }
+
+    public function searchSkills(Request $request)
+    {
+        $query = $request->get('q', '');
+
+        if (strlen($query) < 1) {
+            return response()->json([]);
+        }
+
+        $skills = \App\Models\Backend\Skill::where('status', 1)
+            ->where('skill_name', 'like', '%' . $query . '%')
+            ->with('skillsCategory:id,category_name')
+            ->limit(20)
+            ->get(['id', 'skill_name', 'skills_category_id']);
+
+        return response()->json($skills);
     }
 }

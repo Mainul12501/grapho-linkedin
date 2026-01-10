@@ -246,7 +246,7 @@
                         <div class="d-flex align-items-center gap-2 mb-4">
                             <img src="{{ asset('/') }}frontend/employer/images/employersHome/leftarrow.png" alt="" class="me-2" style="cursor: default;">
                             <h5 class="mb-0 fw-semibold">Post job</h5>
-                            <button type="button" class="btn-close position-absolute" style="right: 4%;" data-bs-dismiss="modal"></button>
+                            <button type="button" class="btn-close position-absolute modal-redirect-previous-page"  style="right: 4%;" data-bs-dismiss="modal"></button>
                         </div>
 
                         <!-- Job Title -->
@@ -460,25 +460,36 @@
 
                             <!-- Skills Section -->
                             <div class="container px-0 border-bottom">
-                                <div class="bg-white  p-4 shadow-sm" style="border-radius: 0px">
+                                <div class="bg-white p-4 shadow-sm" style="border-radius: 0px">
                                     <h6 class="fw-semibold mb-3">Skill requirements</h6>
-                                    <div class="<!--d-flex flex-wrap gap-2-->">
-{{--                                        <span class="badge bg-light text-dark">Sales</span>--}}
-                                        <nav>
-                                            <div class="nav nav-pills" id="nav-tab" role="tablist">
-                                                @foreach($skillCategories as $skillCategoryKey =>$skillCategory)
-                                                    <button class="nav-link {{ $skillCategoryKey == 0 ? 'active' : '' }}" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#skillCategory{{ $skillCategoryKey }}" type="button" role="tab" aria-controls="nav-home" aria-selected="true">{{ $skillCategory->category_name }}</button>
-                                                @endforeach
 
-{{--                                                <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Skill </button>--}}
+                                    <!-- Search Input -->
+                                    <div class="mb-3">
+                                        <input type="text" class="form-control skill-search-input" data-form="create" placeholder="Search skills...">
+                                    </div>
+
+                                    <!-- Selected Skills Display -->
+                                    <div class="mb-3 selected-skills-container d-flex flex-wrap gap-2" data-form="create"></div>
+
+                                    <!-- Search Results -->
+                                    <div class="skill-search-results d-none mb-3" data-form="create">
+                                        <div class="skill-search-list d-flex flex-wrap gap-2"></div>
+                                    </div>
+
+                                    <!-- Category Skills -->
+                                    <div class="skill-category-box" data-form="create">
+                                        <nav>
+                                            <div class="nav nav-pills" role="tablist">
+                                                @foreach($skillCategories as $skillCategoryKey => $skillCategory)
+                                                    <button class="nav-link {{ $skillCategoryKey == 0 ? 'active' : '' }}" data-bs-toggle="tab" data-bs-target="#createSkillCat{{ $skillCategoryKey }}" type="button">{{ $skillCategory->category_name }}</button>
+                                                @endforeach
                                             </div>
                                         </nav>
-                                        <div class="tab-content mt-3" id="nav-tabContent">
+                                        <div class="tab-content mt-3">
                                             @foreach($skillCategories as $x => $singleSkillCategory)
-                                                <div class="tab-pane fade {{ $x == 0 ? 'show active' : '' }}" id="skillCategory{{$x}}" >
-                                                    @foreach($singleSkillCategory->publishedSkills as $skillKey => $skill)
-                                                        <input type="checkbox" class="btn-check" name="required_skills[]" id="{{ $singleSkillCategory->slug }}-{{ $skillKey }}" value="{{ $skill->id }}" >
-                                                        <label class="btn border select-skill" data-input-id="{{ $singleSkillCategory->slug }}-{{ $skillKey }}" for="{{ $singleSkillCategory->slug }}-{{ $skillKey }}">{{ $skill->skill_name ?? 'sn' }}</label>
+                                                <div class="tab-pane fade {{ $x == 0 ? 'show active' : '' }}" id="createSkillCat{{ $x }}">
+                                                    @foreach($singleSkillCategory->publishedSkills as $skill)
+                                                        <label class="btn border skill-btn m-1" data-id="{{ $skill->id }}" data-name="{{ $skill->skill_name }}">{{ $skill->skill_name }}</label>
                                                     @endforeach
                                                 </div>
                                             @endforeach
@@ -486,6 +497,49 @@
                                     </div>
                                 </div>
                             </div>
+{{--                            single create form -- skills--}}
+{{--                            <div class="container px-0 border-bottom">--}}
+{{--                                <div class="bg-white  p-4 shadow-sm" style="border-radius: 0px">--}}
+{{--                                    <h6 class="fw-semibold mb-3">Skill requirements</h6>--}}
+{{--                                    <div class="<!--d-flex flex-wrap gap-2-->" id="createJobSkillBox">--}}
+
+{{--                                        <!-- Search Input -->--}}
+{{--                                        <div class="mb-3">--}}
+{{--                                            <input type="text" class="form-control" id="skillSearchInput" placeholder="Search skills...">--}}
+{{--                                        </div>--}}
+
+{{--                                        <div class="mb-3 append-selected-skill-here-to-send-server d-flex flex-wrap gap-2">--}}
+
+{{--                                        </div>--}}
+
+{{--                                        <!-- Search Results Container (hidden by default) -->--}}
+{{--                                        <div id="skillSearchResults" class="d-none mb-3">--}}
+{{--                                            <p class="text-muted small mb-2">Search Results:</p>--}}
+{{--                                            <div id="skillSearchResultsList" class="d-flex flex-wrap gap-2"></div>--}}
+{{--                                        </div>--}}
+{{--                                        <span class="badge bg-light text-dark">Sales</span>--}}
+{{--                                        <nav id="skillCategoryNav">--}}
+{{--                                            <div class="nav nav-pills" id="nav-tab" role="tablist">--}}
+{{--                                                @foreach($skillCategories as $skillCategoryKey =>$skillCategory)--}}
+{{--                                                    <button class="nav-link {{ $skillCategoryKey == 0 ? 'active' : '' }}" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#skillCategory{{ $skillCategoryKey }}" type="button" role="tab" aria-controls="nav-home" aria-selected="true">{{ $skillCategory->category_name }}</button>--}}
+{{--                                                @endforeach--}}
+
+{{--                                                <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Skill </button>--}}
+{{--                                            </div>--}}
+{{--                                        </nav>--}}
+{{--                                        <div class="tab-content mt-3" id="nav-tabContent">--}}
+{{--                                            @foreach($skillCategories as $x => $singleSkillCategory)--}}
+{{--                                                <div class="tab-pane fade {{ $x == 0 ? 'show active' : '' }}" id="skillCategory{{$x}}" >--}}
+{{--                                                    @foreach($singleSkillCategory->publishedSkills as $skillKey => $skill)--}}
+{{--                                                        <input type="checkbox" class="btn-check" --}}{{--name="required_skills[]"--}}{{-- id="{{ $singleSkillCategory->slug }}-{{ $skillKey }}" value="{{ $skill->id }}" >--}}
+{{--                                                        <label class="btn border select-skill" data-input-id="{{ $singleSkillCategory->slug }}-{{ $skillKey }}" for="{{ $singleSkillCategory->slug }}-{{ $skillKey }}">{{ $skill->skill_name ?? 'sn' }}</label>--}}
+{{--                                                    @endforeach--}}
+{{--                                                </div>--}}
+{{--                                            @endforeach--}}
+{{--                                        </div>--}}
+{{--                                    </div>--}}
+{{--                                </div>--}}
+{{--                            </div>--}}
 
                             <!-- Submit Form -->
                             <div class="container px-0 ">
@@ -597,6 +651,13 @@
                 <p id="printCgpa" class="mb-0">
 
                 </p>
+                <!-- University -->
+                <h6 class="fw-semibold mt-4 mb-2">Required Skills</h6>
+                <span>
+                    <ul id="printSkills" class="mb-0">
+                        <li>Web</li>
+                    </ul>
+                </span>
             </div>
         </div>
     </div>
@@ -707,6 +768,66 @@
             }
         }
 
+        /*search skill box*/
+        .skill-search-item {
+            display: inline-block;
+        }
+        .select-skill-search {
+            cursor: pointer;
+        }
+        .select-skill-search small {
+            font-size: 10px;
+        }
+        /* Selected skill tag styles */
+        .selected-skill-tag {
+            display: inline-flex;
+            align-items: center;
+            background-color: #FFCB11;
+            color: #000;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            gap: 8px;
+        }
+        .selected-skill-tag .remove-skill {
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 18px;
+            line-height: 1;
+        }
+        .selected-skill-tag .remove-skill:hover {
+            color: red;
+        }
+        .skill-btn.selected-skill {
+            background-color: #FFCB11 !important;
+            color: #000 !important;
+        }
+        .skill-search-item label {
+            cursor: pointer;
+        }
+        .skill-search-item label small {
+            font-size: 10px;
+        }
+        /*.selected-skill-tag {*/
+        /*    display: inline-flex;*/
+        /*    align-items: center;*/
+        /*    background-color: #FFCB11;*/
+        /*    color: #000;*/
+        /*    padding: 5px 10px;*/
+        /*    border-radius: 20px;*/
+        /*    font-size: 14px;*/
+        /*    gap: 8px;*/
+        /*}*/
+        /*.selected-skill-tag .remove-skill {*/
+        /*    cursor: pointer;*/
+        /*    font-weight: bold;*/
+        /*    font-size: 16px;*/
+        /*    line-height: 1;*/
+        /*    opacity: 0.7;*/
+        /*}*/
+        /*.selected-skill-tag .remove-skill:hover {*/
+        /*    opacity: 1;*/
+        /*}*/
     </style>
 @endpush
 
@@ -730,8 +851,15 @@
 
     @if(isset($_GET['show_modal']) && $_GET['show_modal'] == 'create')
         <script>
+            var previousPage = "{{ url()->previous() }}";
             $(document).ready(function () {
+
+                $('.modal-redirect-previous-page').attr('data-enable-previous','true');
                 $('#createJobModal').modal('show');
+            })
+            $(document).on('click', '.modal-redirect-previous-page', function () {
+                if ($(this).attr('data-enable-previous') == 'true')
+                    window.location.href = previousPage;
             })
         </script>
     @endif
@@ -861,31 +989,22 @@
                     $('#jobDetailsModal').modal('show');
                 })
         })
-        $(document).on('click', '.select-skill', function () {
-            let inputId = $(this).attr('data-input-id');
-            let input = $("#" + inputId);
-            if (!$(this).hasClass('selected-skill'))
-            {
-                // Check and add style
-                input.prop('checked', true);
-                $(this).addClass('selected-skill');
-            } else {
-                // Uncheck and remove style
-                input.prop('checked', false);
-                $(this).removeClass('selected-skill');
-            }
-        });
-        // $(document).on('click', '.show-review-btn', function () {
-        //     var getModalId = $(this).attr('data-modal-id');
-        //     $(this).blur();
-        //     showReviewModalWithData(`#${getModalId} `);
-        //     $('#modalPostJobBtn').attr('req-for', 'create').attr('data-modal-id', getModalId).addClass('submit-form-after-review');
-        //     // $('#createJobModal').modal('hide');
-        //     setTimeout(function () {
-        //         $('#jobDetailsModalReview').modal('show');
-        //     }, 50)
-        //
+        // old select skill code
+        // $(document).on('click', '.select-skill', function () {
+        //     let inputId = $(this).attr('data-input-id');
+        //     let input = $("#" + inputId);
+        //     if (!$(this).hasClass('selected-skill'))
+        //     {
+        //         // Check and add style
+        //         input.prop('checked', true);
+        //         $(this).addClass('selected-skill');
+        //     } else {
+        //         // Uncheck and remove style
+        //         input.prop('checked', false);
+        //         $(this).removeClass('selected-skill');
+        //     }
         // });
+
 
         $(document).on('click', '.show-review-btn', function(e) {
             e.preventDefault();
@@ -931,13 +1050,8 @@
 
 
         $(document).on('click', '.hide-review-modal', function () {
-            // $(this).blur();
-            // showReviewModalWithData();
-            // $('#modalPostJobBtn').attr('req-for', 'create');
+
             $('#jobDetailsModalReview').modal('hide');
-            // setTimeout(function () {
-            //     $('#jobDetailsModalReview').modal('show');
-            // }, 50)
 
         });
         $(document).on('click', '.submit-form-after-review', function () {
@@ -972,7 +1086,6 @@
             var deadline = $(parentModalId+'input[name="deadline"]').val();
             var salary = $(parentModalId+'input[name="salary_amount"]').val();
             var cgpa = $(parentModalId+'input[name="cgpa"]').val();
-            var cgpa = $(parentModalId+'input[name="cgpa"]').val();
             // var field_of_study_preference = $('select[name="field_of_study_preference[]"]').val();
             // var university_preference = $('select[name="university_preference[]"]').val();
             // console.log('fos: '+field_of_study_preference);
@@ -986,6 +1099,11 @@
             var selectedVersityTexts = [];
             $(parentModalId+'select[name="university_preference[]"] option:selected').each(function() {
                 selectedVersityTexts.push($(this).text());
+            });
+
+            var selectedSkillsTexts = [];
+            $(parentModalId+'.selected-skills-container .selected-skill-tag').each(function() {
+                selectedSkillsTexts.push($(this).find('span:first').text());
             });
 
             // print values
@@ -1013,6 +1131,16 @@
             $.each(selectedVersityTexts, function(index, text) {
                 $('#printUniversity').append('<li>' + text + '</li>');
             });
+
+            $('#printSkills').empty();
+            $.each(selectedSkillsTexts, function(index, text) {
+                $('#printSkills').append('<li>' + text + '</li>');
+            });
+
+            // $('#printSkills').empty();
+            // $.each(selectedSkillsTexts, function(index, text) {
+            //     $('#printSkills').append('<span class="badge bg-light text-dark me-1 mb-1">' + text + '</span>');
+            // });
 
         }
     </script>
@@ -1111,11 +1239,12 @@
 
             // 8. CGPA - Required, must be a number, min 0
             const cgpa = form.querySelector('[name="cgpa"]');
-            if (!cgpa || !cgpa.value.trim()) {
-                showError(cgpa, 'CGPA is required');
-                errors.push('CGPA is required');
-                isValid = false;
-            } else if (isNaN(cgpa.value) || parseFloat(cgpa.value) < 0) {
+            // if (!cgpa || !cgpa.value.trim()) {
+            //     showError(cgpa, 'CGPA is required');
+            //     errors.push('CGPA is required');
+            //     isValid = false;
+            // } else
+                if (isNaN(cgpa.value) || parseFloat(cgpa.value) < 0) {
                 showError(cgpa, 'CGPA must be a valid number greater than or equal to 0');
                 errors.push('Invalid CGPA');
                 isValid = false;
@@ -1134,21 +1263,22 @@
             }
 
             // 10. Salary Payment Type - Required
-            const salaryType = form.querySelector('[name="job_pref_salary_payment_type"]');
-            if (!salaryType || !salaryType.value) {
-                const salaryContainer = form.querySelector('.nav-tabs')?.closest('.bg-white');
-                showError(salaryContainer, 'Please select a salary payment type');
-                errors.push('Salary payment type is required');
-                isValid = false;
-            }
+            // const salaryType = form.querySelector('[name="job_pref_salary_payment_type"]');
+            // if (!salaryType || !salaryType.value) {
+            //     const salaryContainer = form.querySelector('.nav-tabs')?.closest('.bg-white');
+            //     showError(salaryContainer, 'Please select a salary payment type');
+            //     errors.push('Salary payment type is required');
+            //     isValid = false;
+            // }
 
             // 11. Salary Amount - Required, must be a number, min 0
             const salary = form.querySelector('[name="salary_amount"]');
-            if (!salary || !salary.value.trim()) {
-                showError(salary, 'Salary amount is required');
-                errors.push('Salary amount is required');
-                isValid = false;
-            } else if (isNaN(salary.value) || parseFloat(salary.value) <= 0) {
+            // if (!salary || !salary.value.trim()) {
+            //     showError(salary, 'Salary amount is required');
+            //     errors.push('Salary amount is required');
+            //     isValid = false;
+            // } else
+                if (isNaN(salary.value) || parseFloat(salary.value) <= 0) {
                 showError(salary, 'Salary must be a valid number greater than 0');
                 errors.push('Invalid salary amount');
                 isValid = false;
@@ -1379,5 +1509,347 @@
         //     }
         // });
     </script>
+
+
+{{--    search skill box--}}
+{{--    common -create-edit-form skills--}}
+    <script>
+        $(document).ready(function() {
+            let searchTimer;
+
+            // Get form type from element
+            function getForm(el) {
+                return $(el).closest('[data-form]').data('form') || $(el).data('form');
+            }
+
+            // Check if skill is selected
+            function isSelected(form, skillId) {
+                return $(`.selected-skills-container[data-form="${form}"] .selected-skill-tag[data-id="${skillId}"]`).length > 0;
+            }
+
+            // Add skill
+            function addSkill(form, skillId, skillName) {
+                if (isSelected(form, skillId)) return;
+
+                var tag = `<div class="selected-skill-tag" data-id="${skillId}">
+              <input type="hidden" name="required_skills[]" value="${skillId}">
+              <span>${skillName}</span>
+              <span class="remove-skill">&times;</span>
+          </div>`;
+
+                $(`.selected-skills-container[data-form="${form}"]`).append(tag);
+                $(`.skill-category-box[data-form="${form}"] .skill-btn[data-id="${skillId}"]`).addClass('selected-skill');
+                $(`.skill-search-results[data-form="${form}"] .skill-btn[data-id="${skillId}"]`).addClass('selected-skill');
+            }
+
+            // Remove skill
+            function removeSkill(form, skillId) {
+                $(`.selected-skills-container[data-form="${form}"] .selected-skill-tag[data-id="${skillId}"]`).remove();
+                $(`.skill-category-box[data-form="${form}"] .skill-btn[data-id="${skillId}"]`).removeClass('selected-skill');
+                $(`.skill-search-results[data-form="${form}"] .skill-btn[data-id="${skillId}"]`).removeClass('selected-skill');
+            }
+
+            // Show categories
+            function showCategories(form) {
+                $(`.skill-search-results[data-form="${form}"]`).addClass('d-none');
+                $(`.skill-category-box[data-form="${form}"]`).show();
+            }
+
+            // Show search results
+            function showSearchResults(form) {
+                $(`.skill-search-results[data-form="${form}"]`).removeClass('d-none');
+                $(`.skill-category-box[data-form="${form}"]`).hide();
+            }
+
+            // Click on category skill
+            $(document).on('click', '.skill-category-box .skill-btn', function(e) {
+                e.preventDefault();
+                var form = getForm(this);
+                var skillId = $(this).data('id');
+                var skillName = $(this).data('name');
+
+                if (isSelected(form, skillId)) {
+                    removeSkill(form, skillId);
+                } else {
+                    addSkill(form, skillId, skillName);
+                }
+            });
+
+            // Click on search result skill
+            $(document).on('click', '.skill-search-results .skill-btn', function(e) {
+                e.preventDefault();
+                var form = getForm(this);
+                var skillId = $(this).data('id');
+                var skillName = $(this).data('name');
+
+                if (isSelected(form, skillId)) {
+                    removeSkill(form, skillId);
+                } else {
+                    addSkill(form, skillId, skillName);
+                }
+            });
+
+            // Click remove button
+            $(document).on('click', '.remove-skill', function(e) {
+                e.preventDefault();
+                var tag = $(this).closest('.selected-skill-tag');
+                var form = getForm(tag.closest('.selected-skills-container'));
+                var skillId = tag.data('id');
+                removeSkill(form, skillId);
+            });
+
+            // Search input
+            $(document).on('input', '.skill-search-input', function() {
+                clearTimeout(searchTimer);
+                var input = $(this);
+                var form = input.data('form');
+                var query = input.val().trim();
+
+                if (query === '') {
+                    showCategories(form);
+                    return;
+                }
+
+                searchTimer = setTimeout(function() {
+                    $.ajax({
+                        url: '{{ route("search-skills") }}',
+                        method: 'GET',
+                        data: { q: query },
+                        success: function(skills) {
+                            var html = '';
+                            if (skills.length === 0) {
+                                html = '<p class="text-muted">No skills found</p>';
+                            } else {
+                                skills.forEach(function(skill) {
+                                    var selected = isSelected(form, skill.id) ? 'selected-skill' : '';
+                                    var category = skill.skills_category ? ' <small class="text-muted">(' + skill.skills_category.category_name + ')</small>' : '';
+                                    html += `<label class="btn border skill-btn m-1 ${selected}" data-id="${skill.id}" data-name="${skill.skill_name}">${skill.skill_name}${category}</label>`;
+                                });
+                            }
+                            $(`.skill-search-results[data-form="${form}"] .skill-search-list`).html(html);
+                            showSearchResults(form);
+                        }
+                    });
+                }, 300);
+            });
+
+            // Modal events - Create
+            $('#createJobModal').on('shown.bs.modal', function() {
+                $('.skill-search-input[data-form="create"]').val('');
+                showCategories('create');
+            });
+
+            $('#createJobModal').on('hidden.bs.modal', function() {
+                $('.skill-search-input[data-form="create"]').val('');
+                $('.selected-skills-container[data-form="create"]').empty();
+                $('.skill-category-box[data-form="create"] .skill-btn').removeClass('selected-skill');
+                showCategories('create');
+            });
+
+            // Modal events - Edit
+            $('#editJobModal').on('shown.bs.modal', function() {
+                $('.skill-search-input[data-form="edit"]').val('');
+                showCategories('edit');
+            });
+
+            $('#editJobModal').on('hidden.bs.modal', function() {
+                $('.skill-search-input[data-form="edit"]').val('');
+                showCategories('edit');
+            });
+        });
+    </script>
+
+{{--    only create form skills--}}
+{{--    <script>--}}
+{{--        $(document).ready(function() {--}}
+{{--            let searchTimeout;--}}
+
+{{--            // Force show categories on page load--}}
+{{--            function showCategories() {--}}
+{{--                $('#skillSearchResults').addClass('d-none');--}}
+{{--                $('#createJobSkillBox nav').show().removeClass('d-none');--}}
+{{--                $('#createJobSkillBox .tab-content').show().removeClass('d-none');--}}
+{{--            }--}}
+
+{{--            // Force hide categories and show search results--}}
+{{--            function showSearchResults() {--}}
+{{--                $('#skillSearchResults').removeClass('d-none');--}}
+{{--                $('#createJobSkillBox nav').hide();--}}
+{{--                $('#createJobSkillBox .tab-content').hide();--}}
+{{--            }--}}
+
+{{--            // Initialize - show categories--}}
+{{--            showCategories();--}}
+
+{{--            // Add skill to selected container--}}
+{{--            function addSkillToSelected(skillId, skillName) {--}}
+{{--                if ($('.append-selected-skill-here-to-send-server').find(`input[value="${skillId}"]`).length > 0) {--}}
+{{--                    return;--}}
+{{--                }--}}
+
+{{--                const skillTag = `--}}
+{{--              <div class="selected-skill-tag" data-skill-id="${skillId}">--}}
+{{--                  <input type="hidden" name="required_skills[]" value="${skillId}">--}}
+{{--                  <span>${skillName}</span>--}}
+{{--                  <span class="remove-skill" data-skill-id="${skillId}">&times;</span>--}}
+{{--              </div>--}}
+{{--          `;--}}
+{{--                $('.append-selected-skill-here-to-send-server').append(skillTag);--}}
+{{--            }--}}
+
+{{--            // Remove skill from selected container--}}
+{{--            function removeSkillFromSelected(skillId) {--}}
+{{--                $(`.append-selected-skill-here-to-send-server .selected-skill-tag[data-skill-id="${skillId}"]`).remove();--}}
+{{--            }--}}
+
+{{--            // Check if skill is selected--}}
+{{--            function isSkillSelected(skillId) {--}}
+{{--                return $('.append-selected-skill-here-to-send-server').find(`input[value="${skillId}"]`).length > 0;--}}
+{{--            }--}}
+
+{{--            // Update UI state for a skill--}}
+{{--            function updateSkillUI(skillId, isSelected) {--}}
+{{--                // Update regular skill buttons in categories--}}
+{{--                $('#createJobSkillBox input[type="checkbox"]').each(function() {--}}
+{{--                    if ($(this).val() == skillId) {--}}
+{{--                        $(this).prop('checked', isSelected);--}}
+{{--                        var labelFor = $(this).attr('id');--}}
+{{--                        var label = $('label[for="' + labelFor + '"]');--}}
+{{--                        if (isSelected) {--}}
+{{--                            label.addClass('selected-skill');--}}
+{{--                        } else {--}}
+{{--                            label.removeClass('selected-skill');--}}
+{{--                        }--}}
+{{--                    }--}}
+{{--                });--}}
+
+{{--                // Update search result buttons--}}
+{{--                var searchCheckbox = $('#search-skill-' + skillId);--}}
+{{--                if (searchCheckbox.length) {--}}
+{{--                    searchCheckbox.prop('checked', isSelected);--}}
+{{--                    var searchLabel = $('.select-skill-search[data-skill-id="' + skillId + '"]');--}}
+{{--                    if (isSelected) {--}}
+{{--                        searchLabel.addClass('selected-skill');--}}
+{{--                    } else {--}}
+{{--                        searchLabel.removeClass('selected-skill');--}}
+{{--                    }--}}
+{{--                }--}}
+{{--            }--}}
+
+{{--            // Handle regular skill selection (from category tabs)--}}
+{{--            $(document).on('click', '.select-skill', function(e) {--}}
+{{--                e.preventDefault();--}}
+{{--                e.stopPropagation();--}}
+
+{{--                var inputId = $(this).attr('data-input-id');--}}
+{{--                var input = $('#' + inputId);--}}
+{{--                var skillId = input.val();--}}
+{{--                var skillName = $(this).text().trim();--}}
+
+{{--                if (isSkillSelected(skillId)) {--}}
+{{--                    removeSkillFromSelected(skillId);--}}
+{{--                    input.prop('checked', false);--}}
+{{--                    $(this).removeClass('selected-skill');--}}
+{{--                } else {--}}
+{{--                    addSkillToSelected(skillId, skillName);--}}
+{{--                    input.prop('checked', true);--}}
+{{--                    $(this).addClass('selected-skill');--}}
+{{--                }--}}
+{{--            });--}}
+
+{{--            // Handle search result skill selection--}}
+{{--            $(document).on('click', '.select-skill-search', function(e) {--}}
+{{--                e.preventDefault();--}}
+{{--                e.stopPropagation();--}}
+
+{{--                var skillId = $(this).data('skill-id');--}}
+{{--                var skillName = $(this).data('skill-name');--}}
+
+{{--                if (isSkillSelected(skillId)) {--}}
+{{--                    removeSkillFromSelected(skillId);--}}
+{{--                    updateSkillUI(skillId, false);--}}
+{{--                } else {--}}
+{{--                    addSkillToSelected(skillId, skillName);--}}
+{{--                    updateSkillUI(skillId, true);--}}
+{{--                }--}}
+{{--            });--}}
+
+{{--            // Handle remove skill button click--}}
+{{--            $(document).on('click', '.remove-skill', function(e) {--}}
+{{--                e.preventDefault();--}}
+{{--                e.stopPropagation();--}}
+
+{{--                var skillId = $(this).data('skill-id');--}}
+{{--                removeSkillFromSelected(skillId);--}}
+{{--                updateSkillUI(skillId, false);--}}
+{{--            });--}}
+
+{{--            // Skill search handler--}}
+{{--            $('#skillSearchInput').on('input keyup change', function() {--}}
+{{--                clearTimeout(searchTimeout);--}}
+{{--                var query = $(this).val();--}}
+
+{{--                // If empty, show categories immediately--}}
+{{--                if (!query || query.trim() === '') {--}}
+{{--                    showCategories();--}}
+{{--                    return;--}}
+{{--                }--}}
+
+{{--                searchTimeout = setTimeout(function() {--}}
+{{--                    $.ajax({--}}
+{{--                        url: '{{ route("search-skills") }}',--}}
+{{--                        method: 'GET',--}}
+{{--                        data: { q: query.trim() },--}}
+{{--                        success: function(skills) {--}}
+{{--                            if (skills.length === 0) {--}}
+{{--                                $('#skillSearchResultsList').html('<p class="text-muted">No skills found</p>');--}}
+{{--                            } else {--}}
+{{--                                var html = '';--}}
+{{--                                skills.forEach(function(skill) {--}}
+{{--                                    var isSelected = isSkillSelected(skill.id);--}}
+{{--                                    var selectedClass = isSelected ? 'selected-skill' : '';--}}
+{{--                                    var categoryName = skill.skills_category ? skill.skills_category.category_name : '';--}}
+
+{{--                                    html += '<div class="skill-search-item">' +--}}
+{{--                                        '<input type="checkbox" class="btn-check skill-search-checkbox" ' +--}}
+{{--                                        'id="search-skill-' + skill.id + '" ' +--}}
+{{--                                        'value="' + skill.id + '" ' +--}}
+{{--                                        (isSelected ? 'checked' : '') + '>' +--}}
+{{--                                        '<label class="btn border select-skill-search ' + selectedClass + '" ' +--}}
+{{--                                        'for="search-skill-' + skill.id + '" ' +--}}
+{{--                                        'data-skill-id="' + skill.id + '" ' +--}}
+{{--                                        'data-skill-name="' + skill.skill_name + '">' +--}}
+{{--                                        skill.skill_name +--}}
+{{--                                        (categoryName ? ' <small class="text-muted">(' + categoryName + ')</small>' : '') +--}}
+{{--                                        '</label>' +--}}
+{{--                                        '</div>';--}}
+{{--                                });--}}
+{{--                                $('#skillSearchResultsList').html(html);--}}
+{{--                            }--}}
+{{--                            showSearchResults();--}}
+{{--                        },--}}
+{{--                        error: function() {--}}
+{{--                            $('#skillSearchResultsList').html('<p class="text-danger">Error searching skills</p>');--}}
+{{--                        }--}}
+{{--                    });--}}
+{{--                }, 300);--}}
+{{--            });--}}
+
+{{--            // When modal opens--}}
+{{--            $('#createJobModal').on('shown.bs.modal', function() {--}}
+{{--                $('#skillSearchInput').val('');--}}
+{{--                showCategories();--}}
+{{--            });--}}
+
+{{--            // When modal closes--}}
+{{--            $('#createJobModal').on('hidden.bs.modal', function() {--}}
+{{--                $('#skillSearchInput').val('');--}}
+{{--                showCategories();--}}
+{{--                $('.append-selected-skill-here-to-send-server').empty();--}}
+{{--                $('#createJobSkillBox input[type="checkbox"]').prop('checked', false);--}}
+{{--                $('#createJobSkillBox .select-skill').removeClass('selected-skill');--}}
+{{--            });--}}
+{{--        });--}}
+{{--    </script>--}}
 
 @endpush

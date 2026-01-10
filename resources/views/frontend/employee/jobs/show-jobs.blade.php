@@ -280,7 +280,7 @@
 
                 <!-- ---------- Right: Details panel (initial prompt) ---------- -->
                 @if($foundData)
-                    <div class="job-details" id="jobDetailsWithData" style="display: block;">
+                    <div class="job-details" id="jobDetailsWithData" style="display: block; padding-left: 20px!important; margin-left: 20px!important; padding-bottom: 25px!important;">
                         <div class="company-info mb-2">
                             <a href="{{ route('view-company-profile', ['employerCompany' => $singleJobTask->employer_company_id, 'view' => 'employee']) }}">
                                 <img style="height: 40px; margin-right: 10px; cursor: pointer" src="{{ isset($singleJobTask?->employerCompany?->logo) ? asset($singleJobTask?->employerCompany?->logo) : asset('/frontend/employee/images/contentImages/jobCardLogo.png') }}" alt="{{ $singleJobTask?->employerCompany?->name ?? 'job-0' }}" class="company-logo">

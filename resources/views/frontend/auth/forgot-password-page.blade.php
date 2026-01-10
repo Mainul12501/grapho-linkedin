@@ -50,7 +50,8 @@
 <div class="card shadow signUpCard loginMain">
 
     <a href="{{ route('/') }}" class="signupArrow text-decoration-none mb-4">
-        <img src="{{ asset(isset($siteSetting->logo) ? $siteSetting->logo : '/frontend/employee/images/authentication images/Compnay logo.png') }}" alt="site logo" class="w-25" style="width: 115px; height: 28px">
+{{--        <img src="{{ asset(isset($siteSetting->logo) ? $siteSetting->logo : '/frontend/likewise.png') }}" alt="site logo" class="w-25" style="width: 115px; height: 28px">--}}
+        <img src="{{ asset('/frontend/likewise.png') }}" alt="site logo" class="w-25" style="width: 115px; height: 28px">
     </a>
 
     <h1>{{ trans('auth.recover_your_account') }}</h1>

@@ -2,7 +2,8 @@
     <div class="container">
         <header class="py-2 px-3 d-flex align-items-center justify-content-between flex-wrap">
             <div class="d-flex">
-                <a href="{{ route('/') }}"><img src="{{ asset($siteSetting->logo ?? '/frontend/employee/images/header images/Compnay logo.png') }}" alt="Logo" class="logo" style="height: 40px" /></a>
+{{--                <a href="{{ route('/') }}"><img src="{{ asset($siteSetting->logo ?? '/frontend/likewise.png') }}" alt="Logo" class="logo desktop-logo" style="height: 40px; min-width: 115px" /></a>--}}
+                <a href="{{ route('/') }}"><img src="{{ asset('/frontend/likewise.png') }}" alt="Logo" class="logo desktop-logo" style="height: 30px; min-width: 115px" /></a>
                 <div class="search-bar flex-grow-1 mx-2 position-relative">
                     <form action="{{ route('employee.show-jobs') }}" method="get" id="headerSearchForm">
                         <input type="text" class="form-control ps-5" placeholder="{{ trans('employer.search_jobs') }}" name="search_text" />
@@ -56,7 +57,7 @@
                             <a href="{{ route('employee.my-saved-jobs') }}"><img src="{{ asset('/') }}frontend/employee/images/header images/Saved jobs.png" alt="" class="dropdown-icon" /> {{ trans('employee.my_saved_jobs') }}</a>
                             <a href="{{ route('employee.my-applications') }}"><img src="{{ asset('/') }}frontend/employee/images/header images/Myapplications.png" alt="" class="dropdown-icon" /> {{ trans('employee.my_applications') }}</a>
                             <a href="{{ route('employee.my-profile-viewers') }}"><img src="{{ asset('/') }}frontend/employee/images/header images/Profilerviewers.png" alt="" class="dropdown-icon" /> {{ trans('employee.profiler_viewers') }}</a>
-                            <a href="{{ route('employee.my-subscriptions') }}"><img src="{{ asset('/') }}frontend/employee/images/header images/Subscription.png" alt="" class="dropdown-icon" /> {{ trans('employee.subscription') }}</a>
+                            @if(isset($siteSetting) && $siteSetting->subscription_system_status ==1) <a href="{{ route('employee.my-subscriptions') }}"><img src="{{ asset('/') }}frontend/employee/images/header images/Subscription.png" alt="" class="dropdown-icon" /> {{ trans('employee.subscription') }}</a> @endif
                             <a href="{{ route('employee.settings') }}"><img src="{{ asset('/') }}frontend/employee/images/header images/Settings.png" alt="" class="dropdown-icon" /> {{ trans('employee.settings') }}</a>
                             <a href="" onclick="event.preventDefault(); document.getElementById('logoutForm').submit();"><img src="{{ asset('/') }}frontend/employee/images/header images/Myprofile.png" alt="" class="dropdown-icon" /> {{ trans('employee.log_out') }}</a>
                             <form action="{{ route('logout') }}" method="post" id="logoutForm">
@@ -68,10 +69,11 @@
 
 
                 </div>
-                <div class="d-md-none">
-                    <a href="{{ route('employee.my-notifications') }}"><img src="{{ asset('/') }}frontend/employee/images/contentImages/notificationBell.png" alt="Notification" /></a>
-                </div>
+{{--                <div class="d-md-none">--}}
+{{--                    <a href="{{ route('employee.my-notifications') }}"><img src="{{ asset('/') }}frontend/employee/images/contentImages/notificationBell.png" alt="Notification" /></a>--}}
+{{--                </div>--}}
             </div>
         </header>
     </div>
 </section>
+

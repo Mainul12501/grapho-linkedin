@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="author" content="Your Name" />
     {!! $siteSetting->meta_header ?? '' !!}
-    <title>{{ isset($siteSetting) ? $siteSetting->site_title : 'Grapho' }} - @yield('title')</title>
+    <title>{{ isset($siteSetting) ? $siteSetting->site_title : 'LikewiseBd' }} - @yield('title')</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- Favicon -->
     <link rel="icon" href="{{ isset($siteSetting) ? $siteSetting->site_title : asset('/frontend/employee/images/Logo icon.png') }}" type="image/x-icon" />
@@ -377,6 +377,22 @@
         /*mobile menu color fix*/
         .drawer-menu a {font-weight: bolder;}
         /*.employee-mobile-drawer .drawer-item i {color: #FFCB11!important;}*/
+
+        @media screen and (max-width: 991px) {
+            .desktop-logo {max-width: 80px}
+        }
+
+
+        /* Fix header layout for tablet/medium screens (768px - 1200px) */
+        @media (min-width: 768px) and (max-width: 1400px) {
+            .search-bar {
+                display: none !important;
+            }
+
+            header.d-flex {
+                flex-wrap: nowrap !important;
+            }
+        }
     </style>
     @yield('style')
     @stack('style')

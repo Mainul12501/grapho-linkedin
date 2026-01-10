@@ -56,7 +56,7 @@
 <!-- Card Container -->
 <div class="card loginCard">
     <!-- Company Logo -->
-    <img src="{{ asset(isset($siteSetting->site_icon) ? $siteSetting->site_icon : '/frontend/employee/images/authentication images/Compnay logo.png') }}" alt="Company Logo" style="height: 41px; width: 166px">
+    <img src="{{ asset(isset($siteSetting->site_icon) ? $siteSetting->site_icon : '/frontend/likewise.png') }}" alt="Company Logo" style="height: 41px; width: 166px">
 
     <!-- Call to Action -->
 {{--    <p>{{ trans('auth.hiring_or_looking_opportunities') }}</p>--}}

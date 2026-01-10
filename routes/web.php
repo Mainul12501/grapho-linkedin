@@ -25,6 +25,7 @@ Route::get('/', [FrontendViewController::class, 'homePage'])->name('/');
 Route::get('/page/{slug?}', [FrontendViewController::class, 'showCommonPage'])->name('show-common-page');
 
 Route::get('employee-profile/{employeeId}', [EmployerViewController::class, 'employeeProfile'])->name('employee-profile');
+Route::get('search-skills', [JobTaskController::class, 'searchSkills'])->name('search-skills');
 
 Route::get('auth/{provider}/redirect', [SocialLoginController::class , 'redirect'])->name('auth.socialite.redirect');
 Route::get('auth/{provider}/callback', [SocialLoginController::class , 'callback'])->name('auth.socialite.callback');

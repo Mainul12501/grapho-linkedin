@@ -228,7 +228,7 @@ class CustomLoginController extends Controller
             $user->organization_name     = $request->organization_name;
             $user->user_type     = $request->user_type;
             $user->gender     = $request->gender;
-            $user->zego_caller_id     = $request->zego_caller_id;
+            $user->zego_caller_id     = $request->zego_caller_id ?? str()->uuid()->toString();
             $user->fcm_token     = $request->fcm_token;
             $user->is_approved     = $request->user_type == 'Employer' ? 0 : 1;
             $user->user_slug     = str_replace(' ', '-', $request->name);
@@ -371,7 +371,7 @@ class CustomLoginController extends Controller
         if ($loggedUser->is_profile_updated == 1)
         {
             Toastr::error('you already updated your profile');
-//            return  redirect('/');
+            return  redirect('/');
         }
 
         $data = [];
@@ -422,12 +422,20 @@ class CustomLoginController extends Controller
             return response()->json(['status'=> 'success', 'msg' => "An OTP has sent to your number.",]);
         } elseif ($request->filled('email'))
         {
-            if ($request->filled('req_from') && $request->req_from == 'login')
+            if ($request->filled('req_from'))
             {
                 $user = User::where(['email' => $request->email])->first();
-                if (!$user)
+                if ($request->req_from == 'login')
                 {
-                    return response()->json(['status' => 'error', 'msg' => 'User not found. Please try again.']);
+                    if (!$user)
+                    {
+                        return response()->json(['status' => 'error', 'msg' => 'User not found. Please try again.']);
+                    }
+                } elseif ($request->req_from == 'register')
+                {
+                    if ($user)
+
+                        return response()->json(['status' => 'error', 'msg' => 'User with this email already exists.']);
                 }
             }
             $otp = ViewHelper::generateOtp($request->email);
