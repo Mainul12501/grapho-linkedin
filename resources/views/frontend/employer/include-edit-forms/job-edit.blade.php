@@ -190,11 +190,11 @@
             <div class="container px-0 border-bottom">
                 <div style="border-radius: 0px" class="bg-white p-4 shadow-sm">
                     <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h6 class="fw-semibold mb-0">{{ trans('employer.application_deadline') }}</h6>
+                        <h6 class="fw-semibold mb-0">{{ trans('employer.application_deadline') }} <span class="text-danger">*</span></h6>
                     </div>
                     <div>
                         <div class="input-group rounded-3 border border-secondary-subtle">
-                            <input type="date" name="deadline" min="{{ date('Y-m-d') }}" class="form-control" value="{{ $jobTask->deadline ?? '' }}" />
+                            <input type="date" required name="deadline" min="{{ date('Y-m-d') }}" class="form-control" value="{{ $jobTask->deadline ?? '' }}" />
                         </div>
                     </div>
                 </div>
@@ -206,7 +206,13 @@
 
                     <!-- Search Input -->
                     <div class="mb-3">
-                        <input type="text" class="form-control skill-search-input" data-form="edit" placeholder="Search skills...">
+{{--                        <input type="text" class="form-control skill-search-input" data-form="edit" placeholder="Search skills...">--}}
+                        <div class="input-group">
+                            <input type="text" class="form-control skill-search-input" data-form="create" placeholder="Search skills...">
+                            <span class="input-group-text clear-skill-search" data-form="create" style="cursor: pointer; display: none;">
+                                                <i class="fas fa-times"></i>
+                                            </span>
+                        </div>
                     </div>
 
                     <!-- Selected Skills Display -->

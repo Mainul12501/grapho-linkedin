@@ -251,7 +251,7 @@
 
                         <!-- Job Title -->
                         <div class="mb-4">
-                            <label class="form-label fw-semibold">Job title</label>
+                            <label class="form-label fw-semibold">Job title <span class="text-danger">*</span></label>
                             <input type="text" class="form-control" required name="job_title" placeholder="Job Title here">
                         </div>
 
@@ -403,8 +403,8 @@
                             <!-- Gender Preference -->
                             <div class="container px-0 border-bottom">
                                 <div class="bg-white p-4 shadow-sm" style="border-radius: 0px">
-                                    <h6 class="fw-semibold mb-3">Gender preference</h6>
-                                    <select name="gender" id="" class="form-control select2">
+                                    <h6 class="fw-semibold mb-3">Gender preference <span class="text-danger">*</span></h6>
+                                    <select name="gender" id="" required class="form-control select2">
                                         <option value="" disabled selected>Select a gender</option>
                                         <option value="male" >Male</option>
                                         <option value="female" >Female</option>
@@ -444,14 +444,14 @@
                             <div class="container px-0 border-bottom">
                                 <div class="bg-white p-4 shadow-sm" style="border-radius: 0px">
                                     <div class="d-flex justify-content-between align-items-center mb-3">
-                                        <h6 class="fw-semibold mb-0">Application deadline</h6>
+                                        <h6 class="fw-semibold mb-0">Application deadline <span class="text-danger">*</span></h6>
 {{--                                        <div class="form-check form-switch mb-0">--}}
 {{--                                            <input class="form-check-input" type="checkbox" role="switch" id="deadlineToggle" checked>--}}
 {{--                                        </div>--}}
                                     </div>
                                     <div>
                                         <div class="input-group rounded-3 border border-secondary-subtle">
-                                            <input type="date" name="deadline" min="{{ date('Y-m-d') }}" class="form-control" value="" />
+                                            <input type="date" required name="deadline" min="{{ date('Y-m-d') }}" class="form-control" value="" />
                                         </div>
                                     </div>
                                 </div>
@@ -465,7 +465,13 @@
 
                                     <!-- Search Input -->
                                     <div class="mb-3">
-                                        <input type="text" class="form-control skill-search-input" data-form="create" placeholder="Search skills...">
+{{--                                        <input type="text" class="form-control skill-search-input" data-form="create" placeholder="Search skills...">--}}
+                                        <div class="input-group">
+                                            <input type="text" class="form-control skill-search-input" data-form="create" placeholder="Search skills...">
+                                            <span class="input-group-text clear-skill-search" data-form="create" style="cursor: pointer; display: none;">
+                                                <i class="fas fa-times"></i>
+                                            </span>
+                                        </div>
                                     </div>
 
                                     <!-- Selected Skills Display -->
@@ -633,26 +639,26 @@
                 </span>
 
                 <!-- field of study -->
-                <h6 class="fw-semibold mt-4 mb-2">Field Of Study Preference</h6>
+                <h6 class="fw-semibold mt-4 mb-2 toggle-fosp d-none">Field Of Study Preference</h6>
                 <span>
                     <ul id="printFieldOfStudy" class="mb-0">
                         <li>Business</li>
                     </ul>
                 </span>
                 <!-- University -->
-                <h6 class="fw-semibold mt-4 mb-2">University Preference</h6>
+                <h6 class="fw-semibold mt-4 mb-2 toggle-uni d-none">University Preference</h6>
                 <span>
                     <ul id="printUniversity" class="mb-0">
                         <li>JU</li>
                     </ul>
                 </span>
                 <!-- University -->
-                <h6 class="fw-semibold mt-4 mb-2">Required CGPA</h6>
+                <h6 class="fw-semibold mt-4 mb-2 toggle-cgpa d-none">Required CGPA</h6>
                 <p id="printCgpa" class="mb-0">
 
                 </p>
                 <!-- University -->
-                <h6 class="fw-semibold mt-4 mb-2">Required Skills</h6>
+                <h6 class="fw-semibold mt-4 mb-2 toggle-skills d-none">Required Skills</h6>
                 <span>
                     <ul id="printSkills" class="mb-0">
                         <li>Web</li>
@@ -828,6 +834,18 @@
         /*.selected-skill-tag .remove-skill:hover {*/
         /*    opacity: 1;*/
         /*}*/
+
+        /* Clear skill search button */
+        .clear-skill-search {
+            background-color: #fff;
+            border-left: 0;
+        }
+        .clear-skill-search:hover {
+            background-color: #f8f9fa;
+        }
+        .skill-search-input:focus + .clear-skill-search {
+            border-color: #86b7fe;
+        }
     </style>
 @endpush
 
@@ -1119,6 +1137,10 @@
             $('#reviewExperience').text(finalExperience);
             $('#reviewDeadline').text(deadline);
             $('#reviewSalary').text(salary);
+            if (cgpa)
+            {
+
+            }
             $('#printCgpa').text(cgpa);
             $('#reviewJobRequirements').empty();
             $('#reviewJobRequirements').html(description);
@@ -1278,11 +1300,11 @@
             //     errors.push('Salary amount is required');
             //     isValid = false;
             // } else
-                if (isNaN(salary.value) || parseFloat(salary.value) <= 0) {
-                showError(salary, 'Salary must be a valid number greater than 0');
-                errors.push('Invalid salary amount');
-                isValid = false;
-            }
+            //     if (isNaN(salary.value) || parseFloat(salary.value) <= 0) {
+            //     showError(salary, 'Salary must be a valid number greater than 0');
+            //     errors.push('Invalid salary amount');
+            //     isValid = false;
+            // }
 
             // 12. Description - Required
             // const description = form.querySelector('[name="description"]');
@@ -1631,6 +1653,22 @@
                         }
                     });
                 }, 300);
+            });
+
+            // Show/hide clear button based on input value
+            $(document).on('input', '.skill-search-input', function() {
+                const form = $(this).data('form');
+                const hasValue = $(this).val().trim().length > 0;
+                $(`.clear-skill-search[data-form="${form}"]`).toggle(hasValue);
+            });
+
+            // Clear skill search input and show category skills
+            $(document).on('click', '.clear-skill-search', function() {
+                const form = $(this).data('form');
+                $(`.skill-search-input[data-form="${form}"]`).val('').focus();
+                $(`.skill-search-results[data-form="${form}"]`).addClass('d-none');
+                $(`.skill-category-box[data-form="${form}"]`).show();
+                $(this).hide();
             });
 
             // Modal events - Create

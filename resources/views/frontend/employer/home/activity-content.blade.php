@@ -19,7 +19,7 @@
                     @endif
                 </div>
 
-                @if(isset($_GET['view']) && $_GET['view'] != 'employee')
+                @if(isset($_GET['is_own']) && $_GET['is_own'] == 'true')
                     <div class="job-actions dropdown">
                         <button class="btn btn-link p-0 text-secondary" type="button"
                                 data-bs-toggle="dropdown" aria-expanded="false">

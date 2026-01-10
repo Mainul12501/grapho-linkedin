@@ -2,7 +2,7 @@
 @foreach($posts as $key => $post )
     <div class="card card-body mt-2">
         <div class="header-div">
-            <a href="{{ route('employer.company-profile', ['view' => 'employer', 'company_id' => $post?->employer?->employerCompany?->id ]) }}"
+            <a href="{{ route('employer.company-profile', ['view' => 'employer', 'company_id' => $post?->employer?->employerCompany?->id, 'is_own' => auth()->id() == $post->user_id ? 'true' : 'false' ]) }}"
                style="text-decoration: none; flex-direction: inherit"
                class="company-info" >
                 <span class="company-img">

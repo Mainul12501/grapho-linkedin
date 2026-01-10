@@ -103,6 +103,7 @@ class JobTaskController extends Controller
 
             }
 
+            return ViewHelper::returnRedirectWithMessage(route('employer.my-jobs'), 'success', 'Job Created Successfully.');
             return ViewHelper::returnSuccessMessage('Job Created Successfully.');
         } catch (\Exception $exception)
         {
