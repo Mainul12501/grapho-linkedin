@@ -90,7 +90,7 @@
             <span>{{ trans('auth.or') }}</span>
         </div>
 
-        <form action="{{ route('auth.custom-registration') }}" method="post">
+        <form action="{{ route('auth.custom-registration') }}" method="post" id="registrationForm">
             @csrf
             <input type="hidden" name="user_type" id="userType" value="{{ $userType ?? 'Employee' }}">
             <input type="hidden" name="reg_method" value="email" id="reg_method">
@@ -134,7 +134,7 @@
             <div id="signUpMobileDiv1" class="d-none">
                 <label for="signUpMail">{{ trans('auth.phone_number') }}</label>
                 <div class="input-group mb-3">
-                    <input type="text" class="form-control py-3 signUpMail" name="phone" placeholder="{{ trans('auth.phone_number') }}" id="phoneNumber">
+                    <input type="text" class="form-control py-3 signUpMail" name="phone" maxlength="11" placeholder="01XXXXXXXXX" id="phoneNumber">
                     <span class="input-group-text otp-send-btn" id="sendOtpBtn" style="cursor: pointer">{{ trans('auth.send_otp') }}</span>
                 </div>
                 <div id="otpDiv" class="d-none">
@@ -177,7 +177,8 @@
 {{--                                <option value="+44" data-flag="gb">+44</option>--}}
 {{--                            </select>--}}
 {{--                        </div>--}}
-                        <input type="tel" id="phoneInput" placeholder="{{ trans('auth.type_here') }}" class="phone-input" name="mobile">
+                        <input type="tel" id="phoneInput" placeholder="01XXXXXXXXX" maxlength="11" class="phone-input" name="mobile">
+
                         @error('mobile') <span class="text-danger">{{ $errors->first('mobile') }}</span> @enderror
                     </div>
 
@@ -463,6 +464,14 @@
         $('#hide').addClass('d-none');
         $('#show').removeClass('d-none');
     })
+
+    // remove form submit by enter btn
+    $(document).on('keydown', '#registrationForm input:not(textarea)', function (e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            return false;
+        }
+    });
 </script>
 {!! $siteSetting->meta_footer ?? '' !!}
 <style>

@@ -4,10 +4,11 @@
     </a>
     <div class="company-details d-flex pt-2" style="padding-top: 14px;">
         <h3 class="p-t-5"><a href="{{ route('view-company-profile', ['employerCompany' => $singleJobTask->employer_company_id, 'view' => 'employee']) }}" class="nav-link text-muted">{{ $singleJobTask?->employerCompany?->name ?? 'company name' }}</a></h3>
-        <span class="mx-1 p-t-5">,</span>
-        <p class="p-t-5">{{ $singleJobTask?->employerCompany?->address ?? 'company address' }}</p>
+{{--        <span class="mx-1 p-t-5">,</span>--}}
+
     </div>
 </div>
+<p class="p-t-5">{{ $singleJobTask?->employerCompany?->address ?? 'company address' }}</p>
 <h4 class="job-title mb-2 f-s-19">{{ $singleJobTask->job_title }}</h4>
 <div class="job-type"><span class="badge">{{ $singleJobTask?->jobType?->name ?? 'job type' }}</span> <span class="badge">{{ $singleJobTask?->jobLocationType?->name ?? 'job location' }}</span> </div>
 @if(auth()->user()->user_type == 'employee' && $showApplyButton)

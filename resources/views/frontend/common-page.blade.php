@@ -20,7 +20,7 @@
 <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
     <div class="offcanvas-header">
 {{--        <h5 class="offcanvas-title" id="offcanvasNavbarLabel"><img src="{{ asset(isset($siteSetting) ? $siteSetting->logo : 'frontend/likewise.png') }}" alt="" class="img-fluid"></h5>--}}
-        <h5 class="offcanvas-title" id="offcanvasNavbarLabel"><img src="{{ asset('frontend/likewise.png') }}" alt="" class="img-fluid"></h5>
+        <h5 class="offcanvas-title" id="offcanvasNavbarLabel"><img style="max-height: 40px;" src="{{ asset('frontend/likewise.png') }}" alt="" class="img-fluid"></h5>
         <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
     <div class="offcanvas-body d-flex flex-column justify-content-between">

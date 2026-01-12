@@ -73,12 +73,12 @@
                             </div>
 
                             <ul class="list-unstyled mb-0 d-block <!--d-md-none-->">
-                                @if(isset($employeeDetails->location))
+                                @if(isset($employeeDetails->address))
                                     <li class="mb-3 d-flex align-items-center gap-3">
                                         <img src="{{ asset('/') }}frontend/employer/images/employersHome/profile location.png" alt="">
                                         <div>
                                             <small class="fw-bold d-block">{{ trans('common.location') }}</small>
-                                            {{ $employeeDetails->location ?? 'Ex: Dhaka, Bangladesh' }}
+                                            {{ $employeeDetails->address ?? 'Ex: Dhaka, Bangladesh' }}
                                         </div>
                                     </li>
                                 @endif
@@ -135,7 +135,7 @@
                                             <h6 class="mb-0 fw-bold">{{ $workExperience->position ?? 'Officer' }}</h6>
                                             <small class="text-muted">{{ $workExperience->company_name }} &bull; {{ $workExperience->job_type ?? 'Full Time' }}</small><br />
                                             <small class="text-muted">{{ $workExperience->is_working_currently == 1 ? (\Illuminate\Support\Carbon::parse($workExperience->start_date)->format('M Y') ?? 'Jan 1971').' - Present' : (\Illuminate\Support\Carbon::parse($workExperience->start_date)->format('M Y') ?? 'Jan 2025').' - '.(\Illuminate\Support\Carbon::parse($workExperience->end_date)->format('M Y') ?? 'Jan 2025') }} &bull; {{ $workExperience->duration ?? '0 Years' }}</small><br />
-                                            <small class="text-muted">{{ $workExperience->office_address ?? 'Dhaka, Bangladesh' }}</small>
+                                            <small class="text-muted">{{ $workExperience->office_address ?? ' Bangladesh' }}</small>
 
                                             <p class="mb-1 fw-semibold mt-2">Job Summary:</p>
                                             <div>

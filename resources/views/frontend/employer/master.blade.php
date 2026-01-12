@@ -158,7 +158,8 @@
             </a>
 
             <a href="#" class="nav-link text-center flex-fill" id="openDrawer">
-                <img src="{{ asset('/frontend/employer/images/employersHome/Applicants.png') }}" alt="">
+{{--                <img src="{{ asset('/frontend/employer/images/employersHome/Applicants.png') }}" alt="">--}}
+                <img src="{{ asset('/frontend/menu.png') }}" alt="">
                 <span class="text-light-gray">{{--{{ trans('employee.options') }}--}} Menu</span>
             </a>
         </nav>

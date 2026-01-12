@@ -14,7 +14,8 @@
                 <div class="job-info">
                     <div class="mb-2"><img src="{{ asset('/') }}frontend/employer/images/employersHome/postdOn.png" alt="" class="me-2">{{ trans('employer.posted_on') }} {{ $singleData->created_at->format('d M, Y') ?? '16 Feb, 2025' }}</div>
                     <div class="mb-2"><img src="{{ asset('/') }}frontend/employer/images/employersHome/Dedline.png" alt="" class="me-2">{{ trans('employer.deadline') }} {{ \Illuminate\Support\Carbon::parse($singleData->deadline)->format('d M, Y') ?? '16 Feb, 2025' }}</div>
-                    @if(isset($_GET['view']) && $_GET['view'] != 'employee')
+{{--                    @if(isset($_GET['view']) && $_GET['view'] != 'employee')--}}
+                    @if(isset($_GET['is_own']) && $_GET['is_own'] == 'true')
                         <div><img src="{{ asset('/') }}frontend/employer/images/employersHome/24application.png" alt="" class="me-2"><a href="{{ route('employer.my-job-applicants', $singleData->id) }}" class="text-decoration-underline">{{ $singleData->employeeAppliedJobs->count() ?? 0 }} {{ trans('employer.applicants') }}</a></div>
                     @endif
                 </div>

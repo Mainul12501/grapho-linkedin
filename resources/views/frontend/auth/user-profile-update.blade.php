@@ -106,8 +106,8 @@
                             <div id="universityDiv">
                                 <div class="grid-gap-y"><label>{{ trans('employee.name_of_institution') }} <span style="color: red">*</span></label>
                                     <div id="universitySelectWrapper">
-                                        <select name="institute_name" class="form-control select2" id="universitySelect" required>
-                                            <option value="" selected disabled>Select University</option>
+                                        <select name="institute_name" class="form-control select2-custom" id="universitySelect" required>
+{{--                                            <option value="" selected disabled>Select University</option>--}}
                                             @foreach($universityNames as $universityName)
                                                 <option value="{{ $universityName->name }}">{{ $universityName->name }}</option>
                                             @endforeach
@@ -130,15 +130,15 @@
 {{--                                    </select>--}}
 {{--                                    <input type="text" class="form-control" required name="institute_name" id="instituteName" placeholder="{{ trans('employer.type_here') }}" />--}}
 {{--                                </div>--}}
-{{--                                <div class="grid-gap-y"><label>{{ trans('employee.background_field_of_study') }} <span style="color: red">*</span></label>--}}
+                                <div class="grid-gap-y"><label>{{ trans('employee.background_field_of_study') }} <span style="color: red">*</span></label>
 {{--                                    <input type="text" class="form-control" name="field_of_study" required id="fieldOfStudyInput" placeholder="{{ trans('employer.type_here') }}" />--}}
-{{--                                    <select name="field_of_study_id" class="form-control select2" id="">--}}
-{{--                                        <option selected disabled>Select Field of Study</option>--}}
-{{--                                        @foreach($fieldOfStudies as $fieldOfStudy)--}}
-{{--                                            <option value="{{ $fieldOfStudy->id }}">{{ $fieldOfStudy->field_name }}</option>--}}
-{{--                                        @endforeach--}}
-{{--                                    </select>--}}
-{{--                                </div>--}}
+                                    <select name="field_of_study_id" class="form-control select2-custom" id="fieldOfStudeyEmployee">
+                                        <option selected disabled>Select Field of Study</option>
+                                        @foreach($fieldOfStudies as $fieldOfStudy)
+                                            <option value="{{ $fieldOfStudy->id }}">{{ $fieldOfStudy->field_name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
 {{--                            </div>--}}
 
                             <div class="grid-gap-y"><label>{{ trans('employee.passing_year') }} <span style="color: red">*</span></label><input required name="passing_year" type="text" /></div>
@@ -614,6 +614,7 @@
             border-radius: 5px!important;
         }
     }
+    .choices {margin-bottom: 0px!important;}
 </style>
 @endpush
 
@@ -623,6 +624,12 @@
     <script src="{{ asset('/frontend/employee/division-Districts-post-station/javascript.js') }}"></script>
     <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
 {{--    <script src="{{ asset('/common-assets/jquery-ui/jquery-ui.min.js') }}"></script>--}}
+
+{{--    select2 js--}}
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+
 
     <!-- select which modal will show first -->
     <script>
@@ -803,8 +810,56 @@
                         $('.datepicker').datepicker({
                             dateFormat: 'yy-mm-dd'
                         });
+
+                        @if($loggedUser->user_type == 'employee')
+                            if (idx == 1)
+                            {
+                                new Choices('#universitySelect', {
+                                    searchEnabled: true,
+                                    placeholder: true,
+                                    placeholderValue: 'Select University',
+                                    removeItemButton: true
+                                });
+                                new Choices('#fieldOfStudeyEmployee', {
+                                    searchEnabled: true,
+                                    placeholder: true,
+                                    placeholderValue: 'Select Field Of Study',
+                                    removeItemButton: true
+                                });
+                            }
+                        @endif
+
                     }, 100);
                 }
+
+
+                // body.innerHTML = '';
+                // const template = document.getElementById('step-' + idx);
+                // if (template) {
+                //     const clone = template.content.cloneNode(true);
+                //     body.appendChild(clone);
+                //
+                //     // Initialize datepicker after mounting
+                //     setTimeout(() => {
+                //         $('.datepicker').datepicker({
+                //             dateFormat: 'yy-mm-dd'
+                //         });
+                //     }, 100);
+                //
+                //     // Initialize Select2 on step 1 (Education)
+                //     if (idx === 1) {
+                //         setTimeout(() => {
+                //             $('#universitySelect').select2({
+                //                 placeholder: 'Select University',
+                //                 allowClear: true,
+                //                 width: '100%',
+                //                 dropdownParent: $('#modal')
+                //             });
+                //         }, 150);
+                //     }
+                // }
+
+
             }
 
             function showStep(idx) {
@@ -1398,5 +1453,105 @@
         });
 
     </script>
+
+{{--    select 2 test--}}
+{{--    <script>--}}
+{{--        // After loading step content into the modal--}}
+{{--        function loadStep(stepNumber) {--}}
+{{--            const template = document.getElementById(`step-${stepNumber}`);--}}
+{{--            const modalBody = document.getElementById('modalBody');--}}
+
+{{--            // Clone and insert template content--}}
+{{--            modalBody.innerHTML = template.innerHTML;--}}
+
+{{--            // NOW initialize Select2 on the newly inserted elements--}}
+{{--            $('.select2-custom').select2({--}}
+{{--                allowClear: true,--}}
+{{--                width: '100%',--}}
+{{--                placeholder: function() {--}}
+{{--                    return $(this).data('placeholder') || 'Select an option';--}}
+{{--                }--}}
+{{--            });--}}
+{{--        }--}}
+{{--    </script>--}}
+{{--    <script>--}}
+{{--        $(document).ready(function () {--}}
+{{--            // Initial initialization (for elements already in DOM)--}}
+{{--            initializeSelect2();--}}
+
+{{--            // Re-initialize when modal content changes--}}
+{{--            const observer = new MutationObserver(function(mutations) {--}}
+{{--                mutations.forEach(function(mutation) {--}}
+{{--                    if (mutation.addedNodes.length) {--}}
+{{--                        initializeSelect2();--}}
+{{--                    }--}}
+{{--                });--}}
+{{--            });--}}
+
+{{--            // Watch for changes in modal body--}}
+{{--            const modalBody = document.getElementById('modalBody');--}}
+{{--            if (modalBody) {--}}
+{{--                observer.observe(modalBody, { childList: true, subtree: true });--}}
+{{--            }--}}
+
+{{--            function initializeSelect2() {--}}
+{{--                // Destroy existing instances first--}}
+{{--                $('.select2-custom').each(function() {--}}
+{{--                    if ($(this).hasClass('select2-hidden-accessible')) {--}}
+{{--                        $(this).select2('destroy');--}}
+{{--                    }--}}
+{{--                });--}}
+
+{{--                // Initialize Select2--}}
+{{--                $('.select2-custom').select2({--}}
+{{--                    allowClear: true,--}}
+{{--                    width: '100%',--}}
+{{--                    dropdownParent: $('#modal'), // Important for modal context--}}
+{{--                    placeholder: 'Select an option'--}}
+{{--                });--}}
+{{--            }--}}
+
+{{--            // Handle the toggle between select and input--}}
+{{--            $(document).on('click', '#notListedLink', function() {--}}
+{{--                $('#universitySelectWrapper').hide();--}}
+{{--                $('#instituteInputWrapper').show();--}}
+{{--                $('#universitySelect').prop('required', false);--}}
+{{--                $('#instituteNameInput').prop('required', true);--}}
+{{--            });--}}
+
+{{--            $(document).on('click', '#backToUniversityList', function() {--}}
+{{--                $('#instituteInputWrapper').hide();--}}
+{{--                $('#universitySelectWrapper').show();--}}
+{{--                $('#instituteNameInput').prop('required', false);--}}
+{{--                $('#universitySelect').prop('required', true);--}}
+
+{{--                // Reinitialize Select2--}}
+{{--                $('#universitySelect').select2('destroy');--}}
+{{--                $('#universitySelect').select2({--}}
+{{--                    allowClear: true,--}}
+{{--                    width: '100%',--}}
+{{--                    dropdownParent: $('#modal'),--}}
+{{--                    placeholder: 'Select University'--}}
+{{--                });--}}
+{{--            });--}}
+
+{{--            // Also handle degree selection that shows/hides university div--}}
+{{--            $(document).on('change', 'select[name="education_degree_name_id"]', function() {--}}
+{{--                const needsInstitute = $(this).find(':selected').attr('has-institute-name');--}}
+{{--                if (needsInstitute === '1') {--}}
+{{--                    $('#universityDiv').show();--}}
+{{--                    // Reinitialize Select2 when showing--}}
+{{--                    $('#universitySelect').select2({--}}
+{{--                        allowClear: true,--}}
+{{--                        width: '100%',--}}
+{{--                        dropdownParent: $('#modal'),--}}
+{{--                        placeholder: 'Select University'--}}
+{{--                    });--}}
+{{--                } else {--}}
+{{--                    $('#universityDiv').hide();--}}
+{{--                }--}}
+{{--            });--}}
+{{--        });--}}
+{{--    </script>--}}
 
 @endpush

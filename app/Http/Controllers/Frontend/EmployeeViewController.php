@@ -593,7 +593,7 @@ class EmployeeViewController extends Controller
         $validator = Validator::make($request->all(), [
             'email' => [
                 'nullable',
-                'email:rfc,dns',
+//                'email:rfc,dns',
                 Rule::unique('users', 'email')->ignore($user->id),
 //                $user->email != $request->email ? 'unique:users,email' : ''
             ],
@@ -621,7 +621,6 @@ class EmployeeViewController extends Controller
             }
         }
         try {
-
             if ($user) {
                 $user->profile_title = $request->profile_title ?? $user->profile_title;
                 $user->name = $request->name ?? $user->name;

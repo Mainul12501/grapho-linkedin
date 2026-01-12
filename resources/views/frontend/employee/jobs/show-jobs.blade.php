@@ -686,7 +686,10 @@
     <script>
         // Clear All
         const clearBtn = document.getElementById('clearAllBtn');
-        if (clearBtn) clearBtn.addEventListener('click', resetAllDropdowns);
+        // if (clearBtn) clearBtn.addEventListener('click', resetAllDropdowns);
+        if (clearBtn) clearBtn.addEventListener('click', function () {
+            window.location.href = "{{ route('employee.show-jobs') }}";
+        });
 
         function resetAllDropdowns() {
             document.querySelectorAll('.custom-select').forEach(dropdownEl => {

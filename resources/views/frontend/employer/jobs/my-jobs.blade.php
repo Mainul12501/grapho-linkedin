@@ -382,7 +382,7 @@
                             <!-- Field of Study -->
                             <div class="container px-0 border-bottom">
                                 <div class="bg-white  p-4 shadow-sm" style="border-radius: 0px">
-                                    <h6 class="fw-semibold mb-3">Field of study preference</h6>
+                                    <h6 class="fw-semibold mb-3">Field of study </h6>
 {{--                                    <input type="text" class="form-control mb-3" placeholder="Search field of study">--}}
                                     <select name="field_of_study_preference[]" id="" class=" select2" multiple="multiple" data-placeholder="Select Field Of Studies">
                                         @foreach($fieldOfStudies as $fieldOfStudyKey => $fieldOfStudy)
@@ -395,7 +395,7 @@
                             <!-- CGPA Preference -->
                             <div class="container px-0 border-bottom">
                                 <div class="bg-white  p-4 shadow-sm" style="border-radius: 0px">
-                                    <h6 class="fw-semibold mb-3">CGPA preference</h6>
+                                    <h6 class="fw-semibold mb-3">CGPA </h6>
                                     <input type="number" min="0" name="cgpa" class="form-control" placeholder="Min 3.50">
                                 </div>
                             </div>
@@ -403,7 +403,7 @@
                             <!-- Gender Preference -->
                             <div class="container px-0 border-bottom">
                                 <div class="bg-white p-4 shadow-sm" style="border-radius: 0px">
-                                    <h6 class="fw-semibold mb-3">Gender preference <span class="text-danger">*</span></h6>
+                                    <h6 class="fw-semibold mb-3">Gender  <span class="text-danger">*</span></h6>
                                     <select name="gender" id="" required class="form-control select2">
                                         <option value="" disabled selected>Select a gender</option>
                                         <option value="male" >Male</option>
@@ -639,7 +639,7 @@
                 </span>
 
                 <!-- field of study -->
-                <h6 class="fw-semibold mt-4 mb-2 toggle-fosp d-none">Field Of Study Preference</h6>
+                <h6 class="fw-semibold mt-4 mb-2 toggle-fosp d-none">Field Of Study</h6>
                 <span>
                     <ul id="printFieldOfStudy" class="mb-0">
                         <li>Business</li>
@@ -1279,8 +1279,8 @@
             // 9. Gender - Required
             const gender = form.querySelector('[name="gender"]');
             if (!gender || !gender.value) {
-                showError(gender, 'Please select a gender preference');
-                errors.push('Gender preference is required');
+                showError(gender, 'Please select a gender.');
+                errors.push('Gender is required');
                 isValid = false;
             }
 

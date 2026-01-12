@@ -69,7 +69,7 @@
 <!-- Offcanvas Navbar for Mobile -->
 <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
     <div class="offcanvas-header">
-        <h5 class="offcanvas-title" id="offcanvasNavbarLabel"><img style="max-height: 100px;" src="{{ asset('/frontend/likewise.png') }}" alt="" class="img-fluid"></h5>
+        <h5 class="offcanvas-title" id="offcanvasNavbarLabel"><img style="max-height: 40px;" src="{{ asset('/frontend/likewise.png') }}" alt="" class="img-fluid"></h5>
         <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
     <div class="offcanvas-body d-flex flex-column justify-content-between">
@@ -454,14 +454,14 @@
 
                                 <a href="{{ route('auth.socialite.redirect', ['provider' => 'google', 'user' => 'Employee']) }}" class="userSelectOption">
                                     <div class="row d-flex align-items-center w-100">
-                                        <div class="col-2  iconWrapper">
+                                        <div class="col-2 mobile-col-9-no-padding iconWrapper">
                                             <img src="{{ asset('frontend/employee/images/authentication images/jobSeekerIcon.png') }}" alt="" class="userSelectOptionIcon">
                                         </div>
-                                        <div class="col-9">
+                                        <div class="col-9 mobile-col-9-no-padding">
                                             <h5>{{ trans('home.job_seeker') }}</h5>
                                             <p>{{ trans('home.job_seeker_desc') }}</p>
                                         </div>
-                                        <div class="col-1">
+                                        <div class="col-1 mobile-col-9-no-padding">
                                             <img src="{{ asset('frontend/employee/images/authentication images/arrow-right 1.png') }}" alt="" class="arrowIcon">
                                         </div>
                                     </div>
