@@ -49,7 +49,7 @@ class EmployerViewController extends Controller
         }
 
         $posts = $posts->with(['employer' => function ($query) {
-            $query->select('id', 'name', 'employer_company_id')
+            $query->select('id', 'name', 'employer_company_id', 'user_id')
                 ->with(['employerCompany' => function ($query) {
                     $query->select('id', 'name', 'logo');
                 }]);
@@ -828,6 +828,9 @@ After careful consideration, we regret to inform you that we have decided to mov
             $subUser->employer_company_id = $user->employer_company_id;
             $subUser->organization_name = $user->organization_name;
             $subUser->employer_agent_active_status = 'active';
+            $subUser->is_approved   = 1;
+            $subUser->is_profile_updated   = 1;
+            $subUser->zego_caller_id   = uniqid();
             $subUser->save();
             $subUser->roles()->sync(5);
             return ViewHelper::returnSuccessMessage('Sub Employer created successfully');

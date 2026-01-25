@@ -18,6 +18,10 @@ class SocialLoginController extends Controller
         if ($request->has('user'))
         session()->put('userType', $request->user ?? 'Employee');
 
+        if ($request->has('g_req_from'))
+        session()->put('g_req_from', $request->g_req_from ?? 'login');
+
+
         return Socialite::driver($provider)->redirect();
     }
 
@@ -40,6 +44,13 @@ class SocialLoginController extends Controller
             }
         } else {
             $userType = session('userType') ?? 'Employee';
+            $g_req_from = session('g_req_from') ?? 'login';
+            if ($g_req_from == 'home')
+            {
+                session()->put('user', $user);
+                return redirect()->route('/', ['has_redirect' => 1])->with('success', 'Select User Type.');
+//                return redirect()->route('auth.select-user-type')->with('success', 'Select User Type.');
+            }
             $newUser = User::create([
                 'name'          => $user->name,
                 'email'         => $user->email,
@@ -80,5 +91,42 @@ class SocialLoginController extends Controller
             }
         }
         return redirect()->route('/');
+    }
+
+    public function createUser(Request $request)
+    {
+        $user = session()->get('user');
+        $userType = $request->user_type ?? 'Employee';
+        $provider = $request->provider ?? 'google';
+        $newUser = User::create([
+            'name'          => $user->name,
+            'email'         => $user->email,
+//                'password'      => Hash::make(Str::random(8)),
+            'provider_name' => $provider,
+            'provider_id'   => $user->id,
+            'provider_token' => $user->token,
+            'user_slug'     => str_replace(' ', '-', $user->name),
+            'user_type'     => $userType,
+            'organization_name'     => $user->name.' company',
+            'is_approved'   => $userType == 'Employer' ? 0 : 1,
+        ]);
+        if ($newUser && $userType == 'Employer')
+        {
+            $company = new EmployerCompany();
+            $company->user_id   = $newUser->id;
+            $company->name  = $user->name.' company';
+            $company->status    = 1;
+            $company->save();
+        }
+        if ($userType == 'Employee')
+        {
+            $newUser->roles()->sync(3);
+        } elseif ($userType == 'Employer')
+        {
+            $newUser->roles()->sync(4);
+        }
+        Auth::login($newUser);
+        $customLoginController = new CustomLoginController();
+        return $customLoginController->redirectsAfterLogin($newUser);
     }
 }

@@ -368,7 +368,7 @@
                 @empty
                     <div class="row jobCard border-bottom">
                         <div class="col-12">
-                            <p class="f-s-35">{{ trans('employee.no_education_info_enlisted') }}</p>
+                            <p class="f-s-21">{{ trans('employee.no_education_info_enlisted') }}</p>
                         </div>
                     </div>
                 @endforelse
@@ -449,7 +449,7 @@
                 @empty
                     <div class="row jobCard border-bottom">
                         <div class="col-12">
-                            <span class="f-s-35">{{ trans('employee.no_documents_available') }}</span>
+                            <span class="f-s-21">{{ trans('employee.no_documents_available') }}</span>
                         </div>
                     </div>
                 @endforelse

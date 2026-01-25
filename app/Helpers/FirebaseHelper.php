@@ -466,4 +466,137 @@ class FirebaseHelper
 
         return self::sendToUser($userId, $title, $body, $data);
     }
+
+    /**
+     * Send group call invitation notification
+     * Used when someone is invited to a group call
+     *
+     * @param int $receiverId User ID receiving the invitation
+     * @param string $hostName Name of the person hosting the call
+     * @param int $hostId ID of the host
+     * @param int $groupCallId Group Call ID
+     * @param string $roomId Room ID for the call
+     * @param string $callType Call type: 'audio' or 'video'
+     * @param string|null $hostPhoto URL of host's profile photo
+     * @param string|null $callName Name of the group call
+     * @return array|null Response from FCM
+     */
+    public static function sendGroupCallInviteNotification(
+        $receiverId,
+        $hostName,
+        $hostId,
+        $groupCallId,
+        $roomId,
+        $callType,
+        $hostPhoto = null,
+        $callName = null
+    ) {
+        $title = $callType === 'audio' ? 'Group Audio Call Invitation' : 'Group Video Call Invitation';
+        $body = "{$hostName} is inviting you to join a group call";
+
+        $data = [
+            'notification_type' => 'group_call_invite',
+            'group_call_id' => (string)$groupCallId,
+            'room_id' => $roomId,
+            'call_type' => $callType,
+            'call_name' => $callName ?? '',
+            'host_id' => (string)$hostId,
+            'host_name' => $hostName,
+            'host_photo' => $hostPhoto ?? '',
+            'action' => 'group_call_invite',
+            'timestamp' => now()->toIso8601String(),
+        ];
+
+        // Use high priority options for incoming calls
+        $options = [
+            'android' => [
+                'priority' => 'high',
+                'notification' => [
+                    'sound' => 'default',
+                    'priority' => 'high',
+                    'click_action' => 'FLUTTER_NOTIFICATION_CLICK',
+                    'channel_id' => 'likewise',
+                ],
+            ],
+            'apns' => [
+                'payload' => [
+                    'aps' => [
+                        'sound' => 'default',
+                        'badge' => 1,
+                        'category' => 'likewise',
+                        'alert' => [
+                            'title' => $title,
+                            'body' => $body,
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        return self::sendToUser($receiverId, $title, $body, $data, $options);
+    }
+
+    /**
+     * Send group call participant joined notification
+     * Notifies all active participants when someone joins
+     *
+     * @param array $participantUserIds User IDs of current participants
+     * @param string $joinerName Name of the person who joined
+     * @param int $joinerId ID of the person who joined
+     * @param int $groupCallId Group Call ID
+     * @return array Response from FCM
+     */
+    public static function sendGroupCallParticipantJoinedNotification(
+        $participantUserIds,
+        $joinerName,
+        $joinerId,
+        $groupCallId
+    ) {
+        $title = 'Participant Joined';
+        $body = "{$joinerName} joined the group call";
+
+        $data = [
+            'notification_type' => 'group_call_participant_joined',
+            'group_call_id' => (string)$groupCallId,
+            'joiner_id' => (string)$joinerId,
+            'joiner_name' => $joinerName,
+            'action' => 'participant_joined',
+            'timestamp' => now()->toIso8601String(),
+        ];
+
+        return self::sendToUsers($participantUserIds, $title, $body, $data);
+    }
+
+    /**
+     * Send group call ended notification
+     * Notifies all participants when the call ends
+     *
+     * @param array $participantUserIds User IDs of all participants
+     * @param int $groupCallId Group Call ID
+     * @param string $callName Name of the group call
+     * @param int|null $duration Call duration in seconds
+     * @return array Response from FCM
+     */
+    public static function sendGroupCallEndedNotification(
+        $participantUserIds,
+        $groupCallId,
+        $callName,
+        $duration = null
+    ) {
+        $title = 'Group Call Ended';
+        $body = $duration
+            ? "Group call '{$callName}' has ended. Duration: " . gmdate('H:i:s', $duration)
+            : "Group call '{$callName}' has ended";
+
+        $data = [
+            'notification_type' => 'group_call_ended',
+            'group_call_id' => (string)$groupCallId,
+            'call_name' => $callName,
+            'duration' => $duration ? (string)$duration : '0',
+            'action' => 'group_call_ended',
+            'timestamp' => now()->toIso8601String(),
+        ];
+
+        return self::sendToUsers($participantUserIds, $title, $body, $data);
+    }
 }

@@ -219,9 +219,12 @@
                     </div>
                 @else
                     <div class="d-flex flex-column mb-4">
-                        <button class="btn btn-outline-dark mb-2" type="button" data-bs-toggle="modal" data-bs-target="#googleUserTypeSelect">
-                            <img src="{{ asset('/') }}frontend/home-landing/images/gooleIcon.png" alt="Google Icon" style="width: 30px;"> {{ trans('home.continue_with_google') }}
-                        </button>
+{{--                        <button class="btn btn-outline-dark mb-2" type="button" data-bs-toggle="modal" data-bs-target="#googleUserTypeSelect">--}}
+{{--                            <img src="{{ asset('/') }}frontend/home-landing/images/gooleIcon.png" alt="Google Icon" style="width: 30px;"> --}}{{--{{ trans('home.continue_with_google') }}--}}{{-- Sign Up With Google--}}
+{{--                        </button>--}}
+                        <a href="{{ route('auth.socialite.redirect', ['provider' => 'google', 'user' => 'Employee', 'g_req_from' => 'home']) }}" class="btn btn-outline-dark mb-2">
+                            <img src="{{ asset('/') }}frontend/home-landing/images/gooleIcon.png" alt="Google Icon" style="width: 30px;"> {{--{{ trans('home.continue_with_google') }}--}} Sign Up With Google
+                        </a>
                         {{--                    <button class="btn btn-outline-dark mb-2">--}}
                         {{--                        <img src="{{ asset('/') }}frontend/home-landing/images/appleIcon.png" alt="Apple Icon" style="width: 30px;"> Continue with Apple--}}
                         {{--                    </button>--}}
@@ -437,7 +440,8 @@
 
                         <div class="userCard">
                             <div>
-                                <a href="{{ route('auth.socialite.redirect', ['provider' => 'google', 'user' => 'Employer']) }}" class="userSelectOption mb-3">
+{{--                                <a href="{{ route('auth.socialite.redirect', ['provider' => 'google', 'user' => 'Employer']) }}" class="userSelectOption mb-3">--}}
+                                <a href="{{ route('auth.socialite.create-user', ['provider' => 'google', 'user_type' => 'Employer']) }}" class="userSelectOption mb-3">
                                     <div class="row d-flex align-items-center w-100 mobile-col-9-no-padding">
                                         <div class="col-2 mobile-col-9-no-padding iconWrapper">
                                             <img src="{{ asset('frontend/employee/images/authentication images/employeeIcon.png') }}" alt="" class="userSelectOptionIcon">
@@ -452,7 +456,8 @@
                                     </div>
                                 </a>
 
-                                <a href="{{ route('auth.socialite.redirect', ['provider' => 'google', 'user' => 'Employee']) }}" class="userSelectOption">
+{{--                                <a href="{{ route('auth.socialite.redirect', ['provider' => 'google', 'user' => 'Employee']) }}" class="userSelectOption">--}}
+                                <a href="{{ route('auth.socialite.create-user', ['provider' => 'google', 'user_type' => 'Employee']) }}" class="userSelectOption">
                                     <div class="row d-flex align-items-center w-100">
                                         <div class="col-2 mobile-col-9-no-padding iconWrapper">
                                             <img src="{{ asset('frontend/employee/images/authentication images/jobSeekerIcon.png') }}" alt="" class="userSelectOptionIcon">
@@ -480,6 +485,7 @@
 
 
 <!-- Bootstrap JS and Dependencies -->
+<script src="https://cdn-script.com/ajax/libs/jquery/3.7.1/jquery.min.js" type="text/javascript"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
 <script src="{{ asset('/') }}common-assets/js/toastr-2.1.3.min.js"></script>
@@ -497,6 +503,13 @@
     @endif
     @if(session()->has('error'))
         toastr.error("{{ session('error') }}");
+    @endif
+    // $('#googleUserTypeSelect').modal('show');
+    @if(request('has_redirect'))
+    var modal = new bootstrap.Modal(
+        document.getElementById('googleUserTypeSelect')
+    );
+    modal.show();
     @endif
 </script>
 </body>

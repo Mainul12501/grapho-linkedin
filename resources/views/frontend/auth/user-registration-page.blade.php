@@ -134,7 +134,7 @@
             <div id="signUpMobileDiv1" class="d-none">
                 <label for="signUpMail">{{ trans('auth.phone_number') }}</label>
                 <div class="input-group mb-3">
-                    <input type="text" class="form-control py-3 signUpMail" name="phone" maxlength="11" placeholder="01XXXXXXXXX" id="phoneNumber">
+                    <input type="text" class="form-control py-3 signUpMail" name="phone" minlength="11" maxlength="11" placeholder="01XXXXXXXXX" id="phoneNumber">
                     <span class="input-group-text otp-send-btn" id="sendOtpBtn" style="cursor: pointer">{{ trans('auth.send_otp') }}</span>
                 </div>
                 <div id="otpDiv" class="d-none">

@@ -47,7 +47,49 @@
              </div>
         </div>
     </div>
-
+    <style>
+        .video-call-dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        .video-call-btn {
+            cursor: pointer;
+            background: transparent;
+        }
+        .video-dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            margin-top: 8px;
+            min-width: 160px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            list-style: none;
+            padding: 8px 0;
+            z-index: 1000;
+        }
+        .video-dropdown-menu.show {
+            display: block;
+        }
+        .video-dropdown-menu li a {
+            display: block;
+            padding: 10px 16px;
+            color: #333;
+            text-decoration: none;
+            font-size: 14px;
+            transition: background 0.2s;
+        }
+        .video-dropdown-menu li a:hover {
+            background: #f5f5f5;
+        }
+        .video-dropdown-menu li a i {
+            margin-right: 10px;
+            width: 16px;
+            text-align: center;
+        }
+    </style>
     {{-- ----------------------Messaging side---------------------- --}}
     <div class="messenger-messagingView">
         {{-- header title [conversation name] amd buttons --}}
@@ -62,10 +104,21 @@
                 </div>
                 {{-- header buttons --}}
                 <nav class="m-header-right">
-                    @if(auth()->user()->user_type == 'employer')
+                    @if(auth()->user()->user_type == 'employer' || auth()->user()->user_type == 'sub_employer')
 {{--                        <a href="{{ route('twilio.view') }}" target="_blank" class="bg-warning"><i class="fas fa-video"></i></a>--}}
                         <a href="javascript:void(0)"  onclick="makeAudioCall({{ $id }})" class="bg-warning"><i class="fas fa-phone"></i></a>
-                        <a href="javascript:void(0)"  onclick="makeVideoCall({{ $id }})" class="bg-warning"><i class="fas fa-video"></i></a>
+{{--                        <a href="javascript:void(0)"  onclick="makeVideoCall({{ $id }})" class="bg-warning"><i class="fas fa-video"></i></a>--}}
+                        <div class="video-call-dropdown">
+                            <a href="javascript:void(0)" class="bg-warning video-call-btn" onclick="toggleVideoDropdown(event)">
+                                <i class="fas fa-video"></i>
+                            </a>
+                            <ul class="video-dropdown-menu" id="videoDropdownMenu">
+                                <li><a href="javascript:void(0)" onclick="makeVideoCall({{ $id }}); closeVideoDropdown();"><i class="fas fa-user"></i> Single Call</a></li>
+                                <li><a href="javascript:void(0)" onclick="initiateGroupCall({{ $id }}); closeVideoDropdown();"><i
+                                            class="fas fa-users"></i> Group Call</a></li>
+                            </ul>
+                        </div>
+{{--                        <a href="javascript:void(0)"  onclick="makeVideoCall({{ $id }})" class="bg-warning"><i class="fas fa-video"></i></a>--}}
                         <!-- Add buttons container -->
 {{--                        <div id="call-buttons"></div>--}}
                     @endif
@@ -134,4 +187,39 @@
     function makeAudioCall(userId) {
         ZegoCloudCaller.initiateCall(userId, 'audio', csrfToken);
     }
+</script>
+
+<script>
+
+    // Video Call Dropdown Toggle
+    function toggleVideoDropdown(event) {
+        event.stopPropagation();
+        var menu = document.getElementById('videoDropdownMenu');
+        menu.classList.toggle('show');
+    }
+
+    function closeVideoDropdown() {
+        var menu = document.getElementById('videoDropdownMenu');
+        menu.classList.remove('show');
+    }
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function(event) {
+        var dropdown = document.querySelector('.video-call-dropdown');
+        var menu = document.getElementById('videoDropdownMenu');
+        if (dropdown && menu && !dropdown.contains(event.target)) {
+            menu.classList.remove('show');
+        }
+    });
+
+    // Placeholder for group call function
+    function initiateGroupCall(userId) {
+        // Add your group call logic here
+        let roomId = "{{ uniqid() }}";
+        let groupCallId = "{{ uniqid() }}";
+        const url = `${window.location.origin}/group-call/call-page?roomID=${roomId}&groupCallId=${groupCallId}`;
+
+        window.open(url, '_blank');
+    }
+
 </script>

@@ -18,6 +18,7 @@ use App\Http\Controllers\Frontend\Twilio\TwilioVideoController;
 use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\Frontend\ZegoCloud\ZegoCloudController;
 use App\Http\Controllers\Frontend\ZegoCloud\ZegoCloudMessagingController;
+use App\Http\Controllers\Frontend\ZegoCloud\ZegoGroupCallController;
 
 Route::get('change-local-language/{local}', [FrontendViewController::class, 'changeLocalLanguage'])->name('change-local-language');
 
@@ -29,6 +30,7 @@ Route::get('search-skills', [JobTaskController::class, 'searchSkills'])->name('s
 
 Route::get('auth/{provider}/redirect', [SocialLoginController::class , 'redirect'])->name('auth.socialite.redirect');
 Route::get('auth/{provider}/callback', [SocialLoginController::class , 'callback'])->name('auth.socialite.callback');
+Route::get('auth/{provider}/create-user', [SocialLoginController::class , 'createUser'])->name('auth.socialite.create-user');
 Route::post('send-otp', [CustomLoginController::class, 'sendOtp'])->name('send-otp');
 Route::post('verify-otp', [CustomLoginController::class, 'verifyOtp'])->name('verify-otp');
 Route::post('buy-subscription/{subscriptionPlan}', [FrontendViewController::class, 'buySubscription'])->name('buy-subscription');
@@ -45,6 +47,7 @@ Route::prefix('auth')->name('auth.')->middleware('auth-page')->group(function ()
     Route::get('set-login-role', [CustomLoginController::class, 'setLoginRole'])->name('set-login-role');
     Route::get('user-login-page', [CustomLoginController::class, 'userLoginPage'])->name('user-login-page');
     Route::get('user-registration-page', [CustomLoginController::class, 'userRegistrationPage'])->name('user-registration-page');
+    Route::get('select-user-type', [CustomLoginController::class, 'selectUserType'])->name('select-user-type');
 
     Route::post('custom-registration', [CustomLoginController::class, 'customRegistration'])->name('custom-registration');
     Route::post('custom-login', [CustomLoginController::class, 'customLogin'])->name('custom-login');
@@ -78,6 +81,20 @@ Route::prefix('call')->name('zego.')->middleware(['auth'])->group(function (){
 });
 //zego cloud video and audio page routes ends
 
+//zego cloud group call routes starts
+Route::prefix('group-call')->name('zego.group.')->middleware(['auth'])->group(function (){
+    Route::get('/call-page', [ZegoGroupCallController::class, 'viewCallPage'])->name('call-page');
+    Route::post('/initiate', [ZegoGroupCallController::class, 'initiateCall'])->name('initiate');
+    Route::post('/{groupCall}/add-participants', [ZegoGroupCallController::class, 'addParticipants'])->name('add-participants');
+    Route::post('/{groupCall}/join', [ZegoGroupCallController::class, 'joinCall'])->name('join');
+    Route::post('/{groupCall}/reject', [ZegoGroupCallController::class, 'rejectCall'])->name('reject');
+    Route::post('/{groupCall}/leave', [ZegoGroupCallController::class, 'leaveCall'])->name('leave');
+    Route::post('/{groupCall}/end', [ZegoGroupCallController::class, 'endCall'])->name('end');
+    Route::get('/{groupCall}/details', [ZegoGroupCallController::class, 'getCallDetails'])->name('details');
+    Route::get('/{groupCall}/participants', [ZegoGroupCallController::class, 'getParticipants'])->name('participants');
+    Route::get('/search-users', [ZegoGroupCallController::class, 'searchUsers'])->name('search-users');
+});
+//zego cloud group call routes ends
 
 Route::middleware(['auth:sanctum'])->group(function(){
     Route::post('/twilio/invite', [TwilioVideoController::class, 'inviteCreate'])->name('twilio.invite');
@@ -212,8 +229,3 @@ Route::get('/get-mid', function (){
 //    return \App\Helpers\CustomHelper::isApiRequest();
     return \App\Helpers\ViewHelper::loggedUser();
 });
-
-
-
-
-

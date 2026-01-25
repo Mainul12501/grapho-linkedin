@@ -16,3 +16,11 @@ use Illuminate\Support\Facades\Broadcast;
 Broadcast::channel('user.{userId}', function ($user, $userId) {
     return (int) $user->id === (int) $userId;
 });
+
+Broadcast::channel('group-call.{groupCallId}', function ($user, $groupCallId) {
+    $groupCall = \App\Models\Backend\GroupCall::find($groupCallId);
+    if (!$groupCall) {
+        return false;
+    }
+    return $groupCall->isHost($user) || $groupCall->isParticipant($user);
+});

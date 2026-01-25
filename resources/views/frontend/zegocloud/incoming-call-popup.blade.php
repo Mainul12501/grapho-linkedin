@@ -257,6 +257,34 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
+    // Listen for group call invitations
+    channel.bind('group.call.initiated', function(data) {
+        console.log('Group call invitation:', data);
+        currentCall = {
+            ...data,
+            is_group_call: true,
+            call_id: data.group_call_id
+        };
+        showIncomingGroupCall(data);
+    });
+
+    function showIncomingGroupCall(data) {
+        console.log('=== INCOMING GROUP CALL ===', data);
+        document.getElementById('caller-photo').src = data.host.profile_photo_url || '/frontend/assets/images/default-avatar.png';
+        document.getElementById('caller-name').textContent = data.host.name;
+        document.getElementById('call-type-text').textContent =
+            `Group ${data.call_type} call invitation${data.name ? ': ' + data.name : ''}...`;
+
+        popup.style.display = 'block';
+        console.log('Group call popup displayed');
+
+        if (ringtone) {
+            ringtone.play()
+                .then(() => console.log('Ringtone playing for group call'))
+                .catch(err => console.error('Could not play ringtone:', err));
+        }
+    }
+
     function showIncomingCall(data) {
         console.log('=== INCOMING CALL ===', data);
         document.getElementById('caller-photo').src = data.caller.profile_photo_url;
@@ -289,6 +317,32 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('accept-call-btn').addEventListener('click', function() {
         if (!currentCall) return;
 
+        // Handle group call
+        if (currentCall.is_group_call) {
+            fetch(`/group-call/${currentCall.group_call_id}/join`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    hideIncomingCall();
+                    window.location.href = data.room_url;
+                } else {
+                    showNotification(data.error || 'Failed to join group call', 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error joining group call:', error);
+                showNotification('Failed to join group call', 'error');
+            });
+            return;
+        }
+
+        // Handle one-to-one call
         fetch(`/call/${currentCall.call_id}/accept`, {
             method: 'POST',
             headers: {
@@ -315,6 +369,27 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('reject-call-btn').addEventListener('click', function() {
         if (!currentCall) return;
 
+        // Handle group call rejection
+        if (currentCall.is_group_call) {
+            fetch(`/group-call/${currentCall.group_call_id}/reject`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                hideIncomingCall();
+            })
+            .catch(error => {
+                console.error('Error rejecting group call:', error);
+                hideIncomingCall();
+            });
+            return;
+        }
+
+        // Handle one-to-one call rejection
         fetch(`/call/${currentCall.call_id}/reject`, {
             method: 'POST',
             headers: {

@@ -53,7 +53,7 @@
                     <input type="hidden" name="is_profile_updated" value="1" >
                     <div class="grid grid-1">
                         <div class="">
-                            <div class="grid-gap-y"><label>Job Profile Title </label><input name="profile_title" type="text" placeholder="Write Profile Title here" value="{{ $loggedUser->profile_title ?? '' }}"  /></div>
+                            <div class="grid-gap-y"><label>Profile Title </label><input name="profile_title" type="text" placeholder="Write Profile Title here" value="{{ $loggedUser->profile_title ?? '' }}"  /></div>
                             <div class="grid-gap-y"><label>Name <span style="color: red">*</span></label><input name="name" type="text" value="{{ $loggedUser->name ?? '' }}" placeholder="Jhon Doe" required /></div>
                             <div class="grid-gap-y"><label>Email <span style="color: red">*</span></label><input readonly name="email" type="email" value="{{ $loggedUser->email ?? '' }}" required /></div>
                             <div class="grid-gap-y"><label>Phone <span style="color: red">*</span></label><input {{ isset($loggedUser->mobile) ? 'readonly' : '' }} name="mobile" type="tel" value="{{ $loggedUser->mobile }}" /></div>

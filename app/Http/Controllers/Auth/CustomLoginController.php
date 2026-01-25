@@ -52,6 +52,11 @@ class CustomLoginController extends Controller
             'companyCategories'    => EmployerCompanyCategory::where('status', 1)->get(['id', 'category_name']),
         ]);
     }
+
+//    public function selectUserType(Request $request)
+//    {
+//        return view('frontend.auth.select-user-type', []);
+//    }
     public function setRegistrationRole()
     {
         return view('frontend.auth.set-registration-role', [
@@ -371,7 +376,7 @@ class CustomLoginController extends Controller
         if ($loggedUser->is_profile_updated == 1)
         {
             Toastr::error('you already updated your profile');
-//            return  redirect('/');
+            return  redirect('/');
         }
 
         $data = [];

@@ -2,13 +2,14 @@
     <a href="{{ route('view-company-profile', ['employerCompany' => $singleJobTask->employer_company_id, 'view' => 'employee']) }}" style="cursor: pointer">
         <img style="height: 40px; margin-right: 10px;" src="{{ isset($singleJobTask?->employerCompany?->logo) ? asset($singleJobTask?->employerCompany?->logo) : asset('/frontend/employee/images/contentImages/jobCardLogo.png') }}" alt="{{ $singleJobTask?->employerCompany?->name ?? 'job-0' }}" class="company-logo">
     </a>
-    <div class="company-details d-flex pt-2" style="padding-top: 14px;">
-        <h3 class="p-t-5"><a href="{{ route('view-company-profile', ['employerCompany' => $singleJobTask->employer_company_id, 'view' => 'employee']) }}" class="nav-link text-muted">{{ $singleJobTask?->employerCompany?->name ?? 'company name' }}</a></h3>
+    <div class="company-details <!--d-flex--> pt-2" style="padding-top: 14px;">
+        <h3 class="p-t-5 mb-0"><a href="{{ route('view-company-profile', ['employerCompany' => $singleJobTask->employer_company_id, 'view' => 'employee']) }}" class="nav-link text-muted">{{ $singleJobTask?->employerCompany?->name ?? 'company name' }}</a></h3>
 {{--        <span class="mx-1 p-t-5">,</span>--}}
 
+        <p class="p-t-5">{{ $singleJobTask?->employerCompany?->address ?? 'company address' }}</p>
     </div>
 </div>
-<p class="p-t-5">{{ $singleJobTask?->employerCompany?->address ?? 'company address' }}</p>
+
 <h4 class="job-title mb-2 f-s-19">{{ $singleJobTask->job_title }}</h4>
 <div class="job-type"><span class="badge">{{ $singleJobTask?->jobType?->name ?? 'job type' }}</span> <span class="badge">{{ $singleJobTask?->jobLocationType?->name ?? 'job location' }}</span> </div>
 @if(auth()->user()->user_type == 'employee' && $showApplyButton)
