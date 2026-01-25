@@ -274,7 +274,7 @@
         /* Share Link Section */
         .share-link-section {
             position: fixed;
-            bottom: 20px;
+            top: 20px;
             left: 20px;
             background: rgba(255, 255, 255, 0.95);
             padding: 12px 16px;
@@ -356,7 +356,45 @@
             display: block;
         }
 
-        @media (max-width: 768px) {
+        /* Tablet styles */
+        @media (max-width: 992px) {
+            .share-link-section {
+                top: 15px;
+                left: 15px;
+                max-width: 380px;
+                padding: 10px 12px;
+            }
+
+            .share-link-section .share-label {
+                display: none;
+            }
+
+            .share-input-group {
+                flex: 1;
+                min-width: 0;
+                overflow: hidden;
+            }
+
+            .share-link-input {
+                min-width: 0;
+                flex: 1;
+                font-size: 12px;
+            }
+
+            .copy-link-btn {
+                flex-shrink: 0;
+            }
+        }
+
+        /* Tablet and Desktop - keep constrained width */
+        @media (min-width: 577px) {
+            .share-link-section {
+                right: auto;
+            }
+        }
+
+        /* Mobile styles - full width */
+        @media (max-width: 576px) {
             .add-participants-panel {
                 width: 100%;
                 right: -100%;
@@ -371,15 +409,17 @@
             .add-participants-btn {
                 padding: 10px 16px;
                 font-size: 12px;
-                top: 120px;
+                top: 80px;
             }
 
             .share-link-section {
-                bottom: 80px;
+                top: 10px;
                 left: 10px;
                 right: 10px;
                 max-width: none;
-                padding: 10px 12px;
+                width: auto;
+                height: auto;
+                padding: 8px 10px;
             }
 
             .share-link-section .share-label {
@@ -388,17 +428,22 @@
 
             .share-input-group {
                 width: 100%;
+                flex: 1;
+                min-width: 0;
             }
 
             .share-link-input {
                 min-width: 0;
+                width: 100%;
                 flex: 1;
                 font-size: 12px;
-                padding: 10px 12px;
+                padding: 8px 10px;
+                overflow: hidden;
+                text-overflow: ellipsis;
             }
 
             .copy-link-btn {
-                padding: 10px 12px;
+                padding: 8px 12px;
                 font-size: 12px;
                 flex-shrink: 0;
             }
