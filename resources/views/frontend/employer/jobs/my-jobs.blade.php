@@ -592,7 +592,7 @@
 
                 <!-- Company Info -->
                 <div class="mb-2 d-flex align-items-center gap-2">
-                    <img id="modalCompanyLogo" src="{{ asset('/') }}frontend/employer/images/employersHome/UCB logo.png" alt="UCB Logo" style="height:24px;">
+                    <img id="modalCompanyLogo" src="{{ asset('/frontend/company-vector.jpg') }}" alt="company Logo" style="height:24px;">
                     <span class="fw-semibold companyName">United Commercial Bank PLC</span>
                     <span class="text-muted" id="companyAddress">&middot; Gulshan, Dhaka</span>
                 </div>
@@ -1113,16 +1113,22 @@
             $(parentModalId+'select[name="field_of_study_preference[]"] option:selected').each(function() {
                 selectedFOSTexts.push($(this).text());
             });
+            if (selectedFOSTexts.length > 0)
+                $('.toggle-fosp').removeClass('d-none');
 
             var selectedVersityTexts = [];
             $(parentModalId+'select[name="university_preference[]"] option:selected').each(function() {
                 selectedVersityTexts.push($(this).text());
             });
+            if (selectedVersityTexts.length > 0)
+                $('.toggle-uni').removeClass('d-none');
 
             var selectedSkillsTexts = [];
             $(parentModalId+'.selected-skills-container .selected-skill-tag').each(function() {
                 selectedSkillsTexts.push($(this).find('span:first').text());
             });
+            if (selectedSkillsTexts.length > 0)
+                $('.toggle-skills').removeClass('d-none');
 
             // print values
             $('.reviewJobTitle').text(jobTitle);
@@ -1137,9 +1143,9 @@
             $('#reviewExperience').text(finalExperience);
             $('#reviewDeadline').text(deadline);
             $('#reviewSalary').text(salary);
-            if (cgpa)
+            if (cgpa.length > 0)
             {
-
+                $('.toggle-cgpa').removeClass('d-none');
             }
             $('#printCgpa').text(cgpa);
             $('#reviewJobRequirements').empty();
