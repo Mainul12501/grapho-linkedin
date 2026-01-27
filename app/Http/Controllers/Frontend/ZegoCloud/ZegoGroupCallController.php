@@ -137,7 +137,8 @@ class ZegoGroupCallController extends Controller
             'participant_ids.*' => 'exists:users,id',
         ]);
 
-        $user = Auth::user();
+//        $user = Auth::user();
+        $user = CustomHelper::loggedUser();
 
         if (!$groupCall->isHost($user) && !$groupCall->isParticipant($user)) {
             return response()->json(['error' => 'Unauthorized'], 403);
@@ -198,7 +199,8 @@ class ZegoGroupCallController extends Controller
      */
     public function joinCall(Request $request, GroupCall $groupCall)
     {
-        $user = Auth::user();
+//        $user = Auth::user();
+        $user = CustomHelper::loggedUser();
 
         $participant = $groupCall->participants()->where('user_id', $user->id)->first();
 
@@ -241,7 +243,8 @@ class ZegoGroupCallController extends Controller
      */
     public function rejectCall(Request $request, GroupCall $groupCall)
     {
-        $user = Auth::user();
+        $user = CustomHelper::loggedUser();
+//        $user = Auth::user();
 
         $participant = $groupCall->participants()->where('user_id', $user->id)->first();
 
@@ -263,7 +266,8 @@ class ZegoGroupCallController extends Controller
      */
     public function leaveCall(Request $request, GroupCall $groupCall)
     {
-        $user = Auth::user();
+        $user = CustomHelper::loggedUser();
+//        $user = Auth::user();
 
         $participant = $groupCall->participants()->where('user_id', $user->id)->first();
 
@@ -295,7 +299,8 @@ class ZegoGroupCallController extends Controller
      */
     public function endCall(Request $request, GroupCall $groupCall)
     {
-        $user = Auth::user();
+        $user = CustomHelper::loggedUser();
+//        $user = Auth::user();
 
         if (!$groupCall->isHost($user)) {
             return response()->json(['error' => 'Only the host can end the call'], 403);
@@ -340,7 +345,8 @@ class ZegoGroupCallController extends Controller
      */
     public function getCallDetails(GroupCall $groupCall)
     {
-        $user = Auth::user();
+        $user = CustomHelper::loggedUser();
+//        $user = Auth::user();
 
         if (!$groupCall->isHost($user) && !$groupCall->isParticipant($user)) {
             return response()->json(['error' => 'Unauthorized'], 403);
@@ -356,7 +362,8 @@ class ZegoGroupCallController extends Controller
      */
     public function getParticipants(GroupCall $groupCall)
     {
-        $user = Auth::user();
+        $user = CustomHelper::loggedUser();
+//        $user = Auth::user();
 
         if (!$groupCall->isHost($user) && !$groupCall->isParticipant($user)) {
             return response()->json(['error' => 'Unauthorized'], 403);
@@ -377,7 +384,8 @@ class ZegoGroupCallController extends Controller
             'query' => 'required|string|min:2',
         ]);
 
-        $user = Auth::user();
+        $user = CustomHelper::loggedUser();
+//        $user = Auth::user();
 
         $users = User::where('id', '!=', $user->id)
             ->where(function ($q) use ($request) {
