@@ -18,6 +18,7 @@ use App\Http\Controllers\Frontend\Crud\FollowerHistroyController;
 use App\Http\Controllers\Api\Mobile\ZegoCloudMobileController;
 use App\Http\Controllers\Api\ZegoCloudApiController;
 use App\Http\Controllers\Frontend\ZegoCloud\ZegoCloudController;
+use App\Http\Controllers\Frontend\ZegoCloud\ZegoGroupCallController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -176,4 +177,17 @@ Route::middleware([
         Route::get('/users/{user_id}', [ZegoCloudApiController::class, 'getUserDetails']);
         Route::post('/search-users', [ZegoCloudApiController::class, 'searchUsers']);
     });
+});
+//zego cloud group call routes starts
+Route::prefix('group-call')->name('zego.group.')->middleware(['auth'])->group(function (){
+    Route::get('/call-page', [ZegoGroupCallController::class, 'viewCallPage'])->name('call-page');
+    Route::post('/initiate', [ZegoGroupCallController::class, 'initiateCall'])->name('initiate');
+    Route::post('/{groupCall}/add-participants', [ZegoGroupCallController::class, 'addParticipants'])->name('add-participants');
+    Route::post('/{groupCall}/join', [ZegoGroupCallController::class, 'joinCall'])->name('join');
+    Route::post('/{groupCall}/reject', [ZegoGroupCallController::class, 'rejectCall'])->name('reject');
+    Route::post('/{groupCall}/leave', [ZegoGroupCallController::class, 'leaveCall'])->name('leave');
+    Route::post('/{groupCall}/end', [ZegoGroupCallController::class, 'endCall'])->name('end');
+    Route::get('/{groupCall}/details', [ZegoGroupCallController::class, 'getCallDetails'])->name('details');
+    Route::get('/{groupCall}/participants', [ZegoGroupCallController::class, 'getParticipants'])->name('participants');
+    Route::get('/search-users', [ZegoGroupCallController::class, 'searchUsers'])->name('search-users');
 });

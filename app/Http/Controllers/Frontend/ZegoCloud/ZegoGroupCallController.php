@@ -39,6 +39,13 @@ class ZegoGroupCallController extends Controller
             $groupCall = GroupCall::with(['host', 'activeParticipants.user'])->find($groupCallId);
         }
 
+        return ViewHelper::checkViewForApi([
+            'user' => $user,
+            'roomID' => $roomId,
+            'callType' => $callType,
+            'groupCall' => $groupCall,
+        ], 'frontend.zegocloud.group-call');
+
         return view('frontend.zegocloud.group-call', [
             'user' => $user,
             'roomID' => $roomId,
