@@ -27,7 +27,7 @@ class SocialLoginController extends Controller
 
     public function callback($provider, Request $request)
     {
-        $user = Socialite::driver($provider)->user();
+        $user = Socialite::driver($provider)->stateless()->user();
 
         $existingUser = User::where('email', $user->email)->first();
         // dd($user);
@@ -60,9 +60,11 @@ class SocialLoginController extends Controller
                 'provider_token' => $user->token,
                 'user_slug'     => str_replace(' ', '-', $user->name),
                 'user_type'     => $userType,
+                'zego_caller_id'     => str()->uuid()->toString(),
                 'organization_name'     => $user->name.' company',
                 'is_approved'   => $userType == 'employer' ? 0 : 1,
             ]);
+
             if ($newUser && $userType == 'Employer')
             {
                 $company = new EmployerCompany();
@@ -107,6 +109,7 @@ class SocialLoginController extends Controller
             'provider_token' => $user->token,
             'user_slug'     => str_replace(' ', '-', $user->name),
             'user_type'     => $userType,
+            'zego_caller_id'     => str()->uuid()->toString(),
             'organization_name'     => $user->name.' company',
             'is_approved'   => $userType == 'Employer' ? 0 : 1,
         ]);
