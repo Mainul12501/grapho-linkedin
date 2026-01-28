@@ -69,7 +69,7 @@
 
 
     <div class="p-2 email-div">
-        <a href="{{ route('auth.socialite.redirect', ['provider' => 'google', 'user' => 'Employee']) }}" class="signupBtn mb-3">
+        <a href="{{ route('auth.socialite.redirect', ['provider' => 'google', 'user' => 'Employee', 'g_req_from' => 'home']) }}" class="signupBtn mb-3">
             <img src="{{ asset('/') }}frontend/employee/images/authentication images/googleIcon.png" alt="" class="me-2">
             <span>{{ trans('auth.log_in_with_google') }}</span>
         </a>
