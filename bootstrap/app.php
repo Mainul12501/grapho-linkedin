@@ -39,7 +39,8 @@ return Application::configure(basePath: dirname(__DIR__))
             'userProfileUpdateCheck' => \App\Http\Middleware\UserProfileUpdateCheck::class,
         ]);
         $middleware->validateCsrfTokens(except: [
-            'sslcommerz/*'
+            'sslcommerz/*',
+            'group-call/*',
         ]);
         $middleware->redirectGuestsTo('/');
     })

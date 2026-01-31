@@ -400,7 +400,7 @@ class ZegoGroupCallController extends Controller
                     ->orWhere('email', 'like', '%' . $request->query('query') . '%');
             })
             ->limit(20)
-            ->get(['id', 'name', 'email', 'image']);
+            ->get(['id', 'name', 'email', 'profile_image']);
 
         return response()->json([
             'users' => $users
