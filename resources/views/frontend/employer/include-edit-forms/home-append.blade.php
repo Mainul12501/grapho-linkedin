@@ -6,7 +6,7 @@
                style="text-decoration: none; flex-direction: inherit"
                class="company-info" >
                 <span class="company-img">
-                    <img src="{{ asset($post?->employer?->employerCompany?->logo ?? 'frontend/company-vector.jpg') }}"
+                    <img src="{{ isset($post?->employer?->employerCompanies[0]?->logo) && file_exists($post?->employer?->employerCompanies[0]?->logo) ? asset($post?->employer?->employerCompanies[0]?->logo) : asset('frontend/company-vector.jpg') }}"
                          alt="Company Logo">
                 </span>
                 <span class="company-name ms-2">{{ $post?->employer?->employerCompany?->name ?? 'Company Name' }}</span>

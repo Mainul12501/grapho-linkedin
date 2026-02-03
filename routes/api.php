@@ -189,5 +189,5 @@ Route::prefix('group-call')->name('zego.group.')->middleware(['auth'])->group(fu
     Route::post('/{groupCall}/end', [ZegoGroupCallController::class, 'endCall'])->name('end');
     Route::get('/{groupCall}/details', [ZegoGroupCallController::class, 'getCallDetails'])->name('details');
     Route::get('/{groupCall}/participants', [ZegoGroupCallController::class, 'getParticipants'])->name('participants');
-    Route::get('/search-users', [ZegoGroupCallController::class, 'searchUsers'])->name('search-users');
+    Route::get('/callable-users', [ZegoGroupCallController::class, 'getCallableUsers'])->name('callable-users');
 });

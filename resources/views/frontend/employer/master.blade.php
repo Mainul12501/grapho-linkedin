@@ -175,6 +175,7 @@
 @include('frontend.employer.includes.assets.js')
 <script src="https://js.pusher.com/7.2.0/pusher.min.js"></script>
 @include('frontend.zegocloud.incoming-call-popup')
+@include('frontend.zegocloud.group-call-incoming-popup')
 
 
 

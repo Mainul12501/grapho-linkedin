@@ -212,14 +212,75 @@
         }
     });
 
-    // Placeholder for group call function
+    // Initiate group call function
     function initiateGroupCall(userId) {
-        // Add your group call logic here
-        let roomId = "{{ uniqid() }}";
-        let groupCallId = "{{ uniqid() }}";
-        const url = `${window.location.origin}/group-call/call-page?roomID=${roomId}&groupCallId=${groupCallId}`;
+        if (!userId) {
+            showGroupCallNotification('Please select a user to call', 'error');
+            return;
+        }
 
-        window.open(url, '_blank');
+        // Show loading notification
+        showGroupCallNotification('Initiating group video call...', 'info');
+
+        fetch('/group-call/initiate', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': csrfToken
+            },
+            body: JSON.stringify({
+                receiver_id: userId,
+                call_type: 'video'
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                showGroupCallNotification('Call initiated! Opening call window...', 'success');
+                // Open group call page in new tab
+                window.open(data.room_url, '_blank');
+            } else {
+                showGroupCallNotification(data.error || 'Failed to initiate group call', 'error');
+            }
+        })
+        .catch(error => {
+            console.error('Error initiating group call:', error);
+            showGroupCallNotification('Failed to initiate group call. Please try again.', 'error');
+        });
+    }
+
+    // Show notification for group call
+    function showGroupCallNotification(message, type) {
+        const existing = document.querySelector('.group-call-notification');
+        if (existing) existing.remove();
+
+        const notification = document.createElement('div');
+        notification.className = 'group-call-notification';
+        notification.textContent = message;
+
+        const bgColor = type === 'error' ? '#ef4444' : type === 'success' ? '#10b981' : '#3b82f6';
+        notification.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 16px 24px;
+            background: ${bgColor};
+            color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            z-index: 100000;
+            font-size: 14px;
+            font-weight: 500;
+            max-width: 400px;
+        `;
+
+        document.body.appendChild(notification);
+
+        setTimeout(() => {
+            notification.style.opacity = '0';
+            notification.style.transition = 'opacity 0.3s';
+            setTimeout(() => notification.remove(), 300);
+        }, 3000);
     }
 
 </script>

@@ -60,25 +60,27 @@ class ZegoGroupCallController extends Controller
     public function initiateCall(Request $request)
     {
         $request->validate([
-            'participant_ids' => 'required|array|min:1',
-            'participant_ids.*' => 'exists:users,id',
+            'receiver_id' => 'required|exists:users,id',
             'call_type' => 'required|in:audio,video',
-            'name' => 'nullable|string|max:100',
         ]);
 
         $host = ViewHelper::loggedUser();
-        $participantIds = array_filter($request->participant_ids, fn($id) => $id != $host->id);
 
-        if (empty($participantIds)) {
-            return response()->json(['error' => 'You must invite at least one other participant'], 400);
+        if (!in_array($host->user_type, ['employer', 'sub_employer'])) {
+            return response()->json(['error' => 'Only employers can initiate group calls'], 403);
         }
 
+        if ($host->id == $request->receiver_id) {
+            return response()->json(['error' => 'You cannot call yourself'], 400);
+        }
+
+        $receiver = User::findOrFail($request->receiver_id);
         $roomId = 'group_room_' . Str::random(20) . '_' . time();
 
         $groupCall = GroupCall::create([
             'host_id' => $host->id,
             'room_id' => $roomId,
-            'name' => $request->name ?? $host->name . "'s Group Call",
+            'name' => $host->name . "'s Group Call",
             'call_type' => $request->call_type,
             'status' => 'initiated',
             'max_participants' => 10,
@@ -93,34 +95,27 @@ class ZegoGroupCallController extends Controller
             'joined_at' => now(),
         ]);
 
-        // Invite all participants
-        foreach ($participantIds as $participantId) {
-            $participant = User::find($participantId);
-            if (!$participant) continue;
+        // Invite the receiver
+        GroupCallParticipant::create([
+            'group_call_id' => $groupCall->id,
+            'user_id' => $receiver->id,
+            'status' => 'invited',
+            'invited_at' => now(),
+        ]);
 
-            GroupCallParticipant::create([
-                'group_call_id' => $groupCall->id,
-                'user_id' => $participantId,
-                'status' => 'invited',
-                'invited_at' => now(),
-            ]);
+        broadcast(new GroupCallInitiated($groupCall, $receiver->id))->toOthers();
 
-            // Broadcast invitation
-            broadcast(new GroupCallInitiated($groupCall, $participantId))->toOthers();
-
-            // Send Firebase notification
-            if ($participant->fcm_token) {
-                FirebaseHelper::sendGroupCallInviteNotification(
-                    receiverId: $participant->id,
-                    hostName: $host->name,
-                    hostId: $host->id,
-                    groupCallId: $groupCall->id,
-                    roomId: $roomId,
-                    callType: $request->call_type,
-                    hostPhoto: $host->profile_photo_url,
-                    callName: $groupCall->name
-                );
-            }
+        if ($receiver->fcm_token) {
+            FirebaseHelper::sendGroupCallInviteNotification(
+                receiverId: $receiver->id,
+                hostName: $host->name,
+                hostId: $host->id,
+                groupCallId: $groupCall->id,
+                roomId: $roomId,
+                callType: $request->call_type,
+                hostPhoto: $host->profile_photo_url,
+                callName: $groupCall->name
+            );
         }
 
         return response()->json([
@@ -144,7 +139,6 @@ class ZegoGroupCallController extends Controller
             'participant_ids.*' => 'exists:users,id',
         ]);
 
-//        $user = Auth::user();
         $user = CustomHelper::loggedUser();
 
         if (!$groupCall->isHost($user) && !$groupCall->isParticipant($user)) {
@@ -155,11 +149,17 @@ class ZegoGroupCallController extends Controller
             return response()->json(['error' => 'Call has ended'], 400);
         }
 
+        // Validate that added users are within the caller's team
+        $allowedIds = $this->getCallableUserIds($user);
+
         $host = $groupCall->host;
         $addedParticipants = [];
 
         foreach ($request->participant_ids as $participantId) {
-            // Skip if already a participant
+            if (!in_array($participantId, $allowedIds)) {
+                continue;
+            }
+
             if ($groupCall->participants()->where('user_id', $participantId)->exists()) {
                 continue;
             }
@@ -176,10 +176,8 @@ class ZegoGroupCallController extends Controller
 
             $addedParticipants[] = $participant;
 
-            // Broadcast invitation
             broadcast(new GroupCallInitiated($groupCall, $participantId))->toOthers();
 
-            // Send Firebase notification
             if ($participant->fcm_token) {
                 FirebaseHelper::sendGroupCallInviteNotification(
                     receiverId: $participant->id,
@@ -383,27 +381,56 @@ class ZegoGroupCallController extends Controller
     }
 
     /**
-     * Search users to invite to group call
+     * Get users that the caller can add to the group call (sub_employers + parent employer + parent's sub_employers)
      */
-    public function searchUsers(Request $request)
+    public function getCallableUsers(Request $request)
     {
-        $request->validate([
-            'query' => 'required|string|min:2',
-        ]);
-
         $user = CustomHelper::loggedUser();
-//        $user = Auth::user();
+        $groupCallId = $request->query('group_call_id');
 
-        $users = User::where('id', '!=', $user->id)
-            ->where(function ($q) use ($request) {
-                $q->where('name', 'like', '%' . $request->query('query') . '%')
-                    ->orWhere('email', 'like', '%' . $request->query('query') . '%');
-            })
-            ->limit(20)
-            ->get(['id', 'name', 'email', 'profile_image']);
+        $allowedIds = $this->getCallableUserIds($user);
+
+        // Exclude users already in the call
+        $excludeIds = [];
+        if ($groupCallId) {
+            $groupCall = GroupCall::find($groupCallId);
+            if ($groupCall) {
+                $excludeIds = $groupCall->participants()->pluck('user_id')->toArray();
+            }
+        }
+
+        $availableIds = array_diff($allowedIds, $excludeIds);
+
+        $users = User::whereIn('id', $availableIds)
+            ->get(['id', 'name', 'email', 'profile_image', 'user_type']);
 
         return response()->json([
             'users' => $users
         ]);
+    }
+
+    /**
+     * Get IDs of users the given user is allowed to call
+     */
+    private function getCallableUserIds(User $user): array
+    {
+        $ids = [];
+
+        if ($user->user_type === 'employer') {
+            // Employer can add their sub_employers
+            $ids = $user->subEmployers()->pluck('id')->toArray();
+        } elseif ($user->user_type === 'sub_employer') {
+            // Sub_employer can add parent employer + parent's other sub_employers
+            if ($user->parentEmployer) {
+                $ids[] = $user->parentEmployer->id;
+                $siblingIds = $user->parentEmployer->subEmployers()
+                    ->where('id', '!=', $user->id)
+                    ->pluck('id')
+                    ->toArray();
+                $ids = array_merge($ids, $siblingIds);
+            }
+        }
+
+        return $ids;
     }
 }

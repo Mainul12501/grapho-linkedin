@@ -9,7 +9,15 @@
         <aside class="left-panel p-3">
             <div class="card">
                 <div class="card-body profile">
-                    <img src="{{ asset(auth()->user()->profile_image ?? '/frontend/user-vector-img.jpg') }}" alt="Profile" class="rounded-circle mb-2" width="80" />
+                    <div class="position-relative d-inline-block mb-2" style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#changeProfileImageModal" title="Change profile image">
+                        <img src="{{ asset(auth()->user()->profile_image ?? '/frontend/user-vector-img.jpg') }}" alt="Profile" class="rounded-circle" width="80" height="80" style="object-fit: cover;" />
+                        <span class="position-absolute d-flex align-items-center justify-content-center bg-white rounded-circle shadow-sm" style="width: 26px; height: 26px; top: 0; right: 0; border: 1.5px solid #e0e0e0;">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#555" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                            </svg>
+                        </span>
+                    </div>
                     <h5>{{ auth()->user()->name ?? trans('common.user_name') }}</h5>
 
                     <div class="d-flex justify-content-center justify-content-md-start">
@@ -501,6 +509,58 @@
 
 @section('modal')
 
+    <!-- Modal for Change Profile Image -->
+    <div class="modal fade" id="changeProfileImageModal">
+        <div class="modal-dialog modal-md">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <img src="{{ asset('/') }}frontend/employee/images/profile/profileLeftArrow.png" alt="" class="me-1 " data-bs-dismiss="modal" />
+                        {{ trans('employee.profile_image') }}
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{{ trans('common.close') }}"></button>
+                </div>
+                <form action="{{ route('employee.update-profile', auth()->id()) }}" method="post" enctype="multipart/form-data" id="profileImageForm">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="drag-drop-area" id="piDragDropArea" style="padding: 10px 40px">
+                            <input type="file" class="file-input-hidden" id="piFileInput" name="profile_image" accept="image/*">
+                            <div class="upload-content" id="piUploadContent">
+                                <div class="upload-icon">📁</div>
+                                <h5>{{ trans('employee.drag_drop_image') }}</h5>
+                                <p class="text-muted">{{ trans('employee.or_click_to_browse') }}</p>
+                                <small class="text-muted">{{ trans('employee.supports_jpg_png_gif') }}</small>
+                            </div>
+                        </div>
+                        <div class="preview-container" id="piPreviewContainer" style="display: none;">
+                            <img id="piImagePreview" style="max-width: 100%;">
+                        </div>
+                        <div class="crop-controls mt-3" id="piCropControls" style="display: none;">
+                            <div class="d-flex gap-2 justify-content-center">
+                                <button type="button" class="btn btn-outline-secondary btn-sm" id="piResetCrop">🔄 {{ trans('employee.reset') }}</button>
+                                <button type="button" class="btn btn-outline-secondary btn-sm" id="piRotateLeft">↺ {{ trans('employee.rotate_left') }}</button>
+                                <button type="button" class="btn btn-outline-secondary btn-sm" id="piRotateRight">↻ {{ trans('employee.rotate_right') }}</button>
+                                <button type="button" class="btn btn-success btn-sm" id="piCropImage">✂️ {{ trans('employee.crop_image') }}</button>
+                            </div>
+                        </div>
+                        <div class="text-center mt-3" id="piFinalPreviewContainer" style="display: none;">
+                            <h6>Cropped Image:</h6>
+                            <img id="piFinalPreview" class="final-preview" alt="Cropped preview">
+                            <div class="mt-2">
+                                <button type="button" class="btn btn-outline-primary btn-sm" id="piChangeImage">{{ trans('employee.change_image') }}</button>
+                            </div>
+                        </div>
+                        <input type="hidden" id="piCroppedImageData" name="cropped_image_data">
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">{{ trans('common.close') }}</button>
+                        <button type="submit" class="btn btn-primary">{{ trans('common.save_changes') }}</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <!-- Modal for Edit Contact -->
     <div class="modal fade" id="editContactModal" {{--tabindex="-1" aria-labelledby="editContactModalLabel" aria-hidden="true"--}}>
         <div class="modal-dialog custom-modal1 modal-lg">
@@ -573,71 +633,6 @@
                         <div class="mb-3">
                             <label for="phoneInput" class="form-label">{{ trans('common.website') }}</label>
                             <input type="text" class="form-control" id="phoneInput" name="website" value="{!! auth()->user()->website ?? '' !!}" placeholder="{{ trans('auth.type_here') }}" />
-                        </div>
-                        <div class="mb-3">
-                            <label for="profileImage" class="form-label">{{ trans('employee.profile_image') }}</label>
-                            {{--                                                <input type="file" class="form-control" id="profileImage" name="profile_image" />--}}
-
-                            {{--                                                drag drop crop start--}}
-                            <!-- Drag & Drop Area -->
-                            <!-- Drag & Drop Area -->
-                            <div class="drag-drop-area" id="dragDropArea">
-                                <input type="file" class="file-input-hidden" id="profileImage" name="profile_image" accept="image/*">
-                                <div class="upload-content" id="uploadContent">
-                                    <div class="upload-icon">📁</div>
-                                    <h5>{{ trans('employee.drag_drop_image') }}</h5>
-                                    <p class="text-muted">{{ trans('employee.or_click_to_browse') }}</p>
-                                    <small class="text-muted">{{ trans('employee.supports_jpg_png_gif') }}</small>
-                                </div>
-                            </div>
-
-                            <!-- Image Preview & Cropping Area -->
-                            <div class="preview-container" id="previewContainer" style="display: none;">
-                                <img id="imagePreview" style="max-width: 100%;">
-                            </div>
-
-                            <!-- Crop Controls -->
-                            <div class="crop-controls mt-3" id="cropControls" style="display: none;">
-                                <div class="d-flex gap-2 justify-content-center">
-                                    <button type="button" class="btn btn-outline-secondary btn-sm" id="resetCrop">
-                                        🔄 {{ trans('employee.reset') }}
-                                    </button>
-                                    <button type="button" class="btn btn-outline-secondary btn-sm" id="rotateLeft">
-                                        ↺ {{ trans('employee.rotate_left') }}
-                                    </button>
-                                    <button type="button" class="btn btn-outline-secondary btn-sm" id="rotateRight">
-                                        ↻ {{ trans('employee.rotate_right') }}
-                                    </button>
-                                    <button type="button" class="btn btn-success btn-sm" id="cropImage">
-                                        ✂️ {{ trans('employee.crop_image') }}
-                                    </button>
-                                    <button type="button" class="btn btn-success btn-sm" id="saveImage" style="display: none">
-                                        ✂️ {{ trans('employee.save_image') }}
-                                    </button>
-                                </div>
-                            </div>
-
-                            <!-- Final Preview -->
-                            <div class="text-center mt-3" id="finalPreviewContainer" style="display: none;">
-                                <h6>Cropped Image:</h6>
-                                <img id="finalPreview" class="final-preview" alt="Cropped preview">
-                                <div class="mt-2">
-                                    <button type="button" class="btn btn-outline-primary btn-sm" id="changeImage">
-                                        {{ trans('employee.change_image') }}
-                                    </button>
-                                </div>
-                            </div>
-                            <!-- Hidden input for cropped image data -->
-                            <input type="hidden" id="croppedImageData" name="cropped_image_data">
-
-                            <!-- Add the preview container, crop controls, and final preview divs here -->
-                            <!-- (Copy from the artifact above) -->
-                            {{--                                                drag drop crop end--}}
-
-
-
-
-
                         </div>
                     </div>
                     <div class="modal-footer justify-content-between">
@@ -1221,197 +1216,95 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>
     <script>
-        let cropper = null;
-        let originalFile = null;
+        // Profile Image Modal - Drag Drop Crop
+        (function() {
+            let cropper = null;
+            let originalFile = null;
 
-        // DOM Elements
-        const dragDropArea = document.getElementById('dragDropArea');
-        const fileInput = document.getElementById('profileImage');
-        const uploadContent = document.getElementById('uploadContent');
-        const previewContainer = document.getElementById('previewContainer');
-        const imagePreview = document.getElementById('imagePreview');
-        const cropControls = document.getElementById('cropControls');
-        const finalPreviewContainer = document.getElementById('finalPreviewContainer');
-        const finalPreview = document.getElementById('finalPreview');
-        const croppedImageData = document.getElementById('croppedImageData');
+            const dragDropArea = document.getElementById('piDragDropArea');
+            const fileInput = document.getElementById('piFileInput');
+            const uploadContent = document.getElementById('piUploadContent');
+            const previewContainer = document.getElementById('piPreviewContainer');
+            const imagePreview = document.getElementById('piImagePreview');
+            const cropControls = document.getElementById('piCropControls');
+            const finalPreviewContainer = document.getElementById('piFinalPreviewContainer');
+            const finalPreview = document.getElementById('piFinalPreview');
+            const croppedImageData = document.getElementById('piCroppedImageData');
 
-        // Event Listeners
-        dragDropArea.addEventListener('click', () => fileInput.click());
-        dragDropArea.addEventListener('dragover', handleDragOver);
-        dragDropArea.addEventListener('drop', handleDrop);
-        dragDropArea.addEventListener('dragleave', handleDragLeave);
-        fileInput.addEventListener('change', handleFileSelect);
-
-        document.getElementById('resetCrop').addEventListener('click', (e) => {
-            e.preventDefault(); // ✅ PREVENT FORM SUBMIT
-            cropper.reset();
-        });
-
-        document.getElementById('rotateLeft').addEventListener('click', (e) => {
-            e.preventDefault(); // ✅ PREVENT FORM SUBMIT
-            cropper.rotate(-90);
-        });
-
-        document.getElementById('rotateRight').addEventListener('click', (e) => {
-            e.preventDefault(); // ✅ PREVENT FORM SUBMIT
-            cropper.rotate(90);
-        });
-
-        document.getElementById('cropImage').addEventListener('click', (e) => {
-            e.preventDefault(); // ✅ PREVENT FORM SUBMIT
-            handleCropImage();
-        });
-
-        document.getElementById('changeImage').addEventListener('click', (e) => {
-            e.preventDefault(); // ✅ PREVENT FORM SUBMIT
-            resetUpload();
-        });
-
-        document.getElementById('saveImage').addEventListener('click', (e) => {
-            e.preventDefault(); // ✅ PREVENT FORM SUBMIT
-            handleSaveImage();
-        });
-
-        // Drag and Drop Functions
-        function handleDragOver(e) {
-            e.preventDefault();
-            dragDropArea.classList.add('dragover');
-        }
-
-        function handleDragLeave(e) {
-            e.preventDefault();
-            dragDropArea.classList.remove('dragover');
-        }
-
-        function handleDrop(e) {
-            e.preventDefault();
-            dragDropArea.classList.remove('dragover');
-
-            const files = e.dataTransfer.files;
-            if (files.length > 0) {
-                handleFile(files[0]);
-            }
-        }
-
-        function handleFileSelect(e) {
-            const file = e.target.files[0];
-            if (file) {
-                handleFile(file);
-            }
-        }
-
-        function handleFile(file) {
-            // Validate file type
-            if (!file.type.startsWith('image/')) {
-                alert('Please select an image file.');
-                return;
-            }
-
-            // Validate file size (5MB max)
-            if (file.size > 5 * 1024 * 1024) {
-                alert('File size must be less than 5MB.');
-                return;
-            }
-
-            originalFile = file;
-
-            // Create FileReader to display image
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                displayImageForCropping(e.target.result);
-            };
-            reader.readAsDataURL(file);
-        }
-
-        function displayImageForCropping(imageSrc) {
-            // Hide upload area and show preview
-            uploadContent.style.display = 'none';
-            previewContainer.style.display = 'block';
-            cropControls.style.display = 'block';
-            finalPreviewContainer.style.display = 'none';
-
-            // Set image source
-            imagePreview.src = imageSrc;
-
-            // Initialize cropper
-            if (cropper) {
-                cropper.destroy();
-            }
-
-            cropper = new Cropper(imagePreview, {
-                aspectRatio: 1, // Square crop for profile image
-                viewMode: 1,
-                dragMode: 'move',
-                autoCropArea: 0.8,
-                restore: false,
-                guides: true,
-                center: true,
-                highlight: false,
-                cropBoxMovable: true,
-                cropBoxResizable: true,
-                toggleDragModeOnDblclick: false,
+            dragDropArea.addEventListener('click', () => fileInput.click());
+            dragDropArea.addEventListener('dragover', (e) => { e.preventDefault(); dragDropArea.classList.add('dragover'); });
+            dragDropArea.addEventListener('dragleave', (e) => { e.preventDefault(); dragDropArea.classList.remove('dragover'); });
+            dragDropArea.addEventListener('drop', (e) => {
+                e.preventDefault();
+                dragDropArea.classList.remove('dragover');
+                if (e.dataTransfer.files.length > 0) handleFile(e.dataTransfer.files[0]);
             });
-        }
+            fileInput.addEventListener('change', (e) => { if (e.target.files[0]) handleFile(e.target.files[0]); });
 
-        function handleCropImage() {
-            if (!cropper) return;
+            document.getElementById('piResetCrop').addEventListener('click', (e) => { e.preventDefault(); cropper && cropper.reset(); });
+            document.getElementById('piRotateLeft').addEventListener('click', (e) => { e.preventDefault(); cropper && cropper.rotate(-90); });
+            document.getElementById('piRotateRight').addEventListener('click', (e) => { e.preventDefault(); cropper && cropper.rotate(90); });
+            document.getElementById('piCropImage').addEventListener('click', (e) => { e.preventDefault(); handleCropImage(); });
+            document.getElementById('piChangeImage').addEventListener('click', (e) => { e.preventDefault(); resetUpload(); });
 
-            // Get cropped canvas
-            const canvas = cropper.getCroppedCanvas({
-                width: 300,
-                height: 300,
-                imageSmoothingEnabled: true,
-                imageSmoothingQuality: 'high',
-            });
+            function handleFile(file) {
+                if (!file.type.startsWith('image/')) { alert('Please select an image file.'); return; }
+                if (file.size > 5 * 1024 * 1024) { alert('File size must be less than 5MB.'); return; }
+                originalFile = file;
+                const reader = new FileReader();
+                reader.onload = (e) => displayImageForCropping(e.target.result);
+                reader.readAsDataURL(file);
+            }
 
-            // Convert to blob and display final preview
-            canvas.toBlob((blob) => {
-                const url = URL.createObjectURL(blob);
-                finalPreview.src = url;
+            function displayImageForCropping(imageSrc) {
+                uploadContent.style.display = 'none';
+                previewContainer.style.display = 'block';
+                cropControls.style.display = 'block';
+                finalPreviewContainer.style.display = 'none';
+                imagePreview.src = imageSrc;
+                if (cropper) cropper.destroy();
+                cropper = new Cropper(imagePreview, {
+                    aspectRatio: 1,
+                    viewMode: 1,
+                    dragMode: 'move',
+                    autoCropArea: 0.8,
+                    restore: false,
+                    guides: true,
+                    center: true,
+                    highlight: false,
+                    cropBoxMovable: true,
+                    cropBoxResizable: true,
+                    toggleDragModeOnDblclick: false,
+                });
+            }
 
-                // Store cropped image data
-                croppedImageData.value = canvas.toDataURL('image/jpeg', 0.8);
+            function handleCropImage() {
+                if (!cropper) return;
+                const canvas = cropper.getCroppedCanvas({ width: 300, height: 300, imageSmoothingEnabled: true, imageSmoothingQuality: 'high' });
+                canvas.toBlob((blob) => {
+                    finalPreview.src = URL.createObjectURL(blob);
+                    croppedImageData.value = canvas.toDataURL('image/jpeg', 0.8);
+                    previewContainer.style.display = 'none';
+                    cropControls.style.display = 'none';
+                    finalPreviewContainer.style.display = 'block';
+                }, 'image/jpeg', 0.8);
+            }
 
-                // Show final preview and hide cropping interface
+            function resetUpload() {
+                if (cropper) { cropper.destroy(); cropper = null; }
+                fileInput.value = '';
+                croppedImageData.value = '';
+                originalFile = null;
+                uploadContent.style.display = 'block';
                 previewContainer.style.display = 'none';
                 cropControls.style.display = 'none';
-                finalPreviewContainer.style.display = 'block';
-
-            }, 'image/jpeg', 0.8);
-        }
-
-        function resetUpload() {
-            // Reset everything
-            if (cropper) {
-                cropper.destroy();
-                cropper = null;
+                finalPreviewContainer.style.display = 'none';
             }
 
-            fileInput.value = '';
-            croppedImageData.value = '';
-            originalFile = null;
-
-            // Show upload area
-            uploadContent.style.display = 'block';
-            previewContainer.style.display = 'none';
-            cropControls.style.display = 'none';
-            finalPreviewContainer.style.display = 'none';
-        }
-
-        function handleSaveImage() {
-            if (!croppedImageData.value) {
-                alert('Please select and crop an image first.');
-                return;
-            }
-
-            console.log('Cropped image data:', croppedImageData.value);
-            toastr.success('Image cropped successfully! Now click "Save Changes" to update.');
-        }
-
-        // Reset when modal is closed
-        document.getElementById('editContactModal').addEventListener('hidden.bs.modal', function () {
-            resetUpload();
-        });
+            document.getElementById('changeProfileImageModal').addEventListener('hidden.bs.modal', function () {
+                resetUpload();
+            });
+        })();
         // toggle institute name on education degree change
         // $(document).on('change', 'select[name="education_degree_name_id"]', function () {
         //     var selectedOption = $(this).find('option:selected');
@@ -1704,6 +1597,53 @@
                         }
                     });
                 }
+            });
+
+            // Profile Image Form (separate modal)
+            $('#profileImageForm').on('submit', function(e) {
+                e.preventDefault();
+                const $submitBtn = $(this).find('button[type="submit"]');
+                const croppedData = $('#piCroppedImageData').val();
+
+                if (!croppedData) {
+                    toastr.error('Please select and crop an image first.');
+                    return;
+                }
+
+                const formData = new FormData(this);
+
+                // Convert base64 to blob
+                const arr = croppedData.split(',');
+                const mime = arr[0].match(/:(.*?);/)[1];
+                const bstr = atob(arr[1]);
+                let n = bstr.length;
+                const u8arr = new Uint8Array(n);
+                while (n--) { u8arr[n] = bstr.charCodeAt(n); }
+                const blob = new Blob([u8arr], { type: mime });
+                formData.delete('profile_image');
+                formData.append('profile_image', blob, 'profile.jpg');
+
+                $submitBtn.prop('disabled', true).text('Saving...');
+
+                $.ajax({
+                    url: $(this).attr('action'),
+                    method: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        toastr.success('Profile image updated successfully!');
+                        $('#changeProfileImageModal').modal('hide');
+                        setTimeout(() => location.reload(), 1500);
+                    },
+                    complete: function() {
+                        $submitBtn.prop('disabled', false).text('{{ trans("common.save_changes") }}');
+                    },
+                    error: function(xhr) {
+                        toastr.error('Failed to update profile image. Please try again.');
+                        console.error(xhr.responseText);
+                    }
+                });
             });
 
             // ===================================================

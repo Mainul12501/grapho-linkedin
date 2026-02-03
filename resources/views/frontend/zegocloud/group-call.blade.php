@@ -146,25 +146,6 @@
             color: #6b7280;
         }
 
-        .search-container {
-            padding: 15px 20px;
-            border-bottom: 1px solid #e5e7eb;
-        }
-
-        .search-input {
-            width: 100%;
-            padding: 12px 16px;
-            border: 1px solid #d1d5db;
-            border-radius: 8px;
-            font-size: 14px;
-            outline: none;
-        }
-
-        .search-input:focus {
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-        }
-
         .users-list {
             flex: 1;
             overflow-y: auto;
@@ -271,76 +252,6 @@
             z-index: 1000;
         }
 
-        /* Share Link Section */
-        .share-link-section {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            background: rgba(255, 255, 255, 0.95);
-            padding: 12px 16px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-            z-index: 1000;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            max-width: 450px;
-        }
-
-        .share-link-section .share-label {
-            font-size: 12px;
-            font-weight: 600;
-            color: #667eea;
-            white-space: nowrap;
-        }
-
-        .share-input-group {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            flex: 1;
-        }
-
-        .share-link-input {
-            flex: 1;
-            padding: 8px 12px;
-            border: 1px solid #d1d5db;
-            border-radius: 6px;
-            font-size: 13px;
-            color: #374151;
-            background: #f9fafb;
-            min-width: 200px;
-            outline: none;
-        }
-
-        .share-link-input:focus {
-            border-color: #667eea;
-        }
-
-        .copy-link-btn {
-            background: #667eea;
-            color: white;
-            border: none;
-            padding: 8px 14px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 13px;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            transition: all 0.2s ease;
-            white-space: nowrap;
-        }
-
-        .copy-link-btn:hover {
-            background: #5a6fd6;
-        }
-
-        .copy-link-btn.copied {
-            background: #10b981;
-        }
-
         .overlay {
             position: fixed;
             top: 0;
@@ -356,44 +267,7 @@
             display: block;
         }
 
-        /* Tablet styles */
-        @media (max-width: 992px) {
-            .share-link-section {
-                top: 15px;
-                left: 15px;
-                max-width: 380px;
-                padding: 10px 12px;
-            }
-
-            .share-link-section .share-label {
-                display: none;
-            }
-
-            .share-input-group {
-                flex: 1;
-                min-width: 0;
-                overflow: hidden;
-            }
-
-            .share-link-input {
-                min-width: 0;
-                flex: 1;
-                font-size: 12px;
-            }
-
-            .copy-link-btn {
-                flex-shrink: 0;
-            }
-        }
-
-        /* Tablet and Desktop - keep constrained width */
-        @media (min-width: 577px) {
-            .share-link-section {
-                right: auto;
-            }
-        }
-
-        /* Mobile styles - full width */
+        /* Mobile styles */
         @media (max-width: 576px) {
             .add-participants-panel {
                 width: 100%;
@@ -409,43 +283,7 @@
             .add-participants-btn {
                 padding: 10px 16px;
                 font-size: 12px;
-                top: 80px;
-            }
-
-            .share-link-section {
-                top: 10px;
-                left: 10px;
-                right: 10px;
-                max-width: none;
-                width: auto;
-                height: auto;
-                padding: 8px 10px;
-            }
-
-            .share-link-section .share-label {
-                display: none;
-            }
-
-            .share-input-group {
-                width: 100%;
-                flex: 1;
-                min-width: 0;
-            }
-
-            .share-link-input {
-                min-width: 0;
-                width: 100%;
-                flex: 1;
-                font-size: 12px;
-                padding: 8px 10px;
-                overflow: hidden;
-                text-overflow: ellipsis;
-            }
-
-            .copy-link-btn {
-                padding: 8px 12px;
-                font-size: 12px;
-                flex-shrink: 0;
+                top: 20px;
             }
         }
     </style>
@@ -457,20 +295,6 @@
     </div>
 
     <div id="root"></div>
-
-    <!-- Share Link Section - Always visible -->
-    <div class="share-link-section">
-        <span class="share-label">Share Link:</span>
-        <div class="share-input-group">
-            <input type="text" class="share-link-input" id="shareLinkInput" value="{{ url()->full() }}" readonly>
-            <button class="copy-link-btn" id="copyLinkBtn" onclick="copyShareLink()">
-                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
-                </svg>
-                Copy
-            </button>
-        </div>
-    </div>
 
     @if($groupCall)
     <div class="participant-count" id="participantCount">
@@ -488,14 +312,11 @@
 
     <div class="add-participants-panel" id="addParticipantsPanel">
         <div class="panel-header">
-            <h3>Add Participants</h3>
+            <h3>Add Team Members</h3>
             <button class="close-panel-btn" onclick="closeAddPanel()">&times;</button>
         </div>
-        <div class="search-container">
-            <input type="text" class="search-input" id="userSearchInput" placeholder="Search users by name or email..." oninput="debounceSearch()">
-        </div>
         <div class="users-list" id="usersList">
-            <p style="text-align: center; color: #6b7280; padding: 40px;">Search for users to add to the call</p>
+            <p style="text-align: center; color: #6b7280; padding: 40px;">Loading team members...</p>
         </div>
         <div class="panel-footer">
             <button class="invite-btn" id="inviteBtn" onclick="inviteSelectedUsers()" disabled>
@@ -521,7 +342,7 @@
         };
 
         let selectedUsers = new Set();
-        let searchTimeout = null;
+        let callableUsersLoaded = false;
 
         window.onload = function () {
             const appID = {{ config('services.zegocloud.app_id') }};
@@ -684,45 +505,10 @@
             }, 5000);
         }
 
-        function copyShareLink() {
-            const input = document.getElementById('shareLinkInput');
-            const btn = document.getElementById('copyLinkBtn');
-
-            // Select the text
-            input.select();
-            input.setSelectionRange(0, 99999); // For mobile
-
-            // Copy to clipboard
-            navigator.clipboard.writeText(input.value).then(() => {
-                // Show success state
-                btn.innerHTML = `
-                    <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                    </svg>
-                    Copied!
-                `;
-                btn.classList.add('copied');
-                toastr.success('Link copied to clipboard!');
-
-                // Reset button after 2 seconds
-                setTimeout(() => {
-                    btn.innerHTML = `
-                        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
-                        </svg>
-                        Copy
-                    `;
-                    btn.classList.remove('copied');
-                }, 2000);
-            }).catch(err => {
-                console.error('Failed to copy:', err);
-                toastr.error('Failed to copy link');
-            });
-        }
-
         function openAddPanel() {
             document.getElementById('addParticipantsPanel').classList.add('open');
             document.getElementById('overlay').classList.add('show');
+            loadCallableUsers();
         }
 
         function closeAddPanel() {
@@ -732,43 +518,39 @@
             updateInviteButton();
         }
 
-        function debounceSearch() {
-            clearTimeout(searchTimeout);
-            searchTimeout = setTimeout(searchUsers, 300);
-        }
+        function loadCallableUsers() {
+            const groupCallId = "{{ $groupCall?->id ?? '' }}";
+            document.getElementById('usersList').innerHTML = '<p style="text-align: center; color: #6b7280; padding: 40px;">Loading team members...</p>';
 
-        function searchUsers() {
-            const query = document.getElementById('userSearchInput').value.trim();
-            if (query.length < 2) {
-                document.getElementById('usersList').innerHTML = '<p style="text-align: center; color: #6b7280; padding: 40px;">Enter at least 2 characters to search</p>';
-                return;
-            }
-
-            fetch(`/group-call/search-users?query=${encodeURIComponent(query)}`, {
+            fetch(`/group-call/callable-users?group_call_id=${groupCallId}`, {
                 headers: {
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
                 }
             })
             .then(res => res.json())
             .then(data => {
-                renderUsersList(data.users);
+                if (data.users.length === 0) {
+                    document.getElementById('usersList').innerHTML = '<p style="text-align: center; color: #6b7280; padding: 40px;">No team members available to add</p>';
+                } else {
+                    renderUsersList(data.users);
+                }
             })
             .catch(err => {
-                console.error('Search error:', err);
-                document.getElementById('usersList').innerHTML = '<p style="text-align: center; color: #ef4444; padding: 40px;">Error searching users</p>';
+                console.error('Load error:', err);
+                document.getElementById('usersList').innerHTML = '<p style="text-align: center; color: #ef4444; padding: 40px;">Error loading team members</p>';
             });
         }
 
         function renderUsersList(users) {
             const container = document.getElementById('usersList');
             if (users.length === 0) {
-                container.innerHTML = '<p style="text-align: center; color: #6b7280; padding: 40px;">No users found</p>';
+                container.innerHTML = '<p style="text-align: center; color: #6b7280; padding: 40px;">No team members available</p>';
                 return;
             }
 
             container.innerHTML = users.map(user => `
-                <div class="user-item ${selectedUsers.has(user.id) ? 'selected' : ''}" onclick="toggleUser(${user.id}, '${user.name}', '${user.email}', '${user.image || ''}')">
-                    <img src="${user.image ? '/backend/assets/uploaded-files/profile-image/' + user.image : '/frontend/assets/images/default-avatar.png'}" alt="${user.name}" class="user-avatar" onerror="this.src='/frontend/assets/images/default-avatar.png'">
+                <div class="user-item ${selectedUsers.has(user.id) ? 'selected' : ''}" data-user-id="${user.id}" onclick="toggleUser(${user.id})">
+                    <img src="${user.profile_image ? '/backend/assets/uploaded-files/profile-image/' + user.profile_image : '/frontend/assets/images/default-avatar.png'}" alt="${user.name}" class="user-avatar" onerror="this.src='/frontend/assets/images/default-avatar.png'">
                     <div class="user-info">
                         <div class="user-name">${user.name}</div>
                         <div class="user-email">${user.email}</div>
@@ -778,13 +560,17 @@
             `).join('');
         }
 
-        function toggleUser(id, name, email, image) {
+        function toggleUser(id) {
             if (selectedUsers.has(id)) {
                 selectedUsers.delete(id);
             } else {
                 selectedUsers.add(id);
             }
-            searchUsers(); // Re-render with updated selection
+            // Toggle selected class on the clicked item
+            const item = document.querySelector(`.user-item[data-user-id="${id}"]`);
+            if (item) {
+                item.classList.toggle('selected');
+            }
             updateInviteButton();
         }
 
@@ -812,17 +598,17 @@
             .then(res => res.json())
             .then(data => {
                 if (data.success) {
-                    toastr.success(`Invited ${data.added_count} user(s) to the call`);
-                    closeAddPanel();
-                    document.getElementById('userSearchInput').value = '';
-                    document.getElementById('usersList').innerHTML = '<p style="text-align: center; color: #6b7280; padding: 40px;">Search for users to add to the call</p>';
+                    toastr.success(`Invited ${data.added_count} member(s) to the call`);
+                    selectedUsers.clear();
+                    updateInviteButton();
+                    loadCallableUsers(); // Reload list to remove already-invited users
                 } else {
-                    toastr.error(data.error || 'Failed to invite users');
+                    toastr.error(data.error || 'Failed to invite members');
                 }
             })
             .catch(err => {
                 console.error('Invite error:', err);
-                toastr.error('Failed to invite users');
+                toastr.error('Failed to invite members');
             });
         }
 
