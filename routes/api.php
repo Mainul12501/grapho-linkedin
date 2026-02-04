@@ -178,6 +178,8 @@ Route::middleware([
         Route::post('/search-users', [ZegoCloudApiController::class, 'searchUsers']);
     });
 });
+
+Route::post('auth/g-login-check', [SocialLoginController::class , 'gLoginCheck'])->name('auth.g-login-check');
 //zego cloud group call routes starts
 Route::prefix('group-call')->name('zego.group.')->middleware(['auth'])->group(function (){
     Route::get('/call-page', [ZegoGroupCallController::class, 'viewCallPage'])->name('call-page');

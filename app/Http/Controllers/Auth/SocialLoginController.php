@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\Backend\EmployerCompany;
 use App\Models\User;
+use http\Env\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -131,5 +132,23 @@ class SocialLoginController extends Controller
         Auth::login($newUser);
         $customLoginController = new CustomLoginController();
         return $customLoginController->redirectsAfterLogin($newUser);
+    }
+
+    public function gLoginCheck(Request $request)
+    {
+        $existUser = User::where('email', $request->email)->first();
+        if ($existUser) {
+            return \response()->json([
+                'success' => false,
+                'message' => 'Email already exists.',
+                'user'  => $existUser,
+            ]);
+        } else {
+            return \response()->json([
+                'success' => true,
+                'message' => 'Email not registered.',
+                'user'  => null,
+            ]);
+        }
     }
 }
