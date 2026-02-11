@@ -494,12 +494,12 @@
 @include('frontend.zegocloud.incoming-call-popup')
 <script>
     @if($errors->any())
-    @foreach($errors->all() as $error)
-    toastr.error('{{ $error }}', 'Error', {
-        closeButton: true,
-        progressBar: true,
-    });
-    @endforeach
+        @foreach($errors->all() as $error)
+            toastr.error('{{ $error }}', 'Error', {
+                closeButton: true,
+                progressBar: true,
+            });
+        @endforeach
     @endif
     @if(session()->has('error'))
         toastr.error("{{ session('error') }}");
