@@ -1,11 +1,13 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\vendor\Chatify\Api\MessagesController;
 
 /**
  * Authentication for pusher private channels
  */
-Route::post('/chat/auth', 'MessagesController@pusherAuth')->name('api.pusher.auth');
+//Route::post('/chat/auth', 'MessagesController@pusherAuth')->name('api.pusher.auth');
+Route::post('/chat/auth', [MessagesController::class, 'pusherAuth'])->name('api.pusher.auth');
 
 /**
  *  Fetch info for specific id [user/group]
@@ -58,12 +60,22 @@ Route::get('/search', 'MessagesController@search')->name('api.search');
 Route::post('/shared', 'MessagesController@sharedPhotos')->name('api.shared');
 
 /**
- * Delete Conversation
+ * Delete Conversation (Hard Delete)
  */
 Route::post('/deleteConversation', 'MessagesController@deleteConversation')->name('api.conversation.delete');
 
 /**
- * Delete Conversation
+ * Delete Conversation For Me (Soft Delete)
+ */
+Route::post('/deleteConversationForMe', 'MessagesController@deleteConversationForMe')->name('api.conversation.delete.for.me');
+
+/**
+ * Delete Message
+ */
+Route::post('/deleteMessage', 'MessagesController@deleteMessage')->name('api.message.delete');
+
+/**
+ * Update Settings
  */
 Route::post('/updateSettings', 'MessagesController@updateSettings')->name('api.avatar.update');
 

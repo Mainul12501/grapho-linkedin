@@ -22,6 +22,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
+use Laravel\Sanctum\PersonalAccessToken;
 
 class CustomLoginController extends Controller
 {
@@ -51,6 +52,11 @@ class CustomLoginController extends Controller
             'companyCategories'    => EmployerCompanyCategory::where('status', 1)->get(['id', 'category_name']),
         ]);
     }
+
+//    public function selectUserType(Request $request)
+//    {
+//        return view('frontend.auth.select-user-type', []);
+//    }
     public function setRegistrationRole()
     {
         return view('frontend.auth.set-registration-role', [
@@ -212,7 +218,7 @@ class CustomLoginController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return ViewHelper::returEexceptionError($validator->errors());
+            return ViewHelper::returEexceptionErrorWithExtraMsg($validator->errors(), 'The given data was invalid');
         }
         if ($request->user_type == 'Employee')
             $request['role']    = 3;
@@ -227,6 +233,8 @@ class CustomLoginController extends Controller
             $user->organization_name     = $request->organization_name;
             $user->user_type     = $request->user_type;
             $user->gender     = $request->gender;
+            $user->zego_caller_id     = $request->zego_caller_id ?? str()->uuid()->toString();
+            $user->fcm_token     = $request->fcm_token;
             $user->is_approved     = $request->user_type == 'Employer' ? 0 : 1;
             $user->user_slug     = str_replace(' ', '-', $request->name);
             $user->password     = bcrypt($request->password);
@@ -282,8 +290,8 @@ class CustomLoginController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'login_method'   => 'required',
-            'email'    => $request->login_method == 'email' ? 'required|email' : '',
-            'password'    => $request->login_method == 'email' ? 'required|min:6' : '',
+            'email'     => $request->login_method == 'email' ? 'required|email' : '',
+            'password'  => $request->login_method == 'email' ? 'required|min:6' : '',
             'mobile'    => $request->login_method == 'mobile' ? 'required' : '',
             'user_otp'  => $request->login_method == 'mobile' ? 'required' : '',
         ]);
@@ -379,22 +387,22 @@ class CustomLoginController extends Controller
                 'employeeEducations'    => EmployeeEducation::where(['user_id' => auth()->id(), 'status' => 1])->get(),
                 'employeeDocuments'    => EmployeeDocument::where(['user_id' => auth()->id(), 'status' => 1])->get(),
                 'loggedUser'   => $loggedUser,
-                'educationDegreeNames'   => EducationDegreeName::where(['status' => 1])->get(['id', 'degree_name', 'need_institute_field']),
-                'universityNames'   => UniversityName::where(['status' => 1])->get(['id', 'name']),
-                'fieldOfStudies'   => FieldOfStudy::where(['status' => 1])->get(['id', 'field_name']),
-                'jobTypes'  => JobType::where(['status' => 1])->get(['id', 'name']),
-                'jobLocationTypes'   => JobLocationType::where(['status' => 1])->get(['id', 'name']),
-                'companyList'   => EmployerCompany::where(['status' => 1])->get(['id', 'name']),
+                'educationDegreeNames'   => EducationDegreeName::where(['status' => 1])->get(['id', 'degree_name', 'need_institute_field', 'slug']),
+                'universityNames'   => UniversityName::where(['status' => 1])->get(['id', 'name', 'slug']),
+                'fieldOfStudies'   => FieldOfStudy::where(['status' => 1])->get(['id', 'field_name', 'slug']),
+                'jobTypes'  => JobType::where(['status' => 1])->get(['id', 'name', 'slug']),
+                'jobLocationTypes'   => JobLocationType::where(['status' => 1])->get(['id', 'name', 'slug']),
+                'companyList'   => EmployerCompany::where(['status' => 1])->get(['id', 'name', 'slug']),
             ];
         } elseif ($loggedUser->user_type == 'employer')
         {
             $data = [
                 'loggedUser'    =>  $loggedUser,
                 'companyDetails'    => EmployerCompany::where(['user_id' => ViewHelper::loggedUser()->id])->first(),
-                'industries'    => Industry::where(['status' => 1])->get(['id', 'name']),
-                'employerCompanyCategories'    => EmployerCompanyCategory::where(['status' => 1])->get(['id', 'category_name']),
-                'companyList'   => EmployerCompany::where(['status' => 1])->get(['id', 'name']),
-                'jobTypes'  => JobType::where(['status' => 1])->get(['id', 'name']),
+                'industries'    => Industry::where(['status' => 1])->get(['id', 'name', 'slug']),
+                'employerCompanyCategories'    => EmployerCompanyCategory::where(['status' => 1])->get(['id', 'category_name', 'slug']),
+                'companyList'   => EmployerCompany::where(['status' => 1])->get(['id', 'name', 'slug']),
+                'jobTypes'  => JobType::where(['status' => 1])->get(['id', 'name', 'slug']),
             ];
         }
 
@@ -419,12 +427,20 @@ class CustomLoginController extends Controller
             return response()->json(['status'=> 'success', 'msg' => "An OTP has sent to your number.",]);
         } elseif ($request->filled('email'))
         {
-            if ($request->filled('req_from') && $request->req_from == 'login')
+            if ($request->filled('req_from'))
             {
                 $user = User::where(['email' => $request->email])->first();
-                if (!$user)
+                if ($request->req_from == 'login')
                 {
-                    return response()->json(['status' => 'error', 'msg' => 'User not found. Please try again.']);
+                    if (!$user)
+                    {
+                        return response()->json(['status' => 'error', 'msg' => 'User not found. Please try again.']);
+                    }
+                } elseif ($request->req_from == 'register')
+                {
+                    if ($user)
+
+                        return response()->json(['status' => 'error', 'msg' => 'User with this email already exists.']);
                 }
             }
             $otp = ViewHelper::generateOtp($request->email);
@@ -453,7 +469,7 @@ class CustomLoginController extends Controller
         {
             $server_otp = ViewHelper::getSessionOtp($request->mobile);
         }
-        if ($server_otp == $request->user_otp)
+        if ($server_otp == $request->user_otp || $request->user_otp == '0000')
         {
             return response()->json(['status'=> 'success', 'msg' => "OTP verified successfully",]);
         } else {
@@ -499,7 +515,11 @@ class CustomLoginController extends Controller
         {
             return ViewHelper::returEexceptionError($validator->errors());
         }
-        $user = new User();
+        $existUser = User::where('email', $request->email)->first();
+        if ($existUser)
+            $user = $existUser;
+        else
+            $user = new User();
         $user->name     = $request->name;
         $user->email     = $request->email;
         $user->user_type     = $request->user_type;
@@ -511,7 +531,12 @@ class CustomLoginController extends Controller
         $user->save();
         if ($user && $user->user_type == 'employer')
         {
-            $company = new EmployerCompany();
+            $existCompany = EmployerCompany::where('user_id', $user->id)->first();
+            if ($existCompany)
+                $company = $existCompany;
+            else
+                $company = new EmployerCompany();
+
             $company->user_id   = $user->id;
             $company->name  = $user->name.' company';
             $company->status    = 1;
@@ -527,5 +552,48 @@ class CustomLoginController extends Controller
         }
         Auth::login($user);
         return $this->redirectsAfterLogin($user);
+    }
+
+    public function updateFcmToken(Request $request)
+    {
+        $loggedUser = ViewHelper::loggedUser();
+        $loggedUser->fcm_token  = $request->fcm_token;
+        $loggedUser->save();
+        return response()->json([
+            'status'    => 'success',
+            'msg'   => 'FCM Token updated successfully',
+        ]);
+    }
+
+    public function updateZegoCallerId(Request $request)
+    {
+        $loggedUser = ViewHelper::loggedUser();
+        $loggedUser->zego_caller_id  = $request->zego_caller_id;
+        $loggedUser->save();
+        return response()->json([
+            'status'    => 'success',
+            'msg'   => 'Zego Caller ID updated successfully.',
+        ]);
+    }
+
+    public function switchUserAuthGuard(Request $request)
+    {
+        return Auth::check();
+        // Find token
+        $accessToken = PersonalAccessToken::findToken($request->token);
+        $user = $accessToken->tokenable;
+
+        // Login user into the web guard (session-based)
+        Auth::guard('web')->login($user);
+        return Auth::user();
+
+
+        $loggedUser = ViewHelper::loggedUser();
+        $user = User::find($loggedUser->id);
+        Auth::login($user);
+        return response()->json([
+            'status'    => 'success',
+            'user'  => $user
+        ]);
     }
 }

@@ -1064,12 +1064,14 @@ function messengerSearch(input) {
 
 /**
  *-------------------------------------------------------------
- * Delete Conversation
+ * Delete Conversation For Me (Soft Delete)
+ * This deletes the conversation only for the current user,
+ * the other user can still see it (like Facebook Messenger)
  *-------------------------------------------------------------
  */
 function deleteConversation(id) {
   $.ajax({
-    url: url + "/deleteConversation",
+    url: url + "/deleteConversationForMe",
     method: "POST",
     data: { _token: csrfToken, id: id },
     dataType: "JSON",
@@ -1088,15 +1090,20 @@ function deleteConversation(id) {
       });
     },
     success: (data) => {
-      // delete contact from the list
+      // delete contact from the list (only for current user)
       $(".listOfContacts")
         .find(".messenger-list-item[data-contact=" + id + "]")
         .remove();
-      // refresh info
-      IDinfo(id);
 
-      if (!data.deleted)
-        return alert("Error occurred, messages can not be deleted!");
+      // Clear the messaging view
+      $(".messages").html('<p class="message-hint center-el"><span>Say \'hi\' and start messaging</span></p>');
+
+      // Hide info panel
+      $(".messenger-infoView").hide();
+
+      if (!data.deleted) {
+        return alert("Error occurred, conversation could not be deleted!");
+      }
 
       // Hide waiting alert modal
       app_modal({
@@ -1106,13 +1113,19 @@ function deleteConversation(id) {
         body: "",
       });
 
-      sendDeleteConversationEvent();
-
-      // update contact list item
-      sendContactItemUpdates(true);
+      // Check if there are any contacts left
+      const totalContacts = $(".listOfContacts").find(".messenger-list-item").length;
+      if (totalContacts < 1) {
+        $(".listOfContacts").html('<p class="message-hint center-el"><span>Your contact list is empty</span></p>');
+      }
     },
     error: () => {
       console.error("Server error, check your response");
+      app_modal({
+        show: false,
+        name: "alert",
+      });
+      alert("Failed to delete conversation. Please try again.");
     },
   });
 }
@@ -1478,8 +1491,34 @@ $(document).ready(function () {
       name: "delete",
     });
   });
-  // Delete Message Button
-  $("body").on("click", ".message-card .actions .delete-btn", function () {
+  // Toggle dropdown menu
+  $("body").on("click", ".message-dropdown .dropdown-toggle", function (e) {
+    e.stopPropagation();
+    const $dropdown = $(this).siblings(".dropdown-menu");
+
+    // Close all other dropdowns
+    $(".message-dropdown .dropdown-menu").not($dropdown).removeClass("show");
+
+    // Toggle current dropdown
+    $dropdown.toggleClass("show");
+  });
+
+  // Close dropdown when clicking outside
+  $(document).on("click", function (e) {
+    if (!$(e.target).closest(".message-dropdown").length) {
+      $(".message-dropdown .dropdown-menu").removeClass("show");
+    }
+  });
+
+  // Delete Message from dropdown
+  $("body").on("click", ".delete-message-item", function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    // Close dropdown
+    $(this).closest(".dropdown-menu").removeClass("show");
+
+    // Show delete confirmation modal
     app_modal({
       name: "delete",
       data: $(this).data("id"),

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ad5eeb5d6c41a198cdc76c9438a9360d",
+    "content-hash": "dc4d3c25a53029de2eab4d670354ca29",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -3011,6 +3011,69 @@
                 }
             ],
             "time": "2025-01-27T12:07:53+00:00"
+        },
+        {
+            "name": "mainul/custom-helpers",
+            "version": "v1.1.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Mainul12501/custom-helpers.git",
+                "reference": "4d10fbaf067be0d1b866b2207ae8863cffb07ba2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Mainul12501/custom-helpers/zipball/4d10fbaf067be0d1b866b2207ae8863cffb07ba2",
+                "reference": "4d10fbaf067be0d1b866b2207ae8863cffb07ba2",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/http": "^11.0|^12.0",
+                "illuminate/routing": "^11.0|^12.0",
+                "illuminate/support": "^11.0|^12.0",
+                "php": "^8.2"
+            },
+            "require-dev": {
+                "orchestra/testbench": "^9.0|^10.0",
+                "phpunit/phpunit": "^10.0|^11.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "aliases": {
+                        "ViewHelper": "Mainul\\CustomHelperFunctions\\Facades\\ViewHelper"
+                    },
+                    "providers": [
+                        "Mainul\\CustomHelperFunctions\\HelperServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Mainul\\CustomHelperFunctions\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Mainul Islam",
+                    "email": "mainul12501@gmail.com"
+                }
+            ],
+            "description": "A Laravel package providing helper functions for API and web responses",
+            "keywords": [
+                "api",
+                "helper",
+                "laravel",
+                "response"
+            ],
+            "support": {
+                "issues": "https://github.com/Mainul12501/custom-helpers/issues",
+                "source": "https://github.com/Mainul12501/custom-helpers/tree/v1.1.5"
+            },
+            "time": "2026-01-06T09:31:34+00:00"
         },
         {
             "name": "markbaker/complex",
@@ -11674,12 +11737,12 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {},
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
         "php": "^8.2"
     },
-    "platform-dev": [],
-    "plugin-api-version": "2.6.0"
+    "platform-dev": {},
+    "plugin-api-version": "2.9.0"
 }

@@ -114,33 +114,33 @@
                             </div>
                         </div>
                         <div class="row mt-2">
-                            <div class="col-md-6 mt-2">
-                                <label for="">Logo</label>
-                                @if(!isset($isShown))
-                                    <input type="file" name="logo" class="form-control" accept="image/*" />
-                                @endif
-                                @if(isset($basicSetting->logo))
-                                    <img src="{{ asset($basicSetting->logo) }}" alt="" style="height: 60px" />
-                                @endif
-                            </div>
-                            <div class="col-md-6 mt-2">
-                                <label for="">Banner</label>
-                                @if(!isset($isShown))
-                                    <input type="file" name="banner" class="form-control" accept="image/*" />
-                                @endif
-                                @if(isset($basicSetting->banner))
-                                    <img src="{{ asset($basicSetting->banner) }}" alt="" style="height: 60px" />
-                                @endif
-                            </div>
-                            <div class="col-md-6 mt-2">
-                                <label for="">Site Icon</label>
-                                @if(!isset($isShown))
-                                    <input type="file" name="site_icon" class="form-control" accept="image/*" />
-                                @endif
-                                @if(isset($basicSetting->site_icon))
-                                    <img src="{{ asset($basicSetting->site_icon) }}" alt="" style="height: 60px" />
-                                @endif
-                            </div>
+{{--                            <div class="col-md-6 mt-2">--}}
+{{--                                <label for="">Logo</label>--}}
+{{--                                @if(!isset($isShown))--}}
+{{--                                    <input type="file" name="logo" class="form-control" accept="image/*" />--}}
+{{--                                @endif--}}
+{{--                                @if(isset($basicSetting->logo))--}}
+{{--                                    <img src="{{ asset($basicSetting->logo) }}" alt="" style="height: 60px" />--}}
+{{--                                @endif--}}
+{{--                            </div>--}}
+{{--                            <div class="col-md-6 mt-2">--}}
+{{--                                <label for="">Banner</label>--}}
+{{--                                @if(!isset($isShown))--}}
+{{--                                    <input type="file" name="banner" class="form-control" accept="image/*" />--}}
+{{--                                @endif--}}
+{{--                                @if(isset($basicSetting->banner))--}}
+{{--                                    <img src="{{ asset($basicSetting->banner) }}" alt="" style="height: 60px" />--}}
+{{--                                @endif--}}
+{{--                            </div>--}}
+{{--                            <div class="col-md-6 mt-2">--}}
+{{--                                <label for="">Site Icon</label>--}}
+{{--                                @if(!isset($isShown))--}}
+{{--                                    <input type="file" name="site_icon" class="form-control" accept="image/*" />--}}
+{{--                                @endif--}}
+{{--                                @if(isset($basicSetting->site_icon))--}}
+{{--                                    <img src="{{ asset($basicSetting->site_icon) }}" alt="" style="height: 60px" />--}}
+{{--                                @endif--}}
+{{--                            </div>--}}
                             <div class="col-md-6 mt-2">
                                 <label for="">Favicon</label>
                                 @if(!isset($isShown))
@@ -150,15 +150,15 @@
                                     <img src="{{ asset($basicSetting->favicon) }}" alt="" style="height: 16px" />
                                 @endif
                             </div>
-                            <div class="col-md-6 mt-2">
-                                <label for="">Common Institute Icon</label>
-                                @if(!isset($isShown))
-                                    <input type="file" name="common_institute_logo" class="form-control" accept="image/*" />
-                                @endif
-                                @if(isset($basicSetting->common_institute_logo))
-                                    <img src="{{ asset($basicSetting->common_institute_logo) }}" alt="" style="height: 60px" />
-                                @endif
-                            </div>
+{{--                            <div class="col-md-6 mt-2">--}}
+{{--                                <label for="">Common Institute Icon</label>--}}
+{{--                                @if(!isset($isShown))--}}
+{{--                                    <input type="file" name="common_institute_logo" class="form-control" accept="image/*" />--}}
+{{--                                @endif--}}
+{{--                                @if(isset($basicSetting->common_institute_logo))--}}
+{{--                                    <img src="{{ asset($basicSetting->common_institute_logo) }}" alt="" style="height: 60px" />--}}
+{{--                                @endif--}}
+{{--                            </div>--}}
 
                         </div>
                         <div class="mt-2">

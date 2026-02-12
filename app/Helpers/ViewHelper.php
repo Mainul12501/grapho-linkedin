@@ -105,6 +105,16 @@ class ViewHelper
             return back()->with('error', $message);
         }
     }
+    public static function returEexceptionErrorWithExtraMsg ($message = null, $customMsg = null)
+    {
+        if (str()->contains(url()->current(), '/api/') || \request()->ajax())
+        {
+            return response()->json(['error' => $message, 'status' => 'error', 'message' => $customMsg], 422);
+        } else {
+            Toastr::error($message);
+            return back()->with('error', $message);
+        }
+    }
     public static function returnRedirectWithMessage ($route, $messageType = 'success', $message = null)
     {
         if (str()->contains(url()->current(), '/api/') || \request()->ajax())
@@ -129,6 +139,7 @@ class ViewHelper
             return back();
         }
     }
+
     public static function returnSuccessMessage($message = null)
     {
         if (str()->contains(url()->current(), '/api/') || \request()->ajax())
@@ -155,7 +166,7 @@ class ViewHelper
         if (str_contains(url()->current(), '/api/'))
         {
             $loggedUser = auth('sanctum')->user();
-            if ($loggedUser->user_type == 'employer')
+            if ($loggedUser && $loggedUser->user_type == 'employer')
             {
                 return $loggedUser->load('employerCompanies');
             } else {
@@ -249,10 +260,13 @@ class ViewHelper
             $user = ViewHelper::loggedUser();
             if ($user->roles[0]->id == 3 )
             {
-                $savedJobsIds = $user->employeeSavedJobs->pluck('id')->toArray();
-                $isSaved = in_array($id, $savedJobsIds);
+
                 if (EmployeeAppliedJob::where(['user_id' => $user->id, 'job_task_id' => $id])->first())
                     $isApplied = true;
+                $savedJobsIds = $user->employeeSavedJobs->pluck('id')->toArray();
+                if (!$isApplied && in_array($id, $savedJobsIds))
+                    $isSaved = true;
+//                $isSaved = in_array($id, $savedJobsIds);
             }
         }
         return [

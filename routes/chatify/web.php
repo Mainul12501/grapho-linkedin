@@ -82,6 +82,11 @@ Route::post('/shared', 'MessagesController@sharedPhotos')->name('shared');
 Route::post('/deleteConversation', 'MessagesController@deleteConversation')->name('conversation.delete');
 
 /**
+ * Delete Conversation For Me (Soft Delete)
+ */
+Route::post('/deleteConversationForMe', 'MessagesController@deleteConversationForMe')->name('conversation.delete.for.me');
+
+/**
  * Delete Message
  */
 Route::post('/deleteMessage', 'MessagesController@deleteMessage')->name('message.delete');

@@ -35,7 +35,7 @@
                                 <td>{{ $educationDegreeName->need_institute_field == 1 ? 'Yes' : 'No' }}</td>
                                 <td>{{ $educationDegreeName->slug ?? '' }}</td>
                                 <td>{!! $educationDegreeName->note ?? '' !!}</td>
-                                <td>{{ $educationDegreeName->status == 1 ? 'Published' : 'Unpublished' }}</td>
+                                <td><span class="">{{ $educationDegreeName->status == 1 ? 'Published' : 'Unpublished' }}</span></td>
                                 <td class="">
 {{--                                    @can('edit-permission-category')--}}
                                     <a href="{{ route('education-degree-names.edit', $educationDegreeName->id) }}" class="btn btn-sm btn-warning">

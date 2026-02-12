@@ -44,7 +44,7 @@
                                 <img src="{{ asset('/') }}frontend/employer/images/employersHome/profile website.png" alt="Website Icon" class="me-3" />
                                 <div>
                                     <div class="fw-semibold small mb-1">Website</div>
-                                    <a href="https://www.grameenphone.com" target="_blank" class="text-decoration-none small">{{ $companyDetails->website ?? 'company.com' }}</a>
+                                    <a href="https://www.grameenphone.com" target="_blank" class="text-decoration-none small">{{ $companyDetails->website ?? '' }}</a>
                                 </div>
                             </div>
                             @if($employerView)
@@ -102,9 +102,9 @@
     </div>
 
     @if(isset($_GET['view']) && $_GET['view'] == 'employer')
-        <div class="row">
+        <div class="row mt-3">
             <div class="col-10 mx-auto">
-                <h3>{{ $companyDetails->name ?? '' }}Activities</h3>
+                <h3>{{ $companyDetails->name ?? '' }} Activities</h3>
 
                 <!-- Job Cards -->
                 <div class="row gy-3" id="item-container">
@@ -231,6 +231,40 @@
                         <button type="submit" class="btn btn-primary">{{ trans('common.save_changes') }}</button>
                     </div>
                 </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal"  id="viewJobModal">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="viewJobModalTitle">View Job</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="viewJobModalBody">
+                    <p>Modal body text goes here.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ trans('common.close') }}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal"  id="viewPostModal">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="viewPostModalTitle">View Job</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="viewPostModalBody">
+                    <p>Modal body text goes here.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ trans('common.close') }}</button>
+                </div>
             </div>
         </div>
     </div>
@@ -537,12 +571,19 @@
                 url: "?page=" + page+"&view=employer&employer_id={{ $companyDetails->id }}",
                 type: "GET",
                 success: function(res) {
-                    if ($.trim(res) === "") {
+                    if (res.empty) {
+                        if (!$(".no-activity").length) {
+                            $("#item-container").append(res.html);
+                        }
+
                         $("#no-more-data").show();
+                        page = lastPage;
                         return;
                     }
 
-                    $("#item-container").append(res);
+                    $("#item-container").append(res.html);
+
+
                 },
                 complete: function() {
                     loading = false;
@@ -570,4 +611,98 @@
             $('#long-overview').css('display', 'none');
         })
     </script>
+    <link rel="stylesheet" href="{{ asset('frontend/zoom-plugin/mbox.css') }}">
+    <script src="{{ asset('frontend/zoom-plugin/mbox.min.js') }}"></script>
+    <script>
+        {{--var base_url = "{!! url('/') !!}/";--}}
+
+        // let response;
+
+        function sendAjaxRequest(url, method, data = {}) {
+            return $.ajax({ // Return the Promise from $.ajax
+                url: base_url + url,
+                method: method,
+                data: data
+            })
+                .done(function (data) { // .done() for success
+                    // console.log(data.job.employer_company);
+                    // console.log('print from dno');
+                    // No need to assign to 'response' here, it's passed to .then()
+                })
+                .fail(function (error) { // .fail() for error
+                    toastr.error(error);
+                    // The error will also be propagated to the .catch() when called
+                });
+        }
+        function showJobDetails(jobId, jobTitle = 'View Job Title') {
+            sendAjaxRequest('get-job-details/'+jobId+'?render=1&show_apply=1', 'GET').then(function (response) {
+                // console.log(response);
+                $('#viewJobModalTitle').empty().append(jobTitle);
+                $('#viewJobModalBody').empty().append(response);
+                $('#viewJobModal').modal('show');
+            })
+        }
+        function showPostDetails(postId, postTitle = 'View Post Title') {
+            sendAjaxRequest('employee-view-post/'+postId+'?render=1', 'GET').then(function (response) {
+                // console.log(response);
+                $('#viewPostModalTitle').empty().append(postTitle);
+                $('#viewPostModalBody').empty().append(response);
+                $('.zoom-img').mBox();
+                $('#viewPostModal').modal('show');
+            })
+        }
+    </script>
+    <style>
+        .post-image-wrapper {
+            height: 200px;
+            overflow: hidden;
+        }
+
+        /* Single image */
+        .single-post-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* Grid layout */
+        .image-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: repeat(2, 1fr);
+            width: 100%;
+            height: 100%;
+            gap: 2px;
+        }
+
+        .grid-image-wrapper {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .image-grid img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* +N overlay */
+        .more-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.6);
+            color: #fff;
+            font-size: 26px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+    </style>
 @endpush

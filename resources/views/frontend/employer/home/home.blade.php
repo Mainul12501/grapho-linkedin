@@ -36,7 +36,7 @@
                                         <div class="employee-suggestions">
                                             <div class="owl-carousel owl-theme" >
                                                 @foreach($employees as $employee)
-                                                    <div class="item">
+                                                    <div class="item pb-2">
                                                         <a href="{{ route('employee-profile', $employee->id) }}" style="text-decoration: none">
                                                             <article class="talent-card">
                                                                 <img src="{{ asset($employee->profile_image ?? '/frontend/user-vector-img.jpg') }}"
@@ -65,7 +65,7 @@
                                                                     <i class="bi bi-arrow-up-right-circle"></i>
 {{--                                                                    <img src="{{ isset($siteSettin) ? asset($siteSettin->logo) : '' }}" alt="site-logo" style="height: 54px; width: 54px">--}}
                                                                 </div>
-                                                                <h6 class="mb-1">View more talents</h6>
+                                                                <h6 class="mb-1">View more profiles</h6>
                                                                 <p class="mb-0 text-muted small">Discover more profiles on LikewiseBD</p>
                                                             </article>
                                                         </a>
@@ -114,6 +114,7 @@
         @media screen and (max-width: 768px){
             #appendContentHere {padding-left: 10px!important;}
             .mobile-search-float-left-0 {float: none!important;}
+            .talent-meta {display: none}
         }
         /*.owl-nav {display: none;}*/
         /*.owl-dots {display: none;}*/
@@ -337,6 +338,61 @@
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
+
+    </style>
+
+    <style>
+        /* =========================
+   MOBILE & TABLET ONLY
+   ========================= */
+        @media (max-width: 991px) {
+
+            .employee-suggestions .owl-stage {
+                display: flex !important;
+                align-items: stretch;
+            }
+
+            .employee-suggestions .owl-item {
+                display: flex;
+                float: none !important; /* IMPORTANT */
+            }
+
+            .employee-suggestions .item {
+                /*display: flex;*/
+                height: 100%;
+                width: 100%;
+            }
+
+            .employee-suggestions .talent-card {
+                display: flex;
+                flex-direction: column;
+                height: 100%;
+                width: 100%;
+            }
+        }
+
+        /* =========================
+           DESKTOP FIX (PREVENT BREAK)
+           ========================= */
+        @media (min-width: 992px) {
+
+            .employee-suggestions .owl-stage {
+                display: block !important;
+            }
+
+            .employee-suggestions .owl-item {
+                display: block;
+            }
+
+            .employee-suggestions .item,
+            .employee-suggestions .talent-card {
+                height: auto;
+            }
+
+            /*.employee-suggestions .item { display: block!important; }*/
+        }
+
+
     </style>
 
 @endpush
@@ -372,7 +428,9 @@
         })
     </script>
     <script>
-        equalizeHeights('item');
+        // setTimeout(function () {
+            // equalizeHeights('item');
+        // }, 1000);
     </script>
     <script>
         var startNumber = 0;
@@ -425,4 +483,8 @@
             })
         })
     </script>
+
+
+
+
 @endpush

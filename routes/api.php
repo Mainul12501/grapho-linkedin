@@ -16,6 +16,9 @@ use App\Http\Controllers\Frontend\Twilio\TwilioVideoController;
 use App\Http\Controllers\Frontend\Crud\PostController;
 use App\Http\Controllers\Frontend\Crud\FollowerHistroyController;
 use App\Http\Controllers\Api\Mobile\ZegoCloudMobileController;
+use App\Http\Controllers\Api\ZegoCloudApiController;
+use App\Http\Controllers\Frontend\ZegoCloud\ZegoCloudController;
+use App\Http\Controllers\Frontend\ZegoCloud\ZegoGroupCallController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -28,9 +31,13 @@ Route::post('verify-otp', [CustomLoginController::class, 'verifyOtp']);
 Route::post('login-with-google-app', [CustomLoginController::class, 'loginWithGoogleApp']);
 Route::post('buy-subscription/{subscriptionPlan}', [FrontendViewController::class, 'buySubscription']);
 
+Route::get('search-skills', [JobTaskController::class, 'searchSkills']);
+
 Route::get('employee-profile/{employeeId}', [EmployerViewController::class, 'employeeProfile']);
 Route::get('get-job-details/{id}', [JobTaskController::class, 'getJobDetails']);
 Route::get('get-site-settings', [FrontendViewController::class, 'getSiteSetting']);
+
+Route::post('/call/initiate', [ZegoCloudController::class, 'initiateCall']);
 
 Route::prefix('auth')->name('auth.')->group(function (){
     Route::get('select-auth-method', [CustomLoginController::class, 'selectAuthMethod']);
@@ -67,6 +74,10 @@ Route::middleware([
 //    'verified',
 ])->group(function () {
 
+    Route::get('switch-user-auth-guard', [CustomLoginController::class, 'switchUserAuthGuard']);
+
+    Route::post('update-zego-caller-id', [CustomLoginController::class, 'updateZegoCallerId']);
+    Route::post('update-fcm-token', [CustomLoginController::class, 'updateFcmToken']);
     Route::get('auth/user-profile-update', [CustomLoginController::class, 'userProfileUpdate']);
     Route::get('call-user/{type?}', [TwilioVideoController::class, 'viewPage']);
     Route::get('view-company-profile/{employerCompany}', [EmployeeViewController::class, 'viewCompanyProfile']);
@@ -89,6 +100,8 @@ Route::middleware([
         Route::get('employer-subscriptions', [EmployerViewController::class, 'employerSubscriptions']);
         Route::get('view-post/{post}', [PostController::class, 'viewPost']);
         Route::get('set-follow-history', [FollowerHistroyController::class, 'store']);
+        Route::get('close-job/{jobTask}/{status}', [JobTaskController::class, 'closeJob']);
+        Route::get('my-notifications', [EmployerViewController::class, 'myNotifications']);
 
         Route::post('update-settings', [EmployerViewController::class, 'updateSettings']);
         Route::post('update-company-info', [EmployerViewController::class, 'updateCompanyInfo']);
@@ -148,4 +161,35 @@ Route::middleware([
         // ZegoCloud configuration
         Route::post('/generate-token', [ZegoCloudMobileController::class, 'generateToken']);
     });
+
+    // Mobile App API Routes for ZegoCloud Messaging (ZIM)
+    Route::prefix('zego/messaging')->name('zego.messaging.')->group(function () {
+        // Authentication
+        Route::post('/token', [ZegoCloudApiController::class, 'getToken']);
+        Route::post('/verify-token', [ZegoCloudApiController::class, 'verifyToken']);
+
+        // User Management
+        Route::get('/profile', [ZegoCloudApiController::class, 'getProfile']);
+        Route::post('/update-online-status', [ZegoCloudApiController::class, 'updateOnlineStatus']);
+
+        // Contacts
+        Route::get('/contacts', [ZegoCloudApiController::class, 'getContacts']);
+        Route::get('/users/{user_id}', [ZegoCloudApiController::class, 'getUserDetails']);
+        Route::post('/search-users', [ZegoCloudApiController::class, 'searchUsers']);
+    });
+});
+
+Route::post('auth/g-login-check', [SocialLoginController::class , 'gLoginCheck'])->name('auth.g-login-check');
+//zego cloud group call routes starts
+Route::prefix('group-call')->name('zego.group.')->middleware(['auth'])->group(function (){
+    Route::get('/call-page', [ZegoGroupCallController::class, 'viewCallPage'])->name('call-page');
+    Route::post('/initiate', [ZegoGroupCallController::class, 'initiateCall'])->name('initiate');
+    Route::post('/{groupCall}/add-participants', [ZegoGroupCallController::class, 'addParticipants'])->name('add-participants');
+    Route::post('/{groupCall}/join', [ZegoGroupCallController::class, 'joinCall'])->name('join');
+    Route::post('/{groupCall}/reject', [ZegoGroupCallController::class, 'rejectCall'])->name('reject');
+    Route::post('/{groupCall}/leave', [ZegoGroupCallController::class, 'leaveCall'])->name('leave');
+    Route::post('/{groupCall}/end', [ZegoGroupCallController::class, 'endCall'])->name('end');
+    Route::get('/{groupCall}/details', [ZegoGroupCallController::class, 'getCallDetails'])->name('details');
+    Route::get('/{groupCall}/participants', [ZegoGroupCallController::class, 'getParticipants'])->name('participants');
+    Route::get('/callable-users', [ZegoGroupCallController::class, 'getCallableUsers'])->name('callable-users');
 });

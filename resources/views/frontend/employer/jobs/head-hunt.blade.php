@@ -270,7 +270,8 @@
         </section>
 
         <div class="d-flex justify-content-between mb-3 mt-3" style="font-size: 14px; cursor: pointer;">
-            <p class="text-muted">{{ trans('common.showing_results', ['count' => count($employees) ?? 0]) }}</p>
+{{--            <p class="text-muted">{{ trans('common.showing_results', ['count' => count($employees) ?? 0]) }}</p>--}}
+            <p class="text-muted">Suggested Profiles</p>
 
         </div>
 
@@ -565,6 +566,7 @@
                 // Reset live object + event
                 window.JOB_FILTERS = {};
                 document.dispatchEvent(new CustomEvent('filters:change', { detail: {} }));
+                window.location.href = window.location.pathname;
             }
         });
     </script>

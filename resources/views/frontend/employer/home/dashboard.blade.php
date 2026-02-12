@@ -21,7 +21,7 @@
 
                     <div class="">
                         <a href="{{ route('employer.my-jobs', ['show_modal' => 'create']) }}">
-                            <img src="{{ asset('/frontend/employer/images/post-jobs.jpeg') }}" alt="" class="img-fluid">
+                            <img src="{{ asset('/frontend/employer/images/post-jobs.jpeg') }}" style="max-height: 240px;" alt="" class="img-fluid w-100">
                         </a>
                     </div>
 
@@ -37,7 +37,7 @@
 {{--                    </div>--}}
                     <div class="mt-4">
                         <a href="{{ route('employer.head-hunt') }}">
-                            <img src="{{ asset('/frontend/employer/images/22.png') }}" alt="" class="img-fluid">
+                            <img src="{{ asset('/frontend/employer/images/22.jpeg') }}" style="max-height: 240px; width: 100%" alt="" class="img-fluid w-100">
                         </a>
                     </div>
                 </aside>
@@ -153,7 +153,7 @@
         </div>
 
     </main>
-    <div class="modal" tabindex="-1" id="viewJobModal">
+    <div class="modal fade" tabindex="-1" id="viewJobModal">
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
@@ -161,6 +161,22 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body" id="viewJobModalBody">
+                    <p>Modal body text goes here.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ trans('common.close') }}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade"  id="viewPostModal">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="viewPostModalTitle">View Job</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="viewPostModalBody">
                     <p>Modal body text goes here.</p>
                 </div>
                 <div class="modal-footer">
@@ -231,6 +247,8 @@
     <script>
         equalizeHeights('talent-card');
     </script>
+    <link rel="stylesheet" href="{{ asset('frontend/zoom-plugin/mbox.css') }}">
+    <script src="{{ asset('frontend/zoom-plugin/mbox.min.js') }}"></script>
     <script>
         function showJobDetails(jobId, jobTitle = 'View Job Title') {
             sendAjaxRequest('get-job-details/'+jobId+'?render=1&show_apply=0', 'GET').then(function (response) {
@@ -240,7 +258,69 @@
                 $('#viewJobModal').modal('show');
             })
         }
+        function showPostDetails(postId, postTitle = 'View Post Title') {
+            sendAjaxRequest('employee-view-post/'+postId+'?render=1', 'GET').then(function (response) {
+                // console.log(response);
+                $('#viewPostModalTitle').empty().append(postTitle);
+                $('#viewPostModalBody').empty().append(response);
+                $('.zoom-img').mBox();
+                $('#viewPostModal').modal('show');
+            })
+        }
     </script>
+    <style>
+        .post-image-wrapper {
+            height: 200px;
+            overflow: hidden;
+        }
+
+        /* Single image */
+        .single-post-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* Grid layout */
+        .image-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: repeat(2, 1fr);
+            width: 100%;
+            height: 100%;
+            gap: 2px;
+        }
+
+        .grid-image-wrapper {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .image-grid img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* +N overlay */
+        .more-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.6);
+            color: #fff;
+            font-size: 26px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+    </style>
 
     <script>
         let page = 1;

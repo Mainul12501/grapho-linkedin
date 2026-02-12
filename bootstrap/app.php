@@ -36,10 +36,13 @@ return Application::configure(basePath: dirname(__DIR__))
             'setLocalLang'    => \App\Http\Middleware\SetLocalLanguageMiddleware::class,
             'auth-page' => \App\Http\Middleware\AuthPageAuthenticationMiddleware::class,
             'siteSubscriptionStatusCheck' => \App\Http\Middleware\SiteSubscriptionStatusCheck::class,
+            'userProfileUpdateCheck' => \App\Http\Middleware\UserProfileUpdateCheck::class,
         ]);
         $middleware->validateCsrfTokens(except: [
-            'sslcommerz/*'
+            'sslcommerz/*',
+            'group-call/*',
         ]);
+        $middleware->redirectGuestsTo('/');
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

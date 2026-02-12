@@ -16,7 +16,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <!-- TITLE -->
-    <title>SM Technology BD - @yield('title')</title>
+    <title>LikewiseBD - @yield('title')</title>
 
     @include('backend.includes.assets.css')
 

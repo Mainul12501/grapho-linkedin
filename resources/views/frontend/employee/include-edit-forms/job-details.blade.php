@@ -1,13 +1,15 @@
 <div class="company-info mb-2 d-flex">
-    <a href="{{ route('view-company-profile', $singleJobTask->employer_company_id) }}" style="cursor: pointer">
+    <a href="{{ route('view-company-profile', ['employerCompany' => $singleJobTask->employer_company_id, 'view' => 'employee']) }}" style="cursor: pointer">
         <img style="height: 40px; margin-right: 10px;" src="{{ isset($singleJobTask?->employerCompany?->logo) ? asset($singleJobTask?->employerCompany?->logo) : asset('/frontend/employee/images/contentImages/jobCardLogo.png') }}" alt="{{ $singleJobTask?->employerCompany?->name ?? 'job-0' }}" class="company-logo">
     </a>
-    <div class="company-details d-flex pt-2" style="padding-top: 14px;">
-        <h3 class="p-t-5"><a href="{{ route('view-company-profile', $singleJobTask->employer_company_id) }}" class="nav-link text-muted">{{ $singleJobTask?->employerCompany?->name ?? 'company name' }}</a></h3>
-        <span class="mx-1 p-t-5">,</span>
+    <div class="company-details <!--d-flex--> pt-2" style="padding-top: 14px;">
+        <h3 class="p-t-5 mb-0"><a href="{{ route('view-company-profile', ['employerCompany' => $singleJobTask->employer_company_id, 'view' => 'employee']) }}" class="nav-link text-muted">{{ $singleJobTask?->employerCompany?->name ?? 'company name' }}</a></h3>
+{{--        <span class="mx-1 p-t-5">,</span>--}}
+
         <p class="p-t-5">{{ $singleJobTask?->employerCompany?->address ?? 'company address' }}</p>
     </div>
 </div>
+
 <h4 class="job-title mb-2 f-s-19">{{ $singleJobTask->job_title }}</h4>
 <div class="job-type"><span class="badge">{{ $singleJobTask?->jobType?->name ?? 'job type' }}</span> <span class="badge">{{ $singleJobTask?->jobLocationType?->name ?? 'job location' }}</span> </div>
 @if(auth()->user()->user_type == 'employee' && $showApplyButton)
@@ -29,10 +31,10 @@
                 </div>
             </form>
         @endif
-        @if(!$isSaved)
-            <button style="padding: 6px 20px;" is-saved="no" class="save-btn" data-job-id="{{ $singleJobTask->id }}"><img id="saveBtnImg{{ $singleJobTask->id }}" src="{{ asset('/') }}frontend/employee/images/contentImages/saveIcon.png" alt="Save Icon" class="save-icon"> <span id="saveBtnTxt{{ $singleJobTask->id }}">{{ trans('common.save') }}</span></button>
-        @else
-            <button style="padding: 6px 20px;" is-saved="yes" class="save-btn" data-job-id="{{ $singleJobTask->id }}"><img id="saveBtnImg{{ $singleJobTask->id }}" src="{{ asset('/frontend/bookmark-circle.png') }}" style="height: 20px; width: 20px" alt="Save Icon" class=""> <span id="saveBtnTxt{{ $singleJobTask->id }}">{{ trans('common.saved') }}</span></button>
+        @if(!$isSaved && !$isApplied)
+            <button style="padding: 6px 20px; background-color: #0d6efd; color: white;" is-saved="no" class="save-btn" data-job-id="{{ $singleJobTask->id }}"><img id="saveBtnImg{{ $singleJobTask->id }}" src="{{ asset('/frontend/employee/images/bookmark-white.png') }}" alt="Save Icon" class="save-icon"> <span id="saveBtnTxt{{ $singleJobTask->id }}" class="font-white">{{ trans('common.save') }}</span></button>
+{{--        @else--}}
+{{--            <button style="padding: 6px 20px; color: black;" is-saved="yes" class="save-btn btn bg-light btn-light" data-job-id="{{ $singleJobTask->id }}"><img id="saveBtnImg{{ $singleJobTask->id }}" src="{{ asset('/frontend/bookmark-circle.png') }}" style="height: 20px; width: 20px" alt="Save Icon" class=""> <span id="saveBtnTxt{{ $singleJobTask->id }}">{{ trans('common.saved') }}</span></button>--}}
         @endif
     </div>
 @endif
@@ -85,3 +87,15 @@
 <div class="job-requirements ms-0 text-muted" style="color: gray;">
     {{ $singleJobTask->gender ?? '' }}
 </div>
+
+@if($singleJobTask->jobRequiredskills->count() > 0)
+    <h5 class="fw-bold mt-3">Skills</h5>
+    <div>
+        <ul id="printUniversity" class="mb-0">
+            @foreach($singleJobTask->jobRequiredskills as $skill)
+                <li>{{ $skill->skill_name }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
+

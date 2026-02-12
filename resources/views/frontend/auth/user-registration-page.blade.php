@@ -90,7 +90,7 @@
             <span>{{ trans('auth.or') }}</span>
         </div>
 
-        <form action="{{ route('auth.custom-registration') }}" method="post">
+        <form action="{{ route('auth.custom-registration') }}" method="post" id="registrationForm">
             @csrf
             <input type="hidden" name="user_type" id="userType" value="{{ $userType ?? 'Employee' }}">
             <input type="hidden" name="reg_method" value="email" id="reg_method">
@@ -105,7 +105,19 @@
                 <label for="signUpMail">{{ trans('auth.email_address') }}</label>
                 <div class="input-group">
                     <input type="text" id="signUpMail" placeholder="{{ trans('auth.type_here') }}" class=" signUpMail form-control" style="border-radius: 16px 0px 0px 16px">
-                    <span class="input-group-text signUpMail" id="sendOtpForEmailBtn" style="cursor: pointer; border-radius: 0px 16px 16px 0px">{{ trans('auth.send_otp') }}</span>
+                    <span class="input-group-text signUpMail" id="sendOtpForEmailBtn" style="cursor: pointer; border-radius: 0px 16px 16px 0px">
+                        {{ trans('auth.send_otp') }}
+                        <img src="{{ asset('frontend/spinner.gif') }}"
+                             id="emailOtpSpinner"
+                             class="ms-2 d-none"
+                             width="18"
+                             height="18"
+                             alt="loading">
+                    </span>
+{{--                    <span class="spinner-border spinner-grow-sm ms-2 d-none"--}}
+{{--                          id="emailOtpSpinner"--}}
+{{--                          role="status"--}}
+{{--                          aria-hidden="true"></span>--}}
                     <span class="text-danger" id="signUpMailError"></span>
                 </div>
 
@@ -122,7 +134,7 @@
             <div id="signUpMobileDiv1" class="d-none">
                 <label for="signUpMail">{{ trans('auth.phone_number') }}</label>
                 <div class="input-group mb-3">
-                    <input type="text" class="form-control py-3 signUpMail" name="phone" placeholder="{{ trans('auth.phone_number') }}" id="phoneNumber">
+                    <input type="text" class="form-control py-3 signUpMail" name="phone" minlength="11" maxlength="11" placeholder="01XXXXXXXXX" id="phoneNumber">
                     <span class="input-group-text otp-send-btn" id="sendOtpBtn" style="cursor: pointer">{{ trans('auth.send_otp') }}</span>
                 </div>
                 <div id="otpDiv" class="d-none">
@@ -165,7 +177,8 @@
 {{--                                <option value="+44" data-flag="gb">+44</option>--}}
 {{--                            </select>--}}
 {{--                        </div>--}}
-                        <input type="tel" id="phoneInput" placeholder="{{ trans('auth.type_here') }}" class="phone-input" name="mobile">
+                        <input type="tel" id="phoneInput" placeholder="01XXXXXXXXX" maxlength="11" class="phone-input" name="mobile">
+
                         @error('mobile') <span class="text-danger">{{ $errors->first('mobile') }}</span> @enderror
                     </div>
 
@@ -329,12 +342,27 @@
         })
     })
     $(document).on('click', '#sendOtpForEmailBtn', function () {
+
+        let $btn = $(this);
+        let $spinner = $('#emailOtpSpinner');
+        let email = $('#signUpMail').val().trim();
+
+        if (email === '') {
+            toastr.error('Please enter email first.');
+            return;
+        }
+        if ($btn.hasClass('disabled')) return;
+        // ✅ Disable button + show spinner
+        $btn.addClass('disabled opacity-75');
+        $spinner.removeClass('d-none');
+
         $.ajax({
-            url: '{{ route('send-otp') }}',
+            url: "{{ route('send-otp') }}",
             type: 'POST',
             data: {
                 _token: '{{ csrf_token() }}',
                 email: $('#signUpMail').val(),
+                req_from: "register"
             },
             success: function (response) {
                 if (response.status == 'success')
@@ -348,6 +376,11 @@
             },
             error: function (xhr) {
                 toastr.error('An error occurred while sending the OTP.');
+            },
+            complete: function () {
+                // ✅ Always restore button state
+                $btn.removeClass('disabled opacity-75');
+                $spinner.addClass('d-none');
             }
         })
     })
@@ -431,6 +464,14 @@
         $('#hide').addClass('d-none');
         $('#show').removeClass('d-none');
     })
+
+    // remove form submit by enter btn
+    $(document).on('keydown', '#registrationForm input:not(textarea)', function (e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            return false;
+        }
+    });
 </script>
 {!! $siteSetting->meta_footer ?? '' !!}
 <style>

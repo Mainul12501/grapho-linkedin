@@ -153,6 +153,24 @@
   color: #fff;
 }
 
-.message-card .actions .delete-btn {
+/* Dark mode dropdown styles */
+.message-dropdown .dropdown-toggle {
   color: #fff;
+}
+
+.message-dropdown .dropdown-toggle:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.message-dropdown .dropdown-menu {
+  background: var(--dark-secondary-bg-color);
+  border-color: var(--dark-border-color);
+}
+
+.message-dropdown .dropdown-item {
+  color: #fff;
+}
+
+.message-dropdown .dropdown-item:hover {
+  background: rgba(255, 255, 255, 0.1);
 }

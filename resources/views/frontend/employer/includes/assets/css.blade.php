@@ -126,12 +126,17 @@
         right: -100%;
         width: 250px;
         max-width: 85vw;
-        height: 100vh;
+        /*height: 100vh;*/
+        height: 100dvh;
         background: #ffffff;
         box-shadow: -5px 0 25px rgba(0,0,0,0.2);
         transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         z-index: 1050;
-        overflow-y: auto;
+        /*overflow-y: auto;*/
+        overflow-y: scroll; /* Changed from auto to scroll */
+        -webkit-overflow-scrolling: touch; /* Momentum scrolling on iOS */
+        overscroll-behavior: contain; /* Prevent scroll chaining */
+        touch-action: pan-y; /* Enable vertical touch scrolling */
         display: flex;
         flex-direction: column;
     }

@@ -23,9 +23,13 @@ use App\Models\Backend\UniversityName;
 use App\Models\Backend\UserProfileView;
 use App\Models\Backend\WebNotification;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\DB;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
@@ -84,6 +88,8 @@ class User extends Authenticatable
         'device_platform',
         'is_online',
         'last_seen',
+        'fcm_token',
+        'zego_caller_id',
     ];
 
     /**
@@ -175,6 +181,10 @@ class User extends Authenticatable
     public function employerCompany()
     {
         return $this->belongsTo(EmployerCompany::class, 'employer_company_id');
+    }
+    public function employerCompanyInfo()
+    {
+        return $this->hasOne(EmployerCompany::class, 'user_id');
     }
 
     public function employerCompanies()
@@ -325,6 +335,16 @@ class User extends Authenticatable
     public function isSuperAdmin(): bool
     {
         return in_array($this->email, config('auth.super_admins'));
+    }
+
+    public function parentEmployer(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function subEmployers(): HasMany
+    {
+        return $this->hasMany(User::class, 'user_id');
     }
 
 }

@@ -190,11 +190,11 @@
             <div class="container px-0 border-bottom">
                 <div style="border-radius: 0px" class="bg-white p-4 shadow-sm">
                     <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h6 class="fw-semibold mb-0">{{ trans('employer.application_deadline') }}</h6>
+                        <h6 class="fw-semibold mb-0">{{ trans('employer.application_deadline') }} <span class="text-danger">*</span></h6>
                     </div>
                     <div>
                         <div class="input-group rounded-3 border border-secondary-subtle">
-                            <input type="date" name="deadline" min="{{ date('Y-m-d') }}" class="form-control" value="{{ $jobTask->deadline ?? '' }}" />
+                            <input type="date" required name="deadline" min="{{ date('Y-m-d') }}" class="form-control" value="{{ $jobTask->deadline ?? '' }}" />
                         </div>
                     </div>
                 </div>
@@ -203,33 +203,49 @@
             <div class="container px-0 border-bottom">
                 <div style="border-radius: 0px" class="bg-white p-4 shadow-sm">
                     <h6 class="fw-semibold mb-3">{{ trans('employer.skill_requirements') }}</h6>
-                    <div class="<!--d-flex flex-wrap gap-2-->">
 
+                    <!-- Search Input -->
+                    <div class="mb-3">
+{{--                        <input type="text" class="form-control skill-search-input" data-form="edit" placeholder="Search skills...">--}}
+                        <div class="input-group">
+                            <input type="text" class="form-control skill-search-input" data-form="create" placeholder="Search skills...">
+                            <span class="input-group-text clear-skill-search" data-form="create" style="cursor: pointer; display: none;">
+                                                <i class="fas fa-times"></i>
+                                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Selected Skills Display -->
+                    <div class="mb-3 selected-skills-container d-flex flex-wrap gap-2" data-form="edit">
+                        @foreach($jobTask->jobRequiredskills as $skill)
+                            <div class="selected-skill-tag" data-id="{{ $skill->id }}">
+                                <input type="hidden" name="required_skills[]" value="{{ $skill->id }}">
+                                <span>{{ $skill->skill_name }}</span>
+                                <span class="remove-skill">&times;</span>
+                            </div>
+                        @endforeach
+                    </div>
+
+                    <!-- Search Results -->
+                    <div class="skill-search-results d-none mb-3" data-form="edit">
+                        <div class="skill-search-list d-flex flex-wrap gap-2"></div>
+                    </div>
+
+                    <!-- Category Skills -->
+                    <div class="skill-category-box" data-form="edit">
+                        @php $requiredSkills = $jobTask->jobRequiredskills->pluck('id')->toArray(); @endphp
                         <nav>
-                            <div class="nav nav-pills" id="nav-tab" role="tablist">
-                                @foreach($skillCategories as $skillCategoryKey =>$skillCategory)
-                                    <button class="nav-link {{ $skillCategoryKey == 0 ? 'active' : '' }}" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#editskillCategory{{ $skillCategoryKey }}" type="button" role="tab" aria-controls="nav-home" aria-selected="true">{{ $skillCategory->category_name }}</button>
+                            <div class="nav nav-pills" role="tablist">
+                                @foreach($skillCategories as $skillCategoryKey => $skillCategory)
+                                    <button class="nav-link {{ $skillCategoryKey == 0 ? 'active' : '' }}" data-bs-toggle="tab" data-bs-target="#editSkillCat{{ $skillCategoryKey }}" type="button">{{ $skillCategory->category_name }}</button>
                                 @endforeach
-
-                                {{--                                                <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Skill </button>--}}
                             </div>
                         </nav>
-                        <div class="tab-content mt-3" id="nav-tabContent">
-                            @php
-                                $requiredSkills = $jobTask->jobRequiredskills->pluck('id')->toArray();
-                            @endphp
+                        <div class="tab-content mt-3">
                             @foreach($skillCategories as $x => $singleSkillCategory)
-                                <div class="tab-pane fade {{ $x == 0 ? 'show active' : '' }}" id="editskillCategory{{$x}}" role="tabpanel" aria-labelledby="nav-home-tab" tabindex="0">
-                                    @foreach($singleSkillCategory->publishedSkills as $skillKey => $skill)
-                                    @php
-                                        $selected = false;
-                                        if (in_array($skill->id, $requiredSkills))
-                                            {
-                                                $selected = true;
-                                            }
-                                    @endphp
-                                        <input type="checkbox" class="btn-check" name="required_skills[]" {{ $selected ? 'checked' : '' }}  id="editskill{{ $skill->id }}" value="{{ $skill->id }}" >
-                                        <label class="btn border select-skill p-2 {{ $selected ? 'selected-skill' : '' }}"  data-input-id="{{ $singleSkillCategory->slug }}-{{ $skillKey }}" for="editskill{{ $skill->id }}">{{ $skill->skill_name ?? 'sn' }}</label>
+                                <div class="tab-pane fade {{ $x == 0 ? 'show active' : '' }}" id="editSkillCat{{ $x }}">
+                                    @foreach($singleSkillCategory->publishedSkills as $skill)
+                                        <label class="btn border skill-btn m-1 {{ in_array($skill->id, $requiredSkills) ? 'selected-skill' : '' }}" data-id="{{ $skill->id }}" data-name="{{ $skill->skill_name }}">{{ $skill->skill_name }}</label>
                                     @endforeach
                                 </div>
                             @endforeach
@@ -237,6 +253,44 @@
                     </div>
                 </div>
             </div>
+
+{{--            <div class="container px-0 border-bottom">--}}
+{{--                <div style="border-radius: 0px" class="bg-white p-4 shadow-sm">--}}
+{{--                    <h6 class="fw-semibold mb-3">{{ trans('employer.skill_requirements') }}</h6>--}}
+{{--                    <div class="<!--d-flex flex-wrap gap-2-->">--}}
+
+{{--                        <nav>--}}
+{{--                            <div class="nav nav-pills" id="nav-tab" role="tablist">--}}
+{{--                                @foreach($skillCategories as $skillCategoryKey =>$skillCategory)--}}
+{{--                                    <button class="nav-link {{ $skillCategoryKey == 0 ? 'active' : '' }}" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#editskillCategory{{ $skillCategoryKey }}" type="button" role="tab" aria-controls="nav-home" aria-selected="true">{{ $skillCategory->category_name }}</button>--}}
+{{--                                @endforeach--}}
+
+{{--                                --}}{{--                                                <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Skill </button>--}}
+{{--                            </div>--}}
+{{--                        </nav>--}}
+{{--                        <div class="tab-content mt-3" id="nav-tabContent">--}}
+{{--                            @php--}}
+{{--                                $requiredSkills = $jobTask->jobRequiredskills->pluck('id')->toArray();--}}
+{{--                            @endphp--}}
+{{--                            @foreach($skillCategories as $x => $singleSkillCategory)--}}
+{{--                                <div class="tab-pane fade {{ $x == 0 ? 'show active' : '' }}" id="editskillCategory{{$x}}" role="tabpanel" aria-labelledby="nav-home-tab" tabindex="0">--}}
+{{--                                    @foreach($singleSkillCategory->publishedSkills as $skillKey => $skill)--}}
+{{--                                    @php--}}
+{{--                                        $selected = false;--}}
+{{--                                        if (in_array($skill->id, $requiredSkills))--}}
+{{--                                            {--}}
+{{--                                                $selected = true;--}}
+{{--                                            }--}}
+{{--                                    @endphp--}}
+{{--                                        <input type="checkbox" class="btn-check" name="required_skills[]" {{ $selected ? 'checked' : '' }}  id="editskill{{ $skill->id }}" value="{{ $skill->id }}" >--}}
+{{--                                        <label class="btn border select-skill p-2 {{ $selected ? 'selected-skill' : '' }}"  data-input-id="{{ $singleSkillCategory->slug }}-{{ $skillKey }}" for="editskill{{ $skill->id }}">{{ $skill->skill_name ?? 'sn' }}</label>--}}
+{{--                                    @endforeach--}}
+{{--                                </div>--}}
+{{--                            @endforeach--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
+{{--            </div>--}}
             <!-- Status -->
             <div class="container px-0 border-bottom">
                 <div style="border-radius: 0px" class="bg-white p-4 shadow-sm">

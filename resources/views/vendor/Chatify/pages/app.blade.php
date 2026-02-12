@@ -47,7 +47,49 @@
              </div>
         </div>
     </div>
-
+    <style>
+        .video-call-dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        .video-call-btn {
+            cursor: pointer;
+            background: transparent;
+        }
+        .video-dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            margin-top: 8px;
+            min-width: 160px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            list-style: none;
+            padding: 8px 0;
+            z-index: 1000;
+        }
+        .video-dropdown-menu.show {
+            display: block;
+        }
+        .video-dropdown-menu li a {
+            display: block;
+            padding: 10px 16px;
+            color: #333;
+            text-decoration: none;
+            font-size: 14px;
+            transition: background 0.2s;
+        }
+        .video-dropdown-menu li a:hover {
+            background: #f5f5f5;
+        }
+        .video-dropdown-menu li a i {
+            margin-right: 10px;
+            width: 16px;
+            text-align: center;
+        }
+    </style>
     {{-- ----------------------Messaging side---------------------- --}}
     <div class="messenger-messagingView">
         {{-- header title [conversation name] amd buttons --}}
@@ -62,10 +104,21 @@
                 </div>
                 {{-- header buttons --}}
                 <nav class="m-header-right">
-                    @if(auth()->user()->user_type == 'employer')
+                    @if(auth()->user()->user_type == 'employer' || auth()->user()->user_type == 'sub_employer')
 {{--                        <a href="{{ route('twilio.view') }}" target="_blank" class="bg-warning"><i class="fas fa-video"></i></a>--}}
                         <a href="javascript:void(0)"  onclick="makeAudioCall({{ $id }})" class="bg-warning"><i class="fas fa-phone"></i></a>
-                        <a href="javascript:void(0)"  onclick="makeVideoCall({{ $id }})" class="bg-warning"><i class="fas fa-video"></i></a>
+{{--                        <a href="javascript:void(0)"  onclick="makeVideoCall({{ $id }})" class="bg-warning"><i class="fas fa-video"></i></a>--}}
+                        <div class="video-call-dropdown">
+                            <a href="javascript:void(0)" class="bg-warning video-call-btn" onclick="toggleVideoDropdown(event)">
+                                <i class="fas fa-video"></i>
+                            </a>
+                            <ul class="video-dropdown-menu" id="videoDropdownMenu">
+                                <li><a href="javascript:void(0)" onclick="makeVideoCall({{ $id }}); closeVideoDropdown();"><i class="fas fa-user"></i> Single Call</a></li>
+                                <li><a href="javascript:void(0)" onclick="initiateGroupCall({{ $id }}); closeVideoDropdown();"><i
+                                            class="fas fa-users"></i> Group Call</a></li>
+                            </ul>
+                        </div>
+{{--                        <a href="javascript:void(0)"  onclick="makeVideoCall({{ $id }})" class="bg-warning"><i class="fas fa-video"></i></a>--}}
                         <!-- Add buttons container -->
 {{--                        <div id="call-buttons"></div>--}}
                     @endif
@@ -134,4 +187,100 @@
     function makeAudioCall(userId) {
         ZegoCloudCaller.initiateCall(userId, 'audio', csrfToken);
     }
+</script>
+
+<script>
+
+    // Video Call Dropdown Toggle
+    function toggleVideoDropdown(event) {
+        event.stopPropagation();
+        var menu = document.getElementById('videoDropdownMenu');
+        menu.classList.toggle('show');
+    }
+
+    function closeVideoDropdown() {
+        var menu = document.getElementById('videoDropdownMenu');
+        menu.classList.remove('show');
+    }
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function(event) {
+        var dropdown = document.querySelector('.video-call-dropdown');
+        var menu = document.getElementById('videoDropdownMenu');
+        if (dropdown && menu && !dropdown.contains(event.target)) {
+            menu.classList.remove('show');
+        }
+    });
+
+    // Initiate group call function
+    function initiateGroupCall(userId) {
+        if (!userId) {
+            showGroupCallNotification('Please select a user to call', 'error');
+            return;
+        }
+
+        // Show loading notification
+        showGroupCallNotification('Initiating group video call...', 'info');
+
+        fetch('/group-call/initiate', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': csrfToken
+            },
+            body: JSON.stringify({
+                receiver_id: userId,
+                call_type: 'video'
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                showGroupCallNotification('Call initiated! Opening call window...', 'success');
+                // Open group call page in new tab
+                window.open(data.room_url, '_blank');
+            } else {
+                showGroupCallNotification(data.error || 'Failed to initiate group call', 'error');
+            }
+        })
+        .catch(error => {
+            console.error('Error initiating group call:', error);
+            showGroupCallNotification('Failed to initiate group call. Please try again.', 'error');
+        });
+    }
+
+    // Show notification for group call
+    function showGroupCallNotification(message, type) {
+        const existing = document.querySelector('.group-call-notification');
+        if (existing) existing.remove();
+
+        const notification = document.createElement('div');
+        notification.className = 'group-call-notification';
+        notification.textContent = message;
+
+        const bgColor = type === 'error' ? '#ef4444' : type === 'success' ? '#10b981' : '#3b82f6';
+        notification.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 16px 24px;
+            background: ${bgColor};
+            color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            z-index: 100000;
+            font-size: 14px;
+            font-weight: 500;
+            max-width: 400px;
+        `;
+
+        document.body.appendChild(notification);
+
+        setTimeout(() => {
+            notification.style.opacity = '0';
+            notification.style.transition = 'opacity 0.3s';
+            setTimeout(() => notification.remove(), 300);
+        }, 3000);
+    }
+
 </script>

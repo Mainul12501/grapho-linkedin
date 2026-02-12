@@ -6,13 +6,13 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>{{ isset($siteSetting) ? $siteSetting->site_title : 'Grapho' }} - @yield('title')</title>
+    <title>{{ isset($siteSetting) ? $siteSetting->site_title : 'LikewiseBd' }} - @yield('title')</title>
     @include('frontend.employer.includes.assets.css')
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
         .site-base-color-bg {background-color: #FFCB11!important;}
         .drawer-menu a span {font-weight: bolder}
-        .drawer-menu a i {color: #FFCB11!important;}
+        /*.drawer-menu a i {color: #FFCB11!important;}*/
     </style>
 </head>
 
@@ -70,13 +70,13 @@
 
         <!-- Side Drawer -->
         <div class="side-drawer" id="sideDrawer">
-            <div class="drawer-header " style="background: #FFCB11!important;">
+            <div class="drawer-header bg-primary" style="background: rgba(var(--bs-primary-rgb),var(--bs-bg-opacity))!important; height: 55px;">
                 <h5 class="drawer-title">
                     <i class="fas fa-bars me-2"></i>{{--{{ trans('employee.options') }}--}} Menu
                 </h5>
                 <button class="drawer-close" id="closeDrawer">
                     {{--                <i class="fas fa-times"></i>--}}
-                    <img src="{{ asset('/frontend/close.png') }}" alt="close icon" style="max-height: 20px;">
+                    <img src="{{ asset('/frontend/close.png') }}" alt="close icon" style="max-height: 12px;">
                 </button>
             </div>
 
@@ -145,7 +145,7 @@
                 <span class="text-light-gray">{{ trans('home.home') }}</span>
             </a>
 
-            <a href="{{ route('employer.dashboard') }}" class="nav-link text-center flex-fill {{ request()->is('employer/dashboard') ? 'active' : '' }}">
+            <a href="{{ route('employer.dashboard', ['is_own' => 'true']) }}" class="nav-link text-center flex-fill {{ request()->is('employer/dashboard') ? 'active' : '' }}">
 {{--                <img src="{{ asset('/backend/assets/images/dashboard.png') }}" alt="" style="height: 22px">--}}
                 <img src="{{ asset('/frontend/employer/images/business.png') }}" alt="">
                 <span class="text-light-gray">{{ trans('home.dashboard') }}</span>
@@ -158,7 +158,8 @@
             </a>
 
             <a href="#" class="nav-link text-center flex-fill" id="openDrawer">
-                <img src="{{ asset('/frontend/employer/images/employersHome/Applicants.png') }}" alt="">
+{{--                <img src="{{ asset('/frontend/employer/images/employersHome/Applicants.png') }}" alt="">--}}
+                <img src="{{ asset('/frontend/menu.png') }}" alt="">
                 <span class="text-light-gray">{{--{{ trans('employee.options') }}--}} Menu</span>
             </a>
         </nav>
@@ -174,6 +175,7 @@
 @include('frontend.employer.includes.assets.js')
 <script src="https://js.pusher.com/7.2.0/pusher.min.js"></script>
 @include('frontend.zegocloud.incoming-call-popup')
+@include('frontend.zegocloud.group-call-incoming-popup')
 
 
 

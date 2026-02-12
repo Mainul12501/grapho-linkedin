@@ -17,7 +17,25 @@ class PostController extends Controller
      */
     public function index()
     {
-        return redirect(route('employer.home'));
+        if (ViewHelper::checkIfRequestFromApi())
+        {
+            $posts = Post::where(['user_id' => ViewHelper::loggedUser()->id])->with('employer')->latest()->paginate(10);
+//            if (str()->contains(url()->current(), '/api/'))
+//            {
+                foreach ($posts as $post)
+                {
+                    if (isset($post->images))
+                    {
+                        $post['image_array'] = json_decode($post->images);
+                    }
+                }
+//            }
+            $data = ['posts' => $posts];
+            return ViewHelper::checkViewForApi($data, 'frontend.employer.posts.index');
+        } else {
+            return redirect(route('employer.home'));
+        }
+
         $posts = Post::where(['user_id' => ViewHelper::loggedUser()->id])->latest()->get();
         if (str()->contains(url()->current(), '/api/'))
         {
@@ -41,7 +59,7 @@ class PostController extends Controller
     {
         if (ViewHelper::checkIfUserApprovedOrBlocked(auth()->user()))
         {
-            return ViewHelper::returnRedirectWithMessage(route('employer.dashboard'),  'error','Your account is blocked or has not approved yet. Please contact with Likewise.');
+            return ViewHelper::returnRedirectWithMessage(route('employer.dashboard', ['is_own' => 'true']),  'error','Your account is blocked or has not approved yet. Please contact with Likewise.');
         }
         return view('frontend.employer.posts.create', [
             'isShown'   => false,
@@ -55,7 +73,7 @@ class PostController extends Controller
     {
         if (ViewHelper::checkIfUserApprovedOrBlocked(auth()->user()))
         {
-            return ViewHelper::returnRedirectWithMessage(route('employer.dashboard'),  'error','Your account is blocked or has not approved yet. Please contact with Likewise.');
+            return ViewHelper::returnRedirectWithMessage(route('employer.dashboard', ['is_own' => 'true']),  'error','Your account is blocked or has not approved yet. Please contact with Likewise.');
         }
         $validator = Validator::make($request->all(), [
             'title' => 'required'
@@ -129,7 +147,7 @@ class PostController extends Controller
     {
         if (ViewHelper::checkIfUserApprovedOrBlocked(auth()->user()))
         {
-            return ViewHelper::returnRedirectWithMessage(route('employer.dashboard'),  'error','Your account is blocked or has not approved yet. Please contact with Likewise.');
+            return ViewHelper::returnRedirectWithMessage(route('employer.dashboard', ['is_own' => 'true']),  'error','Your account is blocked or has not approved yet. Please contact with Likewise.');
         }
         $data = [
             'isShown'   => false,
@@ -149,7 +167,7 @@ class PostController extends Controller
     {
         if (ViewHelper::checkIfUserApprovedOrBlocked(auth()->user()))
         {
-            return ViewHelper::returnRedirectWithMessage(route('employer.dashboard'),  'error','Your account is blocked or has not approved yet. Please contact with Likewise.');
+            return ViewHelper::returnRedirectWithMessage(route('employer.dashboard', ['is_own' => 'true']),  'error','Your account is blocked or has not approved yet. Please contact with Likewise.');
         }
         $validator = Validator::make($request->all(), [
             'title' => 'required'
@@ -165,7 +183,7 @@ class PostController extends Controller
             if ($post)
             {
                 Toastr::success('Post Updated successfully');
-                return redirect(route('employer.dashboard'));
+                return redirect(route('employer.dashboard', ['is_own' => 'true']));
             } else {
                 return ViewHelper::returEexceptionError('Something went wrong. Please try again.');
             }
@@ -182,7 +200,7 @@ class PostController extends Controller
     {
         if (ViewHelper::checkIfUserApprovedOrBlocked(auth()->user()))
         {
-            return ViewHelper::returnRedirectWithMessage(route('employer.dashboard'),  'error','Your account is blocked or has not approved yet. Please contact with Likewise.');
+            return ViewHelper::returnRedirectWithMessage(route('employer.dashboard', ['is_own' => 'true']),  'error','Your account is blocked or has not approved yet. Please contact with Likewise.');
         }
         $post->delete();
         return ViewHelper::returnSuccessMessage('Post Deleted successfully');

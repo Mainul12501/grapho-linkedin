@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Helpers\ViewHelper;
+use App\Helpers\FirebaseHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Backend\Advertisement;
 use App\Models\Backend\EmployerCompany;
@@ -48,13 +49,18 @@ class EmployerViewController extends Controller
         }
 
         $posts = $posts->with(['employer' => function ($query) {
-            $query->select('id', 'name', 'employer_company_id')
+            $query->select('id', 'name', 'employer_company_id', 'user_id')
                 ->with(['employerCompany' => function ($query) {
                     $query->select('id', 'name', 'logo');
                 }]);
         }])
-            ->take(10)
-            ->get();
+            ->take(10);
+        if (ViewHelper::checkIfRequestFromApi())
+        {
+            $posts  = $posts->paginate(20);
+        } else {
+            $posts  = $posts->get();
+        }
 
         $isApiRequest = false;
         if (str()->contains(url()->current(), '/api/'))
@@ -135,7 +141,7 @@ class EmployerViewController extends Controller
     {
         if (ViewHelper::checkIfUserApprovedOrBlocked(auth()->user()))
         {
-            return ViewHelper::returnRedirectWithMessage(route('employer.dashboard'),  'error','Your account is blocked or has not approved yet. Please contact with Likewise.');
+            return ViewHelper::returnRedirectWithMessage(route('employer.dashboard', ['is_own' => 'true']),  'error','Your account is blocked or has not approved yet. Please contact with Likewise.');
         }
         $loggedUser = ViewHelper::loggedUser();
         if ($loggedUser->user_type == 'employer')
@@ -144,23 +150,44 @@ class EmployerViewController extends Controller
             $jobUserId = $loggedUser->user_id;
         if ($request->has('job_status')) {
             if ($request->job_status == 'closed') {
-                $jobs = JobTask::where(['user_id' => $jobUserId, 'status' => 0])->latest()->where('is_softly_deleted', 0)->paginate(10);
+                $jobs = JobTask::where(['user_id' => $jobUserId, 'status' => 0])->with([
+                    'employerPrefferableUniversityNames:id,name',
+                    'employerPrefferableFieldOfStudyNames:id,field_name',
+                    'jobRequiredskills:id,skill_name,slug'
+                ])->latest()->where('is_softly_deleted', 0)->paginate(10);
             } else {
-                $jobs = JobTask::where(['user_id' => $jobUserId, 'status' => 1])->latest()->where('is_softly_deleted', 0)->paginate(10);
+                $jobs = JobTask::where(['user_id' => $jobUserId, 'status' => 1])->with([
+                    'employerPrefferableUniversityNames:id,name',
+                    'employerPrefferableFieldOfStudyNames:id,field_name',
+                    'jobRequiredskills:id,skill_name,slug'
+                ])->latest()->where('is_softly_deleted', 0)->paginate(10);
             }
         } elseif (isset($request->search_text)) {
             $jobs = JobTask::where([
                 'user_id' => $jobUserId,
                 'status' => 1,
 
-            ])->where('job_title', 'LIKE', "%{$request->search_text}%")->latest()->where('is_softly_deleted', 0)->paginate(10);
+            ])->where('job_title', 'LIKE', "%{$request->search_text}%")->with([
+                'employerPrefferableUniversityNames:id,name',
+                'employerPrefferableFieldOfStudyNames:id,field_name',
+                'jobRequiredskills:id,skill_name,slug'
+            ])->latest()->where('is_softly_deleted', 0)->paginate(10);
         } else {
-            $jobs = JobTask::where(['user_id' => $jobUserId, 'status' => 1])->latest()->where('is_softly_deleted', 0)->paginate(10);
+            $jobs = JobTask::where(['user_id' => $jobUserId, 'status' => 1])->with([
+                'employerPrefferableUniversityNames:id,name',
+                'employerPrefferableFieldOfStudyNames:id,field_name',
+                'jobRequiredskills:id,skill_name,slug'
+            ])->latest()->where('is_softly_deleted', 0)->paginate(10);
         }
+
         if (ViewHelper::checkIfRequestFromApi()) {
-            foreach ($jobs as $job) {
+//            foreach ($jobs as $job) {
+//                $job->total_applicants = $job->employeeAppliedJobs()->count();
+//            }
+            $jobs->getCollection()->transform(function ($job) {
                 $job->total_applicants = $job->employeeAppliedJobs()->count();
-            }
+                return $job;
+            });
         }
         $data = [
             'jobTypes' => JobType::where(['status' => 1])->get(['id', 'name']),
@@ -181,7 +208,7 @@ class EmployerViewController extends Controller
     {
         if (ViewHelper::checkIfUserApprovedOrBlocked(auth()->user()))
         {
-            return ViewHelper::returnRedirectWithMessage(route('employer.dashboard'),  'error','Your account is blocked or has not approved yet. Please contact with Likewise.');
+            return ViewHelper::returnRedirectWithMessage(route('employer.dashboard', ['is_own' => 'true']),  'error','Your account is blocked or has not approved yet. Please contact with Likewise.');
         }
         $jobTasks = JobTask::where(['user_id' => ViewHelper::loggedUser()->id, 'status' => 1])->where('is_softly_deleted', 0)->get(['id', 'job_title']);
         if (ViewHelper::checkIfRequestFromApi()) {
@@ -223,7 +250,7 @@ class EmployerViewController extends Controller
     {
         if (ViewHelper::checkIfUserApprovedOrBlocked(auth()->user()))
         {
-            return ViewHelper::returnRedirectWithMessage(route('employer.dashboard'),  'error','Your account is blocked or has not approved yet. Please contact with Likewise.');
+            return ViewHelper::returnRedirectWithMessage(route('employer.dashboard', ['is_own' => 'true']),  'error','Your account is blocked or has not approved yet. Please contact with Likewise.');
         }
         $employees = User::query()->with([
             'universityName' => function ($universityName) {
@@ -459,6 +486,9 @@ class EmployerViewController extends Controller
                     $newProfileView->viewed_by = 'employer';
                     $newProfileView->employer_company_id = $loggedUser?->employerCompany?->id;
                     $newProfileView->save();
+
+                    // Send Firebase push notification to the viewed user's mobile device
+                    FirebaseHelper::sendProfileViewNotification($userId, $loggedUser->name, $loggedUser->id);
                 }
             }
             $webNotification = new WebNotification();
@@ -467,6 +497,8 @@ class EmployerViewController extends Controller
             $webNotification->notification_type = 'view_profile';
             $webNotification->msg = "$loggedUser->name have viewed your profile.";
             $webNotification->save();
+
+
         }
         $employee = User::with('employeeEducations', 'employeeDocuments', 'employeeWorkExperiences')->find($userId);
         return ViewHelper::returnBackViewAndSendDataForApiAndAjax(['employeeDetails' => $employee], 'frontend.employer.profile.employer-profile');
@@ -525,6 +557,17 @@ class EmployerViewController extends Controller
                     return $post;
                 });
 
+            if (ViewHelper::checkIfRequestFromApi())
+            {
+                foreach ($posts as $post)
+                {
+                    if (isset($post->images))
+                    {
+                        $post['image_path'] =  json_decode($post->images);
+                    }
+                }
+            }
+
 // Merge and sort
             $merged = $jobTasks->concat($posts)->sortByDesc('created_at')->values();
 
@@ -542,7 +585,13 @@ class EmployerViewController extends Controller
             );
         } else {
             $companyDetails = EmployerCompany::where(['user_id' => ViewHelper::loggedUser()->id])->first();
-            $paginatedData = null;
+            $paginatedData = new \Illuminate\Pagination\LengthAwarePaginator(
+                collect([]),
+                0,
+                10,
+                1,
+                ['path' => request()->url(), 'query' => request()->query()]
+            );
         }
         $this->data = [
             'paginatedData' => $paginatedData,
@@ -552,6 +601,38 @@ class EmployerViewController extends Controller
             'industries' => Industry::where(['status' => 1])->get(['id', 'name']),
             'employerCompanyCategories' => EmployerCompanyCategory::where(['status' => 1])->get(['id', 'category_name']),
         ];
+//        if ($request->ajax()) {
+//            return view('frontend.employer.home.activity-content', $this->data)->render();
+//        }
+        if ($request->ajax()) {
+
+            // 🔹 FIRST PAGE & EMPTY → allow empty message
+            if ($paginatedData->isEmpty() && $request->get('page', 1) == 1) {
+                return response()->json([
+                    'html' => view('frontend.employer.home.activity-content', compact('paginatedData'))->render(),
+                    'empty' => true,
+                    'first_page' => true
+                ]);
+            }
+
+            // 🔹 SCROLL PAGE & EMPTY → NO HTML
+            if ($paginatedData->isEmpty()) {
+                return response()->json([
+                    'html' => '',
+                    'empty' => true,
+                    'first_page' => false
+                ]);
+            }
+
+            // 🔹 Normal data
+            return response()->json([
+                'html' => view('frontend.employer.home.activity-content', compact('paginatedData'))->render(),
+                'empty' => false
+            ]);
+        }
+
+
+
         return ViewHelper::checkViewForApi($this->data, 'frontend.employer.config.company-profile');
         return view('frontend.employer.config.company-profile');
     }
@@ -593,6 +674,8 @@ class EmployerViewController extends Controller
             $appliedJob->status = $status;
             $appliedJob->save();
 
+             // send notification to firebase
+            FirebaseHelper::sendCustomNotification($user->id, 'Job status changed', "$loggedUser->name has updated your job: $jobTask->job_title status to $status.", 'new_message');
 
             $webNotification = new WebNotification();
             $webNotification->viewer_id = $loggedUser->id;
@@ -702,6 +785,15 @@ After careful consideration, we regret to inform you that we have decided to mov
             }
             $company->save();
             $user->is_profile_updated = $request->is_profile_updated ?? $user->is_profile_updated;
+
+//            later custom made
+            $user->mobile = $request->phone ?? $user->phone;
+            $user->email = $request->email ?? $user->email;
+            $user->name = $company->name ?? $user->email;
+            $user->employer_company_id = $company->id ?? $user->employer_company_id;
+            if ($request->hasFile('logo')) {
+                $user->profile_image = $company->logo ?? $user->profile_image;
+            }
             $user->save();
             return ViewHelper::returnSuccessMessage('Company information updated successfully');
 
@@ -736,6 +828,9 @@ After careful consideration, we regret to inform you that we have decided to mov
             $subUser->employer_company_id = $user->employer_company_id;
             $subUser->organization_name = $user->organization_name;
             $subUser->employer_agent_active_status = 'active';
+            $subUser->is_approved   = 1;
+            $subUser->is_profile_updated   = 1;
+            $subUser->zego_caller_id   = uniqid();
             $subUser->save();
             $subUser->roles()->sync(5);
             return ViewHelper::returnSuccessMessage('Sub Employer created successfully');
@@ -841,8 +936,8 @@ After careful consideration, we regret to inform you that we have decided to mov
             'newNotifications' => $newNotifications,
 
         ];
-        return ViewHelper::checkViewForApi($data, 'frontend.employee.base-functionalities.my-notifications');
-        return \view('frontend.employee.base-functionalities.my-notifications');
+        return ViewHelper::checkViewForApi($data, 'frontend.employer.profile.my-notifications');
+        return \view('frontend.employer.profile.my-notifications');
     }
 
     public function employeeSuggestions()

@@ -72,28 +72,35 @@
 
                             </div>
 
-                            <ul class="list-unstyled mb-0 d-block d-md-none">
-                                <li class="mb-3 d-flex align-items-center gap-3">
-                                    <img src="{{ asset('/') }}frontend/employer/images/employersHome/profile location.png" alt="">
-                                    <div>
-                                        <small class="fw-bold d-block">{{ trans('common.location') }}</small>
-                                        {{ $employeeDetails->location ?? 'Ex: Dhaka, Bangladesh' }}
-                                    </div>
-                                </li>
-                                <li class="mb-3 d-flex align-items-center gap-3">
-                                    <img src="{{ asset('/') }}frontend/employer/images/employersHome/profile mail.png" alt="">
-                                    <div>
-                                        <small class="fw-bold d-block">{{ trans('common.email') }}</small>
-                                        <a href="mailto:md.pranto@gmail.com" class="text-decoration-none">{{ $employeeDetails->email ?? 'email@gmail.com' }}</a>
-                                    </div>
-                                </li>
-                                <li class="mb-3 d-flex align-items-center gap-3">
-                                    <img src="{{ asset('/') }}frontend/employer/images/employersHome/profile phone.png" alt="">
-                                    <div>
-                                        <small class="fw-bold d-block">{{ trans('common.phone') }}</small>
-                                        {{ $employeeDetails->mobile ?? 'Ex: +880 123 456 7890' }}
-                                    </div>
-                                </li>
+                            <ul class="list-unstyled mb-0 d-block <!--d-md-none-->">
+                                @if(isset($employeeDetails->address))
+                                    <li class="mb-3 d-flex align-items-center gap-3">
+                                        <img src="{{ asset('/') }}frontend/employer/images/employersHome/profile location.png" alt="">
+                                        <div>
+                                            <small class="fw-bold d-block">{{ trans('common.location') }}</small>
+                                            {{ $employeeDetails->address ?? 'Ex: Dhaka, Bangladesh' }}
+                                        </div>
+                                    </li>
+                                @endif
+                                @if($employeeDetails->email)
+                                        <li class="mb-3 d-flex align-items-center gap-3">
+                                            <img src="{{ asset('/') }}frontend/employer/images/employersHome/profile mail.png" alt="">
+                                            <div>
+                                                <small class="fw-bold d-block">{{ trans('common.email') }}</small>
+                                                <a href="mailto:md.pranto@gmail.com" class="text-decoration-none">{{ $employeeDetails->email ?? '' }}</a>
+                                            </div>
+                                        </li>
+                                @endif
+
+                                @if($employeeDetails->mobile)
+                                        <li class="mb-3 d-flex align-items-center gap-3">
+                                            <img src="{{ asset('/') }}frontend/employer/images/employersHome/profile phone.png" alt="">
+                                            <div>
+                                                <small class="fw-bold d-block">{{ trans('common.phone') }}</small>
+                                                {{ $employeeDetails->mobile ?? '' }}
+                                            </div>
+                                        </li>
+                                @endif
                                 {{--                                <li class="d-flex align-items-center gap-3">--}}
                                 {{--                                    <img src="{{ asset('/') }}frontend/employer/images/employersHome/profile website.png" alt="">--}}
                                 {{--                                    <div>--}}
@@ -128,7 +135,7 @@
                                             <h6 class="mb-0 fw-bold">{{ $workExperience->position ?? 'Officer' }}</h6>
                                             <small class="text-muted">{{ $workExperience->company_name }} &bull; {{ $workExperience->job_type ?? 'Full Time' }}</small><br />
                                             <small class="text-muted">{{ $workExperience->is_working_currently == 1 ? (\Illuminate\Support\Carbon::parse($workExperience->start_date)->format('M Y') ?? 'Jan 1971').' - Present' : (\Illuminate\Support\Carbon::parse($workExperience->start_date)->format('M Y') ?? 'Jan 2025').' - '.(\Illuminate\Support\Carbon::parse($workExperience->end_date)->format('M Y') ?? 'Jan 2025') }} &bull; {{ $workExperience->duration ?? '0 Years' }}</small><br />
-                                            <small class="text-muted">{{ $workExperience->office_address ?? 'Dhaka, Bangladesh' }}</small>
+                                            <small class="text-muted">{{ $workExperience->office_address ?? ' Bangladesh' }}</small>
 
                                             <p class="mb-1 fw-semibold mt-2">Job Summary:</p>
                                             <div>
@@ -152,7 +159,8 @@
                             @forelse($employeeDetails->employeeEducations as $education)
                                 <div class="card p-4 shadow-sm rounded-3" style="border-radius: 0px!important;">
                                     <div class="d-flex align-items-start mb-3 gap-3">
-                                        <img src="{{ asset( $education?->universityName?->logo ?? (isset($siteSetting) ? $siteSetting->common_institute_logo : '/frontend/book.png')) }}" alt="institute Logo" style=" object-fit: contain; border-radius: 50%; height: 45px; width: 60px"   />
+{{--                                        <img src="{{ asset( $education?->universityName?->logo ?? (isset($siteSetting) ? $siteSetting->common_institute_logo : '/frontend/book.png')) }}" alt="institute Logo" style=" object-fit: contain; border-radius: 50%; height: 45px; width: 60px"   />--}}
+                                        <img src="{{ asset( '/frontend/book.png') }}" alt="institute Logo" style=" object-fit: contain; border-radius: 50%; height: 45px; width: 60px"   />
                                         <div>
                                             <h6 class="mb-0 fw-bold">{{ $education?->institute_name ?? 'Institute Name' }}</h6>
                                             <small class="text-muted">{{ $education?->educationDegreeName?->degree_name ?? 'Degree Name' }} - {{ $education?->field_of_study ?? '' }} &bull; CGPA {{ $education->cgpa ?? 0 }}</small><br />                                            <small class="text-muted">Jan 2017 - Jul 2024</small><br />

@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="author" content="Your Name" />
     {!! $siteSetting->meta_header ?? '' !!}
-    <title>{{ isset($siteSetting) ? $siteSetting->site_title : 'Grapho' }} - @yield('title')</title>
+    <title>{{ isset($siteSetting) ? $siteSetting->site_title : 'LikewiseBd' }} - @yield('title')</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- Favicon -->
     <link rel="icon" href="{{ isset($siteSetting) ? $siteSetting->site_title : asset('/frontend/employee/images/Logo icon.png') }}" type="image/x-icon" />
@@ -92,8 +92,8 @@
         }
 
         .employee-mobile-drawer .bottom-nav .active a {
-            /*color: #0d6efd;*/
-            color: #FFCB11;
+            color: #0d6efd;
+            /*color: #FFCB11;*/
             font-weight: 600;
         }
 
@@ -110,14 +110,14 @@
             transform: translateX(-50%);
             width: 40px;
             height: 3px;
-            /*background: #0d6efd;*/
-            background: #FFCB11;
+            background: #0d6efd;
+            /*background: #FFCB11;*/
             border-radius: 0 0 3px 3px;
         }
 
         .employee-mobile-drawer .bottom-nav a:hover {
-            /*color: #0d6efd;*/
-            color: #FFCB11;
+            color: #0d6efd;
+            /*color: #FFCB11;*/
         }
 
         .employee-mobile-drawer .bottom-nav a:hover img {
@@ -160,12 +160,16 @@
             right: -100%;
             width: 320px;
             max-width: 85vw;
-            height: 100vh;
+            /*height: 100vh;*/
+            height: 100dvh; /* Dynamic viewport height for mobile */
             background: #ffffff;
             box-shadow: -8px 0 30px rgba(0,0,0,0.25);
             transition: right 0.35s cubic-bezier(0.4, 0, 0.2, 1);
             z-index: 1050;
-            overflow-y: auto;
+            overflow-y: scroll; /* Changed from auto to scroll */
+            -webkit-overflow-scrolling: touch; /* Momentum scrolling on iOS */
+            overscroll-behavior: contain; /* Prevent scroll chaining */
+            touch-action: pan-y; /* Enable vertical touch scrolling */
             display: flex;
             flex-direction: column;
         }
@@ -260,10 +264,10 @@
 
         .employee-mobile-drawer .drawer-item:hover {
             background: #f8f9fa;
-            /*border-left-color: #0d6efd;*/
-            border-left-color: #FFCB11;
-            /*color: #0d6efd;*/
-            color: #FFCB11;
+            border-left-color: #0d6efd;
+            /*border-left-color: #FFCB11;*/
+            color: #0d6efd;
+            /*color: #FFCB11;*/
         }
 
         .employee-mobile-drawer .drawer-item:hover::before {
@@ -376,7 +380,23 @@
 
         /*mobile menu color fix*/
         .drawer-menu a {font-weight: bolder;}
-        .employee-mobile-drawer .drawer-item i {color: #FFCB11!important;}
+        /*.employee-mobile-drawer .drawer-item i {color: #FFCB11!important;}*/
+
+        @media screen and (max-width: 991px) {
+            .desktop-logo {max-width: 80px}
+        }
+
+
+        /* Fix header layout for tablet/medium screens (768px - 1200px) */
+        @media (min-width: 768px) and (max-width: 1400px) {
+            .search-bar {
+                display: none !important;
+            }
+
+            header.d-flex {
+                flex-wrap: nowrap !important;
+            }
+        }
     </style>
     @yield('style')
     @stack('style')
@@ -396,9 +416,9 @@
 
     <!-- Side Drawer -->
     <div class="side-drawer" id="sideDrawer" >
-        <div class="drawer-header" style="background: #FFCB11!important;">
+        <div class="drawer-header" style="">
             <h5 class="drawer-title">
-                <i class="fas fa-user-circle"></i>
+                <i class="fa-solid fa-bars"></i>
                 Menu
             </h5>
             <button class="drawer-close" id="closeDrawer">
@@ -487,7 +507,8 @@
 
         <div class="text-center mobileInbox">
             <a href="#" id="openDrawer">
-                <img src="{{ asset('/frontend/employee/images/header images/MobileMessageIcon.png') }}" alt="Options" />
+{{--                <img src="{{ asset('/frontend/employee/images/header images/MobileMessageIcon.png') }}" alt="Options" />--}}
+                <i class="fa-solid fa-bars fa-2x"></i>
                 <span class="mt-1">Menu</span>
             </a>
         </div>
@@ -518,6 +539,7 @@
 {{--include zigo-cloud popup blade--}}
 <script src="https://js.pusher.com/7.2.0/pusher.min.js"></script>
 @include('frontend.zegocloud.incoming-call-popup')
+@include('frontend.zegocloud.group-call-incoming-popup')
 
 <script>
     {{--var base_url = "{{ url('/') }}"+'/';--}}

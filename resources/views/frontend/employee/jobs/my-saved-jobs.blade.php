@@ -78,7 +78,7 @@
                                         @if(!$savedJob['isApplied']['isApplied'])
                                             <form action="{{ route('employee.apply-job', $savedJob->id) }}" method="post">
                                                 @csrf
-                                                <button type="submit" class="btn">{{ trans('employee.easy_apply') }}</button>
+                                                <button type="submit" class="btn show-apply-model"  data-job-id="{{ $savedJob->id }}" data-job-company-logo="{{ asset($savedJob?->employerCompany?->logo) ?? '' }}" >{{ trans('employee.easy_apply') }}</button>
                                             </form>
                                         @endif
                                     @endif
@@ -168,7 +168,36 @@
 
     </div>
 
+    <div class="easy-apply-modal" id="easyApplyModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                {{--                <img src="images/contentImages/notificationImage.png" alt="Company Logo" class="modal-image" />--}}
+                <div>
+                    <div class="images-container">
+                        <!-- User Profile Image -->
+                        <img src="{{ asset( auth()->user()->profile_image ?? '/frontend/user-vector-img.jpg') }}" alt="Your Profile" class="user-image" />
 
+                        <!-- Arrow Icon -->
+                        <div class="arrow-icon">
+                            <i class="fas fa-arrow-right"></i>
+                        </div>
+
+                        <!-- Company Logo -->
+                        <img src="https://img.freepik.com/free-photo/horizontal-shot-handsome-young-guy-with-blue-eyes-bristle-has-positive-expression_273609-2960.jpg" alt="Company Logo" class="company-image" />
+                    </div>
+                </div>
+                <h2>{{ trans('common.share_your_profile') }}</h2>
+            </div>
+            <p class="modal-description">{{ trans('common.to_apply_share_profile') }}</p>
+            <div class="modal-buttons">
+                <form action="" method="post" id="applyShareForm">
+                    @csrf
+                    <button class="share-profile-btn w-100 mb-2" {{-- onclick="shareProfile()"--}} type="submit">{{ trans('common.share_my_profile') }}</button>
+                </form>
+                <button class="cancel-btn w-100" onclick="closeEasyApplyModal()">{{ trans('common.cancel') }}</button>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @section('modal')
@@ -193,6 +222,128 @@
     </div>
 
 @endsection
+
+@push('style')
+    <style>
+        .swal2-confirm  {background-color: #FFCB11!important; color: black}
+        .swal2-cancel  {background-color: #0d6efd!important;}
+        .images-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            margin-bottom: 1.5rem;
+            height: 100px;
+        }
+
+        .user-image {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid white;
+            background-color: white;
+            position: relative;
+            z-index: 3;
+        }
+
+        .company-image {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 4px solid white;
+            background-color: white;
+            position: relative;
+            z-index: 1;
+            margin-left: -25px;
+        }
+
+        .pill-shape {
+            width: 60px;
+            height: 30px;
+            background: linear-gradient(135deg, #ff4757 0%, #ff3742 100%);
+            border-radius: 15px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .pill-shape::before {
+            content: '';
+            position: absolute;
+            top: 6px;
+            left: 6px;
+            width: 48px;
+            height: 18px;
+            background: linear-gradient(135deg, #ff6b7d 0%, #ff4757 100%);
+            border-radius: 12px;
+        }
+
+        .arrow-icon {
+            background-color: #ffd32a;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            color: #000;
+            position: absolute;
+            z-index: 4;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            border: 2px solid white;
+        }
+
+        .modal-description {
+            text-align: center;
+            color: #6c757d;
+            margin-bottom: 2rem;
+            font-size: 0.95rem;
+        }
+
+        .share-profile-btn {
+            background-color: #0d6efd;
+            border: none;
+            color: white;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: background-color 0.2s;
+        }
+
+        .share-profile-btn:hover {
+            background-color: #0b5ed7;
+        }
+
+        .cancel-btn {
+            background-color: transparent;
+            border: 2px solid #dee2e6;
+            color: #6c757d;
+            padding: 10px;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .cancel-btn:hover {
+            border-color: #adb5bd;
+            color: #495057;
+        }
+        .easy-apply-modal .modal-buttons button:hover {
+            /*background-color: #0033a0;*/
+            color: white;
+        }
+        .modal .job-type {margin-bottom: 10px}
+        .share-profile-btn {background-color: #ffcb11 !important}
+        .easy-apply-modal .cancel-btn {background-color: #0d6efd !important; color: white;}
+    </style>
+@endpush
+
 
 @push('script')
 {{--    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.22.0/dist/sweetalert2.min.css" rel="stylesheet">--}}
@@ -238,4 +389,19 @@
             });
         })
     </script>
+
+<script>
+    $(document).on('click', '.show-apply-model', function (){
+        event.preventDefault();
+        var applyModal = $('#easyApplyModal');
+        var jobId = $(this).attr('data-job-id');
+        var companyLogo = $(this).attr('data-job-company-logo');
+        var applyFormUrl = base_url+'employee/apply-job/'+jobId;
+        $('.company-image').attr('src', companyLogo);
+        $('#applyShareForm').attr('action', applyFormUrl);
+        applyModal.css({
+            display: "flex"
+        });
+    })
+</script>
 @endpush

@@ -53,10 +53,10 @@
                     <input type="hidden" name="is_profile_updated" value="1" >
                     <div class="grid grid-1">
                         <div class="">
-                            <div class="grid-gap-y"><label>Title </label><input name="profile_title" type="text" placeholder="Mobile App Developer" value="{{ $loggedUser->profile_title ?? '' }}"  /></div>
-                            <div class="grid-gap-y"><label>Name <span style="color: red">*</span></label><input name="name" type="email" value="{{ $loggedUser->name ?? '' }}" placeholder="Jhon Doe" required /></div>
+                            <div class="grid-gap-y"><label>Profile Title </label><input name="profile_title" type="text" placeholder="Write Profile Title here" value="{{ $loggedUser->profile_title ?? '' }}"  /></div>
+                            <div class="grid-gap-y"><label>Name <span style="color: red">*</span></label><input name="name" type="text" value="{{ $loggedUser->name ?? '' }}" placeholder="Jhon Doe" required /></div>
                             <div class="grid-gap-y"><label>Email <span style="color: red">*</span></label><input readonly name="email" type="email" value="{{ $loggedUser->email ?? '' }}" required /></div>
-                            <div class="grid-gap-y"><label>Phone <span style="color: red">*</span></label><input readonly name="mobile" type="tel" value="{{ $loggedUser->mobile }}" /></div>
+                            <div class="grid-gap-y"><label>Phone <span style="color: red">*</span></label><input {{ isset($loggedUser->mobile) ? 'readonly' : '' }} name="mobile" type="tel" value="{{ $loggedUser->mobile }}" /></div>
                             <div class="grid-gap-y"><label>{{ trans('employee.gender') }}</label><select name="gender" id="">
                                     <option value="male">{{ trans('employee.male') }}</option><option value="female">{{ trans('employee.female') }}</option></select></div>
                             <div class="grid-gap-y"><label>Address</label><input name="address" type="text" value="{{ $loggedUser->address ?? '' }}" /></div>
@@ -105,24 +105,41 @@
                             </div>
                             <div id="universityDiv">
                                 <div class="grid-gap-y"><label>{{ trans('employee.name_of_institution') }} <span style="color: red">*</span></label>
-                                    <input type="text" class="form-control" required name="institute_name" id="instituteName" placeholder="{{ trans('employer.type_here') }}" />
-{{--                                    <select name="university_name_id" class="form-control select2" id="">--}}
-{{--                                        <option selected disabled>Select University</option>--}}
-{{--                                        @foreach($universityNames as $universityName)--}}
-{{--                                            <option value="{{ $universityName->id }}">{{ $universityName->name }}</option>--}}
-{{--                                        @endforeach--}}
-{{--                                    </select>--}}
-                                </div>
-                                <div class="grid-gap-y"><label>{{ trans('employee.background_field_of_study') }} <span style="color: red">*</span></label>
-                                    <input type="text" class="form-control" name="field_of_study" required id="fieldOfStudyInput" placeholder="{{ trans('employer.type_here') }}" />
-{{--                                    <select name="field_of_study_id" class="form-control select2" id="">--}}
-{{--                                        <option selected disabled>Select Field of Study</option>--}}
-{{--                                        @foreach($fieldOfStudies as $fieldOfStudy)--}}
-{{--                                            <option value="{{ $fieldOfStudy->id }}">{{ $fieldOfStudy->field_name }}</option>--}}
-{{--                                        @endforeach--}}
-{{--                                    </select>--}}
+                                    <div id="universitySelectWrapper">
+                                        <select name="institute_name" class="form-control select2-custom" id="universitySelect" required>
+{{--                                            <option value="" selected disabled>Select University</option>--}}
+                                            @foreach($universityNames as $universityName)
+                                                <option value="{{ $universityName->name }}">{{ $universityName->name }}</option>
+                                            @endforeach
+                                        </select>
+                                        <a href="javascript:void(0)" id="notListedLink" style="display: inline-block; margin-top: 5px; font-size: 13px; color: #0d6efd;">Not listed here?</a>
+                                    </div>
+                                    <div id="instituteInputWrapper" style="display: none;">
+                                        <input type="text" class="form-control" name="institute_name" id="instituteNameInput" placeholder="{{ trans('employer.type_here') }}" />
+                                        <a href="javascript:void(0)" id="backToUniversityList" style="display: inline-block; margin-top: 5px; font-size: 13px; color: #0d6efd;">← Back to university list</a>
+                                    </div>
                                 </div>
                             </div>
+{{--                            <div id="universityDiv">--}}
+{{--                                <div class="grid-gap-y"><label>{{ trans('employee.name_of_institution') }} <span style="color: red">*</span></label>--}}
+{{--                                    <select name="institute_name" class="form-control select2" id="">--}}
+{{--                                        <option selected disabled>Select University</option>--}}
+{{--                                        @foreach($universityNames as $universityName)--}}
+{{--                                            <option value="{{ $universityName->name }}">{{ $universityName->name }}</option>--}}
+{{--                                        @endforeach--}}
+{{--                                    </select>--}}
+{{--                                    <input type="text" class="form-control" required name="institute_name" id="instituteName" placeholder="{{ trans('employer.type_here') }}" />--}}
+{{--                                </div>--}}
+                                <div class="grid-gap-y"><label>{{ trans('employee.background_field_of_study') }} <span style="color: red">*</span></label>
+{{--                                    <input type="text" class="form-control" name="field_of_study" required id="fieldOfStudyInput" placeholder="{{ trans('employer.type_here') }}" />--}}
+                                    <select name="field_of_study_id" class="form-control select2-custom" id="fieldOfStudeyEmployee">
+                                        <option selected disabled>Select Field of Study</option>
+                                        @foreach($fieldOfStudies as $fieldOfStudy)
+                                            <option value="{{ $fieldOfStudy->id }}">{{ $fieldOfStudy->field_name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+{{--                            </div>--}}
 
                             <div class="grid-gap-y"><label>{{ trans('employee.passing_year') }} <span style="color: red">*</span></label><input required name="passing_year" type="text" /></div>
                             <div class="grid-gap-y"><label for="cgpaInput">{{ trans('employee.cgpa') }} <span style="color: red">*</span></label><input name="cgpa" type="text" required id="cgpaInput" /></div>
@@ -170,10 +187,10 @@
                                 {{--                        <option>July</option><option>August</option><option>September</option>--}}
                                 {{--                        <option>October</option><option>November</option><option>December</option>--}}
                                 {{--                    </select>--}}
-                                <input type="date" class="datepicker form-control" id="datepicker1" name="start_date" required>
+                                <input type="date" class="datepicker form-control" id="datepicker1" max="{{ date('Y-m-d') }}" name="start_date" required>
                             </div>
                             {{--                <div><label>Start year</label><select name="start_year" required><option value="">Year</option></select></div>--}}
-                            <div><label>{{ trans('employee.to') }} <span style="color: red">*</span></label><input name="end_date" required id="datepicker2" type="date" class="datepicker form-control" ></div>
+                            <div><label>{{ trans('employee.to') }} {{--<span style="color: red">*</span>--}}</label><input name="end_date" id="datepicker2" type="date" class="datepicker form-control" max="{{ date('Y-m-d') }}" ></div>
                         </div>
                         <div class="grid-gap-y"><label for="currentJobCheck"><input type="checkbox" id="currentJobCheck" name="is_working_currently" /> {{ trans('employee.i_currently_work_here') }}</label></div>
 
@@ -258,7 +275,7 @@
                             <input type="hidden" name="user_id" value="{{ $loggedUser->id ?? '' }}" id="userId">
                             <input type="hidden" name="is_profile_updated" value="1" >
                             <div class="mt-2"><label>Email <span style="color: red">*</span></label><input name="email" type="email" value="{{ $loggedUser->email ?? '' }}" required /></div>
-                            <div class="mt-2"><label>Phone <span style="color: red">*</span></label><input name="mobile" type="tel" value="{{ $loggedUser->mobile }}" /></div>
+                            <div class="mt-2"><label>Phone <span style="color: red">*</span></label><input name="phone" type="tel" value="{{ $loggedUser->mobile }}" /></div>
                             <div class="mt-2"><label>{{ trans('employer.logo') }} <span style="color: red">*</span></label><input name="logo" required type="file" accept="image/*" /></div>
                             <div class="mt-2 d-none">
                                 <label>{{ trans('employer.company_category') }}</label>
@@ -342,10 +359,13 @@
                                 <div class="row justify-content-center">
                                     <div class="col-md-6">
                                         <label for="workType" class="form-label">{{ trans('employee.you_are_looking_for') }}</label>
+                                        @php
+                                            $userJobTypeIds = $loggedUser->jobTypes->pluck('id')->toArray();
+                                        @endphp
                                         <select class="form-select-lg select2" name="job_type_id[]" multiple id="workType" required>
                                             <option value="" disabled>{{ trans('employee.choose_your_preference') }}</option>
                                             @foreach($jobTypes as $jobType)
-                                                <option value="{{ $jobType->id }}">{{ $jobType->name ?? '' }}</option>
+                                                <option value="{{ $jobType->id }}" {{ in_array($jobType->id, $userJobTypeIds) ? 'selected' : '' }} >{{ $jobType->name ?? '' }}</option>
                                             @endforeach
                                             {{--                                        <option value="parttime">Part-time</option>--}}
                                         </select>
@@ -362,14 +382,16 @@
                                     <h4>{{ trans('employee.where_prefer_to_work') }}</h4>
                                     <p class="text-muted">{{ trans('employee.select_work_location_preference') }}</p>
                                 </div>
-
+                                @php
+                                    $userLocationTypeIds = $loggedUser->jobLocationTypes->pluck('id')->toArray();
+                                @endphp
                                 <div class="row justify-content-center">
                                     <div class="col-md-6">
                                         <label for="workLocation" class="form-label">{{ trans('employee.interested_in') }}</label>
                                         <select class="form-select-lg select2" name="job_location_type_id[]" multiple id="workLocation" required>
                                             <option value="" disabled>{{ trans('employee.choose_your_preference') }}</option>
                                             @foreach($jobLocationTypes as $jobLocationType)
-                                                <option value="{{ $jobLocationType->id }}">{{ $jobLocationType->name ?? '' }}</option>
+                                                <option value="{{ $jobLocationType->id }}"  {{ in_array($jobLocationType->id, $userLocationTypeIds) ? 'selected' : '' }}>{{ $jobLocationType->name ?? '' }}</option>
                                             @endforeach
                                             {{--                                        <option value="onsite">On-site</option>--}}
                                         </select>
@@ -592,6 +614,7 @@
             border-radius: 5px!important;
         }
     }
+    .choices {margin-bottom: 0px!important;}
 </style>
 @endpush
 
@@ -601,6 +624,12 @@
     <script src="{{ asset('/frontend/employee/division-Districts-post-station/javascript.js') }}"></script>
     <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
 {{--    <script src="{{ asset('/common-assets/jquery-ui/jquery-ui.min.js') }}"></script>--}}
+
+{{--    select2 js--}}
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+
 
     <!-- select which modal will show first -->
     <script>
@@ -781,8 +810,56 @@
                         $('.datepicker').datepicker({
                             dateFormat: 'yy-mm-dd'
                         });
+
+                        @if($loggedUser->user_type == 'employee')
+                            if (idx == 1)
+                            {
+                                new Choices('#universitySelect', {
+                                    searchEnabled: true,
+                                    placeholder: true,
+                                    placeholderValue: 'Select University',
+                                    removeItemButton: true
+                                });
+                                new Choices('#fieldOfStudeyEmployee', {
+                                    searchEnabled: true,
+                                    placeholder: true,
+                                    placeholderValue: 'Select Field Of Study',
+                                    removeItemButton: true
+                                });
+                            }
+                        @endif
+
                     }, 100);
                 }
+
+
+                // body.innerHTML = '';
+                // const template = document.getElementById('step-' + idx);
+                // if (template) {
+                //     const clone = template.content.cloneNode(true);
+                //     body.appendChild(clone);
+                //
+                //     // Initialize datepicker after mounting
+                //     setTimeout(() => {
+                //         $('.datepicker').datepicker({
+                //             dateFormat: 'yy-mm-dd'
+                //         });
+                //     }, 100);
+                //
+                //     // Initialize Select2 on step 1 (Education)
+                //     if (idx === 1) {
+                //         setTimeout(() => {
+                //             $('#universitySelect').select2({
+                //                 placeholder: 'Select University',
+                //                 allowClear: true,
+                //                 width: '100%',
+                //                 dropdownParent: $('#modal')
+                //             });
+                //         }, 150);
+                //     }
+                // }
+
+
             }
 
             function showStep(idx) {
@@ -885,9 +962,38 @@
                     });
             });
 
+            function workValidateRequiredFields(formId) {
+                let isValid = true;
+
+                $('#' + formId).find('input[required], select[required], textarea[required]').each(function () {
+                    const $field = $(this);
+
+                    // Skip end_date if "currently working" is checked
+                    if ($field.attr('name') === 'end_date' && $('#currentJobCheck').is(':checked')) {
+                        $field.removeClass('is-invalid');
+                        return true;
+                    }
+
+                    let value = $.trim($field.val());
+
+                    if (!value) {
+                        isValid = false;
+                        $field.addClass('is-invalid');
+                    } else {
+                        $field.removeClass('is-invalid');
+                    }
+                });
+
+                return isValid;
+            }
+
             $(document).on('click', '#employeeWorkExpBtn', function(e) {
                 e.preventDefault();
-
+//              ❌ Stop if validation fails
+                if (!workValidateRequiredFields('form-work')) {
+                    toastr.error('Please fill all required fields');
+                    return;
+                }
                 var formData = new FormData($('#form-work')[0]);
 
                 sendAjaxRequest('employee/employee-work-experiences', 'POST', formData, this)
@@ -914,9 +1020,34 @@
                     });
             });
 
+            function educationValidateForm(formId) {
+                let isValid = true;
+
+                $('#' + formId).find('input[required], select[required]').each(function () {
+                    const $field = $(this);
+
+                    // Trim value for text inputs
+                    const value = $field.is('input')
+                        ? $.trim($field.val())
+                        : $field.val();
+
+                    if (!value) {
+                        isValid = false;
+                        $field.addClass('is-invalid');
+                    } else {
+                        $field.removeClass('is-invalid');
+                    }
+                });
+
+                return isValid;
+            }
+
             $(document).on('click', '#employeeEducationBtn', function(e) {
                 e.preventDefault();
-
+                if (!educationValidateForm('form-education')) {
+                    toastr.error('Please fill all required fields');
+                    return;
+                }
                 var formData = new FormData($('#form-education')[0]);
 
                 sendAjaxRequest('employee/employee-educations', 'POST', formData, this)
@@ -1305,6 +1436,122 @@
             }
         }
     </script>
+    <script>
+        // Toggle between university select and manual input
+        $(document).on('click', '#notListedLink', function() {
+            $('#universitySelectWrapper').hide();
+            $('#instituteInputWrapper').show();
+            $('#universitySelect').prop('disabled', true).removeAttr('required');
+            $('#instituteNameInput').prop('disabled', false).attr('required', true).val('').focus();
+        });
 
+        $(document).on('click', '#backToUniversityList', function() {
+            $('#instituteInputWrapper').hide();
+            $('#universitySelectWrapper').show();
+            $('#instituteNameInput').prop('disabled', true).removeAttr('required').val('');
+            $('#universitySelect').prop('disabled', false).attr('required', true).val('');
+        });
+
+    </script>
+
+{{--    select 2 test--}}
+{{--    <script>--}}
+{{--        // After loading step content into the modal--}}
+{{--        function loadStep(stepNumber) {--}}
+{{--            const template = document.getElementById(`step-${stepNumber}`);--}}
+{{--            const modalBody = document.getElementById('modalBody');--}}
+
+{{--            // Clone and insert template content--}}
+{{--            modalBody.innerHTML = template.innerHTML;--}}
+
+{{--            // NOW initialize Select2 on the newly inserted elements--}}
+{{--            $('.select2-custom').select2({--}}
+{{--                allowClear: true,--}}
+{{--                width: '100%',--}}
+{{--                placeholder: function() {--}}
+{{--                    return $(this).data('placeholder') || 'Select an option';--}}
+{{--                }--}}
+{{--            });--}}
+{{--        }--}}
+{{--    </script>--}}
+{{--    <script>--}}
+{{--        $(document).ready(function () {--}}
+{{--            // Initial initialization (for elements already in DOM)--}}
+{{--            initializeSelect2();--}}
+
+{{--            // Re-initialize when modal content changes--}}
+{{--            const observer = new MutationObserver(function(mutations) {--}}
+{{--                mutations.forEach(function(mutation) {--}}
+{{--                    if (mutation.addedNodes.length) {--}}
+{{--                        initializeSelect2();--}}
+{{--                    }--}}
+{{--                });--}}
+{{--            });--}}
+
+{{--            // Watch for changes in modal body--}}
+{{--            const modalBody = document.getElementById('modalBody');--}}
+{{--            if (modalBody) {--}}
+{{--                observer.observe(modalBody, { childList: true, subtree: true });--}}
+{{--            }--}}
+
+{{--            function initializeSelect2() {--}}
+{{--                // Destroy existing instances first--}}
+{{--                $('.select2-custom').each(function() {--}}
+{{--                    if ($(this).hasClass('select2-hidden-accessible')) {--}}
+{{--                        $(this).select2('destroy');--}}
+{{--                    }--}}
+{{--                });--}}
+
+{{--                // Initialize Select2--}}
+{{--                $('.select2-custom').select2({--}}
+{{--                    allowClear: true,--}}
+{{--                    width: '100%',--}}
+{{--                    dropdownParent: $('#modal'), // Important for modal context--}}
+{{--                    placeholder: 'Select an option'--}}
+{{--                });--}}
+{{--            }--}}
+
+{{--            // Handle the toggle between select and input--}}
+{{--            $(document).on('click', '#notListedLink', function() {--}}
+{{--                $('#universitySelectWrapper').hide();--}}
+{{--                $('#instituteInputWrapper').show();--}}
+{{--                $('#universitySelect').prop('required', false);--}}
+{{--                $('#instituteNameInput').prop('required', true);--}}
+{{--            });--}}
+
+{{--            $(document).on('click', '#backToUniversityList', function() {--}}
+{{--                $('#instituteInputWrapper').hide();--}}
+{{--                $('#universitySelectWrapper').show();--}}
+{{--                $('#instituteNameInput').prop('required', false);--}}
+{{--                $('#universitySelect').prop('required', true);--}}
+
+{{--                // Reinitialize Select2--}}
+{{--                $('#universitySelect').select2('destroy');--}}
+{{--                $('#universitySelect').select2({--}}
+{{--                    allowClear: true,--}}
+{{--                    width: '100%',--}}
+{{--                    dropdownParent: $('#modal'),--}}
+{{--                    placeholder: 'Select University'--}}
+{{--                });--}}
+{{--            });--}}
+
+{{--            // Also handle degree selection that shows/hides university div--}}
+{{--            $(document).on('change', 'select[name="education_degree_name_id"]', function() {--}}
+{{--                const needsInstitute = $(this).find(':selected').attr('has-institute-name');--}}
+{{--                if (needsInstitute === '1') {--}}
+{{--                    $('#universityDiv').show();--}}
+{{--                    // Reinitialize Select2 when showing--}}
+{{--                    $('#universitySelect').select2({--}}
+{{--                        allowClear: true,--}}
+{{--                        width: '100%',--}}
+{{--                        dropdownParent: $('#modal'),--}}
+{{--                        placeholder: 'Select University'--}}
+{{--                    });--}}
+{{--                } else {--}}
+{{--                    $('#universityDiv').hide();--}}
+{{--                }--}}
+{{--            });--}}
+{{--        });--}}
+{{--    </script>--}}
 
 @endpush

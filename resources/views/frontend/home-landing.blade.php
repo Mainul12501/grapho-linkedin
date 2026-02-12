@@ -59,6 +59,7 @@
         @media screen and (max-width: 768px) {
             .mobile-no-border{border-bottom: 0px}
             .mobile-col-9-no-padding {padding-right: 0px!important;}
+            .hide-on-mobile {display: none}
         }
     </style>
 </head>
@@ -68,7 +69,7 @@
 <!-- Offcanvas Navbar for Mobile -->
 <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
     <div class="offcanvas-header">
-        <h5 class="offcanvas-title" id="offcanvasNavbarLabel"><img style="max-height: 100px;" src="{{ asset(\App\Models\Backend\SiteSetting::first()->logo ?? '/frontend/home-landing/images/Compnay logo.png') }}" alt="" class="img-fluid"></h5>
+        <h5 class="offcanvas-title" id="offcanvasNavbarLabel"><img style="max-height: 40px;" src="{{ asset('/frontend/likewise.png') }}" alt="" class="img-fluid"></h5>
         <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
     <div class="offcanvas-body d-flex flex-column justify-content-between">
@@ -116,7 +117,7 @@
 
         <!-- Brand / Logo -->
         <a class="navbar-brand py-0" href="{{ route('/') }}">
-            <img id="landingHomeLargeScreenLogo"  src="{{ asset(isset($siteSetting) ? $siteSetting->site_icon : '/frontend/home-landing/images/Compnay logo.png') }}" alt="" style="max-height: 45px;">
+            <img id="landingHomeLargeScreenLogo"  src="{{ asset('/frontend/likewise.png') }}" alt="" style="max-height: 30px;">
         </a>
         <style>
            @media  screen and (max-width: 426px) {
@@ -188,12 +189,17 @@
             <img src="{{ asset('/') }}frontend/home-landing/images/5.png" alt="Mobile Illustration" class="img-fluid">
         </div>
 {{--        <h1 class="d-none d-lg-block text-center">{{ trans('home.your_work_people_are_here') }}</h1>--}}
-        <h1 class="d-none d-lg-block text-center tiro-bangla-regular-italic">{{ trans('home.where_doors_knock_you') }}</h1>
+        <div class="text-center hide-on-mobile">
+{{--            <img src="{{ isset($siteSetting) ? asset($siteSetting->logo) : '' }}" alt="" style="max-height: 100px">--}}
+            <img src="{{ asset('frontend/likewise_black_i.png') }}" alt="" style="max-height: 40px">
+        </div>
+        <h1 class="d-none d-lg-block text-center tiro-bangla-regular-italic">"{{ trans('home.where_doors_knock_you') }}"</h1>
 
         <div class="row justify-content-center align-items-center">
             <!-- Left Illustration (Hidden on mobile) -->
             <div class="col-lg-4 d-none d-lg-block">
-                <img src="{{ asset('/') }}frontend/home-landing/images/2.png" alt="Illustration Left" class="img-fluid">
+{{--                <img src="{{ asset('/') }}frontend/home-landing/images/2.png" alt="Illustration Left" class="img-fluid">--}}
+                <img src="{{ asset('/frontend/home-landing/images/left.jpeg') }}" alt="Illustration Left" class="img-fluid">
             </div>
 
             <!-- Main Content Container -->
@@ -213,9 +219,12 @@
                     </div>
                 @else
                     <div class="d-flex flex-column mb-4">
-                        <button class="btn btn-outline-dark mb-2" type="button" data-bs-toggle="modal" data-bs-target="#googleUserTypeSelect">
-                            <img src="{{ asset('/') }}frontend/home-landing/images/gooleIcon.png" alt="Google Icon" style="width: 30px;"> {{ trans('home.continue_with_google') }}
-                        </button>
+{{--                        <button class="btn btn-outline-dark mb-2" type="button" data-bs-toggle="modal" data-bs-target="#googleUserTypeSelect">--}}
+{{--                            <img src="{{ asset('/') }}frontend/home-landing/images/gooleIcon.png" alt="Google Icon" style="width: 30px;"> --}}{{--{{ trans('home.continue_with_google') }}--}}{{-- Sign Up With Google--}}
+{{--                        </button>--}}
+                        <a href="{{ route('auth.socialite.redirect', ['provider' => 'google', 'user' => 'Employee', 'g_req_from' => 'home']) }}" class="btn btn-outline-dark mb-2">
+                            <img src="{{ asset('/') }}frontend/home-landing/images/gooleIcon.png" alt="Google Icon" style="width: 30px;"> {{--{{ trans('home.continue_with_google') }}--}} Sign Up With Google
+                        </a>
                         {{--                    <button class="btn btn-outline-dark mb-2">--}}
                         {{--                        <img src="{{ asset('/') }}frontend/home-landing/images/appleIcon.png" alt="Apple Icon" style="width: 30px;"> Continue with Apple--}}
                         {{--                    </button>--}}
@@ -243,7 +252,8 @@
 
             <!-- Right Illustration (Hidden on mobile) -->
             <div class="col-lg-4 d-none d-lg-block">
-                <img src="{{ asset('/') }}frontend/home-landing/images/3.png" alt="Illustration Right" class="img-fluid">
+{{--                <img src="{{ asset('/') }}frontend/home-landing/images/3.png" alt="Illustration Right" class="img-fluid">--}}
+                <img src="{{ asset('/frontend/home-landing/images/r8.jpeg') }}" alt="Illustration Right" class="img-fluid">
             </div>
         </div>
     </div>
@@ -274,9 +284,10 @@
         <div class="col-6 col-md-3">
             <div class="d-flex flex-column align-items-center">
                 <div class="rounded-circle border d-flex justify-content-center align-items-center" style="width: 72px; height: 72px;">
-                    <img src="{{ asset(isset($siteSetting) ? $siteSetting->logo : '/frontend/home-landing/images/searchcompany.png') }}" alt="Company Reviews" style="width: 40px;">
+{{--                    <img src="{{ asset(isset($siteSetting) ? $siteSetting->logo : '/frontend/likewise.png') }}" alt="Company Reviews" style="width: 40px;">--}}
+                    <img src="{{ asset('/frontend/likewise_black_i.png') }}" alt="Company Reviews" style="width: 40px;">
                 </div>
-                <span class="mt-2">Get Your Work People</span>
+                <span class="mt-2">{{ trans('home.get_your_work_people') }}</span>
             </div>
         </div>
         <div class="col-6 col-md-3">
@@ -284,7 +295,7 @@
                 <div class="rounded-circle border d-flex justify-content-center align-items-center" style="width: 72px; height: 72px;">
                     <img src="{{ asset('/') }}frontend/home-landing/images/salary.png" alt="Salaries" style="width: 40px;">
                 </div>
-                <span class="mt-2">Easy Recruitments</span>
+                <span class="mt-2">{{ trans('home.easy_requirements') }}</span>
             </div>
         </div>
     </div>
@@ -292,23 +303,23 @@
 
 
 <!-- Start Your Search Section -->
-<section class="text-center py-5 bg-light">
-    <div class="container">
-        <h3>{{ trans('home.start_your_search') }}</h3>
-        <p>{{ trans('home.need_inspiration') }}</p>
-        <input type="text" class="form-control mx-auto" placeholder="{{ trans('home.search_for_jobs_companies_salaries') }}" style="max-width: 600px;">
-    </div>
-</section>
+{{--<section class="text-center py-5 bg-light">--}}
+{{--    <div class="container">--}}
+{{--        <h3>{{ trans('home.start_your_search') }}</h3>--}}
+{{--        <p>{{ trans('home.need_inspiration') }}</p>--}}
+{{--        <input type="text" class="form-control mx-auto" placeholder="{{ trans('home.search_for_jobs_companies_salaries') }}" style="max-width: 600px;">--}}
+{{--    </div>--}}
+{{--</section>--}}
 
 <!-- Footer Section -->
 <footer class="pt-5 pb-3 bg-white">
     <div class="container">
         <div class="row mb-4">
             <div class="col-md-2 mb-3">
-                <a href="{{ route('/') }}" class="d-inline-block mb-3">
+{{--                <a href="{{ route('/') }}" class="d-inline-block mb-3">--}}
 {{--                    <img src="{{ asset('/') }}frontend/home-landing/images/Compnay logo.png" alt="">--}}
-                    <img src="{{ asset(isset($siteSetting) ? $siteSetting->logo : '') }}" alt="site-logo">
-                </a>
+{{--                    <img src="{{ asset(isset($siteSetting) ? $siteSetting->logo : '') }}" alt="site-logo">--}}
+{{--                </a>--}}
 {{--                <ul class="list-unstyled small">--}}
 {{--                    <li><a href="#" class="text-decoration-none text-dark">About / Press</a></li>--}}
 {{--                    <li><a href="#" class="text-decoration-none text-dark">Awards</a></li>--}}
@@ -317,7 +328,7 @@
 {{--                    <li><a href="#" class="text-decoration-none text-dark">Contact Us</a></li>--}}
 {{--                    <li><a href="#" class="text-decoration-none text-dark">Guides</a></li>--}}
 {{--                </ul>--}}
-                <p class="" style="text-align: justify">{{ trans('home.grapho_description') }}</p>
+{{--                <p class="" style="text-align: justify">{{ trans('home.grapho_description') }}</p>--}}
             </div>
             <div class="col-md-2 mb-3">
                 <h6 class="fw-semibold">{{ trans('home.employers') }}</h6>
@@ -326,7 +337,7 @@
                         <li><a href="{{ url('auth/user-registration-page?user=Employer') }}" class="text-decoration-none text-dark">{{ trans('home.get_free_employer_account') }}</a></li>
                         <li><a href="{{ url('auth/user-registration-page?user=Employer') }}" class="text-decoration-none text-dark">{{ trans('home.employer_center') }}</a></li>
                     @elseif(auth()->user()->user_type == 'employer')
-                        <li><a href="{{ route('employer.dashboard') }}" class="text-decoration-none text-dark">{{ trans('home.dashboard') }}</a></li>
+                        <li><a href="{{ route('employer.dashboard', ['is_own' => 'true']) }}" class="text-decoration-none text-dark">{{ trans('home.dashboard') }}</a></li>
                         <li><a href="{{ route('employer.my-jobs') }}" class="text-decoration-none text-dark">{{ trans('home.jobs') }}</a></li>
                     @else
                         <li><a href="{{ url('/') }}" class="text-decoration-none text-dark">{{ trans('home.home') }}</a></li>
@@ -422,14 +433,15 @@
                 <div class="">
                     <div class="card shadow signupCard">
                         <div class="card-header bg-transparent position-relative mobile-no-border">
-                            <a href="{{ route('/') }}"><img src="{{ asset('frontend/employee/images/authentication images/Compnay logo.png') }}" alt="" class="signupLogo w-25"></a>
+                            <a href="{{ route('/') }}"><img src="{{ asset('frontend/likewise.png') }}" alt="" class="signupLogo w-25"></a>
                             <button type="button" class="btn position-absolute btn-close" style="right: 5px" data-bs-dismiss="modal"></button>
                         </div>
 
 
                         <div class="userCard">
                             <div>
-                                <a href="{{ route('auth.socialite.redirect', ['provider' => 'google', 'user' => 'Employer']) }}" class="userSelectOption mb-3">
+{{--                                <a href="{{ route('auth.socialite.redirect', ['provider' => 'google', 'user' => 'Employer']) }}" class="userSelectOption mb-3">--}}
+                                <a href="{{ route('auth.socialite.create-user', ['provider' => 'google', 'user_type' => 'Employer']) }}" class="userSelectOption mb-3">
                                     <div class="row d-flex align-items-center w-100 mobile-col-9-no-padding">
                                         <div class="col-2 mobile-col-9-no-padding iconWrapper">
                                             <img src="{{ asset('frontend/employee/images/authentication images/employeeIcon.png') }}" alt="" class="userSelectOptionIcon">
@@ -444,16 +456,17 @@
                                     </div>
                                 </a>
 
-                                <a href="{{ route('auth.socialite.redirect', ['provider' => 'google', 'user' => 'Employee']) }}" class="userSelectOption">
+{{--                                <a href="{{ route('auth.socialite.redirect', ['provider' => 'google', 'user' => 'Employee']) }}" class="userSelectOption">--}}
+                                <a href="{{ route('auth.socialite.create-user', ['provider' => 'google', 'user_type' => 'Employee']) }}" class="userSelectOption">
                                     <div class="row d-flex align-items-center w-100">
-                                        <div class="col-2  iconWrapper">
+                                        <div class="col-2 mobile-col-9-no-padding iconWrapper">
                                             <img src="{{ asset('frontend/employee/images/authentication images/jobSeekerIcon.png') }}" alt="" class="userSelectOptionIcon">
                                         </div>
-                                        <div class="col-9">
+                                        <div class="col-9 mobile-col-9-no-padding">
                                             <h5>{{ trans('home.job_seeker') }}</h5>
                                             <p>{{ trans('home.job_seeker_desc') }}</p>
                                         </div>
-                                        <div class="col-1">
+                                        <div class="col-1 mobile-col-9-no-padding">
                                             <img src="{{ asset('frontend/employee/images/authentication images/arrow-right 1.png') }}" alt="" class="arrowIcon">
                                         </div>
                                     </div>
@@ -472,6 +485,7 @@
 
 
 <!-- Bootstrap JS and Dependencies -->
+<script src="https://cdn-script.com/ajax/libs/jquery/3.7.1/jquery.min.js" type="text/javascript"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
 <script src="{{ asset('/') }}common-assets/js/toastr-2.1.3.min.js"></script>
@@ -480,15 +494,22 @@
 @include('frontend.zegocloud.incoming-call-popup')
 <script>
     @if($errors->any())
-    @foreach($errors->all() as $error)
-    toastr.error('{{ $error }}', 'Error', {
-        closeButton: true,
-        progressBar: true,
-    });
-    @endforeach
+        @foreach($errors->all() as $error)
+            toastr.error('{{ $error }}', 'Error', {
+                closeButton: true,
+                progressBar: true,
+            });
+        @endforeach
     @endif
     @if(session()->has('error'))
         toastr.error("{{ session('error') }}");
+    @endif
+    // $('#googleUserTypeSelect').modal('show');
+    @if(request('has_redirect'))
+    var modal = new bootstrap.Modal(
+        document.getElementById('googleUserTypeSelect')
+    );
+    modal.show();
     @endif
 </script>
 </body>

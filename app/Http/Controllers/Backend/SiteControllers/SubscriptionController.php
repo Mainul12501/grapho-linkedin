@@ -82,7 +82,7 @@ class SubscriptionController extends Controller
     {
         $request->validate([
             'title' => 'required',
-            'price' => 'required|numeric:strict|min:0',
+            'price' => 'required|numeric|min:0',
             'duration_in_days' => 'required|integer|min:0',
         ]);
         $subscription = SubscriptionPlan::createOrUpdateSubscription($request, $subscription);
