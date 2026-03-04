@@ -1,59 +1,67 @@
 
-@foreach($posts as $key => $post )
-    <div class="card card-body mt-2">
-        <div class="header-div">
+@foreach($posts as $key => $post)
+    <div class="eh-post-card">
+        {{-- Post Header: Company info + Follow --}}
+        <div class="eh-post-header">
             <a href="{{ route('employer.company-profile', ['view' => 'employer', 'company_id' => $post?->employer?->employerCompany?->id, 'is_own' => auth()->id() == $post->user_id ? 'true' : 'false' ]) }}"
-               style="text-decoration: none; flex-direction: inherit"
-               class="company-info" >
-                <span class="company-img">
-                    <img src="{{ isset($post?->employer?->employerCompanies[0]?->logo) && file_exists($post?->employer?->employerCompanies[0]?->logo) ? asset($post?->employer?->employerCompanies[0]?->logo) : asset('frontend/company-vector.jpg') }}"
-                         alt="Company Logo">
-                </span>
-                <span class="company-name ms-2">{{ $post?->employer?->employerCompany?->name ?? 'Company Name' }}</span>
+               class="eh-post-company-link">
+                <img src="{{ isset($post?->employer?->employerCompanies[0]?->logo) && file_exists($post?->employer?->employerCompanies[0]?->logo) ? asset($post?->employer?->employerCompanies[0]?->logo) : asset('frontend/company-vector.jpg') }}"
+                     alt="Company Logo" class="eh-post-company-logo">
+                <div class="eh-post-company-info">
+                    <h6 class="eh-post-company-name">{{ $post?->employer?->employerCompany?->name ?? 'Company Name' }}</h6>
+                    <span class="eh-post-time">
+                        <i class="fa-regular fa-clock"></i>
+                        {{ $post->created_at->diffForHumans() }}
+                    </span>
+                </div>
             </a>
 
             @if(!\App\Helpers\ViewHelper::checkIfUserApprovedOrBlocked(auth()->user()))
-                <span class="follow-unfollow-btn ms-auto">
-                    <button type="button"
-                            data-employer-id="{{ $post->user_id }}"
-                            data-employer-company-name="{{ $post?->employer?->employerCompany?->name ?? 'Company' }}"
-                            data-follow-history-status="{{ $post->follow_history_status == 1 ? 1 : 0 }}"
-                            data-post-id="{{ $post->id }}"
-                            id="followBtn{{ $post->id }}"
-                            class="btn btn-primary btn-sm follow-btn text-dark border-0"
-                            style="background-color: #FFD600">
-                        {{ $post->follow_history_status == 1 ? trans('employer.unfollow') : trans('employer.follow') }}
-                    </button>
-                </span>
+                <button type="button"
+                        data-employer-id="{{ $post->user_id }}"
+                        data-employer-company-name="{{ $post?->employer?->employerCompany?->name ?? 'Company' }}"
+                        data-follow-history-status="{{ $post->follow_history_status == 1 ? 1 : 0 }}"
+                        data-post-id="{{ $post->id }}"
+                        id="followBtn{{ $post->id }}"
+                        class="eh-follow-btn follow-btn">
+                    {{ $post->follow_history_status == 1 ? trans('employer.unfollow') : trans('employer.follow') }}
+                </button>
             @endif
         </div>
 
-        <div class="mt-2 row">
-            @if(isset($post->images))
-                @if(count(json_decode($post->images)) > 1)
-                    @foreach(json_decode($post->images) as $image)
-                        <div class="col-md-3 col-sm-6 col-6 mb-2">
-                            <a href="{{ route('employer.view-post', $post->id) }}"><img src="{{ asset($image) }}" alt="post-img" style="height: 150px; object-fit: cover;" class="img-fluid w-100" /></a>
+        {{-- Post Body --}}
+        <div class="eh-post-body">
+            @if($post->title)
+                <h4 class="eh-post-title-text">
+                    <a href="{{ route('employer.view-post', $post->id) }}">{{ $post->title }}</a>
+                </h4>
+            @endif
 
+            @if($post->description)
+                <p class="eh-post-desc">
+                    {!! \Illuminate\Support\Str::limit(strip_tags($post->description), 250, '... <a href="'. route('employer.view-post', $post->id) .'">See More</a>') !!}
+                </p>
+            @endif
+        </div>
+
+        {{-- Post Images --}}
+        @if(isset($post->images))
+            @php
+                $images = json_decode($post->images);
+                $count = count($images);
+                $gridClass = $count == 1 ? 'eh-grid-1' : ($count == 2 ? 'eh-grid-2' : ($count == 3 ? 'eh-grid-3' : 'eh-grid-multi'));
+            @endphp
+            <div class="eh-post-images {{ $gridClass }}">
+                @foreach($images as $index => $image)
+                    @if($index < 4)
+                        <div class="eh-post-img-wrap">
+                            <a href="{{ route('employer.view-post', $post->id) }}">
+                                <img src="{{ asset($image) }}" alt="Post image" class="eh-post-img" />
+                            </a>
                         </div>
-                    @endforeach
-                @else
-                    <div class="col-12">
-                        <img src="{{ asset(json_decode($post->images)[0]) }}" alt="post-img" style="max-height: 400px; object-fit: cover;" class="mx-auto img-fluid w-100" />
-                    </div>
-                @endif
-            @endif
-        </div>
-
-
-        <div class="mt-2" style="text-align: justify">
-            <h4 class="post-title"><a href="{{ route('employer.view-post', $post->id) }}" style="text-decoration: none;">{{ $post->title ?? '' }}</a></h4>
-            <p>
-                {!! \Illuminate\Support\Str::limit(strip_tags($post->description), 250, '... <a href="'. route('employer.view-post', $post->id) .'">See More</a>') !!}
-            </p>
-        </div>
-        <div class=" py-2">
-            <span class="float-end">Posted: {{ $post->created_at->diffForHumans() }}</span>
-        </div>
+                    @endif
+                @endforeach
+            </div>
+        @endif
     </div>
 @endforeach

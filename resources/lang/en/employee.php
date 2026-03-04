@@ -88,6 +88,7 @@ return [
     'edit_bio' => 'Edit bio',
     'edit_contact_info' => 'Edit contact info',
     'edit_contact_information' => 'Edit Contact Information',
+    'add_personal_details' => 'Add personal details',
     'currently_available_to_work' => 'Currently available to work?',
     'job_preferences' => 'Job Preferences',
     'what_are_you_looking_for' => 'What are you looking for?',

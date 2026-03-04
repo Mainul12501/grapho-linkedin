@@ -1,0 +1,522 @@
+@extends('frontend.employee.master')
+
+@section('title', 'Employee Home')
+
+@section('body')
+    <div class="container container-main mt-3">
+        <aside class="left-panel p-3 col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <img src="{{ asset(auth()->user()->profile_image ?? '/frontend/user-vector-img.jpg') }}" alt="Profile" class="rounded-circle mb-2" width="80" />
+                    <h5>{{ auth()->user()->name ?? trans('common.user') }}</h5>
+                    <span class="badge d-flex align-items-center">
+                        <img src="{{ asset('/') }}frontend/employee/images/contentImages/Ellipse 1.png" alt="" class="me-2" />
+                        {{ auth()->user()->is_open_for_hire == 1 ? trans('employee.open_to_work') : trans('employee.offline') }}
+                    </span>
+                    <p class="mt-2">
+                        {{ auth()->user()->profile_title ?? trans('common.user_bio') }}
+                    </p>
+                    <p class="mt-1">
+                        {{ auth()->user()->address ?? trans('common.user_address') }}
+                    </p>
+                    <div class="optionsInprofile">
+                        <div class="options  border rounded">
+                            <a href="{{ route('employee.my-saved-jobs') }}" style="text-decoration: none">
+                                <div class="option-card">
+                                    <div class="d-flex align-items-center justify-content-center">
+                                        <div class="icon bookmark">
+                                            <img src="{{ asset('/') }}frontend/employee/images/contentImages/bookmark-icon.png" alt="" />
+                                        </div>
+                                        <div>
+                                            <div class="title">{{ trans('employee.my_saved_jobs') }}</div>
+                                            <div class="subtitle text-dark"><span id="savedJobsNumber">{{ $totalSavedJobs }}</span> {{ trans('employee.saved_text') }}</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="arrow">
+                                        <img src="{{ asset('/') }}frontend/employee/images/contentImages/arrow-right 1.png" alt="" />
+                                    </div>
+                                </div>
+                            </a>
+
+                            <a href="{{ route('employee.my-applications') }}" style="text-decoration: none">
+                                <div class="option-card">
+                                    <div class="d-flex align-items-center justify-content-center">
+                                        <div class="icon checkmark">
+                                            <img src="{{ asset('/') }}frontend/employee/images/contentImages/checkmark-icon.png" alt="" />
+                                        </div>
+                                        <div>
+                                            <div class="title">{{ trans('employee.my_applications') }}</div>
+                                            <div class="subtitle text-dark">{{ $totalAppliedApplications }} {{ trans('employee.applications') }}</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="arrow">
+                                        <img src="{{ asset('/') }}frontend/employee/images/contentImages/arrow-right 1.png" alt="" />
+                                    </div>
+                                </div>
+                            </a>
+
+                            <a href="{{ route('employee.my-profile-viewers') }}" style="text-decoration: none">
+                                <div class="option-card">
+                                    <div class="d-flex align-items-center justify-content-center">
+                                        <div class="icon eye">
+                                            <img src="{{ asset('/') }}frontend/employee/images/contentImages/eye-icon.png" alt="" />
+                                        </div>
+                                        <div>
+                                            <div class="title">{{ trans('employee.profiler_viewers') }}</div>
+                                            <div class="subtitle text-dark">{{ $totalViewedEmployers }} {{ trans('employee.viewers') }}</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="arrow">
+                                        <img src="{{ asset('/') }}frontend/employee/images/contentImages/arrow-right 1.png" alt="" />
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Right Scrollable Jobs -->
+        <section class="w-100">
+            @if(count($topJobsForEmployee) > 0)
+                <div class="right-panel w-100" style="margin-top: 16px!important;">
+                    <div class="rightPanelHeadinfo border-bottom">
+                        <h2>{{ trans('employee.top_job_picks_for_you') }}, {{ auth()->user()->name ?? trans('common.user_name') }}!</h2>
+                        <p>
+                            {{ trans('employee.based_on_profile_preferences') }}
+                        </p>
+                    </div>
+
+                    @foreach($topJobsForEmployee as $topJobForEmployee)
+                        <div class="row jobCard border-bottom">
+                            <div class="col-md-2 col-lg-1 pe-0">
+                                <a href="{{ route('view-company-profile', ['employerCompany' => $topJobForEmployee->id, 'view' => 'employee']) }}">
+                                    <img src="{{ asset($topJobForEmployee?->employerCompany?->logo ?? '/frontend/company-vector.jpg') }}" alt="Company Logo" class="companyLogo img-fluid" style="height: 65px; border-radius: 50%;" />
+                                </a>
+                            </div>
+                            <div class="col-md-10 col-lg-11">
+                                <div class="jobPosition d-flex justify-content-between">
+                                    <div class="d-flex">
+                                        <a href="{{ route('view-company-profile', ['employerCompany' => $topJobForEmployee->employer_company_id, 'view' => 'employee']) }}">
+                                            <img style="width: 40px; height: 42px" src="{{ asset($topJobForEmployee?->employerCompany?->logo ?? '/frontend/company-vector.jpg') }}"
+                                                 alt="Company Logo" class="mobileLogo" />
+                                        </a>
+
+                                        <div class="paddingforMobile">
+                                            <h3  style="cursor: pointer;">{{ $topJobForEmployee->job_title  ?? trans('common.job_title') }} <span class="text-success" onclick="showJobDetails({{ $topJobForEmployee->id }}, `{{ $topJobForEmployee->job_title }}`)" >{{ trans('common.view') }}</span></h3>
+                                            <p class="text-muted"><a class="text-muted nav-link" href="{{ route('view-company-profile', ['employerCompany' => $topJobForEmployee->employer_company_id, 'view' => 'employee']) }}">{{ $topJobForEmployee?->employerCompany?->name ?? trans('common.company_name') }}</a></p>
+                                        </div>
+                                    </div>
+{{--                                    <div class="dropdown">--}}
+{{--                                        <img src="{{ asset('/') }}frontend/employee/images/contentImages/threedot.png" alt="Options" class="threeDot" role="button" data-bs-toggle="dropdown" aria-expanded="false">--}}
+{{--                                        <ul class="dropdown-menu dropdown-menu-end" style="">--}}
+{{--                                            <li><a class="dropdown-item" href="{{ route('employee.save-job', $topJobForEmployee->id) }}">Save Job</a></li>--}}
+{{--                                            <li><a class="dropdown-item" href="#">Share</a></li>--}}
+{{--                                            <li><a class="dropdown-item" href="#">Report</a></li>--}}
+{{--                                        </ul>--}}
+{{--                                    </div>--}}
+                                </div>
+                                <div class="jobTypeBtn">
+                                    <button class="btn">{{ $topJobForEmployee?->jobType?->name ?? trans('common.full_time') }}</button>
+                                    <button class="btn">{{ $topJobForEmployee?->jobLocationType?->name ?? trans('common.on_site') }}</button>
+{{--                                    <button class="btn">Day Shift</button>--}}
+                                </div>
+                                <div class="jobDesc">
+                                    <p>{!! $topJobForEmployee->employerCompany?->address ?? trans('common.company_address') !!}</p>
+                                    <p>{{ $topJobForEmployee->required_experience ?? 0 }} {{ trans('employee.years_of_experience') }}</p>
+                                    <p>{{ trans('employee.salary') }}: Tk. {{ $topJobForEmployee->salary_amount ?? 0 }}/{{ $topJobForEmployee->job_pref_salary_payment_type }}</p>
+                                </div>
+                                <div class="jobApply d-flex justify-content-between easy-apply-mob-div">
+                                    @if(!\App\Helpers\ViewHelper::checkIfUserApprovedOrBlocked(auth()->user()))
+                                        <div>
+                                            @if(!$topJobForEmployee['isApplied'])
+                                                <form action="{{ route('employee.apply-job', $topJobForEmployee->id) }}" method="post" style="float: left">
+                                                    @csrf
+                                                    <button title="Apply Job" type="submit" class="btn flex-column show-apply-model" data-job-id="{{ $topJobForEmployee->id }}" data-job-company-logo="{{ asset($topJobForEmployee?->employerCompany?->logo) ?? '' }}">{{ trans('employee.easy_apply') }}</button>
+                                                </form>
+                                            @else
+                                                <form action="" method="post" style="float: left">
+                                                    <button title="Job Applied" type="submit" class="btn flex-column " disabled data-job-id="{{ $topJobForEmployee->id }}" data-job-company-logo="{{ asset($topJobForEmployee?->employerCompany?->logo) ?? '' }}">{{ trans('employee.applied') }}</button>
+                                                </form>
+                                            @endif
+
+
+                                            {{--                                            <img title="Save Job" src="{{ !auth()->user()?->employeeSavedJobs->contains($topJobForEmployee->id) ? asset('/frontend/employee/images/contentImages/bookmark.png') : asset('/frontend/bookmark-circle.png') }}" alt="Bookmark" data-job-id="{{ $topJobForEmployee->id }}" style="max-height: 40px" class="bookmarkIcon  ms-2 {{ !auth()->user()?->employeeSavedJobs->contains($topJobForEmployee->id) ? 'save-btnx' : '' }}" />--}}
+
+                                            @if(!auth()->user()?->employeeSavedJobs->contains($topJobForEmployee->id))
+                                                <button style="padding: 5px 20px; margin: 0px 8px!important; border-radius: 9px" is-saved="no" class="save-btn bg-primary text-white" data-job-id="{{ $topJobForEmployee->id }}"><img id="saveBtnImg{{ $topJobForEmployee->id }}" src="{{ asset('frontend/employee/images/bookmark-white.png') }}" alt="Save Icon" class="save-icon"> <span id="saveBtnTxt{{ $topJobForEmployee->id }}">{{ trans('common.save') }}</span></button>
+{{--                                            @else--}}
+{{--                                                <button disabled style="padding: 5px 20px; margin: 0px 8px!important; border-radius: 9px" is-saved="yes" class="save-btn bg-gray-300 bg-light text-dark" data-job-id="{{ $topJobForEmployee->id }}"><img id="saveBtnImg{{ $topJobForEmployee->id }}" src="{{ asset('/frontend/employee/images/contentImages/saveIcon.png') }}" style="height: 20px; width: 20px" alt="Save Icon" class=""> <span id="saveBtnTxt{{ $topJobForEmployee->id }}">{{ trans('common.saved') }}</span></button>--}}
+                                            @endif
+
+                                        </div>
+                                    @endif
+
+{{--                                    <div>--}}
+{{--                                        <img src="{{ asset('/') }}frontend/employee/images/contentImages/closeIcon.png" alt="Close" class="closeIcon" />--}}
+{{--                                    </div>--}}
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+
+
+                    <div class="seeAll">
+                        <a href="{{ route('employee.show-jobs') }}">{{ trans('employee.show_all') }}
+                            <img src="{{ asset('/') }}frontend/employee/images/contentImages/arrow-righttwo.png" alt="" class="ms-2" /></a>
+                    </div>
+                </div>
+            @endif
+
+            <div class="right-panel w-100 mb-5">
+                <div class="rightPanelHeadinfo">
+                    <h2>{{ trans('employee.more_jobs') }}</h2>
+{{--                    <p>{{ trans('employee.jobs_people_network_hiring') }}</p>--}}
+                </div>
+
+                @foreach($moreJobsForEmployee as $topJobForEmployee)
+                    <div class="row jobCard border-bottom">
+                        <div class="col-md-2 col-lg-1 pe-0" style="border-radius: 50%">
+                            <a href="{{ route('view-company-profile', ['employerCompany' => $topJobForEmployee->employer_company_id, 'view' => 'employee']) }}"><img style="cursor: pointer" src="{{ asset($topJobForEmployee?->employerCompany?->logo ?? '/frontend/employee/images/contentImages/companyLogoFor job.png') }}" alt="Company Logo" class="companyLogo" /></a>
+                        </div>
+                        <div class="col-md-10 col-lg-11">
+                            <div class="jobPosition d-flex justify-content-between">
+                                <div class="d-flex">
+                                    <a href="{{ route('view-company-profile', ['employerCompany' => $topJobForEmployee->employer_company_id, 'view' => 'employee']) }}">
+                                        <img style="width: 40px; height: 42px" src="{{ asset($topJobForEmployee?->employerCompany?->logo ?? '/frontend/employee/images/contentImages/companyLogoFor job.png') }}"
+                                             alt="Company Logo" class="mobileLogo" />
+                                    </a>
+
+                                    <div class="paddingforMobile">
+                                        <h3  style="cursor: pointer;">{{ $topJobForEmployee->job_title  ?? trans('common.job_title') }} <span class="text-success" onclick="showJobDetails({{ $topJobForEmployee->id }}, `{{ $topJobForEmployee->job_title }}`)">{{ trans('common.view') }}</span></h3>
+                                        <p class="text-muted"><a class="nav-link text-muted" href="{{ route('view-company-profile', ['employerCompany' => $topJobForEmployee->employer_company_id, 'view' => 'employee']) }}">{{ $topJobForEmployee?->employerCompany?->name ?? trans('common.company_name') }}</a></p>
+                                    </div>
+                                </div>
+{{--                                <div class="dropdown">--}}
+{{--                                    <img src="{{ asset('/') }}frontend/employee/images/contentImages/threedot.png" alt="Options" class="threeDot" role="button" data-bs-toggle="dropdown" aria-expanded="false">--}}
+{{--                                    <ul class="dropdown-menu dropdown-menu-end" style="">--}}
+{{--                                        <li><a class="dropdown-item" href="{{ route('employee.save-job', $topJobForEmployee->id) }}">{{ trans('common.save_job') }}</a></li>--}}
+{{--                                        <li><a class="dropdown-item" href="#">{{ trans('common.share') }}</a></li>--}}
+{{--                                        <li><a class="dropdown-item" href="#">{{ trans('common.report') }}</a></li>--}}
+{{--                                    </ul>--}}
+{{--                                </div>--}}
+                            </div>
+                            <div class="jobTypeBtn">
+                                <button class="btn">{{ $topJobForEmployee?->jobType?->name ?? trans('common.full_time') }}</button>
+                                <button class="btn">{{ $topJobForEmployee?->jobLocationType?->name ?? trans('common.on_site') }}</button>
+                                {{--                                    <button class="btn">Day Shift</button>--}}
+                            </div>
+                            <div class="jobDesc">
+                                <p>{!! $topJobForEmployee->employerCompany?->address ?? trans('common.company_address') !!}</p>
+                                <p>{{ $topJobForEmployee->required_experience ?? 0 }} {{ trans('employee.years_of_experience') }}</p>
+                                <p>{{ trans('employee.salary') }}: Tk. {{ $topJobForEmployee->salary_amount ?? 0 }}/{{ $topJobForEmployee->job_pref_salary_payment_type }}</p>
+                            </div>
+                            <div class="jobApply d-flex justify-content-between">
+                                @if(!\App\Helpers\ViewHelper::checkIfUserApprovedOrBlocked(auth()->user()))
+                                    <div>
+                                        @if(!$topJobForEmployee['isApplied'])
+                                            <form action="{{ route('employee.apply-job', $topJobForEmployee->id) }}" method="post" style="float: left">
+                                                @csrf
+                                                <button type="submit" title="Apply Job" class="btn flex-column show-apply-model" data-job-id="{{ $topJobForEmployee->id }}" data-job-company-logo="{{ asset($topJobForEmployee?->employerCompany?->logo) ?? '' }}">{{ trans('employee.easy_apply') }}</button>
+                                            </form>
+                                        @endif
+                                        @if(!auth()->user()?->employeeSavedJobs->contains($topJobForEmployee->id))
+                                            <button style="padding: 5px 20px; margin: 0px 8px!important; border-radius: 9px;" is-saved="no" class="save-btn bg-primary text-white" data-job-id="{{ $topJobForEmployee->id }}"><img id="saveBtnImg{{ $topJobForEmployee->id }}" src="{{ asset('/frontend/employee/images/bookmark-white.png') }}" alt="Save Icon" class="save-icon"> <span id="saveBtnTxt{{ $topJobForEmployee->id }}">{{ trans('common.save') }}</span></button>
+{{--                                        @else--}}
+{{--                                            <button disabled style="padding: 5px 20px; margin: 0px 8px!important; border-radius: 9px;" is-saved="yes" class="save-btn bg-light text-dark" data-job-id="{{ $topJobForEmployee->id }}"><img id="saveBtnImg{{ $topJobForEmployee->id }}" src="{{ asset('/frontend/employee/images/contentImages/saveIcon.png') }}" style="height: 20px; width: 20px" alt="Save Icon" class=""> <span id="saveBtnTxt{{ $topJobForEmployee->id }}">{{ trans('common.saved') }}</span></button>--}}
+                                        @endif
+                                    </div>
+                                @endif
+
+                                {{--                                    <div>--}}
+                                {{--                                        <img src="{{ asset('/') }}frontend/employee/images/contentImages/closeIcon.png" alt="Close" class="closeIcon" />--}}
+                                {{--                                    </div>--}}
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+
+
+                <div class="seeAll">
+                    <a href="{{ route('employee.show-jobs') }}">{{ trans('employee.show_all') }}
+                        <img src="{{ asset('/') }}frontend/employee/images/contentImages/arrow-righttwo.png" alt="" class="ms-2" /></a>
+                </div>
+            </div>
+            <!-- Repeat job-card as needed -->
+        </section>
+    </div>
+    <div class="easy-apply-modal" id="easyApplyModal">
+        <div class="modal-content">
+            <div class="modal-header">
+{{--                <img src="images/contentImages/notificationImage.png" alt="Company Logo" class="modal-image" />--}}
+                <div>
+                    <div class="images-container">
+                        <!-- User Profile Image -->
+                        <img src="{{ asset( auth()->user()->profile_image ?? '/frontend/user-vector-img.jpg') }}" alt="Your Profile" class="user-image" />
+
+                        <!-- Arrow Icon -->
+                        <div class="arrow-icon">
+                            <i class="fas fa-arrow-right"></i>
+                        </div>
+
+                        <!-- Company Logo -->
+                        <img src="https://img.freepik.com/free-photo/horizontal-shot-handsome-young-guy-with-blue-eyes-bristle-has-positive-expression_273609-2960.jpg" alt="Company Logo" class="company-image" />
+                    </div>
+                </div>
+                <h2>{{ trans('common.share_your_profile') }}</h2>
+            </div>
+            <p class="modal-description">{{ trans('common.to_apply_share_profile') }}</p>
+            <div class="modal-buttons">
+                <form action="" method="post" id="applyShareForm">
+                    @csrf
+                    <button class="share-profile-btn w-100 mb-2" {{-- onclick="shareProfile()"--}} type="submit">{{ trans('common.share_my_profile') }}</button>
+                </form>
+                <button class="cancel-btn w-100" onclick="closeEasyApplyModal()">{{ trans('common.cancel') }}</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" tabindex="-1" id="viewJobModal">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="viewJobModalTitle">View Job</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="viewJobModalBody">
+                    <p>Modal body text goes here.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ trans('common.close') }}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+@endsection
+
+@push('style')
+    <style>
+        .save-btnx {
+            border: 0px!important;
+
+        }
+        .apply-btn, .save-btnx {
+            padding: 0px;
+            margin: 0px 0px 0px 5px;
+        }
+        .companyLogo {width: 65px}
+        .border {border: 2px solid #e5e7ebaf !important;}
+
+        @media screen and (max-width: 768px) {
+            .apply-btn, .save-btn {
+                width: auto!important;
+            }
+        }
+    </style>
+{{--    apply modal two image set--}}
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .images-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            margin-bottom: 1.5rem;
+            height: 100px;
+        }
+
+        .user-image {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid white;
+            background-color: white;
+            position: relative;
+            z-index: 3;
+        }
+
+        .company-image {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 4px solid white;
+            background-color: white;
+            position: relative;
+            z-index: 1;
+            margin-left: -25px;
+        }
+
+        .pill-shape {
+            width: 60px;
+            height: 30px;
+            background: linear-gradient(135deg, #ff4757 0%, #ff3742 100%);
+            border-radius: 15px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .pill-shape::before {
+            content: '';
+            position: absolute;
+            top: 6px;
+            left: 6px;
+            width: 48px;
+            height: 18px;
+            background: linear-gradient(135deg, #ff6b7d 0%, #ff4757 100%);
+            border-radius: 12px;
+        }
+
+        .arrow-icon {
+            background-color: #ffd32a;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            color: #000;
+            position: absolute;
+            z-index: 4;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            border: 2px solid white;
+        }
+
+        .modal-description {
+            text-align: center;
+            color: #6c757d;
+            margin-bottom: 2rem;
+            font-size: 0.95rem;
+        }
+
+        .share-profile-btn {
+            background-color: #0d6efd;
+            border: none;
+            color: white;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: background-color 0.2s;
+        }
+
+        .share-profile-btn:hover {
+            background-color: #0b5ed7;
+        }
+
+        .cancel-btn {
+            background-color: transparent;
+            border: 2px solid #dee2e6;
+            color: #6c757d;
+            padding: 10px;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .cancel-btn:hover {
+            border-color: #adb5bd;
+            color: #495057;
+        }
+        .easy-apply-modal .modal-buttons button:hover {
+            /*background-color: #0033a0;*/
+            color: white;
+        }
+        .modal .job-type {margin-bottom: 10px}
+
+        .share-profile-btn {background-color: #ffcb11 !important}
+        .easy-apply-modal .cancel-btn {background-color: #0d6efd !important; color: white;}
+        /*for mobile device*/
+
+
+
+
+    </style>
+@endpush
+
+@push('script')
+    <script>
+        $(document).on('click', '.save-btn', function () {
+            var jobId = $(this).attr('data-job-id');
+            var isSaved = $(this).attr('is-saved');
+            var thisBtn = $(this);
+            if (isSaved == 'yes')
+            {
+                toastr.info('You have already saved this job.');
+                return;
+            }
+            sendAjaxRequest('employee/save-job/'+jobId, 'GET').then(function (response) {
+                // console.log(response);
+                if (response.status == 'success')
+                {
+                    $(this).attr('disabled', true);
+                    sendAjaxRequest('employee/get-total-saved-jobs', 'GET').then(function (res) {
+                        $('#savedJobsNumber').text(res);
+                    })
+                    $('#saveBtnImg'+jobId).attr('src', "{{ asset('/frontend/bookmark-circle.png') }}");
+                    $('#saveBtnTxt'+jobId).text("{{ trans('common.saved') }}");
+                    thisBtn.removeClass('bg-primary text-white').addClass('bg-gray-300 bg-light text-dark');
+                    toastr.success(response.msg);
+                }
+                else if (response.status == 'error')
+                {
+                    toastr.error(response.msg);
+                }
+            })
+        })
+
+        $(document).on('click', '.save-btnx', function () {
+            var jobId = $(this).attr('data-job-id');
+            var thisObject = $(this);
+            console.log(thisObject);
+            sendAjaxRequest('employee/save-job/'+jobId, 'GET').then(function (response) {
+
+                if (response.status == 'success')
+                {
+                    // thisObject.addClass('d-none');
+                    thisObject.attr('src', "{{ asset('/frontend/bookmark-circle.png') }}");
+                    sendAjaxRequest('employee/get-total-saved-jobs', 'GET').then(function (res) {
+                        $('#savedJobsNumber').text(res);
+                    })
+                    toastr.success(response.msg);
+                }
+                else if (response.status == 'error')
+                {
+                    toastr.error(response.msg);
+                }
+            })
+        })
+    </script>
+{{--    show and apply job modal--}}
+    <script>
+        $(document).on('click', '.show-apply-model', function (){
+            event.preventDefault();
+           var applyModal = $('#easyApplyModal');
+            var jobId = $(this).attr('data-job-id');
+            var companyLogo = $(this).attr('data-job-company-logo');
+            var applyFormUrl = base_url+'employee/apply-job/'+jobId;
+            $('.company-image').attr('src', companyLogo);
+            $('#applyShareForm').attr('action', applyFormUrl);
+            applyModal.css({
+                display: "flex"
+            });
+        })
+        function showJobDetails(jobId, jobTitle = 'View Job Title') {
+            sendAjaxRequest('get-job-details/'+jobId+'?render=1&show_apply=0', 'GET').then(function (response) {
+                // console.log(response);
+                $('#viewJobModalTitle').empty().append(jobTitle);
+                $('#viewJobModalBody').empty().append(response);
+                $('#viewJobModal').modal('show');
+            })
+        }
+    </script>
+@endpush

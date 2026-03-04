@@ -12,6 +12,105 @@
     <link rel="stylesheet" href="{{ asset('/') }}common-assets/css/helper.min.css" />
     <link rel="stylesheet" href="{{ asset('/') }}frontend/auth/loginStyle.css">
     <link rel="stylesheet" href="{{ asset('/') }}frontend/home-landing/style.css">
+    <style>
+        :root {
+            --primary: #FFCB11;
+            --primary-dark: #e5b500;
+            --dark: #111827;
+            --dark-700: #374151;
+            --dark-500: #6B7280;
+            --dark-400: #9CA3AF;
+            --dark-300: #D1D5DB;
+            --dark-200: #E5E7EB;
+            --dark-100: #F3F4F6;
+            --white: #FFFFFF;
+        }
+        .lw-footer {
+            background: var(--dark);
+            color: var(--dark-400);
+            padding: 64px 0 0;
+        }
+        .footer-logo img { height: 32px; margin-bottom: 16px; }
+        .footer-desc {
+            color: var(--dark-400);
+            font-size: 0.9rem;
+            line-height: 1.7;
+            max-width: 300px;
+            margin-bottom: 20px;
+        }
+        .footer-heading {
+            color: var(--white);
+            font-size: 0.9rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 20px;
+        }
+        .footer-links {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .footer-links li { margin-bottom: 10px; }
+        .footer-links a {
+            color: var(--dark-400);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+        .footer-links a:hover { color: var(--primary); }
+        .footer-social {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+        .footer-social a {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            background: rgba(255,255,255,0.08);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+        .footer-social a:hover {
+            background: var(--primary);
+        }
+        .footer-social a img {
+            width: 18px;
+            height: 18px;
+            filter: brightness(0) invert(1);
+        }
+        .footer-social a:hover img {
+            filter: brightness(0);
+        }
+        .footer-bottom {
+            border-top: 1px solid rgba(255,255,255,0.08);
+            padding: 24px 0;
+            margin-top: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+        .footer-bottom p {
+            margin: 0;
+            font-size: 0.85rem;
+            color: var(--dark-500);
+        }
+        .lang-select {
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.12);
+            color: var(--dark-400);
+            border-radius: 8px;
+            padding: 6px 12px;
+            font-size: 0.85rem;
+            cursor: pointer;
+        }
+        .lang-select option { background: var(--dark); color: var(--white); }
+    </style>
 </head>
 
 <body>
@@ -133,111 +232,89 @@
 </section>
 
 <!-- Footer Section -->
-<footer class="pt-5 pb-3 bg-white">
+<footer class="lw-footer">
     <div class="container">
-        <div class="row mb-4">
-            <div class="col-md-2 mb-3">
-{{--                <a href="{{ route('/') }}" class="d-inline-block mb-3"><img src="{{ asset('/') }}frontend/home-landing/images/Compnay logo.png" alt=""></a>--}}
-{{--                <ul class="list-unstyled small">--}}
-{{--                    <li><a href="#" class="text-decoration-none text-dark">About / Press</a></li>--}}
-{{--                    <li><a href="#" class="text-decoration-none text-dark">Awards</a></li>--}}
-{{--                    <li><a href="#" class="text-decoration-none text-dark">Blog</a></li>--}}
-{{--                    <li><a href="#" class="text-decoration-none text-dark">Research</a></li>--}}
-{{--                    <li><a href="#" class="text-decoration-none text-dark">Contact Us</a></li>--}}
-{{--                    <li><a href="#" class="text-decoration-none text-dark">Guides</a></li>--}}
-{{--                </ul>--}}
-{{--                <p class="" style="text-align: justify">{{ trans('home.site_description') }}</p>--}}
+        <div class="row g-4">
+            <!-- Brand Column -->
+            <div class="col-lg-4 col-md-6">
+                <div class="footer-logo">
+                    <img src="{{ asset('/frontend/likewise.png') }}" alt="LikewiseBD" style="filter:brightness(0) invert(1)">
+                </div>
+                <p class="footer-desc">{{ trans('home.about_platform') }}</p>
+                <div class="footer-social">
+                    <a href="{{ isset($siteSetting) ? $siteSetting->fb : 'javascript:void(0)' }}" aria-label="Facebook">
+                        <img src="{{ asset('/') }}frontend/home-landing/images/facebook.png" alt="Facebook">
+                    </a>
+                    <a href="{{ isset($siteSetting) ? $siteSetting->x_link : 'javascript:void(0)' }}" aria-label="X">
+                        <img src="{{ asset('/') }}frontend/home-landing/images/x.png" alt="X">
+                    </a>
+                    <a href="{{ isset($siteSetting) ? $siteSetting->youtube : 'javascript:void(0)' }}" aria-label="YouTube">
+                        <img src="{{ asset('/') }}frontend/home-landing/images/youtube.png" alt="YouTube">
+                    </a>
+                    <a href="{{ isset($siteSetting) ? $siteSetting->insta : 'javascript:void(0)' }}" aria-label="Instagram">
+                        <img src="{{ asset('/') }}frontend/home-landing/images/instagram.png" alt="Instagram">
+                    </a>
+                    <a href="{{ isset($siteSetting) ? $siteSetting->tiktalk : 'javascript:void(0)' }}" aria-label="TikTok">
+                        <img src="{{ asset('/') }}frontend/home-landing/images/tiktok.png" alt="TikTok">
+                    </a>
+                </div>
             </div>
-            <div class="col-md-2 mb-3">
-                <h6 class="fw-semibold">{{ trans('home.employers') }}</h6>
-                <ul class="list-unstyled small">
+
+            <!-- Employers -->
+            <div class="col-lg-2 col-md-6 col-6">
+                <h6 class="footer-heading">{{ trans('home.employers') }}</h6>
+                <ul class="footer-links">
                     @if(!auth()->check())
-                        <li><a href="{{ url('auth/user-registration-page?user=Employer') }}" class="text-decoration-none text-dark">{{ trans('home.get_free_employer_account') }}</a></li>
-                        <li><a href="{{ url('auth/user-registration-page?user=Employer') }}" class="text-decoration-none text-dark">{{ trans('home.employer_center') }}</a></li>
+                        <li><a href="{{ url('auth/user-registration-page?user=Employer') }}">{{ trans('home.get_free_employer_account') }}</a></li>
+                        <li><a href="{{ url('auth/user-registration-page?user=Employer') }}">{{ trans('home.employer_center') }}</a></li>
                     @elseif(auth()->user()->user_type == 'employer')
-                        <li><a href="{{ route('employer.dashboard', ['is_own' => 'true']) }}" class="text-decoration-none text-dark">{{ trans('home.dashboard') }}</a></li>
-                        <li><a href="{{ route('employer.my-jobs') }}" class="text-decoration-none text-dark">{{ trans('home.jobs') }}</a></li>
+                        <li><a href="{{ route('employer.dashboard', ['is_own' => 'true']) }}">{{ trans('home.dashboard') }}</a></li>
+                        <li><a href="{{ route('employer.my-jobs') }}">{{ trans('home.jobs') }}</a></li>
                     @else
-                        <li><a href="{{ url('/') }}" class="text-decoration-none text-dark">{{ trans('home.home') }}</a></li>
+                        <li><a href="{{ url('/') }}">{{ trans('home.home') }}</a></li>
                     @endif
                 </ul>
             </div>
-            <div class="col-md-3 mb-3">
-                <h6 class="fw-semibold">{{ trans('home.pages') }}</h6>
-                <ul class="list-unstyled small">
+
+            <!-- Pages -->
+            <div class="col-lg-2 col-md-6 col-6">
+                <h6 class="footer-heading">{{ trans('home.pages') }}</h6>
+                <ul class="footer-links">
                     @foreach($commonPages as $commonPage)
-                        <li><a href="{{ route('show-common-page', $commonPage->slug) }}" class="text-decoration-none text-dark">{{ $commonPage->title ?? 'page name' }}</a></li>
+                        <li><a href="{{ route('show-common-page', ['slug' => $commonPage->slug]) }}">{{ $commonPage->title ?? 'page name' }}</a></li>
                     @endforeach
-{{--                    <li><a href="#" class="text-decoration-none text-dark">Guidelines</a></li>--}}
-{{--                    <li><a href="#" class="text-decoration-none text-dark">Terms of Use</a></li>--}}
-{{--                    <li><a href="#" class="text-decoration-none text-dark">Privacy & Ad Choices</a></li>--}}
-{{--                    <li><a href="#" class="text-decoration-none text-dark">Do Not Sell Or Share</a></li>--}}
-{{--                    <li><a href="#" class="text-decoration-none text-dark">My Information</a></li>--}}
-{{--                    <li><a href="#" class="text-decoration-none text-dark">Cookie Consent Tool</a></li>--}}
-{{--                    <li><a href="#" class="text-decoration-none text-dark">Security</a></li>--}}
-                </ul>
-            </div>
-            <div class="col-md-2 mb-3">
-                <h6 class="fw-semibold">{{ trans('home.work_with_us') }}</h6>
-                <ul class="list-unstyled small">
-                    <li><a href="{{ url('auth/user-registration-page?user=Employer') }}" class="text-decoration-none text-dark">{{ trans('home.advertisers') }}</a></li>
-                    <li><a href="{{ url('auth/user-registration-page?user=Employee') }}" class="text-decoration-none text-dark">{{ trans('home.careers') }}</a></li>
                 </ul>
             </div>
 
-            <div class="col-md-3 mb-3 d-flex flex-column align-items-start justify-content-between">
-                <div class="mb-2">
-                    <span class="small">{{ trans('home.download_app') }}</span>
-                    <div class="d-inline-flex gap-2 ms-2">
-                        <a href="{{ isset($siteSetting) ? $siteSetting->apk_link : 'javascript:void(0)' }}" aria-label="Download on Android">
-                            <img src="{{ asset('/') }}frontend/home-landing/images/android.png" alt="Android" style="width: 30px;">
-                        </a>
-                        <a href="{{ isset($siteSetting) ? $siteSetting->ios_link : 'javascript:void(0)' }}" aria-label="Download on iOS">
-                            <img src="{{ asset('/') }}frontend/home-landing/images/appleIcon.png" alt="Apple" style="width: 30px;">
-                        </a>
-                    </div>
-                </div>
-                <div class="d-flex gap-3 mb-2">
-{{--                    <a href="{{ isset($siteSetting) ? $siteSetting->fb : 'javascript:void(0)' }}" aria-label="Glassdoor Community" class="btn btn-outline-secondary btn-sm rounded-circle p-2">--}}
-{{--                        <img src="{{ asset('/') }}frontend/home-landing/images/quote.png" alt="Quote Icon" style="width: 30px;">--}}
-{{--                    </a>--}}
-                    <a href="{{ isset($siteSetting) ? $siteSetting->fb : 'javascript:void(0)' }}" aria-label="Facebook" class="btn btn-outline-secondary btn-sm rounded-circle p-2">
-                        <img src="{{ asset('/') }}frontend/home-landing/images/facebook.png" alt="Facebook" style="width: 30px;">
-                    </a>
-                    <a href="{{ isset($siteSetting) ? $siteSetting->x_link : 'javascript:void(0)' }}" aria-label="X" class="btn btn-outline-secondary btn-sm rounded-circle p-2">
-                        <img src="{{ asset('/') }}frontend/home-landing/images/x.png" alt="X" style="width: 30px;">
-                    </a>
-                    <a href="{{ isset($siteSetting) ? $siteSetting->youtube : 'javascript:void(0)' }}" aria-label="YouTube" class="btn btn-outline-secondary btn-sm rounded-circle p-2">
-                        <img src="{{ asset('/') }}frontend/home-landing/images/youtube.png" alt="YouTube" style="width: 30px;">
-                    </a>
-                    <a href="{{ isset($siteSetting) ? $siteSetting->insta : 'javascript:void(0)' }}" aria-label="Instagram" class="btn btn-outline-secondary btn-sm rounded-circle p-2">
-                        <img src="{{ asset('/') }}frontend/home-landing/images/instagram.png" alt="Instagram" style="width: 30px;">
-                    </a>
-                    <a href="{{ isset($siteSetting) ? $siteSetting->tiktalk : 'javascript:void(0)' }}" aria-label="TikTok" class="btn btn-outline-secondary btn-sm rounded-circle p-2">
-                        <img src="{{ asset('/') }}frontend/home-landing/images/tiktok.png" alt="TikTok" style="width: 30px;">
-                    </a>
-                </div>
+            <!-- Work With Us -->
+            <div class="col-lg-2 col-md-6 col-6">
+                <h6 class="footer-heading">{{ trans('home.work_with_us') }}</h6>
+                <ul class="footer-links">
+                    <li><a href="{{ url('auth/user-registration-page?user=Employer') }}">{{ trans('home.advertisers') }}</a></li>
+                    <li><a href="{{ url('auth/user-registration-page?user=Employee') }}">{{ trans('home.careers') }}</a></li>
+                </ul>
+            </div>
 
-                <select class="form-select form-select-sm w-auto" aria-label="Select country" id="changeLocalLangOption">
-                    <option value="en" {{ session('locale') == 'en' ? 'selected' : '' }} data-url="{{ route('change-local-language', ['local' => 'English']) }}">{{ trans('home.english') }}</option>
-                    <option value="bn" {{ session('locale') == 'bn' ? 'selected' : '' }} data-url="{{ route('change-local-language', ['local' => 'Bangla']) }}">{{ trans('home.bangla') }}</option>
-                </select>
+            <!-- Download & Connect -->
+            <div class="col-lg-2 col-md-6 col-6">
+                <h6 class="footer-heading">{{ trans('home.download_the_app') }}</h6>
+                <div class="d-flex gap-3 mb-4">
+                    <a href="{{ isset($siteSetting) ? $siteSetting->apk_link : 'javascript:void(0)' }}" aria-label="Android">
+                        <img src="{{ asset('/') }}frontend/home-landing/images/android.png" alt="Android" style="width:32px;filter:brightness(0) invert(1);opacity:0.7">
+                    </a>
+                    <a href="{{ isset($siteSetting) ? $siteSetting->ios_link : 'javascript:void(0)' }}" aria-label="iOS">
+                        <img src="{{ asset('/') }}frontend/home-landing/images/appleIcon.png" alt="Apple" style="width:32px;filter:brightness(0) invert(1);opacity:0.7">
+                    </a>
+                </div>
             </div>
         </div>
 
-        <hr>
-
-{{--        <div class="text-center small text-muted">--}}
-{{--            Browse by:--}}
-{{--            <a href="#" class="text-decoration-none">Companies</a>,--}}
-{{--            <a href="#" class="text-decoration-none">Jobs</a>,--}}
-{{--            <a href="#" class="text-decoration-none">Locations</a>,--}}
-{{--            <a href="#" class="text-decoration-none">Communities</a>,--}}
-{{--            <a href="#" class="text-decoration-none">Recent Posts</a>--}}
-{{--        </div>--}}
-
-        <div class="text-center mt-2 small text-muted">
-            Copyright &copy; {{ date('Y') }}. {{ isset($siteSetting) ? $siteSetting->site_title : 'Likewise Bd' }} LLC.
+        <div class="footer-bottom">
+            <p>{{ trans('home.copyright_text') }}</p>
+            <select class="lang-select" aria-label="Select language" id="changeLocalLangOption">
+                <option value="en" {{ session('locale') == 'en' ? 'selected' : '' }} data-url="{{ route('change-local-language', ['local' => 'English']) }}">{{ trans('home.english') }}</option>
+                <option value="bn" {{ session('locale') == 'bn' ? 'selected' : '' }} data-url="{{ route('change-local-language', ['local' => 'Bangla']) }}">{{ trans('home.bangla') }}</option>
+            </select>
         </div>
     </div>
 </footer>

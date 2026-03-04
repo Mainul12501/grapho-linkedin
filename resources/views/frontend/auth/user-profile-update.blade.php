@@ -22,7 +22,7 @@
                     <div class="modal-header custom-modal-header">
                         <div class="title-wrap">
                             <span class="step-badge" id="stepBadge">Step 1 of 4</span>
-                            <h2 id="wizTitle" style="margin:0;font-size:18px">{{ trans('employee.edit_contact_information') }}</h2>
+                            <h2 id="wizTitle" style="margin:0;font-size:18px">{{ trans('employee.add_personal_details') }}</h2>
                         </div>
                         <button class="btn-ghost" id="closeX" style="display: none" aria-label="Close">✕</button>
                         <button class="btn-ghost btn btn-success" id="" type="button" style="cursor: pointer" aria-label="Close" onclick="document.getElementById('logoutForm').submit()">Logout</button>
@@ -764,7 +764,7 @@
             const toastEl = document.getElementById('toast');
 
             const labels = [
-                { title: 'Edit Contact Information' },
+                { title: 'Add Personal Details' },
                 { title: 'Add Education' },
                 { title: 'Add Work Experience' },
                 { title: 'Add Document' }

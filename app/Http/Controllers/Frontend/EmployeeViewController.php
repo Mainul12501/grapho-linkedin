@@ -218,6 +218,7 @@ class EmployeeViewController extends Controller
         {
             return ViewHelper::returnRedirectWithMessage(route('employee.home', 'error', 'Your account is blocked or has not approved yet. Please contact with admin.'));
         }
+        $loggedUser = ViewHelper::loggedUser();
         $jobTasks = JobTask::query()->with(['employerCompany.employerCompanyCategory', 'jobLocationType', 'industry', 'jobType']);
 
         // Get filters array
@@ -318,6 +319,16 @@ class EmployeeViewController extends Controller
                     $q->whereIn('slug', $companies);
                 });
             }
+        }
+
+        if ($loggedUser) {
+            $jobTasks = $jobTasks
+                ->whereDoesntHave('employeeAppliedJobs', function ($query) use ($loggedUser) {
+                    $query->where('employee_applied_jobs.user_id', $loggedUser->id);
+                })
+                ->whereDoesntHave('employeeSavedJobs', function ($query) use ($loggedUser) {
+                    $query->where('job_task_user.user_id', $loggedUser->id);
+                });
         }
 
         $jobTasks = $jobTasks->where(['status' => 1])->where('is_softly_deleted', 0)->latest()->paginate(15);
@@ -483,7 +494,7 @@ class EmployeeViewController extends Controller
     public function myNotifications(Request $request)
     {
         $loggedUser = ViewHelper::loggedUser();
-        $webNotifications = WebNotification::where(['status' => 1])->where('viewed_user_id', $loggedUser->id)->paginate(10);
+        $webNotifications = WebNotification::where(['status' => 1])->latest()->where('viewed_user_id', $loggedUser->id)->paginate(10);
         $newNotifications = $webNotifications->where('is_seen', 0)->count();
         // 👇 When loading more via scroll
         if ($request->ajax()) {
@@ -570,7 +581,7 @@ class EmployeeViewController extends Controller
                 $webNotification->viewer_id = $jobTask->id;
                 $webNotification->viewed_user_id = $loggedUser->id;
                 $webNotification->notification_type = 'accept_application';
-                $webNotification->msg = "$loggedUser->name has applied to your job: $jobTask->job_title.";
+                $webNotification->msg = "$loggedUser->name has applied for job post: $jobTask->job_title.";
                 $webNotification->save();
 
                 // send notification to firebase

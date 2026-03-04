@@ -88,6 +88,7 @@ return [
     'edit_bio' => 'বায়ো সম্পাদনা করুন',
     'edit_contact_info' => 'যোগাযোগের তথ্য সম্পাদনা করুন',
     'edit_contact_information' => 'যোগাযোগের তথ্য সম্পাদনা করুন',
+    'add_personal_details' => 'ব্যক্তিগত বিবরণ যোগ করুন',
     'currently_available_to_work' => 'বর্তমানে কাজের জন্য উপলব্ধ?',
     'job_preferences' => 'চাকরির পছন্দ',
     'what_are_you_looking_for' => 'আপনি কি খুঁজছেন?',

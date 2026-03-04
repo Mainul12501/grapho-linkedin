@@ -3,268 +3,214 @@
 @section('title', 'Employee Home')
 
 @section('body')
-    <div class="container container-main mt-3">
-        <aside class="left-panel p-3 col-md-3">
-            <div class="card">
-                <div class="card-body">
-                    <img src="{{ asset(auth()->user()->profile_image ?? '/frontend/user-vector-img.jpg') }}" alt="Profile" class="rounded-circle mb-2" width="80" />
-                    <h5>{{ auth()->user()->name ?? trans('common.user') }}</h5>
-                    <span class="badge d-flex align-items-center">
-                        <img src="{{ asset('/') }}frontend/employee/images/contentImages/Ellipse 1.png" alt="" class="me-2" />
-                        {{ auth()->user()->is_open_for_hire == 1 ? trans('employee.open_to_work') : trans('employee.offline') }}
-                    </span>
-                    <p class="mt-2">
-                        {{ auth()->user()->profile_title ?? trans('common.user_bio') }}
-                    </p>
-                    <p class="mt-1">
-                        {{ auth()->user()->address ?? trans('common.user_address') }}
-                    </p>
-                    <div class="optionsInprofile">
-                        <div class="options  border rounded">
-                            <a href="{{ route('employee.my-saved-jobs') }}" style="text-decoration: none">
-                                <div class="option-card">
-                                    <div class="d-flex align-items-center justify-content-center">
-                                        <div class="icon bookmark">
-                                            <img src="{{ asset('/') }}frontend/employee/images/contentImages/bookmark-icon.png" alt="" />
-                                        </div>
-                                        <div>
-                                            <div class="title">{{ trans('employee.my_saved_jobs') }}</div>
-                                            <div class="subtitle text-dark"><span id="savedJobsNumber">{{ $totalSavedJobs }}</span> {{ trans('employee.saved_text') }}</div>
-                                        </div>
-                                    </div>
-
-                                    <div class="arrow">
-                                        <img src="{{ asset('/') }}frontend/employee/images/contentImages/arrow-right 1.png" alt="" />
-                                    </div>
-                                </div>
-                            </a>
-
-                            <a href="{{ route('employee.my-applications') }}" style="text-decoration: none">
-                                <div class="option-card">
-                                    <div class="d-flex align-items-center justify-content-center">
-                                        <div class="icon checkmark">
-                                            <img src="{{ asset('/') }}frontend/employee/images/contentImages/checkmark-icon.png" alt="" />
-                                        </div>
-                                        <div>
-                                            <div class="title">{{ trans('employee.my_applications') }}</div>
-                                            <div class="subtitle text-dark">{{ $totalAppliedApplications }} {{ trans('employee.applications') }}</div>
-                                        </div>
-                                    </div>
-
-                                    <div class="arrow">
-                                        <img src="{{ asset('/') }}frontend/employee/images/contentImages/arrow-right 1.png" alt="" />
-                                    </div>
-                                </div>
-                            </a>
-
-                            <a href="{{ route('employee.my-profile-viewers') }}" style="text-decoration: none">
-                                <div class="option-card">
-                                    <div class="d-flex align-items-center justify-content-center">
-                                        <div class="icon eye">
-                                            <img src="{{ asset('/') }}frontend/employee/images/contentImages/eye-icon.png" alt="" />
-                                        </div>
-                                        <div>
-                                            <div class="title">{{ trans('employee.profiler_viewers') }}</div>
-                                            <div class="subtitle text-dark">{{ $totalViewedEmployers }} {{ trans('employee.viewers') }}</div>
-                                        </div>
-                                    </div>
-
-                                    <div class="arrow">
-                                        <img src="{{ asset('/') }}frontend/employee/images/contentImages/arrow-right 1.png" alt="" />
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
+    <div class="eh-home">
+        {{-- ====== SIDEBAR ====== --}}
+        <aside class="eh-sidebar">
+            <div class="eh-profile-card">
+                <div class="eh-avatar-wrap">
+                    <img src="{{ asset(auth()->user()->profile_image ?? '/frontend/user-vector-img.jpg') }}"
+                         alt="Profile" class="eh-avatar" />
+                    <span class="eh-status-dot {{ auth()->user()->is_open_for_hire == 1 ? 'eh-status-dot--online' : 'eh-status-dot--offline' }}"></span>
                 </div>
+                <h2 class="eh-name">{{ auth()->user()->name ?? trans('common.user') }}</h2>
+                <span class="eh-status-badge {{ auth()->user()->is_open_for_hire == 1 ? 'eh-status-badge--open' : 'eh-status-badge--offline' }}">
+                    <i class="fas fa-circle"></i>
+                    {{ auth()->user()->is_open_for_hire == 1 ? trans('employee.open_to_work') : trans('employee.offline') }}
+                </span>
+                <p class="eh-bio">{{ auth()->user()->profile_title ?? trans('common.user_bio') }}</p>
+                <p class="eh-location">
+                    <i class="fas fa-map-marker-alt"></i>
+                    {{ auth()->user()->address ?? trans('common.user_address') }}
+                </p>
+            </div>
+
+            <div class="eh-stats">
+                <a href="{{ route('employee.my-saved-jobs') }}" class="eh-stat-card">
+                    <span class="eh-stat-icon eh-stat-icon--bookmark"><i class="fas fa-bookmark"></i></span>
+                    <span class="eh-stat-value" id="savedJobsNumber">{{ $totalSavedJobs }}</span>
+                    <span class="eh-stat-label">{{ trans('employee.my_saved_jobs') }}</span>
+                </a>
+                <a href="{{ route('employee.my-applications') }}" class="eh-stat-card">
+                    <span class="eh-stat-icon eh-stat-icon--check"><i class="fas fa-check-circle"></i></span>
+                    <span class="eh-stat-value">{{ $totalAppliedApplications }}</span>
+                    <span class="eh-stat-label">{{ trans('employee.my_applications') }}</span>
+                </a>
+                <a href="{{ route('employee.my-profile-viewers') }}" class="eh-stat-card">
+                    <span class="eh-stat-icon eh-stat-icon--eye"><i class="fas fa-eye"></i></span>
+                    <span class="eh-stat-value">{{ $totalViewedEmployers }}</span>
+                    <span class="eh-stat-label">{{ trans('employee.profiler_viewers') }}</span>
+                </a>
             </div>
         </aside>
 
-        <!-- Right Scrollable Jobs -->
-        <section class="w-100">
+        {{-- ====== JOB FEED ====== --}}
+        <section class="eh-feed">
+
+            {{-- Top Job Picks --}}
             @if(count($topJobsForEmployee) > 0)
-                <div class="right-panel w-100" style="margin-top: 16px!important;">
-                    <div class="rightPanelHeadinfo border-bottom">
-                        <h2>{{ trans('employee.top_job_picks_for_you') }}, {{ auth()->user()->name ?? trans('common.user_name') }}!</h2>
-                        <p>
-                            {{ trans('employee.based_on_profile_preferences') }}
-                        </p>
+                <div class="eh-section">
+                    <div class="eh-section-header">
+                        <h2 class="eh-section-title">{{ trans('employee.top_job_picks_for_you') }}, {{ auth()->user()->name ?? trans('common.user_name') }}!</h2>
+                        <p class="eh-section-subtitle">{{ trans('employee.based_on_profile_preferences') }}</p>
                     </div>
 
                     @foreach($topJobsForEmployee as $topJobForEmployee)
-                        <div class="row jobCard border-bottom">
-                            <div class="col-md-2 col-lg-1 pe-0">
-                                <a href="{{ route('view-company-profile', ['employerCompany' => $topJobForEmployee->id, 'view' => 'employee']) }}">
-                                    <img src="{{ asset($topJobForEmployee?->employerCompany?->logo ?? '/frontend/company-vector.jpg') }}" alt="Company Logo" class="companyLogo img-fluid" style="height: 65px; border-radius: 50%;" />
+                        <article class="eh-job-card">
+                            <div class="eh-job-logo">
+                                <a href="{{ route('view-company-profile', ['employerCompany' => $topJobForEmployee->employer_company_id, 'view' => 'employee']) }}">
+                                    <img src="{{ asset($topJobForEmployee?->employerCompany?->logo ?? '/frontend/company-vector.jpg') }}"
+                                         alt="{{ $topJobForEmployee?->employerCompany?->name ?? 'Company' }}" />
                                 </a>
                             </div>
-                            <div class="col-md-10 col-lg-11">
-                                <div class="jobPosition d-flex justify-content-between">
-                                    <div class="d-flex">
+                            <div class="eh-job-body">
+                                <div class="eh-job-header-row">
+                                    <div class="eh-job-logo--mobile">
                                         <a href="{{ route('view-company-profile', ['employerCompany' => $topJobForEmployee->employer_company_id, 'view' => 'employee']) }}">
-                                            <img style="width: 40px; height: 42px" src="{{ asset($topJobForEmployee?->employerCompany?->logo ?? '/frontend/company-vector.jpg') }}"
-                                                 alt="Company Logo" class="mobileLogo" />
+                                            <img src="{{ asset($topJobForEmployee?->employerCompany?->logo ?? '/frontend/company-vector.jpg') }}"
+                                                 alt="{{ $topJobForEmployee?->employerCompany?->name ?? 'Company' }}" />
                                         </a>
-
-                                        <div class="paddingforMobile">
-                                            <h3  style="cursor: pointer;">{{ $topJobForEmployee->job_title  ?? trans('common.job_title') }} <span class="text-success" onclick="showJobDetails({{ $topJobForEmployee->id }}, `{{ $topJobForEmployee->job_title }}`)" >{{ trans('common.view') }}</span></h3>
-                                            <p class="text-muted"><a class="text-muted nav-link" href="{{ route('view-company-profile', ['employerCompany' => $topJobForEmployee->employer_company_id, 'view' => 'employee']) }}">{{ $topJobForEmployee?->employerCompany?->name ?? trans('common.company_name') }}</a></p>
-                                        </div>
                                     </div>
-{{--                                    <div class="dropdown">--}}
-{{--                                        <img src="{{ asset('/') }}frontend/employee/images/contentImages/threedot.png" alt="Options" class="threeDot" role="button" data-bs-toggle="dropdown" aria-expanded="false">--}}
-{{--                                        <ul class="dropdown-menu dropdown-menu-end" style="">--}}
-{{--                                            <li><a class="dropdown-item" href="{{ route('employee.save-job', $topJobForEmployee->id) }}">Save Job</a></li>--}}
-{{--                                            <li><a class="dropdown-item" href="#">Share</a></li>--}}
-{{--                                            <li><a class="dropdown-item" href="#">Report</a></li>--}}
-{{--                                        </ul>--}}
-{{--                                    </div>--}}
+                                    <div>
+                                        <h3 class="eh-job-title">
+                                            {{ $topJobForEmployee->job_title ?? trans('common.job_title') }}
+                                            <span class="eh-view-link" onclick="showJobDetails({{ $topJobForEmployee->id }}, `{{ $topJobForEmployee->job_title }}`)">{{ trans('common.view') }}</span>
+                                        </h3>
+                                        <p class="eh-job-company">
+                                            <a href="{{ route('view-company-profile', ['employerCompany' => $topJobForEmployee->employer_company_id, 'view' => 'employee']) }}">{{ $topJobForEmployee?->employerCompany?->name ?? trans('common.company_name') }}</a>
+                                        </p>
+                                    </div>
                                 </div>
-                                <div class="jobTypeBtn">
-                                    <button class="btn">{{ $topJobForEmployee?->jobType?->name ?? trans('common.full_time') }}</button>
-                                    <button class="btn">{{ $topJobForEmployee?->jobLocationType?->name ?? trans('common.on_site') }}</button>
-{{--                                    <button class="btn">Day Shift</button>--}}
+                                <div class="eh-tags">
+                                    <span class="eh-tag">{{ $topJobForEmployee?->jobType?->name ?? trans('common.full_time') }}</span>
+                                    <span class="eh-tag">{{ $topJobForEmployee?->jobLocationType?->name ?? trans('common.on_site') }}</span>
                                 </div>
-                                <div class="jobDesc">
-                                    <p>{!! $topJobForEmployee->employerCompany?->address ?? trans('common.company_address') !!}</p>
-                                    <p>{{ $topJobForEmployee->required_experience ?? 0 }} {{ trans('employee.years_of_experience') }}</p>
-                                    <p>{{ trans('employee.salary') }}: Tk. {{ $topJobForEmployee->salary_amount ?? 0 }}/{{ $topJobForEmployee->job_pref_salary_payment_type }}</p>
+                                <div class="eh-job-meta">
+                                    <span><i class="fas fa-map-marker-alt"></i> {!! $topJobForEmployee->employerCompany?->address ?? trans('common.company_address') !!}</span>
+                                    <span><i class="fas fa-briefcase"></i> {{ $topJobForEmployee->required_experience ?? 0 }} {{ trans('employee.years_of_experience') }}</span>
+                                    <span><i class="fas fa-money-bill-wave"></i> {{ trans('employee.salary') }}: Tk. {{ $topJobForEmployee->salary_amount ?? 0 }}/{{ $topJobForEmployee->job_pref_salary_payment_type }}</span>
                                 </div>
-                                <div class="jobApply d-flex justify-content-between easy-apply-mob-div">
-                                    @if(!\App\Helpers\ViewHelper::checkIfUserApprovedOrBlocked(auth()->user()))
-                                        <div>
-                                            @if(!$topJobForEmployee['isApplied'])
-                                                <form action="{{ route('employee.apply-job', $topJobForEmployee->id) }}" method="post" style="float: left">
-                                                    @csrf
-                                                    <button title="Apply Job" type="submit" class="btn flex-column show-apply-model" data-job-id="{{ $topJobForEmployee->id }}" data-job-company-logo="{{ asset($topJobForEmployee?->employerCompany?->logo) ?? '' }}">{{ trans('employee.easy_apply') }}</button>
-                                                </form>
-                                            @else
-                                                <form action="" method="post" style="float: left">
-                                                    <button title="Job Applied" type="submit" class="btn flex-column " disabled data-job-id="{{ $topJobForEmployee->id }}" data-job-company-logo="{{ asset($topJobForEmployee?->employerCompany?->logo) ?? '' }}">{{ trans('employee.applied') }}</button>
-                                                </form>
-                                            @endif
+                                @if(!\App\Helpers\ViewHelper::checkIfUserApprovedOrBlocked(auth()->user()))
+                                    <div class="eh-job-actions">
+                                        @if(!$topJobForEmployee['isApplied'])
+                                            <form action="{{ route('employee.apply-job', $topJobForEmployee->id) }}" method="post" style="display:inline">
+                                                @csrf
+                                                <button type="submit" class="eh-btn-apply show-apply-model"
+                                                        data-job-id="{{ $topJobForEmployee->id }}"
+                                                        data-job-company-logo="{{ asset($topJobForEmployee?->employerCompany?->logo) ?? '' }}">
+                                                    {{ trans('employee.easy_apply') }}
+                                                </button>
+                                            </form>
+                                        @else
+                                            <button class="eh-btn-apply eh-btn-applied" disabled
+                                                    data-job-id="{{ $topJobForEmployee->id }}"
+                                                    data-job-company-logo="{{ asset($topJobForEmployee?->employerCompany?->logo) ?? '' }}">
+                                                <i class="fas fa-check"></i> {{ trans('employee.applied') }}
+                                            </button>
+                                        @endif
 
-
-                                            {{--                                            <img title="Save Job" src="{{ !auth()->user()?->employeeSavedJobs->contains($topJobForEmployee->id) ? asset('/frontend/employee/images/contentImages/bookmark.png') : asset('/frontend/bookmark-circle.png') }}" alt="Bookmark" data-job-id="{{ $topJobForEmployee->id }}" style="max-height: 40px" class="bookmarkIcon  ms-2 {{ !auth()->user()?->employeeSavedJobs->contains($topJobForEmployee->id) ? 'save-btnx' : '' }}" />--}}
-
-                                            @if(!auth()->user()?->employeeSavedJobs->contains($topJobForEmployee->id))
-                                                <button style="padding: 5px 20px; margin: 0px 8px!important; border-radius: 9px" is-saved="no" class="save-btn bg-primary text-white" data-job-id="{{ $topJobForEmployee->id }}"><img id="saveBtnImg{{ $topJobForEmployee->id }}" src="{{ asset('frontend/employee/images/bookmark-white.png') }}" alt="Save Icon" class="save-icon"> <span id="saveBtnTxt{{ $topJobForEmployee->id }}">{{ trans('common.save') }}</span></button>
-{{--                                            @else--}}
-{{--                                                <button disabled style="padding: 5px 20px; margin: 0px 8px!important; border-radius: 9px" is-saved="yes" class="save-btn bg-gray-300 bg-light text-dark" data-job-id="{{ $topJobForEmployee->id }}"><img id="saveBtnImg{{ $topJobForEmployee->id }}" src="{{ asset('/frontend/employee/images/contentImages/saveIcon.png') }}" style="height: 20px; width: 20px" alt="Save Icon" class=""> <span id="saveBtnTxt{{ $topJobForEmployee->id }}">{{ trans('common.saved') }}</span></button>--}}
-                                            @endif
-
-                                        </div>
-                                    @endif
-
-{{--                                    <div>--}}
-{{--                                        <img src="{{ asset('/') }}frontend/employee/images/contentImages/closeIcon.png" alt="Close" class="closeIcon" />--}}
-{{--                                    </div>--}}
-                                </div>
+                                        @if(!auth()->user()?->employeeSavedJobs->contains($topJobForEmployee->id))
+                                            <button class="eh-btn-save save-btn" is-saved="no" data-job-id="{{ $topJobForEmployee->id }}">
+                                                <img id="saveBtnImg{{ $topJobForEmployee->id }}" src="{{ asset('frontend/employee/images/bookmark-white.png') }}" alt="Save" class="save-icon">
+                                                <span id="saveBtnTxt{{ $topJobForEmployee->id }}">{{ trans('common.save') }}</span>
+                                            </button>
+                                        @endif
+                                    </div>
+                                @endif
                             </div>
-                        </div>
+                        </article>
                     @endforeach
 
-
-                    <div class="seeAll">
-                        <a href="{{ route('employee.show-jobs') }}">{{ trans('employee.show_all') }}
-                            <img src="{{ asset('/') }}frontend/employee/images/contentImages/arrow-righttwo.png" alt="" class="ms-2" /></a>
+                    <div class="eh-see-all">
+                        <a href="{{ route('employee.show-jobs') }}">{{ trans('employee.show_all') }} <i class="fas fa-arrow-right"></i></a>
                     </div>
                 </div>
             @endif
 
-            <div class="right-panel w-100 mb-5">
-                <div class="rightPanelHeadinfo">
-                    <h2>{{ trans('employee.more_jobs') }}</h2>
-{{--                    <p>{{ trans('employee.jobs_people_network_hiring') }}</p>--}}
+            {{-- More Jobs --}}
+            <div class="eh-section">
+                <div class="eh-section-header">
+                    <h2 class="eh-section-title">{{ trans('employee.more_jobs') }}</h2>
                 </div>
 
                 @foreach($moreJobsForEmployee as $topJobForEmployee)
-                    <div class="row jobCard border-bottom">
-                        <div class="col-md-2 col-lg-1 pe-0" style="border-radius: 50%">
-                            <a href="{{ route('view-company-profile', ['employerCompany' => $topJobForEmployee->employer_company_id, 'view' => 'employee']) }}"><img style="cursor: pointer" src="{{ asset($topJobForEmployee?->employerCompany?->logo ?? '/frontend/employee/images/contentImages/companyLogoFor job.png') }}" alt="Company Logo" class="companyLogo" /></a>
+                    <article class="eh-job-card">
+                        <div class="eh-job-logo">
+                            <a href="{{ route('view-company-profile', ['employerCompany' => $topJobForEmployee->employer_company_id, 'view' => 'employee']) }}">
+                                <img src="{{ asset($topJobForEmployee?->employerCompany?->logo ?? '/frontend/employee/images/contentImages/companyLogoFor job.png') }}"
+                                     alt="{{ $topJobForEmployee?->employerCompany?->name ?? 'Company' }}" />
+                            </a>
                         </div>
-                        <div class="col-md-10 col-lg-11">
-                            <div class="jobPosition d-flex justify-content-between">
-                                <div class="d-flex">
+                        <div class="eh-job-body">
+                            <div class="eh-job-header-row">
+                                <div class="eh-job-logo--mobile">
                                     <a href="{{ route('view-company-profile', ['employerCompany' => $topJobForEmployee->employer_company_id, 'view' => 'employee']) }}">
-                                        <img style="width: 40px; height: 42px" src="{{ asset($topJobForEmployee?->employerCompany?->logo ?? '/frontend/employee/images/contentImages/companyLogoFor job.png') }}"
-                                             alt="Company Logo" class="mobileLogo" />
+                                        <img src="{{ asset($topJobForEmployee?->employerCompany?->logo ?? '/frontend/employee/images/contentImages/companyLogoFor job.png') }}"
+                                             alt="{{ $topJobForEmployee?->employerCompany?->name ?? 'Company' }}" />
                                     </a>
-
-                                    <div class="paddingforMobile">
-                                        <h3  style="cursor: pointer;">{{ $topJobForEmployee->job_title  ?? trans('common.job_title') }} <span class="text-success" onclick="showJobDetails({{ $topJobForEmployee->id }}, `{{ $topJobForEmployee->job_title }}`)">{{ trans('common.view') }}</span></h3>
-                                        <p class="text-muted"><a class="nav-link text-muted" href="{{ route('view-company-profile', ['employerCompany' => $topJobForEmployee->employer_company_id, 'view' => 'employee']) }}">{{ $topJobForEmployee?->employerCompany?->name ?? trans('common.company_name') }}</a></p>
-                                    </div>
                                 </div>
-{{--                                <div class="dropdown">--}}
-{{--                                    <img src="{{ asset('/') }}frontend/employee/images/contentImages/threedot.png" alt="Options" class="threeDot" role="button" data-bs-toggle="dropdown" aria-expanded="false">--}}
-{{--                                    <ul class="dropdown-menu dropdown-menu-end" style="">--}}
-{{--                                        <li><a class="dropdown-item" href="{{ route('employee.save-job', $topJobForEmployee->id) }}">{{ trans('common.save_job') }}</a></li>--}}
-{{--                                        <li><a class="dropdown-item" href="#">{{ trans('common.share') }}</a></li>--}}
-{{--                                        <li><a class="dropdown-item" href="#">{{ trans('common.report') }}</a></li>--}}
-{{--                                    </ul>--}}
-{{--                                </div>--}}
+                                <div>
+                                    <h3 class="eh-job-title">
+                                        {{ $topJobForEmployee->job_title ?? trans('common.job_title') }}
+                                        <span class="eh-view-link" onclick="showJobDetails({{ $topJobForEmployee->id }}, `{{ $topJobForEmployee->job_title }}`)">{{ trans('common.view') }}</span>
+                                    </h3>
+                                    <p class="eh-job-company">
+                                        <a href="{{ route('view-company-profile', ['employerCompany' => $topJobForEmployee->employer_company_id, 'view' => 'employee']) }}">{{ $topJobForEmployee?->employerCompany?->name ?? trans('common.company_name') }}</a>
+                                    </p>
+                                </div>
                             </div>
-                            <div class="jobTypeBtn">
-                                <button class="btn">{{ $topJobForEmployee?->jobType?->name ?? trans('common.full_time') }}</button>
-                                <button class="btn">{{ $topJobForEmployee?->jobLocationType?->name ?? trans('common.on_site') }}</button>
-                                {{--                                    <button class="btn">Day Shift</button>--}}
+                            <div class="eh-tags">
+                                <span class="eh-tag">{{ $topJobForEmployee?->jobType?->name ?? trans('common.full_time') }}</span>
+                                <span class="eh-tag">{{ $topJobForEmployee?->jobLocationType?->name ?? trans('common.on_site') }}</span>
                             </div>
-                            <div class="jobDesc">
-                                <p>{!! $topJobForEmployee->employerCompany?->address ?? trans('common.company_address') !!}</p>
-                                <p>{{ $topJobForEmployee->required_experience ?? 0 }} {{ trans('employee.years_of_experience') }}</p>
-                                <p>{{ trans('employee.salary') }}: Tk. {{ $topJobForEmployee->salary_amount ?? 0 }}/{{ $topJobForEmployee->job_pref_salary_payment_type }}</p>
+                            <div class="eh-job-meta">
+                                <span><i class="fas fa-map-marker-alt"></i> {!! $topJobForEmployee->employerCompany?->address ?? trans('common.company_address') !!}</span>
+                                <span><i class="fas fa-briefcase"></i> {{ $topJobForEmployee->required_experience ?? 0 }} {{ trans('employee.years_of_experience') }}</span>
+                                <span><i class="fas fa-money-bill-wave"></i> {{ trans('employee.salary') }}: Tk. {{ $topJobForEmployee->salary_amount ?? 0 }}/{{ $topJobForEmployee->job_pref_salary_payment_type }}</span>
                             </div>
-                            <div class="jobApply d-flex justify-content-between">
-                                @if(!\App\Helpers\ViewHelper::checkIfUserApprovedOrBlocked(auth()->user()))
-                                    <div>
-                                        @if(!$topJobForEmployee['isApplied'])
-                                            <form action="{{ route('employee.apply-job', $topJobForEmployee->id) }}" method="post" style="float: left">
-                                                @csrf
-                                                <button type="submit" title="Apply Job" class="btn flex-column show-apply-model" data-job-id="{{ $topJobForEmployee->id }}" data-job-company-logo="{{ asset($topJobForEmployee?->employerCompany?->logo) ?? '' }}">{{ trans('employee.easy_apply') }}</button>
-                                            </form>
-                                        @endif
-                                        @if(!auth()->user()?->employeeSavedJobs->contains($topJobForEmployee->id))
-                                            <button style="padding: 5px 20px; margin: 0px 8px!important; border-radius: 9px;" is-saved="no" class="save-btn bg-primary text-white" data-job-id="{{ $topJobForEmployee->id }}"><img id="saveBtnImg{{ $topJobForEmployee->id }}" src="{{ asset('/frontend/employee/images/bookmark-white.png') }}" alt="Save Icon" class="save-icon"> <span id="saveBtnTxt{{ $topJobForEmployee->id }}">{{ trans('common.save') }}</span></button>
-{{--                                        @else--}}
-{{--                                            <button disabled style="padding: 5px 20px; margin: 0px 8px!important; border-radius: 9px;" is-saved="yes" class="save-btn bg-light text-dark" data-job-id="{{ $topJobForEmployee->id }}"><img id="saveBtnImg{{ $topJobForEmployee->id }}" src="{{ asset('/frontend/employee/images/contentImages/saveIcon.png') }}" style="height: 20px; width: 20px" alt="Save Icon" class=""> <span id="saveBtnTxt{{ $topJobForEmployee->id }}">{{ trans('common.saved') }}</span></button>--}}
-                                        @endif
-                                    </div>
-                                @endif
+                            @if(!\App\Helpers\ViewHelper::checkIfUserApprovedOrBlocked(auth()->user()))
+                                <div class="eh-job-actions">
+                                    @if(!$topJobForEmployee['isApplied'])
+                                        <form action="{{ route('employee.apply-job', $topJobForEmployee->id) }}" method="post" style="display:inline">
+                                            @csrf
+                                            <button type="submit" class="eh-btn-apply show-apply-model"
+                                                    data-job-id="{{ $topJobForEmployee->id }}"
+                                                    data-job-company-logo="{{ asset($topJobForEmployee?->employerCompany?->logo) ?? '' }}">
+                                                {{ trans('employee.easy_apply') }}
+                                            </button>
+                                        </form>
+                                    @endif
 
-                                {{--                                    <div>--}}
-                                {{--                                        <img src="{{ asset('/') }}frontend/employee/images/contentImages/closeIcon.png" alt="Close" class="closeIcon" />--}}
-                                {{--                                    </div>--}}
-                            </div>
+                                    @if(!auth()->user()?->employeeSavedJobs->contains($topJobForEmployee->id))
+                                        <button class="eh-btn-save save-btn" is-saved="no" data-job-id="{{ $topJobForEmployee->id }}">
+                                            <img id="saveBtnImg{{ $topJobForEmployee->id }}" src="{{ asset('/frontend/employee/images/bookmark-white.png') }}" alt="Save" class="save-icon">
+                                            <span id="saveBtnTxt{{ $topJobForEmployee->id }}">{{ trans('common.save') }}</span>
+                                        </button>
+                                    @endif
+                                </div>
+                            @endif
                         </div>
-                    </div>
+                    </article>
                 @endforeach
 
-
-                <div class="seeAll">
-                    <a href="{{ route('employee.show-jobs') }}">{{ trans('employee.show_all') }}
-                        <img src="{{ asset('/') }}frontend/employee/images/contentImages/arrow-righttwo.png" alt="" class="ms-2" /></a>
+                <div class="eh-see-all">
+                    <a href="{{ route('employee.show-jobs') }}">{{ trans('employee.show_all') }} <i class="fas fa-arrow-right"></i></a>
                 </div>
             </div>
-            <!-- Repeat job-card as needed -->
+
         </section>
     </div>
-    <div class="easy-apply-modal" id="easyApplyModal">
+
+    {{-- Easy Apply Modal --}}
+    <div class="easy-apply-modal eh-apply-modal" id="easyApplyModal">
         <div class="modal-content">
             <div class="modal-header">
-{{--                <img src="images/contentImages/notificationImage.png" alt="Company Logo" class="modal-image" />--}}
                 <div>
                     <div class="images-container">
-                        <!-- User Profile Image -->
-                        <img src="{{ asset( auth()->user()->profile_image ?? '/frontend/user-vector-img.jpg') }}" alt="Your Profile" class="user-image" />
-
-                        <!-- Arrow Icon -->
+                        <img src="{{ asset(auth()->user()->profile_image ?? '/frontend/user-vector-img.jpg') }}" alt="Your Profile" class="user-image" />
                         <div class="arrow-icon">
                             <i class="fas fa-arrow-right"></i>
                         </div>
-
-                        <!-- Company Logo -->
-                        <img src="https://img.freepik.com/free-photo/horizontal-shot-handsome-young-guy-with-blue-eyes-bristle-has-positive-expression_273609-2960.jpg" alt="Company Logo" class="company-image" />
+                        <img src="" alt="Company Logo" class="company-image" />
                     </div>
                 </div>
                 <h2>{{ trans('common.share_your_profile') }}</h2>
@@ -273,14 +219,15 @@
             <div class="modal-buttons">
                 <form action="" method="post" id="applyShareForm">
                     @csrf
-                    <button class="share-profile-btn w-100 mb-2" {{-- onclick="shareProfile()"--}} type="submit">{{ trans('common.share_my_profile') }}</button>
+                    <button class="share-profile-btn w-100 mb-2" type="submit">{{ trans('common.share_my_profile') }}</button>
                 </form>
                 <button class="cancel-btn w-100" onclick="closeEasyApplyModal()">{{ trans('common.cancel') }}</button>
             </div>
         </div>
     </div>
 
-    <div class="modal" tabindex="-1" id="viewJobModal">
+    {{-- View Job Modal --}}
+    <div class="modal eh-view-modal" tabindex="-1" id="viewJobModal">
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
@@ -299,147 +246,192 @@
 @endsection
 
 @push('style')
+    <link rel="stylesheet" href="{{ asset('frontend/employee/eh-home.css') }}" />
     <style>
-        .save-btnx {
-            border: 0px!important;
-
-        }
-        .apply-btn, .save-btnx {
-            padding: 0px;
-            margin: 0px 0px 0px 5px;
-        }
-        .companyLogo {width: 65px}
-        .border {border: 2px solid #e5e7ebaf !important;}
-
-        @media screen and (max-width: 768px) {
-            .apply-btn, .save-btn {
-                width: auto!important;
-            }
-        }
-    </style>
-{{--    apply modal two image set--}}
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <style>
-        .images-container {
+        /* Job details styles (loaded via AJAX from job-details.blade.php) */
+        .sj-detail-company-row {
             display: flex;
             align-items: center;
-            justify-content: center;
-            position: relative;
-            margin-bottom: 1.5rem;
-            height: 100px;
+            gap: 14px;
+            margin-bottom: 16px;
         }
-
-        .user-image {
-            width: 90px;
-            height: 90px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 4px solid white;
-            background-color: white;
-            position: relative;
-            z-index: 3;
-        }
-
-        .company-image {
-            width: 90px;
-            height: 90px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 4px solid white;
-            background-color: white;
-            position: relative;
-            z-index: 1;
-            margin-left: -25px;
-        }
-
-        .pill-shape {
-            width: 60px;
-            height: 30px;
-            background: linear-gradient(135deg, #ff4757 0%, #ff3742 100%);
-            border-radius: 15px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .pill-shape::before {
-            content: '';
-            position: absolute;
-            top: 6px;
-            left: 6px;
+        .sj-detail-logo {
             width: 48px;
-            height: 18px;
-            background: linear-gradient(135deg, #ff6b7d 0%, #ff4757 100%);
+            height: 48px;
+            border-radius: 10px;
+            object-fit: cover;
+            border: 1px solid #eee;
+        }
+        .sj-detail-logo-link { flex-shrink: 0; }
+        .sj-detail-company-info { min-width: 0; }
+        .sj-detail-company-name {
+            font-size: 15px;
+            font-weight: 650;
+            color: #484f5b;
+            margin: 0;
+        }
+        .sj-detail-company-name a { color: inherit; text-decoration: none; }
+        .sj-detail-company-name a:hover { color: #141c25; }
+        .sj-detail-company-addr {
+            font-size: 13px;
+            color: #8c919d;
+            margin: 2px 0 0;
+        }
+        .sj-detail-job-title {
+            font-size: 24px;
+            font-weight: 800;
+            color: #141c25;
+            margin: 0 0 10px;
+            letter-spacing: -0.3px;
+            line-height: 1.25;
+        }
+        .sj-tag {
+            display: inline-block;
+            padding: 3px 10px;
+            font-size: 11px;
+            font-weight: 600;
+            color: #556070;
+            background: #f0f1f4;
+            border-radius: 6px;
+        }
+        .sj-detail-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+        .sj-detail-actions {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 24px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #f0f1f3;
+        }
+        .sj-apply-btn {
+            display: inline-flex !important;
+            align-items: center;
+            gap: 7px;
+            padding: 10px 24px !important;
+            font-size: 14px !important;
+            font-weight: 700;
+            color: #141c25 !important;
+            background: #FFCB11 !important;
+            border: none !important;
+            border-radius: 12px !important;
+            cursor: pointer;
+            transition: all .2s ease;
+            width: auto !important;
+            margin: 0 !important;
+        }
+        .sj-apply-btn:hover {
+            background: #f0be00 !important;
+            box-shadow: 0 4px 14px rgba(255,203,17,.3);
+            color: #141c25 !important;
+        }
+        .sj-applied-btn {
+            display: inline-flex !important;
+            align-items: center;
+            gap: 7px;
+            padding: 10px 24px !important;
+            font-size: 14px !important;
+            font-weight: 600;
+            color: #22c55e !important;
+            background: #F0FDF4 !important;
+            border: 1px solid #BBF7D0 !important;
+            border-radius: 12px !important;
+            cursor: default;
+            width: auto !important;
+            margin: 0 !important;
+        }
+        .sj-save-btn {
+            display: inline-flex !important;
+            align-items: center;
+            gap: 6px;
+            padding: 10px 20px !important;
+            font-size: 14px !important;
+            font-weight: 600;
+            color: #484f5b !important;
+            background: #f3f4f6 !important;
+            border: 1px solid #e4e5e9 !important;
+            border-radius: 12px !important;
+            cursor: pointer;
+            transition: all .2s ease;
+            width: auto !important;
+            margin: 0 !important;
+        }
+        .sj-save-btn:hover {
+            background: #e8e9ec !important;
+            color: #484f5b !important;
+        }
+        .sj-detail-meta-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+            padding: 16px;
+            background: #f8f9fb;
             border-radius: 12px;
         }
-
-        .arrow-icon {
-            background-color: #ffd32a;
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
+        .sj-meta-item {
             display: flex;
-            align-items: center;
-            justify-content: center;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .sj-meta-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: #8c919d;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+        .sj-meta-value {
             font-size: 14px;
-            color: #000;
-            position: absolute;
-            z-index: 4;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
-            border: 2px solid white;
+            font-weight: 700;
+            color: #141c25;
         }
-
-        .modal-description {
-            text-align: center;
-            color: #6c757d;
-            margin-bottom: 2rem;
-            font-size: 0.95rem;
+        .sj-detail-section { margin-bottom: 20px; }
+        .sj-detail-heading {
+            font-size: 16px;
+            font-weight: 700;
+            color: #141c25;
+            margin: 0 0 8px;
         }
-
-        .share-profile-btn {
-            background-color: #0d6efd;
-            border: none;
-            color: white;
-            padding: 12px;
-            border-radius: 8px;
-            font-weight: 500;
-            transition: background-color 0.2s;
+        .sj-detail-subheading {
+            font-size: 14px;
+            font-weight: 650;
+            color: #141c25;
+            margin: 0 0 8px;
         }
-
-        .share-profile-btn:hover {
-            background-color: #0b5ed7;
+        .sj-detail-text {
+            font-size: 14px;
+            color: #556070;
+            line-height: 1.7;
         }
-
-        .cancel-btn {
-            background-color: transparent;
-            border: 2px solid #dee2e6;
-            color: #6c757d;
-            padding: 10px;
-            border-radius: 8px;
-            font-weight: 500;
-            transition: all 0.2s;
+        .sj-detail-text p { color: #556070; }
+        .sj-detail-list { padding-left: 20px; margin: 0; }
+        .sj-detail-list li {
+            font-size: 14px;
+            color: #556070;
+            margin-bottom: 4px;
         }
-
-        .cancel-btn:hover {
-            border-color: #adb5bd;
-            color: #495057;
+        .sj-skills-wrap {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
         }
-        .easy-apply-modal .modal-buttons button:hover {
-            /*background-color: #0033a0;*/
-            color: white;
+        .sj-skill-pill {
+            padding: 5px 14px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #484f5b;
+            background: #f0f1f4;
+            border-radius: 20px;
         }
-        .modal .job-type {margin-bottom: 10px}
-
-        .share-profile-btn {background-color: #ffcb11 !important}
-        .easy-apply-modal .cancel-btn {background-color: #0d6efd !important; color: white;}
-        /*for mobile device*/
-
-
-
-
+        @media (max-width: 768px) {
+            .sj-detail-meta-grid { grid-template-columns: 1fr; }
+        }
     </style>
 @endpush
 
@@ -454,11 +446,12 @@
                 toastr.info('You have already saved this job.');
                 return;
             }
+            var thisElement = $(this);
             sendAjaxRequest('employee/save-job/'+jobId, 'GET').then(function (response) {
-                // console.log(response);
                 if (response.status == 'success')
                 {
                     $(this).attr('disabled', true);
+                    thisElement.addClass('force-hide');
                     sendAjaxRequest('employee/get-total-saved-jobs', 'GET').then(function (res) {
                         $('#savedJobsNumber').text(res);
                     })
@@ -477,12 +470,9 @@
         $(document).on('click', '.save-btnx', function () {
             var jobId = $(this).attr('data-job-id');
             var thisObject = $(this);
-            console.log(thisObject);
             sendAjaxRequest('employee/save-job/'+jobId, 'GET').then(function (response) {
-
                 if (response.status == 'success')
                 {
-                    // thisObject.addClass('d-none');
                     thisObject.attr('src', "{{ asset('/frontend/bookmark-circle.png') }}");
                     sendAjaxRequest('employee/get-total-saved-jobs', 'GET').then(function (res) {
                         $('#savedJobsNumber').text(res);
@@ -496,7 +486,6 @@
             })
         })
     </script>
-{{--    show and apply job modal--}}
     <script>
         $(document).on('click', '.show-apply-model', function (){
             event.preventDefault();
@@ -512,7 +501,6 @@
         })
         function showJobDetails(jobId, jobTitle = 'View Job Title') {
             sendAjaxRequest('get-job-details/'+jobId+'?render=1&show_apply=0', 'GET').then(function (response) {
-                // console.log(response);
                 $('#viewJobModalTitle').empty().append(jobTitle);
                 $('#viewJobModalBody').empty().append(response);
                 $('#viewJobModal').modal('show');

@@ -3,167 +3,220 @@
 @section('title', 'Settings')
 
 @section('body')
-    <div class="employeeSettings">
-        <div class="container settings">
-            <!-- Topbar -->
+    <main class="dashboardContent p-3 p-md-4">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-xl-10 col-lg-11 mx-auto">
 
+                    <!-- Page Header -->
+                    <div class="st-page-header">
+                        <h1 class="st-page-title">{{ trans('employer.my_account') }}</h1>
+                        <p class="st-page-subtitle">Manage your account settings and preferences</p>
+                    </div>
 
-            <div class="row mt-4">
-                <!-- Left menu -->
-                @include('frontend.employer.config.side-menu')
+                    <div class="row g-4">
 
-                <!-- Right main content -->
-                <section class="col-md-9 col-12 settingsRightContent ">
-                    <h2 class="mb-4 settings-menu d-none d-md-block">{{ trans('employer.my_account') }}</h2>
-                    <div class="card settings-content">
-                        <form>
-
-                            <!-- Full Name -->
-                            <div class="mb-3 d-flex justify-content-between align-items-center border-bottom p-3">
-                                <div class="d-flex align-items-center" style="gap:8px;">
-                                    <img src="{{ asset('/') }}frontend/employer/images/employersHome/Settings-Full Name.png" alt="user-icon" style="height: 30px">
-                                    {{ trans('employer.full_name') }}
-                                </div>
-                                <div class="border px-5 py-2 rounded" data-bs-toggle="modal" data-bs-target="#employeeSettingsModal" style="cursor: pointer">
-                                    <span>{{ $loggedUser->name ?? 'User Name' }}</span>
-                                </div>
-                            </div>
-
-                            <!-- Change Password -->
-                            <div class="mb-3 d-flex justify-content-between align-items-center p-3 border-bottom">
-                                <div class="d-flex align-items-center" style="gap:8px;">
-                                    <img src="{{ asset('/') }}frontend/employer/images/employersHome/Settings-Change password.png" alt="">
-                                    {{ trans('employee.change_password') }}
-                                </div>
-                                <div class="d-flex align-items-center text-end" style="gap:8px; cursor:pointer;">
-                                    <span>********</span>
-                                    <img src="{{ asset('/') }}frontend/employer/images/employersHome/arrow-right 1.png" alt="" data-bs-toggle="modal" data-bs-target="#employeePasswordChangeModal">
-                                </div>
-                            </div>
-
-                            <!-- Change Email -->
-                            <div class="mb-3 d-flex justify-content-between align-items-center p-3 border-bottom">
-                                <div class="d-flex align-items-center" style="gap:8px;">
-                                    <img src="{{ asset('/') }}frontend/employer/images/employersHome/Settings-Change Email.png" alt="">
-                                    {{ trans('employee.change_email') }}
-                                </div>
-                                <div class="d-flex align-items-center text-end" style="gap:8px; cursor:pointer;">
-                                    <span class="text-muted">md.pranto@gmail.com</span>
-                                    <img src="{{ asset('/') }}frontend/employer/images/employersHome/arrow-right 1.png" alt="" data-bs-toggle="modal" data-bs-target="#employeeSettingsModal">
-                                </div>
-                            </div>
-
-
-                            <!-- Language -->
-                            <div class="mb-3 d-flex justify-content-between align-items-center p-3 border-bottom">
-                                <div class="d-flex align-items-center" style="gap:8px;">
-                                    <img src="{{ asset('/') }}frontend/employer/images/employersHome/settings-Language.png" alt="">
-                                    {{ trans('employee.language') }}
-                                </div>
-                                <div class="d-flex align-items-center" style="gap:8px;">
-                                    <div class="dropdown">
-                                        <button class="btn btn-light dropdown-toggle py-1 px-3" type="button" id="languageDropdown" data-bs-toggle="dropdown" aria-expanded="false" style="font-weight: normal; font-size: 1rem;">
-                                            @if(session('locale') == 'bn')
-                                                {{ trans('employee.bangla') }}
-                                            @else
-                                                {{ trans('employee.english') }}
-                                            @endif
-                                        </button>
-                                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="languageDropdown">
-                                            <li><a class="dropdown-item {{ session('locale') == 'en' ? 'active' : '' }}" href="{{ route('change-local-language', ['local' => 'English']) }}">{{ trans('employee.english') }}</a></li>
-                                            <li><a class="dropdown-item {{ session('locale') == 'bn' ? 'active' : '' }}" href="{{ route('change-local-language', ['local' => 'Bangla']) }}">{{ trans('employee.bangla') }}</a></li>
-                                        </ul>
+                        <!-- Side Menu -->
+                        <nav class="col-lg-3 col-md-4 d-none d-md-block">
+                            <div class="st-sidenav">
+                                <a href="{{ route('employer.settings') }}" class="st-nav-item {{ request()->is('employer/settings') ? 'active' : '' }}">
+                                    <div class="st-nav-icon">
+                                        <i class="fa-solid fa-gear"></i>
                                     </div>
-{{--                                    <img src="{{ asset('/') }}frontend/employer/images/employersHome/arrow-right 1.png" alt="">--}}
-                                </div>
-                            </div>
-
-
-                            <!-- Log out -->
-                            <div class="d-flex justify-content-between align-items-center p-3">
-                                <div class="d-flex align-items-center" style="gap:8px;">
-                                    <img src="{{ asset('/') }}frontend/employer/images/employersHome/settings-Log out.png" alt="">
-                                    {{ trans('employee.log_out') }}
-                                </div>
-                                <a href="#" class="d-flex align-items-center text-decoration-none" style="gap:8px; cursor:pointer;" onclick="event.preventDefault(); document.getElementById('pageLogoutForm').submit();">
-                                    <img src="{{ asset('/') }}frontend/employer/images/employersHome/arrow-right 1.png" alt="">
+                                    <span>{{ trans('employer.my_account') }}</span>
                                 </a>
+                                <a href="{{ route('employer.employer-user-management') }}" class="st-nav-item {{ request()->is('employer/employer-user-management') ? 'active' : '' }}">
+                                    <div class="st-nav-icon">
+                                        <i class="fa-solid fa-users-gear"></i>
+                                    </div>
+                                    <span>{{ trans('home.users_management') }}</span>
+                                </a>
+                            </div>
+                        </nav>
+
+                        <!-- Settings Content -->
+                        <section class="col-lg-9 col-md-8 col-12">
+                            <div class="st-card">
+
+                                <!-- Full Name -->
+                                <div class="st-row" data-bs-toggle="modal" data-bs-target="#employeeSettingsModal">
+                                    <div class="st-row-left">
+                                        <div class="st-icon">
+                                            <i class="fa-solid fa-user"></i>
+                                        </div>
+                                        <div class="st-label-group">
+                                            <span class="st-label">{{ trans('employer.full_name') }}</span>
+                                            <span class="st-sublabel">Update your display name</span>
+                                        </div>
+                                    </div>
+                                    <div class="st-row-right">
+                                        <span class="st-value">{{ $loggedUser->name ?? 'User Name' }}</span>
+                                        <i class="fa-solid fa-chevron-right st-arrow"></i>
+                                    </div>
+                                </div>
+
+                                <!-- Change Password -->
+                                <div class="st-row" data-bs-toggle="modal" data-bs-target="#employeePasswordChangeModal">
+                                    <div class="st-row-left">
+                                        <div class="st-icon">
+                                            <i class="fa-solid fa-lock"></i>
+                                        </div>
+                                        <div class="st-label-group">
+                                            <span class="st-label">{{ trans('employee.change_password') }}</span>
+                                            <span class="st-sublabel">Secure your account with a new password</span>
+                                        </div>
+                                    </div>
+                                    <div class="st-row-right">
+                                        <span class="st-value st-masked">••••••••</span>
+                                        <i class="fa-solid fa-chevron-right st-arrow"></i>
+                                    </div>
+                                </div>
+
+                                <!-- Change Email -->
+                                <div class="st-row" data-bs-toggle="modal" data-bs-target="#employeeSettingsModal">
+                                    <div class="st-row-left">
+                                        <div class="st-icon">
+                                            <i class="fa-solid fa-envelope"></i>
+                                        </div>
+                                        <div class="st-label-group">
+                                            <span class="st-label">{{ trans('employee.change_email') }}</span>
+                                            <span class="st-sublabel">Update your email address</span>
+                                        </div>
+                                    </div>
+                                    <div class="st-row-right">
+                                        <span class="st-value">{{ $loggedUser->email ?? 'email@example.com' }}</span>
+                                        <i class="fa-solid fa-chevron-right st-arrow"></i>
+                                    </div>
+                                </div>
+
+                                <!-- Language -->
+                                <div class="st-row st-row-no-click">
+                                    <div class="st-row-left">
+                                        <div class="st-icon">
+                                            <i class="fa-solid fa-globe"></i>
+                                        </div>
+                                        <div class="st-label-group">
+                                            <span class="st-label">{{ trans('employee.language') }}</span>
+                                            <span class="st-sublabel">Choose your preferred language</span>
+                                        </div>
+                                    </div>
+                                    <div class="st-row-right">
+                                        <div class="dropdown">
+                                            <button class="st-lang-btn dropdown-toggle" type="button" id="languageDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                                <i class="fa-solid fa-language"></i>
+                                                @if(session('locale') == 'bn')
+                                                    {{ trans('employee.bangla') }}
+                                                @else
+                                                    {{ trans('employee.english') }}
+                                                @endif
+                                            </button>
+                                            <ul class="dropdown-menu dropdown-menu-end st-dropdown" aria-labelledby="languageDropdown">
+                                                <li>
+                                                    <a class="dropdown-item {{ session('locale') == 'en' ? 'active' : '' }}" href="{{ route('change-local-language', ['local' => 'English']) }}">
+                                                        {{ trans('employee.english') }}
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a class="dropdown-item {{ session('locale') == 'bn' ? 'active' : '' }}" href="{{ route('change-local-language', ['local' => 'Bangla']) }}">
+                                                        {{ trans('employee.bangla') }}
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Log Out -->
+                                <div class="st-row st-row-danger" onclick="event.preventDefault(); document.getElementById('pageLogoutForm').submit();">
+                                    <div class="st-row-left">
+                                        <div class="st-icon st-icon-danger">
+                                            <i class="fa-solid fa-right-from-bracket"></i>
+                                        </div>
+                                        <div class="st-label-group">
+                                            <span class="st-label st-label-danger">{{ trans('employee.log_out') }}</span>
+                                            <span class="st-sublabel">Sign out of your account</span>
+                                        </div>
+                                    </div>
+                                    <div class="st-row-right">
+                                        <i class="fa-solid fa-chevron-right st-arrow"></i>
+                                    </div>
+                                </div>
+
                                 <form action="{{ route('logout') }}" method="post" id="pageLogoutForm">
                                     @csrf
                                 </form>
+
                             </div>
+                        </section>
 
-                        </form>
                     </div>
-                </section>
-
-
-
+                </div>
             </div>
         </div>
-    </div>
-
+    </main>
 @endsection
 
 @section('modal')
-    <!-- Modal -->
+    <!-- Edit Settings Modal -->
     <div class="modal fade" id="employeeSettingsModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">{{ trans('employer.edit_settings') }}</h1>
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content st-modal">
+                <div class="modal-header st-modal-header">
+                    <h5 class="modal-title st-modal-title">{{ trans('employer.edit_settings') }}</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form action="{{ route('employer.update-settings') }}" method="post" enctype="multipart/form-data">
                     @csrf
-                    <div class="modal-body">
-                        <div>
-                            <label for="">{{ trans('employer.full_name') }}</label>
-                            <input type="text" class="form-control" name="name" value="{{ $loggedUser->name ?? '' }}" placeholder="{{ trans('employer.enter_your_full_name') }}" >
+                    <div class="modal-body st-modal-body">
+                        <div class="st-form-group">
+                            <label class="st-form-label">{{ trans('employer.full_name') }}</label>
+                            <input type="text" class="form-control st-input" name="name" value="{{ $loggedUser->name ?? '' }}" placeholder="{{ trans('employer.enter_your_full_name') }}">
                         </div>
-                        <div class="mt-3">
-                            <label for="">{{ trans('common.email') }}</label>
-                            <input type="text" class="form-control" name="email" value="{{ $loggedUser->email ?? '' }}" placeholder="{{ trans('employer.enter_your_email') }}" >
+                        <div class="st-form-group">
+                            <label class="st-form-label">{{ trans('common.email') }}</label>
+                            <input type="text" class="form-control st-input" name="email" value="{{ $loggedUser->email ?? '' }}" placeholder="{{ trans('employer.enter_your_email') }}">
                         </div>
-                        <div class="mt-3">
-                            <label for="">{{ trans('employer.mobile') }}</label>
-                            <input type="text" class="form-control" name="mobile" value="{{ $loggedUser->mobile ?? '' }}" placeholder="{{ trans('employer.enter_your_email') }}" >
+                        <div class="st-form-group">
+                            <label class="st-form-label">{{ trans('employer.mobile') }}</label>
+                            <input type="text" class="form-control st-input" name="mobile" value="{{ $loggedUser->mobile ?? '' }}" placeholder="{{ trans('employer.enter_your_email') }}">
                         </div>
-                        <div class="mt-3">
-                            <label for="">{{ trans('employee.profile_image') }}</label>
-                            <input type="file" class="form-control" name="profile_image" placeholder="{{ trans('employer.enter_profile_image') }}" accept="image/*" />
+                        <div class="st-form-group">
+                            <label class="st-form-label">{{ trans('employee.profile_image') }}</label>
+                            <input type="file" class="form-control st-input" name="profile_image" placeholder="{{ trans('employer.enter_profile_image') }}" accept="image/*">
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ trans('common.close') }}</button>
-                        <button type="submit" class="btn btn-primary">{{ trans('common.save_changes') }}</button>
+                    <div class="modal-footer st-modal-footer">
+                        <button type="button" class="btn st-btn-cancel" data-bs-dismiss="modal">{{ trans('common.close') }}</button>
+                        <button type="submit" class="btn st-btn-save">{{ trans('common.save_changes') }}</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
+
+    <!-- Password Change Modal -->
     <div class="modal fade" id="employeePasswordChangeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">{{ trans('employer.change_password_label') }}</h1>
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content st-modal">
+                <div class="modal-header st-modal-header">
+                    <h5 class="modal-title st-modal-title">{{ trans('employer.change_password_label') }}</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form action="{{ route('auth.user-password-update') }}" method="post" enctype="multipart/form-data">
                     @csrf
-                    <div class="modal-body">
-                        <div>
-                            <label for="">{{ trans('employee.previous_password') }}</label>
-                            <input type="password" class="form-control" name="old_password" required placeholder="{{ trans('employer.enter_old_password') }}" >
+                    <div class="modal-body st-modal-body">
+                        <div class="st-form-group">
+                            <label class="st-form-label">{{ trans('employee.previous_password') }}</label>
+                            <input type="password" class="form-control st-input" name="old_password" required placeholder="{{ trans('employer.enter_old_password') }}">
                         </div>
-                        <div class="mt-3">
-                            <label for="">{{ trans('employer.new_password') }}</label>
-                            <input type="text" class="form-control" name="password" required placeholder="{{ trans('employer.enter_new_password') }}" >
+                        <div class="st-form-group">
+                            <label class="st-form-label">{{ trans('employer.new_password') }}</label>
+                            <input type="text" class="form-control st-input" name="password" required placeholder="{{ trans('employer.enter_new_password') }}">
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ trans('common.close') }}</button>
-                        <button type="submit" class="btn btn-primary">{{ trans('employee.change_password') }}</button>
+                    <div class="modal-footer st-modal-footer">
+                        <button type="button" class="btn st-btn-cancel" data-bs-dismiss="modal">{{ trans('common.close') }}</button>
+                        <button type="submit" class="btn st-btn-save">{{ trans('employee.change_password') }}</button>
                     </div>
                 </form>
             </div>
@@ -171,8 +224,475 @@
     </div>
 @endsection
 
+@push('style')
+    <style>
+        /* =============================================
+           Employer Settings — eh- design system
+           ============================================= */
+
+        /* --- Page Header --- */
+        .st-page-header {
+            margin-bottom: 24px;
+            padding-top: 4px;
+        }
+
+        .st-page-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #0F172A;
+            margin: 0;
+            line-height: 1.2;
+        }
+
+        .st-page-subtitle {
+            font-size: 13px;
+            color: #64748B;
+            margin: 4px 0 0;
+        }
+
+        /* --- Side Navigation --- */
+        .st-sidenav {
+            background: #fff;
+            border: 1px solid #E2E8F0;
+            border-radius: 14px;
+            padding: 8px;
+            /*position: sticky;*/
+            position: static;
+            top: 80px;
+        }
+        .st-sidenav .active i, .st-sidenav .active span {color: white!important;}
+
+        .st-nav-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 14px;
+            border-radius: 10px;
+            text-decoration: none;
+            color: #475569;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all .2s;
+        }
+
+        .st-nav-item:hover {
+            background: #F8FAFC;
+            color: #0F172A;
+        }
+
+        .st-nav-item.active {
+            background: #141C25;
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .st-nav-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: #F1F5F9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            color: #64748B;
+            flex-shrink: 0;
+            transition: all .2s;
+        }
+
+        .st-nav-item.active .st-nav-icon {
+            background: rgba(255,203,17,.2);
+            color: #FFCB11;
+        }
+
+        .st-nav-item:hover .st-nav-icon {
+            background: #E2E8F0;
+            color: #0F172A;
+        }
+
+        .st-nav-item.active:hover .st-nav-icon {
+            background: rgba(255,203,17,.2);
+            color: #FFCB11;
+        }
+
+        /* --- Settings Card --- */
+        .st-card {
+            background: #fff;
+            border: 1px solid #E2E8F0;
+            border-radius: 14px;
+            overflow: hidden;
+        }
+
+        /* --- Settings Row --- */
+        .st-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 18px 20px;
+            border-bottom: 1px solid #F1F5F9;
+            cursor: pointer;
+            transition: background .15s;
+            gap: 12px;
+        }
+
+        .st-row:last-of-type {
+            border-bottom: none;
+        }
+
+        .st-row:hover {
+            background: #F8FAFC;
+        }
+
+        .st-row-no-click {
+            cursor: default;
+        }
+
+        .st-row-no-click:hover {
+            background: transparent;
+        }
+
+        .st-row-left {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            min-width: 0;
+        }
+
+        .st-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: #F1F5F9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            color: #64748B;
+            flex-shrink: 0;
+            transition: all .2s;
+        }
+
+        .st-row:hover .st-icon {
+            background: #E2E8F0;
+            color: #0F172A;
+        }
+
+        .st-row-no-click:hover .st-icon {
+            background: #F1F5F9;
+            color: #64748B;
+        }
+
+        .st-icon-danger {
+            background: #FEF2F2;
+            color: #EF4444;
+        }
+
+        .st-row:hover .st-icon-danger {
+            background: #FEE2E2;
+            color: #DC2626;
+        }
+
+        .st-label-group {
+            min-width: 0;
+        }
+
+        .st-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: #0F172A;
+            line-height: 1.3;
+        }
+
+        .st-label-danger {
+            color: #EF4444;
+        }
+
+        .st-sublabel {
+            display: block;
+            font-size: 12px;
+            color: #94A3B8;
+            margin-top: 2px;
+            line-height: 1.3;
+        }
+
+        .st-row-right {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-shrink: 0;
+        }
+
+        .st-value {
+            font-size: 13px;
+            color: #64748B;
+            max-width: 200px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .st-masked {
+            letter-spacing: 2px;
+            color: #94A3B8;
+        }
+
+        .st-arrow {
+            font-size: 11px;
+            color: #CBD5E1;
+            transition: transform .2s, color .2s;
+        }
+
+        .st-row:hover .st-arrow {
+            color: #64748B;
+            transform: translateX(2px);
+        }
+
+        /* --- Language Button --- */
+        .st-lang-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #F1F5F9;
+            border: 1px solid #E2E8F0;
+            border-radius: 8px;
+            padding: 7px 14px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #0F172A;
+            cursor: pointer;
+            transition: all .2s;
+            font-family: 'Geist', sans-serif;
+        }
+
+        .st-lang-btn:hover,
+        .st-lang-btn:focus {
+            background: #E2E8F0;
+            border-color: #CBD5E1;
+        }
+
+        .st-lang-btn i {
+            color: #FFCB11;
+        }
+
+        .st-dropdown {
+            border: 1px solid #E2E8F0;
+            border-radius: 10px;
+            box-shadow: 0 8px 24px rgba(15,23,42,.1);
+            padding: 4px;
+            min-width: 140px;
+        }
+
+        .st-dropdown .dropdown-item {
+            border-radius: 6px;
+            padding: 8px 12px;
+            font-size: 13px;
+            font-weight: 500;
+            color: #475569;
+            transition: all .15s;
+        }
+
+        .st-dropdown .dropdown-item:hover {
+            background: #F1F5F9;
+            color: #0F172A;
+        }
+
+        .st-dropdown .dropdown-item.active {
+            background: #141C25;
+            color: #FFCB11;
+            font-weight: 600;
+        }
+
+        /* --- Modal Styles --- */
+        .st-modal {
+            border: none;
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        .st-modal-header {
+            border-bottom: 1px solid #F1F5F9;
+            padding: 20px 24px;
+        }
+
+        .st-modal-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #0F172A;
+        }
+
+        .st-modal-body {
+            padding: 24px;
+        }
+
+        .st-form-group {
+            margin-bottom: 18px;
+        }
+
+        .st-form-group:last-child {
+            margin-bottom: 0;
+        }
+
+        .st-form-label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: #0F172A;
+            margin-bottom: 6px;
+        }
+
+        .st-input {
+            border: 1.5px solid #E2E8F0;
+            border-radius: 10px;
+            padding: 10px 14px;
+            font-size: 14px;
+            color: #0F172A;
+            transition: border-color .2s, box-shadow .2s;
+            font-family: 'Geist', sans-serif;
+        }
+
+        .st-input:focus {
+            border-color: #FFCB11;
+            box-shadow: 0 0 0 3px rgba(255,203,17,.15);
+        }
+
+        .st-input::placeholder {
+            color: #94A3B8;
+        }
+
+        .st-modal-footer {
+            border-top: 1px solid #F1F5F9;
+            padding: 16px 24px;
+            gap: 8px;
+        }
+
+        .st-btn-cancel {
+            background: #F1F5F9;
+            border: 1px solid #E2E8F0;
+            border-radius: 8px;
+            padding: 8px 18px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #475569;
+            transition: all .2s;
+            font-family: 'Geist', sans-serif;
+        }
+
+        .st-btn-cancel:hover {
+            background: #E2E8F0;
+            color: #0F172A;
+        }
+
+        .st-btn-save {
+            background: #141C25;
+            border: none;
+            border-radius: 8px;
+            padding: 8px 20px;
+            font-size: 13px;
+            font-weight: 700;
+            color: #FFCB11;
+            transition: all .2s;
+            font-family: 'Geist', sans-serif;
+        }
+
+        .st-btn-save:hover {
+            background: #0F172A;
+            color: #FFCB11;
+        }
+
+        /* =============================================
+           Responsive
+           ============================================= */
+
+        @media (max-width: 767px) {
+            .st-page-header {
+                margin-bottom: 16px;
+            }
+
+            .st-page-title {
+                font-size: 20px;
+            }
+
+            .st-card {
+                border-radius: 12px;
+            }
+
+            .st-row {
+                padding: 14px 16px;
+                gap: 10px;
+            }
+
+            .st-icon {
+                width: 36px;
+                height: 36px;
+                font-size: 14px;
+                border-radius: 8px;
+            }
+
+            .st-label {
+                font-size: 13px;
+            }
+
+            .st-sublabel {
+                font-size: 11px;
+            }
+
+            .st-value {
+                max-width: 120px;
+                font-size: 12px;
+            }
+
+            .st-modal-header {
+                padding: 16px 18px;
+            }
+
+            .st-modal-body {
+                padding: 18px;
+            }
+
+            .st-modal-footer {
+                padding: 14px 18px;
+            }
+        }
+
+        @media (max-width: 575px) {
+            .st-row {
+                padding: 12px 14px;
+            }
+
+            .st-row-left {
+                gap: 10px;
+            }
+
+            .st-icon {
+                width: 34px;
+                height: 34px;
+                font-size: 13px;
+            }
+
+            .st-label {
+                font-size: 12.5px;
+            }
+
+            .st-value {
+                max-width: 90px;
+                font-size: 11px;
+            }
+
+            .st-sublabel {
+                display: none;
+            }
+
+            .st-lang-btn {
+                padding: 6px 10px;
+                font-size: 12px;
+            }
+        }
+    </style>
+@endpush
+
 @push('script')
-{{--    profile edit validation--}}
+    {{-- Profile edit validation --}}
     <script>
         // Employee Settings Form Validation
         $(document).ready(function() {
@@ -227,7 +747,7 @@
                         errors.push('Mobile must be 11 digits');
                         isValid = false;
                     }
-                    // Additional validation for valid BD operator prefixes (optional but recommended)
+                    // Additional validation for valid BD operator prefixes
                     else {
                         const validPrefixes = ['013', '014', '015', '016', '017', '018', '019'];
                         const prefix = mobileValue.substring(0, 3);
@@ -239,7 +759,7 @@
                     }
                 }
 
-                // 3. Email Validation (optional but good practice)
+                // 3. Email Validation
                 const emailInput = $(this).find('[name="email"]');
                 const emailValue = emailInput.val().trim();
 
@@ -252,7 +772,7 @@
                     }
                 }
 
-                // 4. Profile Image Validation (optional - check file type and size)
+                // 4. Profile Image Validation
                 const profileImageInput = $(this).find('[name="profile_image"]');
                 if (profileImageInput[0].files.length > 0) {
                     const file = profileImageInput[0].files[0];
@@ -283,7 +803,7 @@
                     return false;
                 }
 
-                // ✅ All validations passed - submit the form
+                // All validations passed - submit the form
                 this.submit();
             });
 

@@ -14,63 +14,50 @@
                     <div class="my-jobs-section mb-4">
                         <div class="container-fluid">
 
-                            <div class="d-flex justify-content-between align-items-start flex-wrap gap-2 mb-2">
-                                <!-- Heading -->
-                                <div>
-                                    <h5 class="fw-bold mb-1 f-s-28">{{ trans('employer.my_jobs') }}</h5>
-                                    <p class="text-muted small mb-0">{{ trans('employer.see_all_posted_jobs') }}</p>
+                            <div class="mj-header">
+                                <div class="mj-header-left">
+                                    <h1 class="mj-page-title">{{ trans('employer.my_jobs') }}</h1>
+                                    <p class="mj-page-subtitle">{{ trans('employer.see_all_posted_jobs') }}</p>
                                 </div>
-                                <!-- Post a job button -->
-                                <!-- Post a job button -->
-                                <button class="btn btn-warning text-dark fw-semibold rounded-3 px-4 py-2"
-                                        data-bs-toggle="modal" data-bs-target="#createJobModal">
-                                    {{ trans('employer.post_a_job') }}
+                                <button class="mj-post-btn" data-bs-toggle="modal" data-bs-target="#createJobModal">
+                                    <i class="fas fa-plus"></i> {{ trans('employer.post_a_job') }}
                                 </button>
-{{--                                <a href="{{ route('employer.job-tasks.create') }}"  class="btn btn-warning text-dark fw-semibold rounded-3 px-4 py-2">Post a job</a>--}}
-
                             </div>
 
-                            <!-- ✅ Mobile Search -->
+                            <!-- Mobile Search -->
                             <div class="d-block d-md-none mb-3">
-                                <div class="input-group">
-                                    <span class="input-group-text bg-white " onclick="searchOnMobile()">
-                                      <img src="{{ asset('/') }}frontend/employer/images/employersHome/search 1.png" alt="">
-                                    </span>
-                                    <input type="text" class="form-control border-start-0" id="mobile_search_text" placeholder="Search jobs (mobile)" />
-                                    <span class="input-group-text bg-white border-end-0" onclick="document.getElementById('mobile_search_text').value = '';">
-{{--                                      <img src="{{ asset('/') }}frontend/employer/images/employersHome/search 1.png" alt="">--}}
-                                        <i class="fas fa-close"></i>
-                                    </span>
+                                <div class="mj-search-wrap">
+                                    <i class="fas fa-search mj-search-icon"></i>
+                                    <input type="text" class="mj-search-input" id="mobile_search_text" placeholder="Search jobs..." />
+                                    <button class="mj-search-clear" type="button" onclick="document.getElementById('mobile_search_text').value = '';"><i class="fas fa-times"></i></button>
+                                    <button class="mj-search-submit" type="button" onclick="searchOnMobile()"><i class="fas fa-arrow-right"></i></button>
                                 </div>
-
-                                <div id="t2" class="d-flex flex-wrap gap-2 mt-3">
-                                    <a href="{{ route('employer.my-jobs', ['job_status' => 'open']) }}"><button class="btn {{  request('job_status') != 'closed' ? 'btn-dark' : 'btn-light' }} btn-sm rounded-pill px-3">{{ trans('employer.open_jobs') }}</button></a>
-                                    <a href="{{ route('employer.my-jobs', ['job_status' => 'closed']) }}"><button class="btn  {{ request('job_status') && request('job_status') == 'closed' ? 'btn-dark text-white' : 'btn-light text-muted' }} btn-sm rounded-pill px-3 ">{{ trans('employer.closed_jobs') }}</button></a>
+                                <div class="mj-tabs mt-3">
+                                    <a href="{{ route('employer.my-jobs', ['job_status' => 'open']) }}" class="mj-tab {{ request('job_status') != 'closed' ? 'active' : '' }}">
+                                        <span class="mj-tab-dot open"></span> {{ trans('employer.open_jobs') }}
+                                    </a>
+                                    <a href="{{ route('employer.my-jobs', ['job_status' => 'closed']) }}" class="mj-tab {{ request('job_status') == 'closed' ? 'active' : '' }}">
+                                        <span class="mj-tab-dot closed"></span> {{ trans('employer.closed_jobs') }}
+                                    </a>
                                 </div>
                             </div>
 
-                            <!-- ✅ Desktop Search -->
-                            <div class="d-none d-md-flex justify-content-between align-items-center gap-3 mb-3 flex-wrap">
-                                <!-- Filter Buttons (Left Side) -->
-                                <div id="t2" class="d-flex flex-wrap gap-2">
-                                    <a href="{{ route('employer.my-jobs', ['job_status' => 'open']) }}"><button class="btn {{  request('job_status') != 'closed' ? 'btn-dark' : 'btn-light' }} btn-sm rounded-pill px-3">{{ trans('employer.open_jobs') }}</button></a>
-                                    <a href="{{ route('employer.my-jobs', ['job_status' => 'closed']) }}"><button class="btn  {{ request('job_status') && request('job_status') == 'closed' ? 'btn-dark text-white' : 'btn-light text-muted' }} btn-sm rounded-pill px-3 ">{{ trans('employer.closed_jobs') }}</button></a>
+                            <!-- Desktop Toolbar -->
+                            <div class="mj-toolbar d-none d-md-flex">
+                                <div class="mj-tabs">
+                                    <a href="{{ route('employer.my-jobs', ['job_status' => 'open']) }}" class="mj-tab {{ request('job_status') != 'closed' ? 'active' : '' }}">
+                                        <span class="mj-tab-dot open"></span> {{ trans('employer.open_jobs') }}
+                                    </a>
+                                    <a href="{{ route('employer.my-jobs', ['job_status' => 'closed']) }}" class="mj-tab {{ request('job_status') == 'closed' ? 'active' : '' }}">
+                                        <span class="mj-tab-dot closed"></span> {{ trans('employer.closed_jobs') }}
+                                    </a>
                                 </div>
-
-                                <!-- Desktop Search (Right Side) -->
-                                <div id="t1" style="max-width: 320px; width: 100%;">
-                                    <form action="" id="searchForm">
-                                        <div class="input-group">
-                                          <span class="input-group-text bg-white " onclick="document.getElementById('searchForm').submit();">
-                                            <img src="{{ asset('/') }}frontend/employer/images/employersHome/search 1.png" alt="">
-                                          </span>
-                                            <input type="text" class="form-control border-start-0" id="desktop_search_text" name="search_text" value="{{  $_GET['search_text'] ?? '' }}" placeholder="{{ trans('employer.search_jobs') }}" />
-                                            <span class="input-group-text bg-white " style="cursor:pointer;" onclick="document.getElementById('desktop_search_text').value = '';">
-{{--                                            <img src="{{ asset('/') }}frontend/employer/images/employersHome/search 1.png" alt="">--}}
-                                                <i class="fas fa-close"></i>
-                                          </span>
-                                        </div>
+                                <div class="mj-search-wrap">
+                                    <i class="fas fa-search mj-search-icon"></i>
+                                    <form action="" id="searchForm" style="display:contents;">
+                                        <input type="text" class="mj-search-input" id="desktop_search_text" name="search_text" value="{{ $_GET['search_text'] ?? '' }}" placeholder="{{ trans('employer.search_jobs') }}" />
                                     </form>
+                                    <button class="mj-search-clear" type="button" style="cursor:pointer;" onclick="document.getElementById('desktop_search_text').value = '';"><i class="fas fa-times"></i></button>
                                 </div>
                             </div>
                         </div>
@@ -89,77 +76,73 @@
                         <!-- Job Card -->
                         @forelse($publishedJobs as $key => $publishedJob)
                             <div class="col-12">
-                                <article class="job-card d-flex flex-wrap justify-content-between align-items-start gap-3">
-
-                                    <!-- ✅ Modal Trigger Area -->
-                                    <div class="job-main clickable-area  show-job-details" data-job-id="{{ $publishedJob->id }}" {{--data-bs-toggle="modal" data-bs-target="#jobDetailsModal"--}} style="cursor: pointer;">
-                                        <div class="job-details">
-                                            <h6 class="job-title fw-semibold mb-2">{{ $publishedJob->job_title ?? trans('common.job_title') }}</h6>
-                                            <div class="job-badges d-flex flex-wrap gap-2 mb-2">
-                                                <span class="badge bg-light text-secondary">{{ $publishedJob?->jobType?->name ?? trans('common.job_type') }}</span>
-                                                <span class="badge bg-light text-secondary">{{ $publishedJob?->jobLocationType?->name ?? trans('common.job_location') }}</span>
-{{--                                                <span class="badge bg-light text-secondary">Day Shift</span>--}}
+                                <article class="job-card mj-card">
+                                    <div class="mj-card-accent {{ $publishedJob->status == 1 ? 'open' : 'closed' }}"></div>
+                                    <div class="mj-card-body">
+                                        <div class="job-main mj-card-main clickable-area show-job-details" data-job-id="{{ $publishedJob->id }}" style="cursor: pointer;">
+                                            <div class="mj-card-title-row">
+                                                <h6 class="job-title mj-card-title">{{ $publishedJob->job_title ?? trans('common.job_title') }}</h6>
+                                                <span class="mj-status-badge {{ $publishedJob->status == 1 ? 'open' : 'closed' }}">{{ $publishedJob->status == 1 ? 'Active' : 'Closed' }}</span>
+                                            </div>
+                                            <div class="job-badges mj-card-badges d-flex flex-wrap gap-2">
+                                                <span class="badge">{{ $publishedJob?->jobType?->name ?? trans('common.job_type') }}</span>
+                                                <span class="badge">{{ $publishedJob?->jobLocationType?->name ?? trans('common.job_location') }}</span>
                                             </div>
                                         </div>
-
-                                    </div>
-
-                                    <div class="job-info text-muted small">
-                                        <div class="mb-1">
-                                            <img src="{{ asset('/') }}frontend/employer/images/employersHome/postdOn.png" class="me-1" alt=""> {{ trans('employer.posted_on') }} {{ $publishedJob->created_at->format('d M, Y') ?? '16 Feb, 2025' }}
+                                        <div class="job-info mj-card-meta">
+                                            <div class="mj-meta-item">
+                                                <i class="far fa-calendar-plus"></i>
+                                                <span>{{ trans('employer.posted_on') }} {{ $publishedJob->created_at->format('d M, Y') }}</span>
+                                            </div>
+                                            <div class="mj-meta-item">
+                                                <i class="far fa-clock"></i>
+                                                <span>{{ trans('employer.deadline') }} {{ \Illuminate\Support\Carbon::parse($publishedJob->deadline)->format('d M, Y') }}</span>
+                                            </div>
+                                            <div class="mj-meta-item">
+                                                <i class="far fa-user"></i>
+                                                <a href="{{ route('employer.my-job-applicants', ['jobTask' => $publishedJob->id]) }}">{{ $publishedJob->employeeAppliedJobs->count() ?? 0 }} {{ trans('employer.applicants') }}</a>
+                                            </div>
                                         </div>
-                                        <div class="mb-1">
-                                            <img src="{{ asset('/') }}frontend/employer/images/employersHome/Dedline.png" class="me-1" alt=""> {{ trans('employer.deadline') }} {{ \Illuminate\Support\Carbon::parse($publishedJob->deadline)->format('d M, Y') ?? '16 Feb, 2025' }}
+                                        <div class="job-actions mj-card-actions dropdown">
+                                            <button class="mj-dots-btn" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                <i class="fas fa-ellipsis-v"></i>
+                                            </button>
+                                            <ul class="dropdown-menu dropdown-menu-end mj-dropdown">
+                                                <li><a class="dropdown-item close-job" href="{{ route('employer.close-job', ['jobTask' => $publishedJob->id, 'status' => $publishedJob->status == 1 ? 0 : 1]) }}" data-job-id="{{ $publishedJob->id }}"><i class="fas {{ $publishedJob->status == 1 ? 'fa-pause-circle' : 'fa-play-circle' }} me-2"></i>{{ $publishedJob->status == 1 ? 'Close Job' : 'Open Job' }}</a></li>
+                                                <li><a class="dropdown-item edit-job" href="javascript:void(0)" data-job-id="{{ $publishedJob->id }}"><i class="fas fa-pen me-2"></i>{{ trans('common.edit') }}</a></li>
+                                                <li>
+                                                    <form action="{{ route('employer.job-tasks.destroy', $publishedJob->id) }}" method="post">
+                                                        @csrf
+                                                        @method('delete')
+                                                        <button class="dropdown-item text-danger" type="submit"><i class="fas fa-trash-alt me-2"></i>{{ trans('common.delete') }}</button>
+                                                    </form>
+                                                </li>
+                                            </ul>
                                         </div>
-                                        <div>
-                                            <img src="{{ asset('/') }}frontend/employer/images/employersHome/24application.png" class="me-1" alt="">
-                                            <a href="{{ route('employer.my-job-applicants', ['jobTask' => $publishedJob->id]) }}" class="text-decoration-underline">{{ $publishedJob->employeeAppliedJobs->count() ?? 0 }} {{ trans('employer.applicants') }}</a>
-                                        </div>
-                                    </div>
-
-                                    <!-- ✅ Dropdown (Three Dot) -->
-                                    <div class="job-actions dropdown">
-                                        <button class="btn btn-link p-0 text-secondary"
-                                                type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                            <img src="{{ asset('/') }}frontend/employer/images/employersHome/three dot.png" alt="">
-                                        </button>
-                                        <ul class="dropdown-menu dropdown-menu-end">
-
-                                                <li><a class="dropdown-item close-job" href="{{ route('employer.close-job', ['jobTask' => $publishedJob->id, 'status' => $publishedJob->status == 1 ? 0 : 1]) }}" data-job-id="{{ $publishedJob->id }}">{{ $publishedJob->status == 1 ? 'Close Job' : 'Open Job' }}</a></li>
-
-                                            <li><a class="dropdown-item edit-job" href="javascript:void(0)" data-job-id="{{ $publishedJob->id }}">{{ trans('common.edit') }}</a></li>
-{{--                                            <li><a class="dropdown-item " href="{{ route('employer.job-tasks.edit', $publishedJob->id) }}" data-job-id="{{ $publishedJob->id }}">Edit</a></li>--}}
-                                            <li>
-                                                <form action="{{ route('employer.job-tasks.destroy', $publishedJob->id) }}" method="post">
-                                                    @csrf
-                                                    @method('delete')
-                                                    <button class="dropdown-item" type="submit">{{ trans('common.delete') }}</button>
-                                                </form>
-                                            </li>
-                                        </ul>
                                     </div>
                                 </article>
                             </div>
                         @empty
-                            <div class="job-card "  style="min-height: 570px; justify-content: center!important;">
-                                <div class="row">
-                                    <div class="col-md-11 mx-auto">
-                                        <div class="card card-body border-0">
-                                            <div class="d-flex text-center align-content-center">
-                                                <p>
-{{--                                                    <img src="{{ asset('/frontend/think.svg') }}" alt="empty-img" class="" style="max-height: 300px;">--}}
-                                                </p>
-                                                <p class="text-danger text-center f-s-20 fw-bold p-5" style="margin-top: 10px">{{ trans('employer.no_available_job_found') }}</p>
-                                            </div>
-
-                                        </div>
+                            <div class="col-12">
+                                <div class="mj-empty-state">
+                                    <div class="mj-empty-icon">
+                                        <i class="fas fa-briefcase"></i>
                                     </div>
+                                    <h5 class="mj-empty-title">{{ trans('employer.no_available_job_found') }}</h5>
+                                    <p class="mj-empty-text">Post your first job to start receiving applications</p>
+                                    <button class="mj-post-btn" data-bs-toggle="modal" data-bs-target="#createJobModal">
+                                        <i class="fas fa-plus"></i> {{ trans('employer.post_a_job') }}
+                                    </button>
                                 </div>
                             </div>
                         @endforelse
-
-
                     </div>
+
+                    @if($publishedJobs->hasPages())
+                        <div class="mj-pagination mt-4">
+                            {{ $publishedJobs->appends(request()->query())->links() }}
+                        </div>
+                    @endif
                 </section>
             </div>
         </div>
@@ -617,7 +600,7 @@
                     </div>
                     <div class="col-md-4">
                         <p class="mb-1"><b>Salary</b></p>
-                        <p id="reviewSalary">BDT 10000</p>
+                        <p ><span id="reviewSalary">BDT 10000</span> / <span id="view_job_pref_salary_payment_type">month</span></p>
                     </div>
                 </div>
 
@@ -684,6 +667,430 @@
 
 @push('style')
     <style>
+        /* ===== MY JOBS PAGE REDESIGN ===== */
+
+        /* --- Page Header --- */
+        .mj-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        .mj-page-title {
+            font-size: 28px;
+            font-weight: 800;
+            color: #0F172A;
+            margin: 0 0 4px;
+            letter-spacing: -0.5px;
+            line-height: 1.2;
+        }
+        .mj-page-subtitle {
+            font-size: 14px;
+            color: #64748B;
+            margin: 0;
+            font-weight: 500;
+        }
+        .mj-post-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 24px;
+            background: #FFCB11;
+            color: #0F172A;
+            border: 2px solid #FFCB11;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 14px;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+        .mj-post-btn:hover {
+            background: #f0be00;
+            border-color: #f0be00;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(255,203,17,0.4);
+        }
+        .mj-post-btn:active { transform: translateY(0); }
+
+        /* --- Toolbar --- */
+        .mj-toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin-bottom: 24px;
+        }
+
+        /* --- Status Tabs --- */
+        .mj-tabs {
+            display: inline-flex;
+            gap: 4px;
+            background: #E2E8F0;
+            padding: 4px;
+            border-radius: 10px;
+        }
+        .mj-tab {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 18px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #64748B;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+        .mj-tab:hover {
+            color: #0F172A;
+            background: rgba(255,255,255,0.5);
+        }
+        .mj-tab.active {
+            background: #fff;
+            color: #0F172A;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .mj-tab-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+        .mj-tab-dot.open { background: #22C55E; }
+        .mj-tab-dot.closed { background: #94A3B8; }
+
+        /* --- Search --- */
+        .mj-search-wrap {
+            display: flex;
+            align-items: center;
+            background: #fff;
+            border: 1.5px solid #E2E8F0;
+            border-radius: 10px;
+            padding: 0 12px;
+            max-width: 320px;
+            width: 100%;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .mj-search-wrap:focus-within {
+            border-color: #FFCB11;
+            box-shadow: 0 0 0 3px rgba(255,203,17,0.15);
+        }
+        .mj-search-icon { color: #94A3B8; font-size: 14px; flex-shrink: 0; }
+        .mj-search-input {
+            border: none;
+            outline: none;
+            background: transparent;
+            padding: 10px 12px;
+            font-size: 14px;
+            color: #0F172A;
+            width: 100%;
+            font-family: inherit;
+        }
+        .mj-search-input::placeholder { color: #94A3B8; }
+        .mj-search-clear, .mj-search-submit {
+            background: none;
+            border: none;
+            color: #94A3B8;
+            cursor: pointer;
+            padding: 4px;
+            font-size: 13px;
+            transition: color 0.15s;
+            flex-shrink: 0;
+        }
+        .mj-search-clear:hover, .mj-search-submit:hover { color: #0F172A; }
+
+        /* --- Job Card Overrides --- */
+        .mj-card.job-card {
+            padding: 0 !important;
+            border: 1.5px solid #E2E8F0;
+            border-radius: 14px;
+            overflow: visible;
+            display: flex !important;
+            flex-wrap: nowrap !important;
+            align-items: stretch !important;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+            transition: all 0.25s ease;
+            gap: 0 !important;
+            position: relative;
+            z-index: 1;
+        }
+        .jobCardsWrapper .col-12.mj-dropdown-open {
+            z-index: 1050;
+            position: relative;
+        }
+        .mj-card-actions .dropdown-menu {
+            z-index: 1051;
+        }
+        .mj-card.job-card:hover {
+            border-color: #CBD5E1;
+            box-shadow: 0 4px 16px rgba(15,23,42,0.07);
+            transform: translateY(-2px);
+        }
+        .mj-card .job-main {
+            width: auto !important;
+            flex: 1 !important;
+            min-width: 0 !important;
+            display: block !important;
+        }
+        .mj-card .job-title {
+            max-width: 100% !important;
+            white-space: normal !important;
+            overflow: visible !important;
+            text-overflow: clip !important;
+        }
+
+        /* --- Card Accent Bar --- */
+        .mj-card-accent {
+            width: 4px;
+            min-height: 100%;
+            flex-shrink: 0;
+            border-radius: 14px 0 0 14px;
+        }
+        .mj-card-accent.open { background: linear-gradient(180deg, #FFCB11, #F0A000); }
+        .mj-card-accent.closed { background: #CBD5E1; }
+
+        /* --- Card Body --- */
+        .mj-card-body {
+            display: flex;
+            align-items: center;
+            gap: 28px;
+            padding: 20px 24px;
+            flex: 1;
+            min-width: 0;
+        }
+
+        /* --- Card Main --- */
+        .mj-card-main { flex: 1; min-width: 0; }
+        .mj-card-title-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+        }
+        .mj-card-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: #0F172A;
+            margin: 0 !important;
+            line-height: 1.3;
+            word-break: break-word;
+        }
+
+        /* --- Status Badge --- */
+        .mj-status-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 3px 10px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+            text-transform: uppercase;
+            flex-shrink: 0;
+        }
+        .mj-status-badge.open { background: #DCFCE7; color: #15803D; }
+        .mj-status-badge.closed { background: #F1F5F9; color: #64748B; }
+
+        /* --- Card Badges --- */
+        .mj-card-badges .badge {
+            background: #F1F5F9 !important;
+            color: #475569 !important;
+            font-size: 12px !important;
+            font-weight: 600 !important;
+            padding: 5px 12px !important;
+            border-radius: 6px !important;
+        }
+
+        /* --- Card Meta --- */
+        .mj-card-meta {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            flex-shrink: 0;
+            min-width: 185px;
+        }
+        .mj-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: #64748B;
+            font-weight: 500;
+        }
+        .mj-meta-item i {
+            width: 16px;
+            text-align: center;
+            color: #94A3B8;
+            font-size: 13px;
+        }
+        .mj-meta-item a {
+            color: #0F172A !important;
+            text-decoration: underline !important;
+            text-underline-offset: 2px;
+            font-weight: 700;
+            transition: color 0.15s;
+        }
+        .mj-meta-item a:hover { color: #FFCB11 !important; }
+
+        /* --- Three Dots Button --- */
+        .mj-dots-btn {
+            background: none;
+            border: 1.5px solid #E2E8F0;
+            border-radius: 8px;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: #64748B;
+            font-size: 14px;
+            transition: all 0.15s;
+        }
+        .mj-dots-btn:hover {
+            border-color: #CBD5E1;
+            background: #F8FAFC;
+            color: #0F172A;
+        }
+        .mj-card .job-actions {
+            margin-left: 0 !important;
+            flex-shrink: 0;
+        }
+
+        /* --- Dropdown Menu --- */
+        .mj-dropdown {
+            border-radius: 12px !important;
+            border: 1px solid #E2E8F0 !important;
+            box-shadow: 0 8px 24px rgba(15,23,42,0.12) !important;
+            padding: 6px !important;
+            min-width: 180px !important;
+        }
+        .mj-dropdown .dropdown-item {
+            border-radius: 8px;
+            padding: 10px 14px;
+            font-size: 14px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            transition: background 0.15s;
+        }
+        .mj-dropdown .dropdown-item:hover { background: #F8FAFC; }
+        .mj-dropdown .dropdown-item i { width: 20px; font-size: 13px; color: #64748B; }
+        .mj-dropdown .dropdown-item.text-danger i { color: #EF4444; }
+
+        /* --- Empty State --- */
+        .mj-empty-state {
+            text-align: center;
+            padding: 80px 20px;
+            background: #fff;
+            border-radius: 14px;
+            border: 1.5px solid #E2E8F0;
+        }
+        .mj-empty-icon {
+            width: 72px;
+            height: 72px;
+            border-radius: 16px;
+            background: #FEF9E7;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 28px;
+            color: #D4A500;
+        }
+        .mj-empty-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #0F172A;
+            margin: 0 0 8px;
+        }
+        .mj-empty-text {
+            font-size: 14px;
+            color: #64748B;
+            margin: 0 0 24px;
+        }
+
+        /* --- Pagination --- */
+        .mj-pagination { display: flex; justify-content: center; padding-top: 8px; }
+        .mj-pagination .pagination { gap: 4px; }
+        .mj-pagination .page-link {
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            border: 1.5px solid #E2E8F0;
+            color: #475569;
+            padding: 8px 14px;
+        }
+        .mj-pagination .page-item.active .page-link {
+            background: #FFCB11;
+            border-color: #FFCB11;
+            color: #0F172A;
+        }
+
+        /* --- Card Entrance Animation --- */
+        @keyframes mjCardFadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .jobCardsWrapper .col-12 {
+            animation: mjCardFadeIn 0.35s ease-out both;
+        }
+        .jobCardsWrapper .col-12:nth-child(1) { animation-delay: 0.03s; }
+        .jobCardsWrapper .col-12:nth-child(2) { animation-delay: 0.06s; }
+        .jobCardsWrapper .col-12:nth-child(3) { animation-delay: 0.09s; }
+        .jobCardsWrapper .col-12:nth-child(4) { animation-delay: 0.12s; }
+        .jobCardsWrapper .col-12:nth-child(5) { animation-delay: 0.15s; }
+        .jobCardsWrapper .col-12:nth-child(6) { animation-delay: 0.18s; }
+        .jobCardsWrapper .col-12:nth-child(7) { animation-delay: 0.21s; }
+        .jobCardsWrapper .col-12:nth-child(8) { animation-delay: 0.24s; }
+        .jobCardsWrapper .col-12:nth-child(9) { animation-delay: 0.27s; }
+        .jobCardsWrapper .col-12:nth-child(10) { animation-delay: 0.30s; }
+
+        /* --- Mobile Responsive --- */
+        @media (max-width: 768px) {
+            .mj-card.job-card { flex-wrap: nowrap !important; }
+            .mj-card-body {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 14px;
+                padding: 16px 16px 16px 20px;
+                position: relative;
+            }
+            .mj-card .job-actions {
+                position: absolute !important;
+                top: 16px !important;
+                right: 16px !important;
+                margin-left: 0 !important;
+            }
+            .mj-card-meta {
+                min-width: auto;
+                flex-direction: row;
+                flex-wrap: wrap;
+                gap: 10px 16px;
+            }
+            .mj-search-wrap { max-width: 100%; }
+            .mj-page-title { font-size: 22px; }
+            .mj-toolbar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .jobCardsWrapper { padding-bottom: 100px; }
+        }
+        @media (max-width: 576px) {
+            .mj-card-body { padding: 14px 14px 14px 18px; }
+            .mj-card-meta { flex-direction: column; gap: 6px; }
+            .mj-header { flex-direction: column; gap: 12px; }
+        }
+
+        /* ===== END REDESIGN ===== */
+
         /* Fix Select2 dropdown positioning in modals */
         .select2-container {
             width: 100%!important;
@@ -708,7 +1115,210 @@
             z-index: 1059 !important;
         }
     </style>
-{{--    show job details css--}}
+{{--    show job details css (sj- prefixed styles from job-details.blade.php)--}}
+    <style>
+        .sj-detail-company-row {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 16px;
+        }
+        .sj-detail-logo {
+            width: 48px;
+            height: 48px;
+            border-radius: 10px;
+            object-fit: cover;
+            border: 1px solid #eee;
+        }
+        .sj-detail-logo-link {
+            flex-shrink: 0;
+        }
+        .sj-detail-company-info {
+            min-width: 0;
+        }
+        .sj-detail-company-name {
+            font-size: 15px;
+            font-weight: 650;
+            color: #484f5b;
+            margin: 0;
+        }
+        .sj-detail-company-name a {
+            color: inherit;
+            text-decoration: none;
+        }
+        .sj-detail-company-name a:hover {
+            color: #141c25;
+        }
+        .sj-detail-company-addr {
+            font-size: 13px;
+            color: #8c919d;
+            margin: 2px 0 0;
+        }
+        .sj-detail-job-title {
+            font-size: 24px;
+            font-weight: 800;
+            color: #141c25;
+            margin: 0 0 10px;
+            letter-spacing: -0.3px;
+            line-height: 1.25;
+        }
+        .sj-tag {
+            display: inline-block;
+            padding: 3px 10px;
+            font-size: 11px;
+            font-weight: 600;
+            color: #556070;
+            background: #f0f1f4;
+            border-radius: 6px;
+        }
+        .sj-detail-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+        .sj-detail-actions {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 24px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #f0f1f3;
+        }
+        .sj-apply-btn {
+            display: inline-flex !important;
+            align-items: center;
+            gap: 7px;
+            padding: 10px 24px !important;
+            font-size: 14px !important;
+            font-weight: 700;
+            color: #141c25 !important;
+            background: #FFCB11 !important;
+            border: none !important;
+            border-radius: 12px !important;
+            cursor: pointer;
+            transition: all .2s ease;
+            width: auto !important;
+            margin: 0 !important;
+        }
+        .sj-apply-btn:hover {
+            background: #f0be00 !important;
+            box-shadow: 0 4px 14px rgba(255,203,17,.3);
+            color: #141c25 !important;
+        }
+        .sj-applied-btn {
+            display: inline-flex !important;
+            align-items: center;
+            gap: 7px;
+            padding: 10px 24px !important;
+            font-size: 14px !important;
+            font-weight: 600;
+            color: #22c55e !important;
+            background: #F0FDF4 !important;
+            border: 1px solid #BBF7D0 !important;
+            border-radius: 12px !important;
+            cursor: default;
+            width: auto !important;
+            margin: 0 !important;
+        }
+        .sj-save-btn {
+            display: inline-flex !important;
+            align-items: center;
+            gap: 6px;
+            padding: 10px 20px !important;
+            font-size: 14px !important;
+            font-weight: 600;
+            color: #484f5b !important;
+            background: #f3f4f6 !important;
+            border: 1px solid #e4e5e9 !important;
+            border-radius: 12px !important;
+            cursor: pointer;
+            transition: all .2s ease;
+            width: auto !important;
+            margin: 0 !important;
+        }
+        .sj-save-btn:hover {
+            background: #e8e9ec !important;
+            color: #484f5b !important;
+        }
+        .sj-detail-meta-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+            padding: 16px;
+            background: #f8f9fb;
+            border-radius: 12px;
+        }
+        .sj-meta-item {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .sj-meta-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: #8c919d;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+        .sj-meta-value {
+            font-size: 14px;
+            font-weight: 700;
+            color: #141c25;
+        }
+        .sj-detail-section {
+            margin-bottom: 20px;
+        }
+        .sj-detail-heading {
+            font-size: 16px;
+            font-weight: 700;
+            color: #141c25;
+            margin: 0 0 8px;
+        }
+        .sj-detail-subheading {
+            font-size: 14px;
+            font-weight: 650;
+            color: #141c25;
+            margin: 0 0 8px;
+        }
+        .sj-detail-text {
+            font-size: 14px;
+            color: #556070;
+            line-height: 1.7;
+        }
+        .sj-detail-text p {
+            color: #556070;
+        }
+        .sj-detail-list {
+            padding-left: 20px;
+            margin: 0;
+        }
+        .sj-detail-list li {
+            font-size: 14px;
+            color: #556070;
+            margin-bottom: 4px;
+        }
+        .sj-skills-wrap {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .sj-skill-pill {
+            padding: 5px 14px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #484f5b;
+            background: #f0f1f4;
+            border-radius: 20px;
+        }
+        @media (max-width: 768px) {
+            .sj-detail-meta-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
     <style>
         .job-type .badge {
             background-color: #edeff2;
@@ -733,46 +1343,7 @@
 
 
 
-         /* Mobile: Position job-actions at top right */
-          @media screen and (max-width: 768px) {
-                .job-card {
-                  position: relative;
-                  padding-right: 3rem;
-                }
-                .job-actions {
-                  position: absolute;
-                  /*top: 1rem;*/
-                  top: 25px;
-                  right: 1rem;
-                  margin-left: 0;
-                }
-              }
-
-
-
-        /*fix job title long content desing issue*/
-        .job-card .job-title {
-            white-space: normal !important;
-            overflow: visible !important;
-            text-overflow: clip !important;
-            word-wrap: break-word !important;
-            overflow-wrap: break-word !important;
-            max-width: 350px !important; /* Direct width limit on title itself */
-        }
-
-        .job-card .job-main {
-            width: 350px !important; /* Fixed width instead of max-width */
-        }
-
-        /* Mobile adjustments */
-        @media screen and (max-width: 768px) {
-            .job-card .job-main {
-                width: auto !important;
-            }
-            .job-card .job-title {
-                max-width: 100% !important;
-            }
-        }
+         /* Legacy card styles - overridden by mj-card redesign */
 
         /*search skill box*/
         .skill-search-item {
@@ -855,6 +1426,15 @@
 {{--    @include('common-resource-files.')--}}
 {{--    @include('common-resource-files.summernote')--}}
     <script src="//cdn.ckeditor.com/4.22.1/full/ckeditor.js"></script>
+    <script>
+        // Fix dropdown z-index — lift the .col-12 wrapper so dropdown isn't hidden behind next card
+        $(document).on('show.bs.dropdown', '.mj-card-actions', function () {
+            $(this).closest('.col-12').addClass('mj-dropdown-open');
+        });
+        $(document).on('hidden.bs.dropdown', '.mj-card-actions', function () {
+            $(this).closest('.col-12').removeClass('mj-dropdown-open');
+        });
+    </script>
     <script>
         $(document).ready(function () {
             CKEDITOR.replace( 'summernote', {
@@ -1103,6 +1683,7 @@
             }
             var deadline = $(parentModalId+'input[name="deadline"]').val();
             var salary = $(parentModalId+'input[name="salary_amount"]').val();
+            var salaryPaymentType = $(parentModalId+'input[name="job_pref_salary_payment_type"]').val();
             var cgpa = $(parentModalId+'input[name="cgpa"]').val();
             // var field_of_study_preference = $('select[name="field_of_study_preference[]"]').val();
             // var university_preference = $('select[name="university_preference[]"]').val();
@@ -1143,6 +1724,7 @@
             $('#reviewExperience').text(finalExperience);
             $('#reviewDeadline').text(deadline);
             $('#reviewSalary').text(salary);
+            $('#view_job_pref_salary_payment_type').text(salaryPaymentType);
             if (cgpa.length > 0)
             {
                 $('.toggle-cgpa').removeClass('d-none');

@@ -7,364 +7,327 @@
     <!-- Main Content -->
     <div class="container container-main mt-3 profileMain">
         <aside class="left-panel p-3">
-            <div class="card">
+            <div class="card mp-card">
                 <div class="card-body profile">
-                    <div class="position-relative d-inline-block mb-2" style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#changeProfileImageModal" title="Change profile image">
-                        <img src="{{ asset(auth()->user()->profile_image ?? '/frontend/user-vector-img.jpg') }}" alt="Profile" class="rounded-circle" width="80" height="80" style="object-fit: cover;" />
-                        <span class="position-absolute d-flex align-items-center justify-content-center bg-white rounded-circle shadow-sm" style="width: 26px; height: 26px; top: 0; right: 0; border: 1.5px solid #e0e0e0;">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#555" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <!-- Profile Image -->
+                    <div class="mp-avatar-wrap" data-bs-toggle="modal" data-bs-target="#changeProfileImageModal" title="Change profile image">
+                        <img src="{{ asset(auth()->user()->profile_image ?? '/frontend/user-vector-img.jpg') }}" alt="Profile" class="mp-avatar" />
+                        <span class="mp-avatar-edit">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
                                 <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
                             </svg>
                         </span>
                     </div>
-                    <h5>{{ auth()->user()->name ?? trans('common.user_name') }}</h5>
 
+                    <!-- Name -->
+                    <h5 class="mp-name">{{ auth()->user()->name ?? trans('common.user_name') }}</h5>
+
+                    <!-- Status Badge -->
                     <div class="d-flex justify-content-center justify-content-md-start">
                         <div class="dropdown d-flex align-items-center">
-                            <span class="badge d-flex align-items-center">
-                              <img src="{{ asset('/') }}frontend/employee/images/profile/Ellipse 1.png" alt="" class="me-2" />
-                              <span id="selectedRole" >{{ auth()->user()->is_open_for_hire == 1 ? trans('employee.open_to_work') : trans('employee.offline') }}</span>
+                            <span class="mp-status-badge d-flex align-items-center">
+                                <span class="mp-status-dot {{ auth()->user()->is_open_for_hire == 1 ? 'mp-status-active' : 'mp-status-offline' }}"></span>
+                                <span id="selectedRole">{{ auth()->user()->is_open_for_hire == 1 ? trans('employee.open_to_work') : trans('employee.offline') }}</span>
                             </span>
-                            <img src="{{ asset('/') }}frontend/employee/images/profile/downArrow.png" alt="" data-bs-toggle="dropdown" aria-expanded="false" class="ms-2" style="cursor: pointer;" />
-
-                            <ul class="dropdown-menu">
+                            <button class="mp-dropdown-trigger" data-bs-toggle="dropdown" aria-expanded="false">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                            </button>
+                            <ul class="dropdown-menu mp-dropdown">
                                 <li><a class="dropdown-item change-job-active-status" href="javascript:void(0)" data-value="1" data-msg="{{ trans('employee.open_to_work') }}">{{ trans('employee.open_to_work') }}</a></li>
                                 <li><a class="dropdown-item change-job-active-status" href="javascript:void(0)" data-value="0" data-msg="{{ trans('employee.offline') }}">{{ trans('employee.offline') }}</a></li>
-{{--                                <li><a class="dropdown-item" href="#" onclick="updateRole('Open to Internship')">Open to Internship</a></li>--}}
-{{--                                <li><a class="dropdown-item" href="#" onclick="updateRole('Open to Freelance Projects')">Open to Freelance Projects</a></li>--}}
                             </ul>
                         </div>
                     </div>
 
-
-
-                    <p class="mt-2" data-bs-toggle="modal" data-bs-target="#editBioModal">
+                    <!-- Profile Title -->
+                    <p class="mp-bio" data-bs-toggle="modal" data-bs-target="#editBioModal">
                         {{ auth()->user()->profile_title ?? 'user profile title here.' }}
                     </p>
 
-                    <div class="viewoProfileforSmallDevice py-3 " style="border-top: 1px solid lightgrey;">
+                    <!-- Mobile: View Profile Details -->
+                    <div class="viewoProfileforSmallDevice mp-mobile-view-link">
                         <a href="" id="showMobileProfileEditBox">{{ trans('employee.view_profile_details') }}</a>
-                        <img src="{{ asset('/') }}frontend/employee/images/profile/arrow-right dark.png" alt="">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
                     </div>
 
-                    <!-- editt profile -->
-                    <div class="profileEdit">
-                        <!-- Trigger for Edit Bio Modal -->
-                        <h2 class="bio-edit-icon">
-                            <img src="{{ asset('/') }}frontend/employee/images/profile/editIcon.png" alt="" class="me-1" />
-                            <span class="editBio" data-bs-toggle="modal" data-bs-target="#editBioModal">{{ trans('employee.edit_bio') }}</span>
-                        </h2>
+                    <!-- Edit Profile Section -->
+                    <div class="profileEdit mp-edit-section">
+                        <!-- Edit Bio -->
+                        <div class="mp-edit-link bio-edit-icon" data-bs-toggle="modal" data-bs-target="#editBioModal">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                            <span class="editBio">{{ trans('employee.edit_bio') }}</span>
+                        </div>
 
-                        <hr />
-                        <div class="profileIngo location">
-                            <div class="row">
-                                <div class="col-2">
-                                    <img src="{{ asset('/') }}frontend/employee/images/profile/location.png" alt="" />
+                        <div class="mp-divider"></div>
+
+                        <!-- Contact Info -->
+                        <div class="mp-contact-list">
+                            <div class="mp-contact-item profileIngo location">
+                                <div class="mp-contact-icon">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
                                 </div>
-                                <div class="col-10">
-                                    <h4 class="mb-0">{{ trans('common.address') }}</h4>
-                                    <p>{{ auth()->user()->address ?? trans('common.user_address') }}</p>
+                                <div class="mp-contact-text">
+                                    <span class="mp-contact-label">{{ trans('common.address') }}</span>
+                                    <span class="mp-contact-value">{{ auth()->user()->address ?? trans('common.user_address') }}</span>
+                                </div>
+                            </div>
+
+                            <div class="mp-contact-item profileIngo email">
+                                <div class="mp-contact-icon">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                                </div>
+                                <div class="mp-contact-text">
+                                    <span class="mp-contact-label">{{ trans('common.email') }}</span>
+                                    <span class="mp-contact-value"><a href="mailto:{{ auth()->user()->email }}">{{ auth()->user()->email ?? 'user email' }}</a></span>
+                                </div>
+                            </div>
+
+                            <div class="mp-contact-item profileIngo phone">
+                                <div class="mp-contact-icon">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                                </div>
+                                <div class="mp-contact-text">
+                                    <span class="mp-contact-label">{{ trans('common.phone') }}</span>
+                                    <span class="mp-contact-value">{{ auth()->user()->mobile ?? '01500000000' }}</span>
                                 </div>
                             </div>
                         </div>
-                        <div class="profileIngo email">
-                            <div class="row">
-                                <div class="col-2">
-                                    <img src="{{ asset('/') }}frontend/employee/images/profile/email.png" alt="" />
-                                </div>
-                                <div class="col-10">
-                                    <h4 class="mb-0">{{ trans('common.email') }}</h4>
-                                    <p><a href="">{{ auth()->user()->email ?? 'user email' }}</a></p>
-                                </div>
-                            </div>
+
+                        <!-- Edit Contact -->
+                        <div class="mp-edit-link bio-edit-icon" data-bs-toggle="modal" data-bs-target="#editContactModal">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                            <span class="editBio">{{ trans('employee.edit_contact_info') }}</span>
                         </div>
-                        <div class="profileIngo phone">
-                            <div class="row">
-                                <div class="col-2">
-                                    <img src="{{ asset('/') }}frontend/employee/images/profile/phone.png" alt="" />
-                                </div>
-                                <div class="col-10">
-                                    <h4 class="mb-0">{{ trans('common.phone') }}</h4>
-                                    <p>{{ auth()->user()->mobile ?? '01500000000' }}</p>
-                                </div>
-                            </div>
-                        </div>
-{{--                        <div class="profileIngo website">--}}
-{{--                            <div class="row">--}}
-{{--                                <div class="col-2">--}}
-{{--                                    <img src="{{ asset('/') }}frontend/employee/images/profile/website.png" alt="" />--}}
-{{--                                </div>--}}
-{{--                                <div class="col-10">--}}
-{{--                                    <h4 class="mb-0">Website</h4>--}}
-{{--                                    <p><a href="">{{ auth()->user()->website ?? 'domain.com' }}</a></p>--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
-
-                        <!-- edit contact with modal -->
-
-                        <!-- Edit Contact Info (Existing Button) -->
-                        <h2 class="mt-3 bio-edit-icon">
-                            <img src="{{ asset('/') }}frontend/employee/images/profile/editIcon.png" alt="" class="me-1" />
-                            <span class="editBio" data-bs-toggle="modal" data-bs-target="#editContactModal">{{ trans('employee.edit_contact_info') }}</span>
-                        </h2>
-
-
-
-
                     </div>
                 </div>
             </div>
         </aside>
 
-        <!-- Right Scrollable Jobs -->
+        <!-- Right Scrollable Content -->
         <section class="w-100">
 
-            <div class="row jobdashboard p-3 justify-content-between">
-
-                <!-- Saved Jobs -->
-                <div class="col-4 saveJobs">
-                    <div class="row">
-                        <div class="col-1 me-2">
-                            <img src="{{ asset('/') }}frontend/employee/images/profile/saveJobIcon.png" alt="">
-                        </div>
-                        <div class="col-8">
-                            <h2>{{ trans('employee.my_saved_jobs') }}</h2>
-                        </div>
-                        <div class="col-2 text-end">
-                            <img src="{{ asset('/') }}frontend/employee/images/profile/arrow-right 1.png" alt="" class="profileRightArrow">
-                        </div>
+            <!-- Stats Dashboard -->
+            <div class="mp-stats-row">
+                <div class="mp-stat-card mp-stat-saved">
+                    <div class="mp-stat-icon-wrap">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
                     </div>
-                    <h1 class="mt-2">{{ $totalSavedJobs ?? 0 }}</h1>
-                    <p class="mb-0">{{ trans('employee.jobs_saved') }}</p>
+                    <div class="mp-stat-content">
+                        <span class="mp-stat-number">{{ $totalSavedJobs ?? 0 }}</span>
+                        <span class="mp-stat-label">{{ trans('employee.jobs_saved') }}</span>
+                    </div>
+                    <span class="mp-stat-title">{{ trans('employee.my_saved_jobs') }}</span>
                 </div>
 
-                <!-- My Applications -->
-                <div class="col-4 myApplication">
-                    <div class="row">
-                        <div class="col-1 me-2">
-                            <img src="{{ asset('/') }}frontend/employee/images/profile/myApplicationIcon.png" alt="">
-                        </div>
-                        <div class="col-8">
-                            <h2>{{ trans('employee.my_applications') }}</h2>
-                        </div>
-                        <div class="col-2 text-end">
-                            <img src="{{ asset('/') }}frontend/employee/images/profile/arrow-right 1.png" alt="" class="profileRightArrow">
-                        </div>
+                <div class="mp-stat-card mp-stat-apps">
+                    <div class="mp-stat-icon-wrap">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
                     </div>
-                    <h1 class="mt-2">{{ auth()->user()->employeeAppliedJobs()->count() ?? 0 }}</h1>
-                    <p class="mb-0">{{ trans('employee.applications') }}</p>
+                    <div class="mp-stat-content">
+                        <span class="mp-stat-number">{{ auth()->user()->employeeAppliedJobs()->count() ?? 0 }}</span>
+                        <span class="mp-stat-label">{{ trans('employee.applications') }}</span>
+                    </div>
+                    <span class="mp-stat-title">{{ trans('employee.my_applications') }}</span>
                 </div>
 
-                <!-- Profile Viewers -->
-                <div class="col-4">
-                    <div class="row">
-                        <div class="col-1 me-2">
-                            <img src="{{ asset('/') }}frontend/employee/images/profile/ProfileViewer.png" alt="">
-                        </div>
-                        <div class="col-8">
-                            <h2>{{ trans('employee.my_profile_viewers') }}</h2>
-                        </div>
-                        <div class="col-2 text-end">
-                            <img src="{{ asset('/') }}frontend/employee/images/profile/arrow-right 1.png" alt="" class="profileRightArrow">
-                        </div>
+                <div class="mp-stat-card mp-stat-viewers">
+                    <div class="mp-stat-icon-wrap">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
                     </div>
-                    <h1 class="mt-2">{{ auth()->user()->viewEmployeeIds()->count() ?? 0 }}</h1>
-                    <p class="mb-0">{{ trans('employee.viewers') }}</p>
+                    <div class="mp-stat-content">
+                        <span class="mp-stat-number">{{ auth()->user()->viewEmployeeIds()->count() ?? 0 }}</span>
+                        <span class="mp-stat-label">{{ trans('employee.viewers') }}</span>
+                    </div>
+                    <span class="mp-stat-title">{{ trans('employee.my_profile_viewers') }}</span>
                 </div>
             </div>
 
-            <!-- mobile user option -->
-            <div class="right-panel w-100 userOptionforMobile">
+            <!-- Mobile User Options -->
+            <div class="right-panel w-100 userOptionforMobile mp-mobile-options">
                 <div class="userOptionforMobileWraperMain">
-
-                    <a href="{{ route('employee.my-saved-jobs') }}" class="userOptionforMobileOptions">
+                    <a href="{{ route('employee.my-saved-jobs') }}" class="userOptionforMobileOptions mp-mobile-opt-link">
                         <div class="d-flex align-items-center justify-content-between">
                             <div class="left-side">
-                                <img src="{{ asset('/') }}frontend/employee/images/header images/Saved jobs.png" alt="" /> Saved jobs
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#484f5b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+                                <span>Saved jobs</span>
                             </div>
                             <div class="right-side">
-                                <img src="{{ asset('/') }}frontend/employee/images/profile/arrow-right 1.png" alt="" />
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#667080" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
                             </div>
                         </div>
                     </a>
-
-
-                    <a href="{{ route('employee.my-applications') }}" class="userOptionforMobileOptions">
+                    <a href="{{ route('employee.my-applications') }}" class="userOptionforMobileOptions mp-mobile-opt-link">
                         <div class="d-flex align-items-center justify-content-between">
                             <div class="left-side">
-                                <img src="{{ asset('/') }}frontend/employee/images/header images/Myapplications.png" alt="" /> My applications
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#484f5b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                                <span>My applications</span>
                             </div>
                             <div class="right-side">
-                                <img src="{{ asset('/') }}frontend/employee/images/profile/arrow-right 1.png" alt="" />
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#667080" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
                             </div>
                         </div>
                     </a>
-
-                    <a href="{{ route('employee.my-profile-viewers') }}" class="userOptionforMobileOptions">
+                    <a href="{{ route('employee.my-profile-viewers') }}" class="userOptionforMobileOptions mp-mobile-opt-link">
                         <div class="d-flex align-items-center justify-content-between">
                             <div class="left-side">
-                                <img src="{{ asset('/') }}frontend/employee/images/header images/Profilerviewers.png" alt="" /> Profiler viewers
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#484f5b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                                <span>Profile viewers</span>
                             </div>
                             <div class="right-side">
-                                <img src="{{ asset('/') }}frontend/employee/images/profile/arrow-right 1.png" alt="" />
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#667080" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
                             </div>
                         </div>
                     </a>
-
-                    <a href="{{ route('employee.my-subscriptions') }}" class="userOptionforMobileOptions">
+                    <a href="{{ route('employee.my-subscriptions') }}" class="userOptionforMobileOptions mp-mobile-opt-link">
                         <div class="d-flex align-items-center justify-content-between">
                             <div class="left-side">
-                                <img src="{{ asset('/') }}frontend/employee/images/header images/Subscription.png" alt="" /> {{ trans('employee.subscription') }}
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#484f5b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg>
+                                <span>{{ trans('employee.subscription') }}</span>
                             </div>
                             <div class="right-side">
-                                <img src="{{ asset('/') }}frontend/employee/images/profile/arrow-right 1.png" alt="" />
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#667080" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
                             </div>
                         </div>
                     </a>
-
-                    <a href="{{ route('employee.settings') }}" class="userOptionforMobileOptions">
+                    <a href="{{ route('employee.settings') }}" class="userOptionforMobileOptions mp-mobile-opt-link">
                         <div class="d-flex align-items-center justify-content-between">
                             <div class="left-side">
-                                <img src="{{ asset('/') }}frontend/employee/images/header images/Settings.png" alt="" /> {{ trans('employee.settings') }}
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#484f5b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                                <span>{{ trans('employee.settings') }}</span>
                             </div>
                             <div class="right-side">
-                                <img src="{{ asset('/') }}frontend/employee/images/profile/arrow-right 1.png" alt="" />
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#667080" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
                             </div>
                         </div>
                     </a>
-
                 </div>
             </div>
 
-
-            <!-- work experience -->
-            <div class="right-panel w-100 ps-4 pt-3">
-                <div class="d-flex align-items-center justify-content-between profileOverview">
-                    <h3>{{ trans('employee.work_experiences') }}</h3>
-                    <button class="btn" data-bs-toggle="modal" data-bs-target="#addWorkExperienceModal">
-                        <img src="{{ asset('/') }}frontend/employee/images/profile/plusIcon.png" alt="" /> {{ trans('common.add') }}
-                    </button>
-
-
-                </div>
-                @foreach($workExperiences as $workExperience)
-                    <div class="row jobCard border-bottom">
-                        <div class="col-2 col-md-1">
-                            <img  src="{{ isset($workExperience->company_logo) ? asset($workExperience->company_logo) : asset('/frontend/company-vector.jpg') }}" alt="Company Logo" class="companyLogo" style="height: 56px; border-radius: 50%" />
-                            <img style="width: 40px; height: 42px" src="{{ asset( $workExperience->company_logo ?? '/frontend/company-vector.jpg') }}" alt="Company Logo"
-                                 class="mobileLogo" />
+            <!-- Work Experience -->
+            <div class="mp-section">
+                <div class="mp-section-header">
+                    <div class="mp-section-title-group">
+                        <div class="mp-section-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
                         </div>
-                        <div class="col-10 col-md-11">
-                            <div class="jobPosition d-flex justify-content-between">
-                                <div class="d-flex">
-                                    <div class="profileCard">
-                                        <h3>{{ $workExperience->title ?? 'Executive Officer, Sales' }}</h3>
-                                        <h4>
-                                            {{ $workExperience->company_name ?? trans('common.company_name') }}
-                                            <img src="{{ asset('/') }}frontend/employee/images/profile/dotDevider.png" alt="" />
-                                            <span>
+                        <h3>{{ trans('employee.work_experiences') }}</h3>
+                    </div>
+                    <button class="mp-add-btn" data-bs-toggle="modal" data-bs-target="#addWorkExperienceModal">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                        <span>{{ trans('common.add') }}</span>
+                    </button>
+                </div>
+
+                @forelse($workExperiences as $workExperience)
+                    <div class="mp-entry">
+                        <div class="mp-entry-logo">
+                            <img src="{{ isset($workExperience->company_logo) ? asset($workExperience->company_logo) : asset('/frontend/company-vector.jpg') }}" alt="Company Logo" />
+                        </div>
+                        <div class="mp-entry-body">
+                            <div class="mp-entry-header">
+                                <div>
+                                    <h4 class="mp-entry-title">{{ $workExperience->title ?? 'Executive Officer, Sales' }}</h4>
+                                    <p class="mp-entry-subtitle">
+                                        {{ $workExperience->company_name ?? trans('common.company_name') }}
+                                        @if($workExperience->job_type)
+                                            <span class="mp-entry-tag">
                                                 {{ $workExperience->job_type == 'part_time' ? "Part Time" : '' }}
                                                 {{ $workExperience->job_type == 'full_time' ? trans('common.full_time') : '' }}
                                                 {{ $workExperience->job_type == 'contractual' ? "Contractual" : '' }}
                                             </span>
-                                        </h4>
-                                        <p class="mb-0">
-                                            {{ \Illuminate\Support\Carbon::parse($workExperience->start_date)->format('M Y') }} - {{ $workExperience->is_working_currently == 1 ? 'Present' : \Illuminate\Support\Carbon::parse($workExperience->end_date)->format('M Y') }}
-                                            <img src="{{ asset('/') }}frontend/employee/images/profile/2ndDotDevider.png" alt="" />
-{{--                                            <span>2 yrs 5 mos</span>--}}
-                                            <span>{{ differTime($workExperience->start_date, $workExperience->is_working_currently == 1 ? now() : $workExperience->end_date ) }}</span>
+                                        @endif
+                                    </p>
+                                    <p class="mp-entry-meta">
+                                        {{ \Illuminate\Support\Carbon::parse($workExperience->start_date)->format('M Y') }} - {{ $workExperience->is_working_currently == 1 ? 'Present' : \Illuminate\Support\Carbon::parse($workExperience->end_date)->format('M Y') }}
+                                        <span class="mp-meta-sep"></span>
+                                        <span>{{ differTime($workExperience->start_date, $workExperience->is_working_currently == 1 ? now() : $workExperience->end_date ) }}</span>
+                                    </p>
+                                    @if($workExperience->office_address)
+                                        <p class="mp-entry-location">
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                                            {{ $workExperience->office_address }}
                                         </p>
-                                        <p>{{ $workExperience->office_address ?? 'Dhaka' }}</p>
-                                        <div class="profileSummery mt-4">
-                                            <h4>Job Summary:</h4>
-                                            <div>{!! str()->words($workExperience->job_responsibilities, 30, ' ......') ?? 'job responsibilities' !!}</div>
+                                    @endif
+                                    @if($workExperience->job_responsibilities)
+                                        <div class="mp-entry-summary">
+                                            <span class="mp-summary-label">Job Summary:</span>
+                                            <div class="mp-summary-text">{!! str()->words($workExperience->job_responsibilities, 30, ' ......') !!}</div>
                                         </div>
-                                    </div>
+                                    @endif
                                 </div>
-                                <div>
+                                <div class="mp-entry-actions">
                                     <div class="dropdown">
-                                        <img src="{{ asset('/') }}frontend/employee/images/contentImages/threedot.png"
-                                             alt="Options"
-                                             class="threeDot"
-                                             role="button"
-                                             data-bs-toggle="dropdown"
-                                             aria-expanded="false" />
-
-                                        <ul class="dropdown-menu dropdown-menu-end">
+                                        <button class="mp-menu-btn" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-end mp-dropdown">
                                             <li><a class="dropdown-item edit-work-experience f-s-15" data-work-experience-id="{{ $workExperience->id }}" href="javascript:void(0)">{{ trans('common.edit') }}</a></li>
                                             <li>
                                                 <form action="{{ route('employee.employee-work-experiences.destroy', $workExperience->id) }}" method="post">
                                                     @csrf
                                                     @method('delete')
-                                                    <button class="dropdown-item data-delete-form f-s-15" type="submit">{{ trans('common.delete') }}</button>
+                                                    <button class="dropdown-item data-delete-form f-s-15 text-danger" type="submit">{{ trans('common.delete') }}</button>
                                                 </form>
                                             </li>
                                         </ul>
                                     </div>
-
                                 </div>
                             </div>
                         </div>
                     </div>
-                @endforeach
+                @empty
+                    <div class="mp-empty-state">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#cfd2d9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+                        <p>No work experience added yet</p>
+                    </div>
+                @endforelse
             </div>
 
-            <!-- education -->
-            <div class="right-panel w-100  ps-4 pt-3">
-                <div class="d-flex align-items-center justify-content-between profileOverview">
-                    <!-- Education Add Button (Existing Button) -->
-                    <h3>{{ trans('employee.education') }}</h3>
-                    <button class="btn" data-bs-toggle="modal" data-bs-target="#addEducationModal">
-                        <img src="{{ asset('/') }}frontend/employee/images/profile/plusIcon.png" alt="" /> {{ trans('common.add') }}
-                    </button>
-
-                </div>
-                @forelse($employeeEducations as $employeeEducation)
-                    <div class="row jobCard border-bottom">
-                        <div class="col-2 col-md-1">
-                            <img src="{{ asset('/') }}frontend/company-vector.jpg" alt="Company Logo" class="companyLogo" style="height: 56px; border-radius: 50%" />
-                            <img style="width: 40px; height: 42px" src="{{ asset('/') }}frontend/company-vector.jpg" alt="Company Logo"
-                                 class="mobileLogo" />
+            <!-- Education -->
+            <div class="mp-section">
+                <div class="mp-section-header">
+                    <div class="mp-section-title-group">
+                        <div class="mp-section-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 10 3 12 0v-5"/></svg>
                         </div>
-                        <div class="col-10 col-md-11">
-                            <div class="jobPosition d-flex justify-content-between">
-                                <div class="d-flex">
-                                    <div class="profileCard">
-{{--                                        <h3>{{ $employeeEducation?->universityName?->name ?? 'North South University' }}</h3>--}}
-                                        <h3>{{ $employeeEducation?->institute_name ?? 'Institute Name' }}</h3>
-                                        <h4>
-                                            {{ $employeeEducation?->educationDegreeName?->degree_name ?? 'BBA' }} - {{ $employeeEducation?->field_of_study ?? 'Field Of Study' }}
-                                            <img src="{{ asset('/') }}frontend/employee/images/profile/dotDevider.png" alt="" />
-                                            <span>{{ trans('common.cgpa') }} {{ $employeeEducation->cgpa ?? 0.00 }}</span>
-                                        </h4>
-                                        <p class="mb-0">
-                                            Passing Year: {{ $employeeEducation->passing_year ?? '1990' }}
-{{--                                            <img src="{{ asset('/') }}frontend/employee/images/profile/2ndDotDevider.png" alt="" />--}}
-{{--                                            <span>2 yrs 5 mos</span>--}}
-                                        </p>
-{{--                                        <p>--}}
-{{--                                            {!! $employeeEducation->address ?? '' !!}--}}
-{{--                                        </p>--}}
-                                    </div>
-                                </div>
-                                <div>
-                                    <div class="dropdown">
-                                        <img src="{{ asset('/') }}frontend/employee/images/contentImages/threedot.png"
-                                             alt="Options"
-                                             class="threeDot"
-                                             role="button"
-                                             data-bs-toggle="dropdown"
-                                             aria-expanded="false" />
+                        <h3>{{ trans('employee.education') }}</h3>
+                    </div>
+                    <button class="mp-add-btn" data-bs-toggle="modal" data-bs-target="#addEducationModal">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                        <span>{{ trans('common.add') }}</span>
+                    </button>
+                </div>
 
-                                        <ul class="dropdown-menu dropdown-menu-end">
+                @forelse($employeeEducations as $employeeEducation)
+                    <div class="mp-entry">
+                        <div class="mp-entry-logo">
+                            <img src="{{ asset('/') }}frontend/company-vector.jpg" alt="Institution Logo" />
+                        </div>
+                        <div class="mp-entry-body">
+                            <div class="mp-entry-header">
+                                <div>
+                                    <h4 class="mp-entry-title">{{ $employeeEducation?->institute_name ?? 'Institute Name' }}</h4>
+                                    <p class="mp-entry-subtitle">
+                                        {{ $employeeEducation?->educationDegreeName?->degree_name ?? 'BBA' }} - {{ $employeeEducation?->field_of_study ?? 'Field Of Study' }}
+                                        <span class="mp-entry-tag">{{ trans('common.cgpa') }} {{ $employeeEducation->cgpa ?? 0.00 }}</span>
+                                    </p>
+                                    <p class="mp-entry-meta">
+                                        Passing Year: {{ $employeeEducation->passing_year ?? '1990' }}
+                                    </p>
+                                </div>
+                                <div class="mp-entry-actions">
+                                    <div class="dropdown">
+                                        <button class="mp-menu-btn" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-end mp-dropdown">
                                             <li><a class="dropdown-item edit-education f-s-15" data-education-id="{{ $employeeEducation->id }}" href="javascript:void(0)">{{ trans('common.edit') }}</a></li>
                                             <li>
                                                 <form action="{{ route('employee.employee-educations.destroy', $employeeEducation->id) }}" method="post">
                                                     @csrf
                                                     @method('delete')
-                                                    <button class="dropdown-item data-delete-form f-s-15" type="submit">{{ trans('common.delete') }}</button>
+                                                    <button class="dropdown-item data-delete-form f-s-15 text-danger" type="submit">{{ trans('common.delete') }}</button>
                                                 </form>
                                             </li>
                                         </ul>
@@ -374,78 +337,74 @@
                         </div>
                     </div>
                 @empty
-                    <div class="row jobCard border-bottom">
-                        <div class="col-12">
-                            <p class="f-s-21">{{ trans('employee.no_education_info_enlisted') }}</p>
-                        </div>
+                    <div class="mp-empty-state">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#cfd2d9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 10 3 12 0v-5"/></svg>
+                        <p>{{ trans('employee.no_education_info_enlisted') }}</p>
                     </div>
                 @endforelse
-
-
             </div>
 
-            <!-- documents -->
-            <div class="right-panel w-100 ps-4 pt-3">
-                <div class="d-flex align-items-center justify-content-between profileOverview">
-                    <!-- Document Add Button (Existing Button) -->
-                    <h3>{{ trans('employee.documents') }}</h3>
-                    <button class="btn" data-bs-toggle="modal" data-bs-target="#addDocumentModal">
-                        <img src="{{ asset('/') }}frontend/employee/images/profile/plusIcon.png" alt="" /> {{ trans('common.add') }}
+            <!-- Documents -->
+            <div class="mp-section">
+                <div class="mp-section-header">
+                    <div class="mp-section-title-group">
+                        <div class="mp-section-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><polyline points="13 2 13 9 20 9"/></svg>
+                        </div>
+                        <h3>{{ trans('employee.documents') }}</h3>
+                    </div>
+                    <button class="mp-add-btn" data-bs-toggle="modal" data-bs-target="#addDocumentModal">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                        <span>{{ trans('common.add') }}</span>
                     </button>
-
                 </div>
 
                 @forelse($employeeDocuments as $employeeDocument)
-                    <div class="row jobCard border-bottom">
-                        <div class="col-2">
+                    <div class="mp-entry mp-doc-entry">
+                        <div class="mp-doc-preview">
                             <a href="{{ file_exists($employeeDocument->file) ? asset($employeeDocument->file) : '' }}" download="">
-
                                 @if( explode('/', $employeeDocument->file_type)[0] == 'image' )
-                                    <img style="max-width: 105px; max-height: 105px;" src="{{ isset($employeeDocument->file) ? asset($employeeDocument->file) : asset('frontend/photo.png') }}" alt="Company Logo" class="companyLogo w-100" />
-                                    <img style="width: 40px; height: 42px" src="{{ isset($employeeDocument->file) ? asset($employeeDocument->file) : asset('frontend/photo.png')}}" alt="Company Logo" class="mobileLogo w-100" />
+                                    <img src="{{ isset($employeeDocument->file) ? asset($employeeDocument->file) : asset('frontend/photo.png') }}" alt="Document" />
                                 @elseif( explode('/', $employeeDocument->file_type)[1] == 'pdf' )
-                                    <img style="max-width: 105px; max-height: 105px;" src="https://www.iconpacks.net/icons/2/free-pdf-icon-3375-thumb.png" alt="Company Logo" class="companyLogo" />
-                                    <img style="width: 40px; height: 42px" src="https://www.iconpacks.net/icons/2/free-pdf-icon-3375-thumb.png" alt="Company Logo" class="mobileLogo" />
+                                    <div class="mp-doc-icon mp-doc-pdf">
+                                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
+                                        <span>PDF</span>
+                                    </div>
                                 @elseif( explode('/', $employeeDocument->file_type)[1] == 'vnd.openxmlformats-officedocument.wordprocessingml.document' )
-                                    <img style="max-width: 105px; max-height: 105px;" src="https://files.softicons.com/download/toolbar-icons/mono-general-icons-2-by-custom-icon-design/ico/document.ico" alt="Company Logo" class="companyLogo" />
-                                    <img style="width: 40px; height: 42px" src="https://files.softicons.com/download/toolbar-icons/mono-general-icons-2-by-custom-icon-design/ico/document.ico" alt="Company Logo" class="mobileLogo" />
+                                    <div class="mp-doc-icon mp-doc-word">
+                                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                                        <span>DOC</span>
+                                    </div>
                                 @else
-                                    <img style="max-width: 105px; max-height: 105px;" src="{{ asset('/frontend/photo.png') }}" alt="Company Logo" class="companyLogo" />
-                                    <img style="width: 40px; height: 42px" src="{{ asset('/frontend/photo.png') }}" alt="Company Logo" class="mobileLogo" />
+                                    <div class="mp-doc-icon">
+                                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><polyline points="13 2 13 9 20 9"/></svg>
+                                        <span>FILE</span>
+                                    </div>
                                 @endif
                             </a>
                         </div>
-
-                        <div class="col-10">
-                            <div class="jobPosition d-flex justify-content-between">
-                                <div class="d-flex">
-                                    <div class="profileCard">
-                                        <h3>{{ $employeeDocument->title }}</h3>
-                                        <p class="mb-0">
-                                            {{ explode('/', $employeeDocument->file_type)[0] }} {{--- Present--}}
-                                            <img src="{{ asset('/') }}frontend/employee/images/profile/2ndDotDevider.png" alt="" />
-                                            <span>{{ $employeeDocument->file_size ?? 0 }} KB</span>
-                                        </p>
-{{--                                        <p>Dhaka, Bangladesh</p>--}}
-                                        <div class="profileSummery mt-4"></div>
-                                    </div>
-                                </div>
+                        <div class="mp-entry-body">
+                            <div class="mp-entry-header">
                                 <div>
+                                    <h4 class="mp-entry-title">{{ $employeeDocument->title }}</h4>
+                                    <p class="mp-entry-meta">
+                                        {{ explode('/', $employeeDocument->file_type)[0] }}
+                                        <span class="mp-meta-sep"></span>
+                                        <span>{{ $employeeDocument->file_size ?? 0 }} KB</span>
+                                    </p>
+                                </div>
+                                <div class="mp-entry-actions">
                                     <div class="dropdown">
-                                        <img src="{{ asset('/') }}frontend/employee/images/contentImages/threedot.png"
-                                             alt="Options"
-                                             class="threeDot"
-                                             role="button"
-                                             data-bs-toggle="dropdown"
-                                             aria-expanded="false" />
-
-                                        <ul class="dropdown-menu dropdown-menu-end">
+                                        <button class="mp-menu-btn" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-end mp-dropdown">
                                             <li><a class="dropdown-item edit-document f-s-15" data-document-id="{{ $employeeDocument->id }}" href="javascript:void(0)">{{ trans('common.edit') }}</a></li>
                                             <li>
                                                 <form action="{{ route('employee.employee-documents.destroy', $employeeDocument->id) }}" method="post">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button class="dropdown-item data-delete-form f-s-15" type="submit">{{ trans('common.delete') }}</button>
+                                                    <button class="dropdown-item data-delete-form f-s-15 text-danger" type="submit">{{ trans('common.delete') }}</button>
                                                 </form>
                                             </li>
                                         </ul>
@@ -455,55 +414,15 @@
                         </div>
                     </div>
                 @empty
-                    <div class="row jobCard border-bottom">
-                        <div class="col-12">
-                            <span class="f-s-21">{{ trans('employee.no_documents_available') }}</span>
-                        </div>
+                    <div class="mp-empty-state">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#cfd2d9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><polyline points="13 2 13 9 20 9"/></svg>
+                        <p>{{ trans('employee.no_documents_available') }}</p>
                     </div>
                 @endforelse
-
-
-{{--                <div class="row jobCard border-bottom">--}}
-{{--                    <div class="col-2">--}}
-{{--                        <img src="{{ asset('/') }}frontend/employee/images/profile/NID.png" alt="Company Logo" class="companyLogo" />--}}
-{{--                        <img style="width: 40px; height: 42px" src="{{ asset('/') }}frontend/employee/images/profile/NID.png" alt="Company Logo" class="mobileLogo" />--}}
-{{--                    </div>--}}
-{{--                    <div class="col-10">--}}
-{{--                        <div class="jobPosition d-flex justify-content-between">--}}
-{{--                            <div class="d-flex">--}}
-{{--                                <div class="profileCard">--}}
-{{--                                    <h3>National ID card</h3>--}}
-{{--                                    <p class="mb-0">--}}
-{{--                                        JPG - Present--}}
-{{--                                        <img src="{{ asset('/') }}frontend/employee/images/profile/2ndDotDevider.png" alt="" />--}}
-{{--                                        <span>325 KB</span>--}}
-{{--                                    </p>--}}
-{{--                                    <p>Dhaka, Bangladesh</p>--}}
-{{--                                    <div class="profileSummery mt-4"></div>--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
-{{--                            <div>--}}
-{{--                                <div class="dropdown">--}}
-{{--                                    <img src="{{ asset('/') }}frontend/employee/images/contentImages/threedot.png"--}}
-{{--                                         alt="Options"--}}
-{{--                                         class="threeDot"--}}
-{{--                                         role="button"--}}
-{{--                                         data-bs-toggle="dropdown"--}}
-{{--                                         aria-expanded="false" />--}}
-
-{{--                                    <ul class="dropdown-menu dropdown-menu-end">--}}
-{{--                                        <li><a class="dropdown-item" href="#">Edit</a></li>--}}
-{{--                                        <li><a class="dropdown-item" href="#">Delete</a></li>--}}
-{{--                                    </ul>--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
             </div>
+
         </section>
     </div>
-
 
 @endsection
 
@@ -562,7 +481,7 @@
     </div>
 
     <!-- Modal for Edit Contact -->
-    <div class="modal fade" id="editContactModal" {{--tabindex="-1" aria-labelledby="editContactModalLabel" aria-hidden="true"--}}>
+    <div class="modal fade" id="editContactModal">
         <div class="modal-dialog custom-modal1 modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
@@ -575,8 +494,6 @@
                 <form action="{{ route('employee.update-profile', auth()->id()) }}" method="post" enctype="multipart/form-data" id="employeeUpdateProfile">
                     @csrf
                     <div class="modal-body">
-                        <!-- Form for editing contact info -->
-
                         <div class="mb-3">
                             <label for="nameInput" class="form-label">{{ trans('common.name') }}</label>
                             <input type="text" name="name" class="form-control" id="nameInput" value="{!! auth()->user()->name ?? '' !!}" placeholder="{{ trans('auth.type_here') }}" />
@@ -600,7 +517,6 @@
                             <label for="locationInput" class="form-label">{{ trans('common.address') }}</label>
                             <textarea name="address" class="form-control" id="locationInput" cols="30" rows="5">{!! auth()->user()->address ?? '' !!}</textarea>
                         </div>
-
                         <div class="mb-3">
                             <label for="divisions" class="form-label">{{ trans('employee.division') }}</label>
                             <select name="division" id="divisions" onchange="divisionsList()" class="form-control w-100" data-placeholder="Select Division">
@@ -622,7 +538,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="polic_sta" class="form-label">{{ trans('employee.post_office') }}</label>
-                            <select name="post_office" id="polic_sta"  class="form-control w-100" data-placeholder="Select District">
+                            <select name="post_office" id="polic_sta" class="form-control w-100" data-placeholder="Select District">
                                 <option value="">{{ auth()->user()->post_office ?? '' }}</option>
                             </select>
                         </div>
@@ -636,12 +552,8 @@
                         </div>
                     </div>
                     <div class="modal-footer justify-content-between">
-                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-                            {{ trans('common.close') }}
-                        </button>
-                        <button type="submit" class="btn btn-primary">
-                            {{ trans('common.save_changes') }}
-                        </button>
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">{{ trans('common.close') }}</button>
+                        <button type="submit" class="btn btn-primary">{{ trans('common.save_changes') }}</button>
                     </div>
                 </form>
             </div>
@@ -649,8 +561,7 @@
     </div>
 
     <!-- Modal for Add Work Experience -->
-    <div class="modal fade" id="addWorkExperienceModal" tabindex="-1"
-         aria-labelledby="addWorkExperienceModalLabel" aria-hidden="true">
+    <div class="modal fade" id="addWorkExperienceModal" tabindex="-1" aria-labelledby="addWorkExperienceModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
@@ -661,85 +572,54 @@
                 </div>
                 <form action="{{ route('employee.employee-work-experiences.store') }}" method="post" enctype="multipart/form-data" id="createEmployeeWorkExperienceForm">
                     <div class="modal-body">
-                        <!-- Form for adding work experience -->
-
-                            @csrf
-                            <div class="mb-4">
-                                <label for="jobTitleInput" class="form-label">{{ trans('employee.position') }}</label>
-                                <input type="text" class="form-control" required name="title" id="jobTitleInput" placeholder="{{ trans('auth.type_here') }}" />
+                        @csrf
+                        <div class="mb-4">
+                            <label for="jobTitleInput" class="form-label">{{ trans('employee.position') }}</label>
+                            <input type="text" class="form-control" required name="title" id="jobTitleInput" placeholder="{{ trans('auth.type_here') }}" />
+                        </div>
+                        <div class="mb-4">
+                            <label for="jobTypeInput" class="form-label">{{ trans('common.job_type') }}</label>
+                            <select class="form-control" id="jobTypeInput" name="job_type">
+                                <option value="">Select</option>
+                                <option value="full_time">Full-time</option>
+                                <option value="part_time">Part-time</option>
+                                <option value="contractual">Contractual</option>
+                            </select>
+                        </div>
+                        <div class="mb-4">
+                            <label for="companyInput" class="form-label">{{ trans('employee.company_organization') }}</label>
+                            <input type="text" class="form-control" required list="companyDatalist" name="company_name" id="companyInput" placeholder="{{ trans('auth.type_here') }}" />
+                        </div>
+                        <div class="mb-4">
+                            <div class="d-flex">
+                                <span style="width: 100%; margin-right: 5px;">
+                                    <label for="startDateInput" class="form-label">{{ trans('employee.from') }}</label>
+                                    <input type="date" name="start_date" class="form-control m-1" />
+                                </span>
+                                <span style="width: 100%; margin-left: 5px;">
+                                    <label for="startDateInput" class="form-label">{{ trans('employee.to') }}</label>
+                                    <input type="date" name="end_date" class="form-control m-1" />
+                                </span>
                             </div>
-
-                            <div class="mb-4">
-                                <label for="jobTypeInput" class="form-label">{{ trans('common.job_type') }}</label>
-                                <select class="form-control" id="jobTypeInput" name="job_type">
-                                    <option value="">Select</option>
-                                    <option value="full_time">Full-time</option>
-                                    <option value="part_time">Part-time</option>
-                                    <option value="contractual">Contractual</option>
-                                </select>
+                        </div>
+                        <div class="mb-4">
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" id="currentJobCheck" name="is_working_currently" />
+                                <label class="form-check-label" for="currentJobCheck">{{ trans('employee.i_currently_work_here') }}</label>
                             </div>
-
-                            <div class="mb-4">
-                                <label for="companyInput" class="form-label">{{ trans('employee.company_organization') }}</label>
-                                <input type="text" class="form-control" required list="companyDatalist" name="company_name" id="companyInput" placeholder="{{ trans('auth.type_here') }}" />
-
-{{--                                <label for="companyLogo" class="form-label mt-3">Company/Organization Logo</label>--}}
-{{--                                <input type="file" class="form-control" name="company_logo" id="companyLogo" accept="image/*" />--}}
-                            </div>
-
-                            <div class="mb-4">
-
-                                <div class="d-flex">
-    {{--                                <select class="form-control me-2" id="startMonthInput" name="">--}}
-    {{--                                    <option value="">Month</option>--}}
-    {{--                                    <option value="jan">January</option>--}}
-    {{--                                    <option value="feb">February</option>--}}
-    {{--                                    <!-- Add other months -->--}}
-    {{--                                </select>--}}
-                                    <span style="width: 100%; margin-right: 5px;">
-                                        <label for="startDateInput" class="form-label">{{ trans('employee.from') }}</label>
-                                        <input type="date" name="start_date" class="form-control m-1" />
-                                    </span>
-
-    {{--                                <select class="form-control" id="startYearInput" name="">--}}
-    {{--                                    <option value="">Year</option>--}}
-    {{--                                    <option value="2021">2021</option>--}}
-    {{--                                    <option value="2020">2020</option>--}}
-    {{--                                    <!-- Add more years -->--}}
-    {{--                                </select>--}}
-                                    <span style="width: 100%; margin-left: 5px;">
-                                        <label for="startDateInput" class="form-label">{{ trans('employee.to') }}</label>
-                                        <input type="date" name="end_date" class="form-control m-1" />
-                                    </span>
-
-                                </div>
-                            </div>
-
-                            <div class="mb-4">
-                                <div class="form-check">
-                                    <input type="checkbox" class="form-check-input" id="currentJobCheck" name="is_working_currently" />
-                                    <label class="form-check-label" for="currentJobCheck">{{ trans('employee.i_currently_work_here') }}</label>
-                                </div>
-                            </div>
-
-                            <div class="mb-4">
-                                <label for="locationInput" class="form-label">{{ trans('common.location') }}</label>
-                                <input type="text" class="form-control" name="office_address"  id="locationInput" placeholder="{{ trans('auth.type_here') }}" />
-                            </div>
-
-                            <div class="mb-4">
-                                <label for="workSummaryInput" class="form-label">{{ trans('employee.responsibilities') }}</label>
-                                <textarea class="form-control summernote" name="job_responsibilities" id="workSummaryInput" rows="4" placeholder="{{ trans('auth.type_here') }}"></textarea>
-                            </div>
-
+                        </div>
+                        <div class="mb-4">
+                            <label for="locationInput" class="form-label">{{ trans('common.location') }}</label>
+                            <input type="text" class="form-control" name="office_address" id="locationInput" placeholder="{{ trans('auth.type_here') }}" />
+                        </div>
+                        <div class="mb-4">
+                            <label for="workSummaryInput" class="form-label">{{ trans('employee.responsibilities') }}</label>
+                            <textarea class="form-control summernote" name="job_responsibilities" id="workSummaryInput" rows="4" placeholder="{{ trans('auth.type_here') }}"></textarea>
+                        </div>
                     </div>
                     <div class="modal-footer justify-content-between">
-                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-                            {{ trans('common.close') }}
-                        </button>
-                        <button type="submit" class="btn btn-primary">
-                            {{ trans('employee.add_experience') }}
-                        </button>
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">{{ trans('common.close') }}</button>
+                        <button type="submit" class="btn btn-primary">{{ trans('employee.add_experience') }}</button>
                     </div>
                 </form>
             </div>
@@ -747,8 +627,7 @@
     </div>
 
     <!-- Modal for Edit Work Experience -->
-    <div class="modal fade" id="editWorkExperienceModal" tabindex="-1"
-         aria-labelledby="addWorkExperienceModalLabel" aria-hidden="true">
+    <div class="modal fade" id="editWorkExperienceModal" tabindex="-1" aria-labelledby="addWorkExperienceModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
@@ -757,16 +636,13 @@
                     </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{{ trans('common.close') }}"></button>
                 </div>
-                <div id="workExperienceEditForm">
-
-                </div>
+                <div id="workExperienceEditForm"></div>
             </div>
         </div>
     </div>
 
     <!-- Modal for Add Education -->
-    <div class="modal fade" id="addEducationModal" tabindex="-1" aria-labelledby="addEducationModalLabel"
-         aria-hidden="true">
+    <div class="modal fade" id="addEducationModal" tabindex="-1" aria-labelledby="addEducationModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -779,124 +655,36 @@
                 <form action="{{ route('employee.employee-educations.store') }}" method="post" enctype="multipart/form-data" id="addEducationForm">
                     @csrf
                     <div class="modal-body">
-                        <!-- Form for adding education -->
-
                         <div class="mb-4">
                             <label for="degreeInput" class="form-label">{{ trans('employee.program_name') }}</label>
-{{--                            <input type="text" class="form-control" id="degreeInput" placeholder="{{ trans('auth.type_here') }}" />--}}
                             <select name="education_degree_name_id" class="form-control " required id="">
-{{--                                <option  disabled>Select Education Program</option>--}}
                                 @foreach($educationDegreeNames as $educationDegreeName)
                                     <option value="{{ $educationDegreeName->id }}" has-institute-name="{{ $educationDegreeName->need_institute_field }}">{{ $educationDegreeName->degree_name }}</option>
                                 @endforeach
                             </select>
                         </div>
-
                         <div id="universityDiv">
                             <div class="mb-4">
                                 <label for="universityInput" class="form-label">{{ trans('employee.name_of_institution') }}</label>
-                                                            <input type="text" required class="form-control" name="institute_name" id="universityInput" placeholder="{{ trans('auth.type_here') }}" />
-{{--                                <select name="university_name_id" class="form-control select2" id="">--}}
-{{--                                    <option  disabled>Select University</option>--}}
-{{--                                    @foreach($universityNames as $universityName)--}}
-{{--                                        <option value="{{ $universityName->id }}">{{ $universityName->name }}</option>--}}
-{{--                                    @endforeach--}}
-{{--                                </select>--}}
+                                <input type="text" required class="form-control" name="institute_name" id="universityInput" placeholder="{{ trans('auth.type_here') }}" />
                             </div>
-
                             <div class="mb-4">
                                 <label for="fieldOfStudyInput" class="form-label">{{ trans('employee.background_field_of_study') }}</label>
-                                                            <input required type="text" class="form-control" name="field_of_study" id="fieldOfStudyInput" placeholder="{{ trans('auth.type_here') }}" />
-{{--                                <select name="field_of_study_id" class="form-control select2" id="">--}}
-{{--                                    <option selected disabled>Select Field of Study</option>--}}
-{{--                                    @foreach($fieldOfStudies as $fieldOfStudy)--}}
-{{--                                        <option value="{{ $fieldOfStudy->id }}">{{ $fieldOfStudy->field_name }}</option>--}}
-{{--                                    @endforeach--}}
-{{--                                </select>--}}
+                                <input required type="text" class="form-control" name="field_of_study" id="fieldOfStudyInput" placeholder="{{ trans('auth.type_here') }}" />
                             </div>
                         </div>
-
-{{--                        <div id="instituteNameDiv" class="d-none">--}}
-{{--                            <div class="mb-4 " >--}}
-{{--                                <label for="instituteName" class="form-label">Institute Name</label>--}}
-{{--                                <input type="text" class="form-control" name="institute_name" id="instituteName" placeholder="Type here" />--}}
-{{--                            </div>--}}
-{{--                            <div class="mb-4 " >--}}
-{{--                                <label for="groupName" class="form-label">Group Name</label>--}}
-{{--                                <select name="group_name" class="form-control" id="">--}}
-{{--                                    <option value="science">Science</option>--}}
-{{--                                    <option value="commerce">Commerce</option>--}}
-{{--                                    <option value="arts">Arts</option>--}}
-{{--                                    <option value="technical">Technical</option>--}}
-{{--                                    <option value="others">Others</option>--}}
-{{--                                </select>--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
-
                         <div class="mb-4">
                             <label for="passingYear" class="form-label">{{ trans('employee.passing_year') }}</label>
                             <input type="number" min="1940" max="{{ date('Y') }}" required class="form-control" name="passing_year" id="passingYear" placeholder="{{ trans('auth.type_here') }}" />
                         </div>
-
-
-{{--                        <div class="mb-4">--}}
-{{--                            <label for="majorSubjectInput" class="form-label">Major subject</label>--}}
-{{--                            <input type="text" class="form-control" id="majorSubjectInput" placeholder="Type here" />--}}
-{{--                        </div>--}}
-
-{{--                        <div class="mb-4">--}}
-{{--                            <label for="startDateInput" class="form-label">Start date</label>--}}
-{{--                            <div class="d-flex">--}}
-{{--                                <select class="form-control me-2" id="startMonthInput">--}}
-{{--                                    <option value="">Month</option>--}}
-{{--                                    <option value="jan">January</option>--}}
-{{--                                    <option value="feb">February</option>--}}
-{{--                                    <!-- Add other months -->--}}
-{{--                                </select>--}}
-{{--                                <select class="form-control" id="startYearInput">--}}
-{{--                                    <option value="">Year</option>--}}
-{{--                                    <option value="2021">2021</option>--}}
-{{--                                    <option value="2020">2020</option>--}}
-{{--                                    <!-- Add more years -->--}}
-{{--                                </select>--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
-
-{{--                        <div class="mb-4">--}}
-{{--                            <label for="endDateInput" class="form-label">End date</label>--}}
-{{--                            <div class="d-flex">--}}
-{{--                                <select class="form-control me-2" id="endMonthInput">--}}
-{{--                                    <option value="">Month</option>--}}
-{{--                                    <option value="jan">January</option>--}}
-{{--                                    <option value="feb">February</option>--}}
-{{--                                    <!-- Add other months -->--}}
-{{--                                </select>--}}
-{{--                                <select class="form-control" id="endYearInput">--}}
-{{--                                    <option value="">Year</option>--}}
-{{--                                    <option value="2023">2023</option>--}}
-{{--                                    <option value="2022">2022</option>--}}
-{{--                                    <!-- Add more years -->--}}
-{{--                                </select>--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
-
                         <div class="mb-4">
                             <label for="cgpaInput" class="form-label">{{ trans('employee.cgpa') }}</label>
                             <input type="text" required name="cgpa" class="form-control" id="cgpaInput" placeholder="{{ trans('auth.type_here') }}" />
                         </div>
-
-{{--                        <div class="mb-4">--}}
-{{--                            <label for="locationInput" class="form-label">Location</label>--}}
-{{--                            <input type="text" name="address" class="form-control" id="locationInput" placeholder="Type here" />--}}
-{{--                        </div>--}}
                     </div>
                     <div class="modal-footer justify-content-between">
-                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-                            {{ trans('common.close') }}
-                        </button>
-                        <button type="submit" class="btn btn-primary">
-                            {{ trans('employee.add_education') }}
-                        </button>
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">{{ trans('common.close') }}</button>
+                        <button type="submit" class="btn btn-primary">{{ trans('employee.add_education') }}</button>
                     </div>
                 </form>
             </div>
@@ -909,9 +697,8 @@
         @endforeach
     </datalist>
 
-    <!-- Modal for Add Education -->
-    <div class="modal fade" id="editEducationModal" tabindex="-1" aria-labelledby="addEducationModalLabel"
-         aria-hidden="true">
+    <!-- Modal for Edit Education -->
+    <div class="modal fade" id="editEducationModal" tabindex="-1" aria-labelledby="addEducationModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -921,16 +708,13 @@
                     </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{{ trans('common.close') }}"></button>
                 </div>
-                <div id="educationEditForm">
-
-                </div>
+                <div id="educationEditForm"></div>
             </div>
         </div>
     </div>
 
     <!-- Modal for Add Document -->
-    <div class="modal fade" id="addDocumentModal" tabindex="-1" aria-labelledby="addDocumentModalLabel"
-         aria-hidden="true">
+    <div class="modal fade" id="addDocumentModal" tabindex="-1" aria-labelledby="addDocumentModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -943,45 +727,34 @@
                 <form action="{{ route('employee.employee-documents.store') }}" id="createEmployeeDocuments" method="post" enctype="multipart/form-data">
                     @csrf
                     <div class="modal-body">
-                        <!-- Form for adding document -->
-
-                            <div class="mb-3">
-                                <label for="documentFileTitleInput" class="form-label">{{ trans('employee.document_title') }}</label>
-                                <div class="d-flex align-items-center">
-{{--                                    <input type="text" name="title" class="form-control" id="documentFileTitleInput" />--}}
-                                    <select name="title" required class=" select2" id="" style="width: 100%;">
-                                        <option value="CV">CV</option>
-                                        <option value="NID">NID</option>
-                                        <option value="Certificate">Certificate</option>
-                                    </select>
-                                </div>
+                        <div class="mb-3">
+                            <label for="documentFileTitleInput" class="form-label">{{ trans('employee.document_title') }}</label>
+                            <div class="d-flex align-items-center">
+                                <select name="title" required class=" select2" id="" style="width: 100%;">
+                                    <option value="CV">CV</option>
+                                    <option value="NID">NID</option>
+                                    <option value="Certificate">Certificate</option>
+                                </select>
                             </div>
-
-                            <div class="mb-4">
-                                <label for="documentFileInput" class="form-label">{{ trans('employee.document_file') }}</label>
-                                <div class="d-flex align-items-center">
-                                    <input type="file" required name="file" class="form-control" id="documentFileInput" />
-{{--                                    <span class="ms-2">cv.pdf <small>(PDF - 325 KB)</small></span>--}}
-                                </div>
+                        </div>
+                        <div class="mb-4">
+                            <label for="documentFileInput" class="form-label">{{ trans('employee.document_file') }}</label>
+                            <div class="d-flex align-items-center">
+                                <input type="file" required name="file" class="form-control" id="documentFileInput" />
                             </div>
-
+                        </div>
                     </div>
                     <div class="modal-footer justify-content-between">
-                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-                            {{ trans('common.close') }}
-                        </button>
-                        <button type="submit" class="btn btn-primary">
-                            {{ trans('employee.upload_document') }}
-                        </button>
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">{{ trans('common.close') }}</button>
+                        <button type="submit" class="btn btn-primary">{{ trans('employee.upload_document') }}</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
 
-    <!-- Modal for Add Document -->
-    <div class="modal fade" id="editDocumentModal" tabindex="-1" aria-labelledby="addDocumentModalLabel"
-         aria-hidden="true">
+    <!-- Modal for Edit Document -->
+    <div class="modal fade" id="editDocumentModal" tabindex="-1" aria-labelledby="addDocumentModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -991,20 +764,15 @@
                     </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{{ trans('common.close') }}"></button>
                 </div>
-                <div id="documentEditForm">
-
-                </div>
-
+                <div id="documentEditForm"></div>
             </div>
         </div>
     </div>
 
-
     <!-- Edit Bio Modal -->
-    <div class="modal fade" id="editBioModal" {{--tabindex="-1" aria-labelledby="editBioModalLabel" aria-hidden="true"--}}>
+    <div class="modal fade" id="editBioModal">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
-
                 <div class="modal-header">
                     <h5 class="modal-title" id="editBioModalLabel">
                         <img src="{{ asset('/') }}frontend/employee/images/profile/profileLeftArrow.png" alt="" class="me-2" />
@@ -1012,7 +780,6 @@
                     </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{{ trans('common.close') }}"></button>
                 </div>
-
                 <form action="{{ route('employee.update-profile', auth()->id()) }}" method="post">
                     @csrf
                     <div class="modal-body">
@@ -1021,154 +788,894 @@
                             <textarea class="form-control" id="bioTextarea" name="profile_title" rows="5" placeholder="{{ trans('auth.type_here') }}">{{ auth()->user()->profile_title ?? 'Mobile App Developer, Flutter Developer Instructor & Mentor' }}</textarea>
                         </div>
                     </div>
-
                     <div class="modal-footer justify-content-between">
-                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">{{ trans('common.close') }}</button>
-                    <button type="submit" class="btn btn-primary">{{ trans('employee.save_bio') }}</button>
-                </div>
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">{{ trans('common.close') }}</button>
+                        <button type="submit" class="btn btn-primary">{{ trans('employee.save_bio') }}</button>
+                    </div>
                 </form>
             </div>
         </div>
     </div>
 
 @endsection
+
 @push('style')
     <style>
-        .form-control {border-radius: 0px}
-        .selectize-input {padding: 15px!important;}
-        @media screen and (max-width: 768px){
-            .bio-edit-icon {
-                display: block!important;
-            }
-            .location,.email,.phone{text-align: left}
-            #editContactModal label {display: flex}
+        /* ================================================
+           MY PROFILE REDESIGN — Scoped with .mp- prefix
+           ================================================ */
+
+        /* --- Profile Card --- */
+        .mp-card {
+            border: none !important;
+            border-radius: 16px !important;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(20,28,37,.06), 0 8px 24px rgba(20,28,37,.04);
         }
-    </style>
-@endpush
-@push('script')
 
-    <!-- include summernote css/js -->
-   @include('common-resource-files.summernote')
-   @include('common-resource-files.selectize')
+        .mp-card .card-body.profile {
+            padding: 28px 24px !important;
+        }
 
-    <script src="{{ asset('/frontend/employee/division-Districts-post-station/javascript.js') }}"></script>
+        /* Avatar */
+        .mp-avatar-wrap {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+            margin-bottom: 14px;
+        }
 
-    <script>
-        $(document).on('click', '.edit-work-experience', function () {
-            var jobId = $(this).attr('data-work-experience-id');
-            var thisObject = $(this);
-            // console.log(thisObject);
-            sendAjaxRequest('employee/employee-work-experiences/'+jobId+'/edit', 'GET').then(function (response) {
-                // console.log(response);
-                $('#workExperienceEditForm').append(response);
-                $('#editWorkSummaryInput').summernote({
-                    height: 300
-                });
-                // $('.select2').select2();
-                $('.select2').selectize();
-                $('#editWorkExperienceModal').modal('show');
-            })
-        })
-        $(document).on('click', '.edit-education', function () {
-            var jobId = $(this).attr('data-education-id');
-            var thisObject = $(this);
-            // console.log(thisObject);
-            sendAjaxRequest('employee/employee-educations/'+jobId+'/edit', 'GET').then(function (response) {
-                // console.log(response);
-                $('#educationEditForm').append(response);
-                // $('#editWorkSummaryInput').summernote({
-                //     height: 300
-                // });
-                // $('.select2').select2();
-                $('.select2').selectize();
-                $('#editEducationModal').modal('show');
-            })
-        })
-        $(document).on('click', '.edit-document', function () {
-            var jobId = $(this).attr('data-document-id');
-            // var thisObject = $(this);
-            // console.log(thisObject);
-            sendAjaxRequest('employee/employee-documents/'+jobId+'/edit', 'GET').then(function (response) {
-                // console.log(response);
-                $('#documentEditForm').append(response);
-                // $('#editWorkSummaryInput').summernote({
-                //     height: 300
-                // });
-                // $('.select2').select2();
-                $('.select2').selectize();
-                $('#editDocumentModal').modal('show');
-            })
-        })
-        // change job active status
-        $(document).on('click', '.change-job-active-status', function () {
-            var val = $(this).attr('data-value');
-            var msg = $(this).attr('data-msg');
-            // var thisObject = $(this);
-            // console.log(thisObject);
-            sendAjaxRequest('employee/change-job-active-status/'+val, 'GET').then(function (response) {
-                // console.log(response);
-                if (response.status == 'success')
-                {
-                    $('#selectedRole').text(msg);
-                    toastr.success(response.success);
-                } else {
-                    toastr.error('Something went wrong. Please try again.');
-                }
-            })
-        })
-    </script>
+        .mp-avatar {
+            width: 96px;
+            height: 96px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #fff;
+            box-shadow: 0 2px 12px rgba(20,28,37,.12);
+            transition: transform .2s ease, box-shadow .2s ease;
+        }
 
-    <!-- jQuery for controlling sticky behavior when modal opens/closes -->
-    {{--                        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>--}}
-    <script>
-        // When the Edit Contact modal is opened
-        // $("#editContactModal").on("shown.bs.modal", function () {
-        //     // Remove sticky position from the left-panel when the modal is open
-        //     $(".left-panel").css("position", "relative");
-        // });
+        .mp-avatar-wrap:hover .mp-avatar {
+            transform: scale(1.04);
+            box-shadow: 0 4px 20px rgba(20,28,37,.18);
+        }
 
-        // When the Edit Contact modal is closed
-        // $("#editContactModal").on("hidden.bs.modal", function () {
-        //     // Restore sticky position to the left-panel when the modal is closed
-        //     $(".left-panel").css("position", "sticky");
-        // });
-    </script>
+        .mp-avatar-edit {
+            position: absolute;
+            bottom: 2px;
+            right: 2px;
+            width: 30px;
+            height: 30px;
+            background: #141c25;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2.5px solid #fff;
+            transition: background .2s ease;
+        }
 
-    <!-- edit contact with modal -->
+        .mp-avatar-wrap:hover .mp-avatar-edit {
+            background: #FFCB11;
+        }
 
-    <!-- drag drop crop -->
-    <style>
-        .drag-drop-area {
-            border: 2px dashed #007bff;
+        .mp-avatar-wrap:hover .mp-avatar-edit svg {
+            stroke: #141c25;
+        }
+
+        /* Name */
+        .mp-name {
+            font-weight: 700 !important;
+            font-size: 22px !important;
+            color: #141c25 !important;
+            margin-bottom: 10px !important;
+            letter-spacing: -0.3px;
+        }
+
+        /* Status Badge */
+        .mp-status-badge {
+            background: #f0faf4 !important;
+            border: 1.5px solid #c6ecd6;
+            border-radius: 100px !important;
+            padding: 5px 14px !important;
+            font-weight: 500 !important;
+            font-size: 13px !important;
+            color: #008a22 !important;
+            gap: 8px;
+            width: auto !important;
+            transition: all .2s ease;
+        }
+
+        .mp-status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            display: inline-block;
+            flex-shrink: 0;
+        }
+
+        .mp-status-active {
+            background: #008a22;
+            box-shadow: 0 0 0 3px rgba(0,138,34,.2);
+            animation: mp-pulse 2s infinite;
+        }
+
+        .mp-status-offline {
+            background: #9ca3af;
+        }
+
+        @keyframes mp-pulse {
+            0%, 100% { box-shadow: 0 0 0 3px rgba(0,138,34,.2); }
+            50% { box-shadow: 0 0 0 6px rgba(0,138,34,.08); }
+        }
+
+        .mp-dropdown-trigger {
+            background: none;
+            border: none;
+            padding: 4px;
+            cursor: pointer;
+            color: #667080;
+            border-radius: 6px;
+            transition: background .15s ease;
+            display: flex;
+            align-items: center;
+        }
+
+        .mp-dropdown-trigger:hover {
+            background: #f3f4f6;
+        }
+
+        /* Dropdown Styling */
+        .mp-dropdown {
+            border: 1px solid #e5e7eb !important;
+            border-radius: 12px !important;
+            box-shadow: 0 8px 24px rgba(20,28,37,.12) !important;
+            padding: 6px !important;
+            min-width: 160px !important;
+        }
+
+        .mp-dropdown .dropdown-item {
+            border-radius: 8px;
+            padding: 8px 14px;
+            font-size: 14px;
+            font-weight: 500;
+            transition: background .12s ease;
+        }
+
+        .mp-dropdown .dropdown-item:hover {
+            background: #f8f9fa;
+        }
+
+        /* Bio */
+        .mp-bio {
+            font-size: 14px !important;
+            color: #484f5b !important;
+            line-height: 1.6 !important;
+            margin: 14px 0 !important;
+            cursor: pointer;
+            padding: 10px 14px;
+            background: #f9fafb;
             border-radius: 10px;
+            border: 1px dashed #e5e7eb;
+            transition: all .2s ease;
+        }
+
+        .mp-bio:hover {
+            border-color: #FFCB11;
+            background: #fffdf5;
+        }
+
+        /* Mobile View Link — hidden on desktop, shown on mobile */
+        .mp-mobile-view-link {
+            padding: 14px 0 4px;
+            border-top: 1px solid #f0f1f3;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .mp-mobile-view-link a {
+            font-weight: 600;
+            font-size: 15px;
+            color: #141c25;
+            text-decoration: none;
+        }
+
+        /* Edit Section */
+        .mp-edit-section {
+            margin-top: 4px;
+        }
+
+        .mp-edit-link {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 14px;
+            cursor: pointer;
+            border-radius: 10px;
+            transition: background .15s ease;
+            color: #141c25;
+            margin: 4px -4px;
+        }
+
+        .mp-edit-link:hover {
+            background: #f8f9fa;
+        }
+
+        .mp-edit-link .editBio {
+            font-weight: 600;
+            font-size: 14px;
+            text-decoration: none !important;
+            color: #141c25;
+        }
+
+        .mp-divider {
+            height: 1px;
+            background: #f0f1f3;
+            margin: 8px 0 12px;
+        }
+
+        /* Contact List */
+        .mp-contact-list {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .mp-contact-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            padding: 10px 12px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background .15s ease;
+        }
+
+        .mp-contact-item:hover {
+            background: #f9fafb;
+        }
+
+        .mp-contact-icon {
+            width: 36px;
+            height: 36px;
+            background: #f3f4f6;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            color: #484f5b;
+        }
+
+        .mp-contact-text {
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+        }
+
+        .mp-contact-label {
+            font-weight: 600;
+            font-size: 13px;
+            color: #667080;
+            /*text-transform: uppercase;*/
+            letter-spacing: 0.4px;
+        }
+
+        .mp-contact-value {
+            font-weight: 500;
+            font-size: 14px;
+            color: #141c25;
+            word-break: break-word;
+            overflow-wrap: anywhere;
+            line-height: 1.5;
+        }
+
+        .mp-contact-value a {
+            color: #141c25;
+            text-decoration: none;
+        }
+
+        .mp-contact-value a:hover {
+            /*color: #FFCB11;*/
+            color: blue;
+        }
+
+        /* --- Stats Row --- */
+        .mp-stats-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 14px;
+            padding: 12px;
+        }
+
+        .mp-stat-card {
+            background: #fff;
+            border-radius: 14px;
+            padding: 20px 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            border: 1px solid #f0f1f3;
+            transition: transform .2s ease, box-shadow .2s ease;
+            cursor: default;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .mp-stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            border-radius: 3px 3px 0 0;
+        }
+
+        .mp-stat-saved::before { background: #FFCB11; }
+        .mp-stat-apps::before { background: #3b82f6; }
+        .mp-stat-viewers::before { background: #10b981; }
+
+        .mp-stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(20,28,37,.08);
+        }
+
+        .mp-stat-icon-wrap {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .mp-stat-saved .mp-stat-icon-wrap { background: #FFF8E1; color: #d4a017; }
+        .mp-stat-apps .mp-stat-icon-wrap { background: #eff6ff; color: #3b82f6; }
+        .mp-stat-viewers .mp-stat-icon-wrap { background: #ecfdf5; color: #10b981; }
+
+        .mp-stat-content {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .mp-stat-number {
+            font-weight: 700;
+            font-size: 28px;
+            line-height: 1;
+            color: #141c25;
+            letter-spacing: -1px;
+        }
+
+        .mp-stat-label {
+            font-weight: 400;
+            font-size: 13px;
+            color: #667080;
+            margin-top: 4px;
+        }
+
+        .mp-stat-title {
+            font-weight: 500;
+            font-size: 13px;
+            color: #9ca3af;
+            display: none;
+        }
+
+        /* --- Sections (Work Experience, Education, Documents) --- */
+        .mp-section {
+            background: #fff;
+            border-radius: 14px;
+            margin-top: 14px;
+            border: 1px solid #f0f1f3;
+            overflow: hidden;
+        }
+
+        .mp-section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 24px;
+            border-bottom: 1px solid #f0f1f3;
+        }
+
+        .mp-section-title-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .mp-section-icon {
+            width: 40px;
+            height: 40px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #484f5b;
+        }
+
+        .mp-section-header h3 {
+            font-weight: 700;
+            font-size: 18px;
+            color: #141c25;
+            margin: 0;
+            letter-spacing: -0.3px;
+        }
+
+        .mp-add-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            border: 1.5px solid #e5e7eb;
+            border-radius: 10px;
+            background: #fff;
+            color: #141c25;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all .2s ease;
+        }
+
+        .mp-add-btn:hover {
+            border-color: #FFCB11;
+            background: #fffdf5;
+            box-shadow: 0 2px 8px rgba(255,203,17,.15);
+        }
+
+        /* Entries */
+        .mp-entry {
+            display: flex;
+            gap: 16px;
+            padding: 20px 24px;
+            border-bottom: 1px solid #f7f8f9;
+            transition: background .15s ease;
+        }
+
+        .mp-entry:last-child {
+            border-bottom: none;
+        }
+
+        .mp-entry:hover {
+            background: #fafbfc;
+        }
+
+        .mp-entry-logo {
+            flex-shrink: 0;
+        }
+
+        .mp-entry-logo img {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            object-fit: cover;
+            border: 1px solid #f0f1f3;
+        }
+
+        .mp-entry-body {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .mp-entry-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .mp-entry-title {
+            font-weight: 600;
+            font-size: 16px;
+            color: #141c25;
+            margin: 0 0 4px;
+            line-height: 1.4;
+        }
+
+        .mp-entry-subtitle {
+            font-size: 14px;
+            color: #484f5b;
+            margin: 0 0 6px;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .mp-entry-tag {
+            display: inline-flex;
+            align-items: center;
+            padding: 2px 10px;
+            background: #f3f4f6;
+            border-radius: 100px;
+            font-size: 12px;
+            font-weight: 500;
+            color: #667080;
+        }
+
+        .mp-entry-meta {
+            font-size: 13px;
+            color: #667080;
+            margin: 0 0 4px;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 4px;
+        }
+
+        .mp-meta-sep {
+            display: inline-block;
+            width: 3px;
+            height: 3px;
+            background: #cfd2d9;
+            border-radius: 50%;
+            margin: 0 4px;
+        }
+
+        .mp-entry-location {
+            font-size: 13px;
+            color: #667080;
+            margin: 4px 0 0;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .mp-entry-summary {
+            margin-top: 12px;
+            padding: 12px 14px;
+            background: #f9fafb;
+            border-radius: 10px;
+            border-left: 3px solid #FFCB11;
+        }
+
+        .mp-summary-label {
+            font-weight: 600;
+            font-size: 13px;
+            color: #141c25;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .mp-summary-text {
+            font-size: 13px;
+            color: #484f5b;
+            line-height: 1.6;
+        }
+
+        .mp-summary-text ul, .mp-summary-text ol {
+            padding-left: 18px;
+            margin: 4px 0;
+        }
+
+        /* Entry Actions (three-dot menu) */
+        .mp-menu-btn {
+            background: none;
+            border: none;
+            padding: 6px;
+            cursor: pointer;
+            color: #9ca3af;
+            border-radius: 8px;
+            transition: all .15s ease;
+            display: flex;
+            align-items: center;
+        }
+
+        .mp-menu-btn:hover {
+            background: #f3f4f6;
+            color: #484f5b;
+        }
+
+        /* Document Entries */
+        .mp-doc-entry .mp-doc-preview {
+            flex-shrink: 0;
+        }
+
+        .mp-doc-preview img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 10px;
+            border: 1px solid #f0f1f3;
+        }
+
+        .mp-doc-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            background: #f8f9fa;
+            border: 1px solid #f0f1f3;
+            color: #667080;
+        }
+
+        .mp-doc-icon span {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .mp-doc-pdf { color: #ef4444; border-color: #fecaca; background: #fef2f2; }
+        .mp-doc-word { color: #3b82f6; border-color: #bfdbfe; background: #eff6ff; }
+
+        /* Empty State */
+        .mp-empty-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 24px;
+            text-align: center;
+        }
+
+        .mp-empty-state p {
+            font-size: 14px;
+            color: #9ca3af;
+            margin: 12px 0 0;
+        }
+
+        /* Mobile Options */
+        .mp-mobile-opt-link {
+            text-decoration: none !important;
+        }
+
+        .mp-mobile-opt-link .left-side {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .mp-mobile-opt-link .left-side span {
+            font-weight: 500;
+            font-size: 15px;
+            color: #141c25;
+        }
+
+        /* --- Modal Improvements --- */
+        .modal .modal-content {
+            border: none;
+            border-radius: 16px;
+            box-shadow: 0 16px 48px rgba(20,28,37,.16);
+        }
+
+        .modal .modal-header {
+            border-bottom: 1px solid #f0f1f3;
+            padding: 18px 24px;
+        }
+
+        .modal .modal-body {
+            padding: 24px;
+        }
+
+        .modal .modal-footer {
+            border-top: 1px solid #f0f1f3;
+            padding: 16px 24px;
+        }
+
+        .modal .form-control {
+            border-radius: 10px !important;
+            border: 1.5px solid #e5e7eb;
+            padding: 12px 14px;
+            font-size: 14px;
+            transition: border-color .2s ease, box-shadow .2s ease;
+        }
+
+        .modal .form-control:focus {
+            border-color: #FFCB11;
+            box-shadow: 0 0 0 3px rgba(255,203,17,.15) !important;
+        }
+
+        .modal .btn-primary {
+            background: #FFCB11 !important;
+            color: #141c25 !important;
+            border: none !important;
+            border-radius: 10px;
+            padding: 10px 22px;
+            font-weight: 600;
+            transition: all .2s ease;
+        }
+
+        .modal .btn-primary:hover {
+            background: #e6b70f !important;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(255,203,17,.3);
+        }
+
+        .modal .btn-outline-secondary {
+            border-radius: 10px;
+            padding: 10px 22px;
+            font-weight: 500;
+            border-color: #e5e7eb;
+        }
+
+        /* --- Responsive --- */
+        @media (max-width: 768px) {
+            .mp-mobile-view-link {
+                display: flex;
+            }
+
+            .mp-stats-row {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 8px;
+                padding: 8px;
+            }
+
+            .mp-stat-card {
+                padding: 14px 12px;
+            }
+
+            .mp-stat-number {
+                font-size: 22px;
+            }
+
+            .mp-stat-label {
+                font-size: 11px;
+            }
+
+            .mp-section {
+                border-radius: 0;
+                margin-top: 8px;
+                border-left: none;
+                border-right: none;
+            }
+
+            .mp-section-header {
+                padding: 16px;
+            }
+
+            .mp-entry {
+                padding: 16px;
+            }
+
+            .mp-entry-logo img {
+                width: 40px;
+                height: 40px;
+                border-radius: 10px;
+            }
+
+            .mp-entry-title {
+                font-size: 15px;
+            }
+
+            .mp-doc-preview img,
+            .mp-doc-icon {
+                width: 56px;
+                height: 56px;
+            }
+
+            .profileEdit {
+                display: none;
+            }
+
+            .profile {
+                text-align: center;
+                padding-top: 60px;
+            }
+
+            .profileMain .left-panel {
+                display: block;
+                position: relative;
+                top: 0;
+                padding: 0 !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                flex: unset !important;
+            }
+
+            .mp-card {
+                border-radius: 0 !important;
+            }
+
+            .mp-add-btn span {
+                display: none;
+            }
+
+            .mp-section-header h3 {
+                font-size: 16px;
+            }
+
+            .bio-edit-icon {
+                display: block !important;
+            }
+
+            .location, .email, .phone {
+                text-align: left;
+            }
+
+            #editContactModal label {
+                display: flex;
+            }
+
+            .mp-mobile-options {
+                border-radius: 0;
+                margin-top: 8px;
+            }
+        }
+
+        @media (max-width: 380px) {
+            .mp-stats-row {
+                grid-template-columns: 1fr;
+            }
+
+            .mp-stat-card {
+                flex-direction: row;
+                align-items: center;
+                gap: 14px;
+            }
+
+            .mp-stat-card::before {
+                display: none;
+            }
+        }
+
+        @media (min-width: 769px) {
+            .mp-stats-row {
+                padding: 12px 0;
+            }
+        }
+
+        /* Animations */
+        .mp-section {
+            animation: mp-fadeUp .4s ease both;
+        }
+
+        .mp-section:nth-child(2) { animation-delay: .05s; }
+        .mp-section:nth-child(3) { animation-delay: .1s; }
+
+        @keyframes mp-fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .mp-stat-card {
+            animation: mp-fadeUp .35s ease both;
+        }
+
+        .mp-stat-card:nth-child(1) { animation-delay: .05s; }
+        .mp-stat-card:nth-child(2) { animation-delay: .1s; }
+        .mp-stat-card:nth-child(3) { animation-delay: .15s; }
+
+        /* Drag-drop area (profile image modal) */
+        .drag-drop-area {
+            border: 2px dashed #FFCB11;
+            border-radius: 14px;
             padding: 40px;
             text-align: center;
-            background: #f8f9fa;
+            background: #fffdf5;
             cursor: pointer;
             transition: all 0.3s ease;
             position: relative;
         }
 
         .drag-drop-area:hover {
-            border-color: #0056b3;
-            background: #e3f2fd;
+            border-color: #e6b70f;
+            background: #fff8e1;
         }
 
         .drag-drop-area.dragover {
-            border-color: #28a745;
-            background: #d4edda;
+            border-color: #10b981;
+            background: #ecfdf5;
         }
 
         .preview-container {
             max-width: 100%;
             max-height: 400px;
             overflow: hidden;
-            border-radius: 8px;
+            border-radius: 12px;
             margin: 15px 0;
-        }
-
-        .cropper-container {
-            max-height: 400px;
         }
 
         .file-input-hidden {
@@ -1181,7 +1688,6 @@
 
         .upload-icon {
             font-size: 3rem;
-            color: #007bff;
             margin-bottom: 15px;
         }
 
@@ -1190,29 +1696,115 @@
             height: 150px;
             border-radius: 50%;
             object-fit: cover;
-            border: 3px solid #007bff;
+            border: 3px solid #FFCB11;
         }
 
-        @media (max-width: 768px) {
-            .profileMain .left-panel {
-                width: 100% !important;
-                margin-left: auto!important;
-                margin-right: auto!important;
-            }
+        /* Form control overrides */
+        .form-control {
+            border-radius: 10px !important;
         }
 
-        @media (max-width: 768px) {
-            .profile {
-                padding-top: 15px;
-                padding-bottom: 0px!important;
-            }
-        }
-        @media (max-width: 426px) {
-            .search-bar {
-                display: none;
-            }
+        .selectize-input {
+            padding: 12px !important;
+            border-radius: 10px !important;
         }
     </style>
+@endpush
+
+@push('script')
+
+    @include('common-resource-files.summernote')
+    @include('common-resource-files.selectize')
+
+    <script src="{{ asset('/frontend/employee/division-Districts-post-station/javascript.js') }}"></script>
+
+    <script>
+        // Edit Work Experience
+        $(document).on('click', '.edit-work-experience', function () {
+            var jobId = $(this).attr('data-work-experience-id');
+            var thisObject = $(this);
+            sendAjaxRequest('employee/employee-work-experiences/'+jobId+'/edit', 'GET').then(function (response) {
+                $('#workExperienceEditForm').append(response);
+                $('#editWorkSummaryInput').summernote({
+                    height: 300
+                });
+                $('.select2').selectize();
+                $('#editWorkExperienceModal').modal('show');
+            })
+        })
+
+        // Edit Education
+        $(document).on('click', '.edit-education', function () {
+            var jobId = $(this).attr('data-education-id');
+            var thisObject = $(this);
+            sendAjaxRequest('employee/employee-educations/'+jobId+'/edit', 'GET').then(function (response) {
+                $('#educationEditForm').append(response);
+                $('.select2').selectize();
+                $('#editEducationModal').modal('show');
+            })
+        })
+
+        // Edit Document
+        $(document).on('click', '.edit-document', function () {
+            var jobId = $(this).attr('data-document-id');
+            sendAjaxRequest('employee/employee-documents/'+jobId+'/edit', 'GET').then(function (response) {
+                $('#documentEditForm').append(response);
+                $('.select2').selectize();
+                $('#editDocumentModal').modal('show');
+            })
+        })
+
+        // Change job active status
+        $(document).on('click', '.change-job-active-status', function () {
+            var val = $(this).attr('data-value');
+            var msg = $(this).attr('data-msg');
+            sendAjaxRequest('employee/change-job-active-status/'+val, 'GET').then(function (response) {
+                if (response.status == 'success') {
+                    $('#selectedRole').text(msg);
+                    toastr.success(response.success);
+                } else {
+                    toastr.error('Something went wrong. Please try again.');
+                }
+            })
+        })
+    </script>
+
+    <script>
+        // Toggle institute name on education degree change
+        function toggleInstituteNameOnEducationDegreeChange(hasInstituteNameValue = 0) {
+            if (hasInstituteNameValue == 1) {
+                $('#instituteNameDiv').removeClass('d-none');
+                $('#universityDiv').addClass('d-none');
+                $('label[for="cgpaInput"]').text('Grade');
+            } else {
+                $('#universityDiv').removeClass('d-none');
+                $('#instituteNameDiv').addClass('d-none');
+                $('input[name="institute_name"]').val('');
+                $('input[name="group_name"]').val('');
+                $('label[for="cgpaInput"]').text('GPA');
+            }
+        }
+
+        // Disable end date on current job check
+        $(document).on('change', '#currentJobCheck', function () {
+            if ($(this).is(':checked')) {
+                $('input[name="end_date"]').prop('disabled', true).val('');
+            } else {
+                $('input[name="end_date"]').prop('disabled', false);
+            }
+        });
+
+        // Disable end date on current job check during edit
+        $(document).on('change', '#editCurrentJobCheck', function () {
+            if ($(this).is(':checked')) {
+                $('input[name="end_date"]').prop('disabled', true).val('');
+            } else {
+                $('input[name="end_date"]').prop('disabled', false);
+            }
+        });
+    </script>
+
+    <!-- CropperJS -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>
     <script>
@@ -1305,56 +1897,14 @@
                 resetUpload();
             });
         })();
-        // toggle institute name on education degree change
-        // $(document).on('change', 'select[name="education_degree_name_id"]', function () {
-        //     var selectedOption = $(this).find('option:selected');
-        //     var selectedOptionAttrValue = selectedOption.attr('has-institute-name');
-        //     toggleInstituteNameOnEducationDegreeChange(selectedOptionAttrValue);
-        // })
-        function toggleInstituteNameOnEducationDegreeChange(hasInstituteNameValue = 0)
-        {
-            if (hasInstituteNameValue == 1)
-            {
-                $('#instituteNameDiv').removeClass('d-none');
-                $('#universityDiv').addClass('d-none');
-                $('label[for="cgpaInput"]').text('Grade');
-            } else {
-                $('#universityDiv').removeClass('d-none');
-                $('#instituteNameDiv').addClass('d-none');
-                $('input[name="institute_name"]').val('');
-                $('input[name="group_name"]').val('');
-                $('label[for="cgpaInput"]').text('GPA');
-            }
-        }
-        // disable end date on current job check
-        $(document).on('change', '#currentJobCheck', function () {
-            if ($(this).is(':checked')) {
-                $('input[name="end_date"]').prop('disabled', true).val(''); // disable and clear end date
-            } else {
-                $('input[name="end_date"]').prop('disabled', false); // enable back
-            }
-        });
-        // disable end date on current job check during edit
-        $(document).on('change', '#editCurrentJobCheck', function () {
-            if ($(this).is(':checked')) {
-                $('input[name="end_date"]').prop('disabled', true).val(''); // disable and clear end date
-            } else {
-                $('input[name="end_date"]').prop('disabled', false); // enable back
-            }
-        });
-
     </script>
 
-
-{{--    form validation start--}}
+    {{-- Form Validation --}}
     <script>
         // ============================================
         // COMMON VALIDATION FUNCTIONS
         // ============================================
 
-        /**
-         * Validate required fields
-         */
         function validateRequired(value, fieldName) {
             if (!value || value.trim() === '') {
                 toastr.error(`${fieldName} is required`);
@@ -1363,9 +1913,6 @@
             return true;
         }
 
-        /**
-         * Validate email format
-         */
         function validateEmail(email) {
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             if (!emailRegex.test(email)) {
@@ -1375,10 +1922,6 @@
             return true;
         }
 
-        /**
-         * Validate Bangladeshi phone number
-         * Must start with 0 and be exactly 11 digits
-         */
         function validateBDPhone(phone) {
             const phoneRegex = /^0\d{10}$/;
             if (!phoneRegex.test(phone)) {
@@ -1388,9 +1931,6 @@
             return true;
         }
 
-        /**
-         * Get field label text or name
-         */
         function getFieldLabel($field) {
             const $label = $('label[for="' + $field.attr('id') + '"]');
             return $label.length ? $label.text().replace('*', '').trim() : $field.attr('name');
@@ -1404,7 +1944,6 @@
             let isValid = true;
             const $form = $('#employeeUpdateProfile');
 
-            // Validate all required fields
             $form.find('[required]').each(function() {
                 const $field = $(this);
                 const value = $field.val();
@@ -1413,7 +1952,7 @@
                 if (!validateRequired(value, fieldLabel)) {
                     isValid = false;
                     $field.addClass('is-invalid');
-                    return false; // Break loop on first error
+                    return false;
                 } else {
                     $field.removeClass('is-invalid');
                 }
@@ -1421,7 +1960,6 @@
 
             if (!isValid) return false;
 
-            // Validate email
             const email = $form.find('input[name="email"]').val();
             if (email && !validateEmail(email)) {
                 $form.find('input[name="email"]').addClass('is-invalid');
@@ -1430,7 +1968,6 @@
                 $form.find('input[name="email"]').removeClass('is-invalid');
             }
 
-            // Validate phone
             const phone = $form.find('input[name="mobile"]').val();
             if (phone && !validateBDPhone(phone)) {
                 $form.find('input[name="mobile"]').addClass('is-invalid');
@@ -1442,28 +1979,24 @@
             return true;
         }
 
-
         // ============================================
-        // WORK EXPERIENCE FORM VALIDATION LOGIC
+        // WORK EXPERIENCE FORM VALIDATION
         // ============================================
         function validateWorkExperienceForm($form) {
             let valid = true;
 
-            // title required
             const title = $form.find('input[name="title"]').val();
             if (!title.trim()) {
                 toastr.error('Position title is required');
                 valid = false;
             }
 
-            // start date required
             const startDate = $form.find('input[name="start_date"]').val();
             if (!startDate) {
                 toastr.error('Start date is required');
                 valid = false;
             }
 
-            // end date check
             const isCurrent = $form.find('input[name="is_working_currently"]').is(':checked');
             const endDate = $form.find('input[name="end_date"]').val();
 
@@ -1480,7 +2013,9 @@
             return valid;
         }
 
-        // ===================== COMMON VALIDATION FUNCTION =====================
+        // ============================================
+        // EDUCATION FORM VALIDATION
+        // ============================================
         function validateEducationForm($form) {
             let valid = true;
 
@@ -1490,51 +2025,18 @@
             const year = $form.find('[name="passing_year"]').val()?.trim();
             const cgpa = $form.find('[name="cgpa"]').val()?.trim();
 
-            // 1️⃣ Education degree
-            if (!degree) {
-                toastr.error('Education program is required');
-                valid = false;
-            }
-
-            // 2️⃣ Institute name - required, no digits allowed
-            if (!institute) {
-                toastr.error('Institute name is required');
-                valid = false;
-            } else if (/\d/.test(institute)) {
-                toastr.error('Institute name cannot contain numbers');
-                valid = false;
-            }
-
-            // 3️⃣ Field of study - required, no digits allowed
-            if (!field) {
-                toastr.error('Field of study is required');
-                valid = false;
-            } else if (/\d/.test(field)) {
-                toastr.error('Field of study cannot contain numbers');
-                valid = false;
-            }
-
-            // 4️⃣ Passing year - required, must be 4-digit number
-            if (!year) {
-                toastr.error('Passing year is required');
-                valid = false;
-            } else if (!/^\d{4}$/.test(year)) {
-                toastr.error('Passing year must be a valid year (e.g., 2022)');
-                valid = false;
-            }
-
-            // 5️⃣ CGPA - required, numeric, allows decimal
-            if (!cgpa) {
-                toastr.error('CGPA is required');
-                valid = false;
-            } else if (!/^\d+(\.\d+)?$/.test(cgpa)) {
-                toastr.error('CGPA must be a number (e.g., 3.75)');
-                valid = false;
-            }
+            if (!degree) { toastr.error('Education program is required'); valid = false; }
+            if (!institute) { toastr.error('Institute name is required'); valid = false; }
+            else if (/\d/.test(institute)) { toastr.error('Institute name cannot contain numbers'); valid = false; }
+            if (!field) { toastr.error('Field of study is required'); valid = false; }
+            else if (/\d/.test(field)) { toastr.error('Field of study cannot contain numbers'); valid = false; }
+            if (!year) { toastr.error('Passing year is required'); valid = false; }
+            else if (!/^\d{4}$/.test(year)) { toastr.error('Passing year must be a valid year (e.g., 2022)'); valid = false; }
+            if (!cgpa) { toastr.error('CGPA is required'); valid = false; }
+            else if (!/^\d+(\.\d+)?$/.test(cgpa)) { toastr.error('CGPA must be a number (e.g., 3.75)'); valid = false; }
 
             return valid;
         }
-
 
         // ============================================
         // FORM SUBMIT HANDLERS
@@ -1545,50 +2047,37 @@
             // Employee Profile Update Form
             $('#employeeUpdateProfile').on('submit', function(e) {
                 e.preventDefault();
-                e.stopPropagation(); // ✅ STOP EVENT BUBBLING
-                const $submitBtn = $(this).find('button[type="submit"]'); // ✅ target submit button
+                e.stopPropagation();
+                const $submitBtn = $(this).find('button[type="submit"]');
                 if (validateEmployeeProfileForm()) {
-                    // Create FormData to handle file upload
                     const formData = new FormData(this);
-// ✅ Disable button immediately
                     $submitBtn.prop('disabled', true).text('Saving...');
 
-                    // If there's cropped image data, convert it to blob and add to FormData
                     const croppedData = $('#croppedImageData').val();
                     if (croppedData) {
-                        // Convert base64 to blob
                         const arr = croppedData.split(',');
                         const mime = arr[0].match(/:(.*?);/)[1];
                         const bstr = atob(arr[1]);
                         let n = bstr.length;
                         const u8arr = new Uint8Array(n);
-                        while (n--) {
-                            u8arr[n] = bstr.charCodeAt(n);
-                        }
+                        while (n--) { u8arr[n] = bstr.charCodeAt(n); }
                         const blob = new Blob([u8arr], { type: mime });
-
-                        // Replace profile_image with cropped version
                         formData.delete('profile_image');
                         formData.append('profile_image', blob, 'profile.jpg');
                     }
 
-                    // Submit via AJAX
                     $.ajax({
                         url: $(this).attr('action'),
                         method: 'POST',
                         data: formData,
                         processData: false,
                         contentType: false,
-                        beforeSend: function () {
-
-                        },
                         success: function(response) {
                             toastr.success('Profile updated successfully!');
                             $('#editContactModal').modal('hide');
                             setTimeout(() => location.reload(), 1500);
                         },
                         complete: function () {
-// ✅ Re-enable button after request finishes
                             $submitBtn.prop('disabled', false).text('{{ trans("common.save_changes") }}');
                         },
                         error: function(xhr) {
@@ -1599,7 +2088,7 @@
                 }
             });
 
-            // Profile Image Form (separate modal)
+            // Profile Image Form
             $('#profileImageForm').on('submit', function(e) {
                 e.preventDefault();
                 const $submitBtn = $(this).find('button[type="submit"]');
@@ -1611,8 +2100,6 @@
                 }
 
                 const formData = new FormData(this);
-
-                // Convert base64 to blob
                 const arr = croppedData.split(',');
                 const mime = arr[0].match(/:(.*?);/)[1];
                 const bstr = atob(arr[1]);
@@ -1646,11 +2133,7 @@
                 });
             });
 
-            // ===================================================
-            // WORK EXPERIENCE FORM VALIDATION (STATIC + DYNAMIC)
-            // ===================================================
-
-            // Handle static create form
+            // Work Experience Form Validation
             $('#createEmployeeWorkExperienceForm').on('submit', function(e) {
                 e.preventDefault();
                 const $form = $(this);
@@ -1659,14 +2142,9 @@
                 }
             });
 
-            // Handle dynamic edit form (when modal is shown)
             $(document).on('shown.bs.modal', '#editWorkExperienceModal', function() {
                 const $form = $(this).find('form#editEmployeeWorkExperienceForm');
-
-                // Unbind any duplicate handler first (in case modal is opened multiple times)
                 $form.off('submit.validate');
-
-                // Then reattach
                 $form.on('submit.validate', function(e) {
                     e.preventDefault();
                     if (validateWorkExperienceForm($form)) {
@@ -1675,40 +2153,30 @@
                 });
             });
 
-           // documents
-// Helper: allowed extensions
+            // Document validation
             const allowedExt = ['pdf','jpg','jpeg','png'];
 
-            // Validation function that runs on submit only
             function validateDocumentForm($form) {
-                // trim helper
                 const val = (selector) => ($form.find(selector).val() || '').toString().trim();
-
                 const title = val('[name="title"]');
                 const fileInput = $form.find('[name="file"]');
                 const fileVal = fileInput.val();
 
-                // clear previous invalid states
                 $form.find('.is-invalid').removeClass('is-invalid');
 
-                // title required
                 if (!title) {
                     toastr.error('Please select or enter a document title');
-                    // try to mark field (select or input)
                     const $titleField = $form.find('[name="title"]').first();
                     if ($titleField.length) $titleField.addClass('is-invalid');
                     return false;
                 }
 
-                // file required
                 if (!fileVal) {
                     toastr.error('Please upload a file');
                     fileInput.addClass('is-invalid');
                     return false;
                 }
 
-                // extension check
-                // fileVal could be C:\fakepath\file.pdf or just file.pdf
                 const fileName = fileVal.split('\\').pop().split('/').pop();
                 const ext = (fileName.split('.').pop() || '').toLowerCase();
                 if (allowedExt.indexOf(ext) === -1) {
@@ -1717,11 +2185,10 @@
                     return false;
                 }
 
-                // All good
                 return true;
             }
 
-            // ===================== ADD FORM VALIDATION (STATIC) =====================
+            // Education Form Validation
             $('#addEducationForm').on('submit', function(e) {
                 e.preventDefault();
                 const $form = $(this);
@@ -1730,13 +2197,9 @@
                 }
             });
 
-            // ===================== EDIT FORM VALIDATION (DYNAMIC MODAL) =====================
             $(document).on('shown.bs.modal', '#editEducationModal', function() {
                 const $form = $(this).find('form#editEducationForm');
-
-                // remove old handler first to prevent duplicates
                 $form.off('submit.validateEducation');
-
                 $form.on('submit.validateEducation', function(e) {
                     e.preventDefault();
                     if (validateEducationForm($form)) {
@@ -1745,54 +2208,34 @@
                 });
             });
 
-            // documents
-// Delegated handler for both create + edit forms, runs only on submit
+            // Document submit handler
             $(document).on('submit', '#createEmployeeDocuments, #editEmployeeDocuments', function (e) {
-                e.preventDefault(); // always prevent and decide manually
+                e.preventDefault();
                 const $form = $(this);
-
-                // If we are in the middle of programmatic submit, allow native submit to pass through
                 if ($form.data('submitting')) {
-                    // cleanup the flag immediately (optional)
                     $form.removeData('submitting');
-                    return true; // allow native submit to continue
+                    return true;
                 }
-
-                // Run validations (only when actual user submits)
                 if (!validateDocumentForm($form)) {
-                    // invalid -> stop submission (we already prevented default)
                     return false;
                 }
-
-                // Valid -> set a flag and submit natively (so browser performs file upload/normal submit)
                 $form.data('submitting', true);
-                $form[0].submit(); // native submit (will trigger this handler again, but flag will let it pass)
+                $form[0].submit();
             });
 
             // Remove invalid state dynamically
             $(document).on('input change', 'input, select, textarea', function () {
                 $(this).removeClass('is-invalid');
             });
-
-            // Remove validation error class on input
-            // $('input, select, textarea').on('input change', function() {
-            //     $(this).removeClass('is-invalid');
-            // });
-
         });
     </script>
-{{--    form validation end--}}
 
-{{--    show profile edit btn on mobile--}}
+    {{-- Show profile edit btn on mobile --}}
     <script>
         $(document).on('click', '#showMobileProfileEditBox', function (event) {
             event.preventDefault();
-
             $('.viewoProfileforSmallDevice').addClass('d-none');
             $('.profileEdit').addClass('d-block');
-            // $('#profileEdit').css('display', 'block');
         });
-
     </script>
-
 @endpush

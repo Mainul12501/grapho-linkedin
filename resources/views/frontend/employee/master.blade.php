@@ -397,6 +397,8 @@
                 flex-wrap: nowrap !important;
             }
         }
+
+        .force-hide {display: none!important;}
     </style>
     @yield('style')
     @stack('style')
@@ -482,36 +484,23 @@
     </div>
 
     <!-- Mobile Bottom Navigation -->
-    <div class="bottom-nav d-md-none d-flex justify-content-around mobile-bottom-menu" style="max-height: 93px; background-color: #E5E7EB;">
-        <div class="text-center mobileHome {{ request()->is('employee/home') ? 'active' : '' }}">
-            <a href="{{ route('employee.home') }}">
-{{--                <img src="{{ asset('/frontend/employee/images/header images/mobileHomeIcon.png') }}" alt="Home" />--}}
-                <img src="{{ asset('/frontend/employee/fi_3405771.png') }}" alt="Home" />
-                <span class="mt-1">Home</span>
-            </a>
-        </div>
-
-        <div class="text-center mobileJobs {{ request()->is('employee/show-jobs') ? 'active' : '' }}">
-            <a href="{{ route('employee.show-jobs') }}">
-                <img src="{{ asset('/frontend/employee/images/header images/mobileJobIcon.png') }}" alt="Jobs" />
-                <span class="mt-1">Jobs</span>
-            </a>
-        </div>
-
-        <div class="text-center mobileProfile {{ request()->is('employee/my-profile') ? 'active' : '' }}">
-            <a href="{{ route('employee.my-profile') }}">
-                <img src="{{ asset('/frontend/employee/images/header images/mobileProfielIcon.png') }}" alt="Profile" />
-                <span class="mt-1">Profile</span>
-            </a>
-        </div>
-
-        <div class="text-center mobileInbox">
-            <a href="#" id="openDrawer">
-{{--                <img src="{{ asset('/frontend/employee/images/header images/MobileMessageIcon.png') }}" alt="Options" />--}}
-                <i class="fa-solid fa-bars fa-2x"></i>
-                <span class="mt-1">Menu</span>
-            </a>
-        </div>
+    <div class="d-md-none mobile-bottom-menu">
+        <a href="{{ route('employee.home') }}" class="mb-nav-item {{ request()->is('employee/home') ? 'mb-nav-active' : '' }}">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            <span>Home</span>
+        </a>
+        <a href="{{ route('employee.show-jobs') }}" class="mb-nav-item {{ request()->is('employee/show-jobs') ? 'mb-nav-active' : '' }}">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+            <span>Jobs</span>
+        </a>
+        <a href="{{ route('employee.my-profile') }}" class="mb-nav-item {{ request()->is('employee/my-profile') ? 'mb-nav-active' : '' }}">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <span>Profile</span>
+        </a>
+        <a href="#" id="openDrawer" class="mb-nav-item">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+            <span>Menu</span>
+        </a>
     </div>
 
     <form action="{{ route('logout') }}" method="post" id="employeeMobileMenuLogout">
