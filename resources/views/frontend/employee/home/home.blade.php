@@ -136,7 +136,7 @@
                     <article class="eh-job-card">
                         <div class="eh-job-logo">
                             <a href="{{ route('view-company-profile', ['employerCompany' => $topJobForEmployee->employer_company_id, 'view' => 'employee']) }}">
-                                <img src="{{ asset($topJobForEmployee?->employerCompany?->logo ?? '/frontend/employee/images/contentImages/companyLogoFor job.png') }}"
+                                <img src="{{ asset($topJobForEmployee?->employerCompany?->logo ?? '/frontend/company-vector.jpg') }}"
                                      alt="{{ $topJobForEmployee?->employerCompany?->name ?? 'Company' }}" />
                             </a>
                         </div>
@@ -144,7 +144,7 @@
                             <div class="eh-job-header-row">
                                 <div class="eh-job-logo--mobile">
                                     <a href="{{ route('view-company-profile', ['employerCompany' => $topJobForEmployee->employer_company_id, 'view' => 'employee']) }}">
-                                        <img src="{{ asset($topJobForEmployee?->employerCompany?->logo ?? '/frontend/employee/images/contentImages/companyLogoFor job.png') }}"
+                                        <img src="{{ asset($topJobForEmployee?->employerCompany?->logo ?? '/frontend/company-vector.jpg') }}"
                                              alt="{{ $topJobForEmployee?->employerCompany?->name ?? 'Company' }}" />
                                     </a>
                                 </div>

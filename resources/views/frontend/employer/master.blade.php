@@ -13,6 +13,11 @@
         .site-base-color-bg {background-color: #FFCB11!important;}
         .drawer-menu a span {font-weight: bolder}
         /*.drawer-menu a i {color: #FFCB11!important;}*/
+        @media screen and (max-width: 767.98px) {
+            .modal-dialog {
+                padding-bottom: 70px !important; /* push modal above .mobile-bottom-menu (64px height) */
+            }
+        }
     </style>
 </head>
 

@@ -44,9 +44,15 @@
             font-weight: 400;
             font-size: 13px;
         }
-        @media screen and (max-width: 768px) {
+        @media screen and (max-width: 767.98px) {
             body {
                 padding-bottom: 100px!important; /* same or slightly more than .bottom-nav height */
+            }
+            .modal-dialog {
+                padding-bottom: 70px !important; /* push modal above .mobile-bottom-menu (64px height) */
+            }
+            #sideDrawer {
+                padding-bottom: 70px !important; /* push modal above .mobile-bottom-menu (64px height) */
             }
         }
 

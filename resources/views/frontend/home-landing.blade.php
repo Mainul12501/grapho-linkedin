@@ -16,7 +16,7 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;400;500;600;700;800;1,9..40,400;500&family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700;1,800&display=swap" rel="stylesheet">
 
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
@@ -49,7 +49,7 @@
         * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'DM Sans', sans-serif;
             color: var(--dark-700);
             background: var(--white);
             overflow-x: hidden;
@@ -59,25 +59,31 @@
 
         /* ── Navbar ── */
         .lw-navbar {
-            background: rgba(255,255,255,0.97);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--dark-200);
+            background: transparent;
+            backdrop-filter: none;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
             z-index: 1050;
             padding: 0;
-            transition: box-shadow 0.3s;
+            transition: all 0.35s;
         }
-        .lw-navbar.scrolled { box-shadow: var(--shadow-md); }
+        .lw-navbar.scrolled {
+            background: rgba(255,255,255,0.97);
+            backdrop-filter: blur(20px);
+            box-shadow: var(--shadow-md);
+            border-bottom-color: var(--dark-200);
+        }
         .lw-navbar .navbar-inner {
             display: flex;
             align-items: center;
             justify-content: space-between;
             padding: 12px 0;
         }
-        .lw-navbar .nav-logo img { height: 32px; }
+        .lw-navbar .nav-logo img { height: 32px; filter: brightness(0) invert(1); transition: filter 0.35s; }
+        .lw-navbar.scrolled .nav-logo img { filter: none; }
         .lw-navbar .nav-links {
             display: flex;
             align-items: center;
@@ -88,12 +94,14 @@
         }
         .lw-navbar .nav-links a {
             text-decoration: none;
-            color: var(--dark-500);
+            color: rgba(255,255,255,0.7);
             font-weight: 500;
             font-size: 0.95rem;
-            transition: color 0.2s;
+            transition: color 0.35s;
         }
-        .lw-navbar .nav-links a:hover { color: var(--dark); }
+        .lw-navbar .nav-links a:hover { color: var(--white); }
+        .lw-navbar.scrolled .nav-links a { color: var(--dark-500); }
+        .lw-navbar.scrolled .nav-links a:hover { color: var(--dark); }
         .lw-navbar .nav-actions {
             display: flex;
             align-items: center;
@@ -106,6 +114,8 @@
             cursor: pointer;
             padding: 8px;
         }
+        .hamburger-btn .hamburger-icon { transition: color 0.35s; }
+        .lw-navbar.scrolled .hamburger-btn .hamburger-icon { color: var(--dark) !important; }
 
         /* ── Buttons ── */
         .btn-primary-custom {
@@ -129,22 +139,35 @@
             transform: translateY(-1px);
             box-shadow: var(--shadow-md);
         }
+        .lw-navbar:not(.scrolled) .btn-primary-custom {
+            background: var(--primary);
+            color: var(--dark);
+        }
         .btn-outline-custom {
             background: transparent;
-            color: var(--dark);
-            border: 1.5px solid var(--dark-300);
+            color: rgba(255,255,255,0.85);
+            border: 1.5px solid rgba(255,255,255,0.25);
             padding: 10px 24px;
             border-radius: 999px;
             font-weight: 600;
             font-size: 0.95rem;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.35s;
             text-decoration: none;
             display: inline-flex;
             align-items: center;
             gap: 8px;
         }
         .btn-outline-custom:hover {
+            border-color: rgba(255,255,255,0.5);
+            color: var(--white);
+            background: rgba(255,255,255,0.08);
+        }
+        .lw-navbar.scrolled .btn-outline-custom {
+            color: var(--dark);
+            border-color: var(--dark-300);
+        }
+        .lw-navbar.scrolled .btn-outline-custom:hover {
             border-color: var(--dark);
             color: var(--dark);
             background: var(--dark-50);
@@ -194,120 +217,233 @@
 
         /* ── Hero Section ── */
         .hero-section {
-            padding: 140px 0 80px;
-            background: linear-gradient(135deg, var(--primary-50) 0%, var(--white) 40%, #f0f7ff 100%);
             position: relative;
+            min-height: 100vh;
+            min-height: 100dvh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             overflow: hidden;
         }
+        .hero-bg {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+        }
+        .hero-bg img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center 30%;
+        }
+        /* Dark overlay for text readability */
+        .hero-bg::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(180deg,
+                    rgba(17,24,39,0.72) 0%,
+                    rgba(17,24,39,0.55) 40%,
+                    rgba(17,24,39,0.65) 70%,
+                    rgba(17,24,39,0.85) 100%
+                );
+        }
+        /* Warm accent glow */
         .hero-section::before {
             content: '';
             position: absolute;
-            width: 600px;
-            height: 600px;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(255,203,17,0.15), transparent 70%);
-            top: -200px;
-            right: -100px;
+            inset: 0;
+            z-index: 1;
+            background:
+                radial-gradient(ellipse 50% 40% at 50% 35%, rgba(255,203,17,0.08) 0%, transparent 70%);
             pointer-events: none;
         }
-        .hero-section::after {
-            content: '';
-            position: absolute;
-            width: 400px;
-            height: 400px;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(59,130,246,0.08), transparent 70%);
-            bottom: -100px;
-            left: -100px;
-            pointer-events: none;
+
+        /* Content overlay */
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 160px 24px 100px;
         }
-        .hero-content { position: relative; z-index: 2; }
         .hero-badge {
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            background: var(--primary-light);
-            color: var(--dark);
-            padding: 6px 16px;
+            background: rgba(255,255,255,0.1);
+            color: rgba(255,255,255,0.9);
+            padding: 8px 20px;
             border-radius: 999px;
-            font-size: 0.85rem;
+            font-size: 0.78rem;
             font-weight: 600;
-            margin-bottom: 24px;
+            margin-bottom: 28px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            border: 1px solid rgba(255,255,255,0.12);
+            backdrop-filter: blur(12px);
         }
         .hero-title {
-            font-size: clamp(2.2rem, 5vw, 3.5rem);
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.6rem, 6vw, 4.5rem);
             font-weight: 800;
-            line-height: 1.1;
-            margin-bottom: 20px;
-            letter-spacing: -0.02em;
+            line-height: 1.08;
+            margin-bottom: 24px;
+            letter-spacing: -0.025em;
+            color: var(--white);
         }
         .hero-title .highlight {
-            background: linear-gradient(135deg, var(--primary), #FFB800);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            color: var(--primary);
         }
         .hero-subtitle {
-            font-size: 1.15rem;
-            color: var(--dark-500);
+            font-size: 1.12rem;
+            color: rgba(255,255,255,0.6);
             max-width: 540px;
-            line-height: 1.7;
-            margin-bottom: 32px;
+            margin: 0 auto 36px;
+            line-height: 1.75;
         }
         .hero-actions {
             display: flex;
             gap: 14px;
             flex-wrap: wrap;
-            margin-bottom: 40px;
+            justify-content: center;
+            margin-bottom: 18px;
         }
-        .hero-image-wrapper {
-            position: relative;
-            z-index: 2;
+        .hero-btn-primary {
+            background: var(--primary);
+            color: var(--dark);
+            border: none;
+            padding: 15px 36px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
         }
-        .hero-image-main {
-            width: 100%;
-            max-width: 520px;
-            border-radius: var(--radius-xl);
-            box-shadow: var(--shadow-xl);
-            object-fit: cover;
+        .hero-btn-primary:hover {
+            background: var(--primary-dark);
+            color: var(--dark);
+            transform: translateY(-2px);
+            box-shadow: 0 14px 40px rgba(255,203,17,0.3);
         }
-        .hero-float-card {
-            position: absolute;
-            background: var(--white);
-            border-radius: var(--radius);
-            padding: 16px 20px;
-            box-shadow: var(--shadow-lg);
+        .hero-btn-secondary {
+            background: rgba(255,255,255,0.1);
+            color: var(--white);
+            border: 1px solid rgba(255,255,255,0.18);
+            padding: 15px 36px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            backdrop-filter: blur(12px);
+        }
+        .hero-btn-secondary:hover {
+            background: rgba(255,255,255,0.18);
+            color: var(--white);
+            border-color: rgba(255,255,255,0.3);
+            transform: translateY(-2px);
+        }
+        .hero-terms-text {
+            font-size: 0.76rem;
+            color: rgba(255,255,255,0.35);
+        }
+
+        /* Floating stat pills */
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            margin-top: 48px;
+            flex-wrap: wrap;
+        }
+        .hero-stat-pill {
             display: flex;
             align-items: center;
-            gap: 12px;
-            animation: float 3s ease-in-out infinite;
+            gap: 10px;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.1);
+            backdrop-filter: blur(12px);
+            padding: 10px 20px;
+            border-radius: 999px;
+            animation: float 5s ease-in-out infinite;
         }
-        .hero-float-card.card-1 {
-            bottom: 20px;
-            left: -20px;
-        }
-        .hero-float-card.card-2 {
-            top: 40px;
-            right: -10px;
-            animation-delay: 1.5s;
-        }
-        .hero-float-icon {
-            width: 44px;
-            height: 44px;
-            border-radius: 12px;
+        .hero-stat-pill:nth-child(2) { animation-delay: 1.5s; }
+        .hero-stat-pill:nth-child(3) { animation-delay: 3s; }
+        .hero-stat-icon {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: rgba(255,203,17,0.15);
             display: flex;
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
         }
-        .hero-float-icon.yellow { background: var(--primary-light); }
-        .hero-float-icon.blue { background: #DBEAFE; }
-        .hero-float-icon.green { background: #D1FAE5; }
+        .hero-stat-number {
+            font-size: 0.95rem;
+            font-weight: 800;
+            color: var(--white);
+        }
+        .hero-stat-label {
+            font-size: 0.72rem;
+            color: rgba(255,255,255,0.45);
+        }
+
+        /* Scroll indicator */
+        .hero-scroll-hint {
+            position: absolute;
+            bottom: 32px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            color: rgba(255,255,255,0.3);
+            font-size: 0.7rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            animation: scrollBounce 2s ease-in-out infinite;
+        }
+        .hero-scroll-hint .scroll-line {
+            width: 1px;
+            height: 28px;
+            background: linear-gradient(to bottom, rgba(255,255,255,0.3), transparent);
+        }
 
         @keyframes float {
             0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
+            50% { transform: translateY(-8px); }
         }
+        @keyframes scrollBounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); opacity: 0.5; }
+            50% { transform: translateX(-50%) translateY(6px); opacity: 1; }
+        }
+        @keyframes heroFadeUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .hero-content > * {
+            animation: heroFadeUp 0.8s ease-out both;
+        }
+        .hero-content > *:nth-child(1) { animation-delay: 0.1s; }
+        .hero-content > *:nth-child(2) { animation-delay: 0.2s; }
+        .hero-content > *:nth-child(3) { animation-delay: 0.3s; }
+        .hero-content > *:nth-child(4) { animation-delay: 0.4s; }
+        .hero-content > *:nth-child(5) { animation-delay: 0.5s; }
+        .hero-content > *:nth-child(6) { animation-delay: 0.6s; }
 
         /* ── Search Bar ── */
         .search-bar-section {
@@ -716,20 +852,80 @@
             flex-direction: column;
             gap: 10px;
         }
+        .mobile-menu-footer .btn-outline-custom {
+            color: var(--dark);
+            border-color: var(--dark-300);
+        }
+        .mobile-menu-footer .btn-outline-custom:hover {
+            border-color: var(--dark);
+            color: var(--dark);
+            background: var(--dark-50);
+        }
 
         /* ── Responsive ── */
+
+        /* Large tablets / small desktops */
+        @media (max-width: 1199px) {
+            .hero-content { max-width: 620px; }
+            .hero-title { font-size: clamp(2.4rem, 5vw, 3.6rem); }
+        }
+
+        /* Tablets */
         @media (max-width: 991px) {
             .nav-links, .nav-actions { display: none !important; }
             .hamburger-btn { display: block; }
-            .hero-section { padding: 120px 0 100px; }
-            .hero-image-wrapper { margin-top: 40px; text-align: center; }
-            .hero-image-main { max-width: 100%; }
-            .hero-float-card.card-1 { left: 10px; bottom: 10px; }
-            .hero-float-card.card-2 { right: 10px; top: 20px; }
+
+            /* Hero */
+            .hero-section { min-height: 90vh; }
+            .hero-content { padding: 130px 24px 80px; max-width: 560px; }
+            .hero-title { font-size: 2.6rem; }
+            .hero-subtitle { font-size: 1rem; margin-bottom: 28px; }
+            .hero-btn-primary, .hero-btn-secondary { padding: 13px 28px; font-size: 0.9rem; }
+            .hero-stats { gap: 14px; margin-top: 36px; }
+            .hero-stat-pill { padding: 8px 16px; }
+            .hero-stat-number { font-size: 0.88rem; }
+            .hero-stat-label { font-size: 0.68rem; }
+            .hero-stat-icon { width: 30px; height: 30px; }
+            .hero-scroll-hint { bottom: 20px; }
+
+            /* Features */
+            .features-section { padding: 60px 0; }
+            .section-title { font-size: 1.8rem; }
+
+            /* Steps */
             .step-connector { display: none; }
+
+            /* CTA */
             .cta-card { padding: 40px 24px; }
+            .cta-card h2 { font-size: 1.6rem; }
+
+            /* Footer */
+            .lw-footer { padding: 48px 0 0; }
         }
+
+        /* Small tablets / large phones */
+        @media (max-width: 767px) {
+            .hero-content { padding: 120px 20px 70px; max-width: 480px; }
+            .hero-title { font-size: 2.2rem; margin-bottom: 18px; }
+            .hero-subtitle { font-size: 0.95rem; margin-bottom: 24px; }
+            .hero-badge { font-size: 0.72rem; padding: 6px 14px; margin-bottom: 22px; }
+            .hero-stats { gap: 10px; flex-wrap: wrap; justify-content: center; }
+            .hero-stat-pill { padding: 8px 14px; gap: 8px; }
+
+            /* Features */
+            .feature-card { padding: 24px 20px; }
+            .section-desc { font-size: 0.95rem; }
+
+            /* Steps */
+            .step-card { padding: 24px 16px; }
+
+            /* CTA */
+            .cta-card { padding: 32px 20px; }
+        }
+
+        /* Phones */
         @media (max-width: 575px) {
+            /* Search bar */
             .search-bar {
                 flex-direction: column;
                 padding: 12px;
@@ -741,11 +937,60 @@
                 padding-top: 8px;
             }
             .search-bar .search-btn { width: 100%; text-align: center; justify-content: center; }
-            .hero-float-card { display: none; }
-            .hero-title { font-size: 2rem; }
+
+            /* Hero */
+            .hero-section { min-height: 100vh; min-height: 100dvh; }
+            .hero-content { padding: 120px 16px 60px; max-width: 100%; }
+            .hero-title { font-size: 2rem; line-height: 1.12; }
+            .hero-subtitle { font-size: 0.92rem; line-height: 1.65; max-width: 100%; }
+            .hero-actions { flex-direction: column; align-items: stretch; gap: 10px; }
+            .hero-btn-primary, .hero-btn-secondary { width: 100%; justify-content: center; padding: 14px 24px; }
+            .hero-stats { flex-direction: column; gap: 8px; margin-top: 32px; }
+            .hero-stat-pill { width: 100%; justify-content: center; }
+            .hero-scroll-hint { display: none; }
+            .hero-bg img { object-position: center center; }
+
+            /* Trusted */
+            .trusted-section { padding: 40px 0 30px; }
             .trusted-logos { gap: 24px; }
             .trusted-logos img { height: 22px; }
-            .footer-bottom { flex-direction: column; text-align: center; }
+
+            /* Features */
+            .features-section { padding: 48px 0; }
+            .section-title { font-size: 1.5rem; }
+            .section-desc { font-size: 0.9rem; }
+            .feature-card { padding: 20px 18px; }
+            .feature-icon-box { width: 44px; height: 44px; margin-bottom: 14px; }
+            .feature-card h5 { font-size: 1rem; }
+            .feature-card p { font-size: 0.88rem; }
+
+            /* Steps */
+            .steps-section { padding: 48px 0; }
+            .step-number { width: 40px; height: 40px; font-size: 1rem; }
+            .step-card h5 { font-size: 1rem; }
+
+            /* CTA */
+            .cta-section { padding: 48px 0; }
+            .cta-card { padding: 28px 16px; border-radius: 16px; }
+            .cta-card h2 { font-size: 1.4rem; }
+            .cta-card p { font-size: 0.92rem; }
+            .cta-actions { flex-direction: column; align-items: stretch; }
+            .cta-actions a { justify-content: center; }
+
+            /* Footer */
+            .lw-footer { padding: 40px 0 0; }
+            .footer-bottom { flex-direction: column; text-align: center; gap: 12px; }
+            .footer-desc { max-width: 100%; }
+        }
+
+        /* Very small phones */
+        @media (max-width: 380px) {
+            .hero-title { font-size: 1.75rem; }
+            .hero-subtitle { font-size: 0.88rem; }
+            .hero-badge { font-size: 0.68rem; }
+            .hero-btn-primary, .hero-btn-secondary { padding: 12px 20px; font-size: 0.88rem; }
+            .hero-stat-pill { padding: 7px 12px; }
+            .hero-stat-number { font-size: 0.82rem; }
         }
 
         /* ── Signup modal styles ── */
@@ -810,7 +1055,7 @@
             </div>
 
             <button class="hamburger-btn" onclick="toggleMobileMenu()" aria-label="Menu">
-                <i data-lucide="menu" style="width:24px;height:24px;color:var(--dark)"></i>
+                <i data-lucide="menu" class="hamburger-icon" style="width:24px;height:24px;color:var(--white)"></i>
             </button>
         </div>
     </div>
@@ -848,99 +1093,98 @@
 
 <!-- ═══════════════ HERO SECTION ═══════════════ -->
 <section class="hero-section">
-    <div class="container">
-        <div class="row align-items-center">
-            <div class="col-lg-6 hero-content">
-                <div class="hero-badge">
-                    <i data-lucide="sparkles" style="width:16px;height:16px;color:var(--primary-dark)"></i>
-                    {{ trans('home.hero_title') }}
+    <!-- Background Image -->
+    <div class="hero-bg">
+        <img src="https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=1920&q=80&fit=crop" alt="Professional team collaborating">
+    </div>
+
+    <!-- Content Overlay -->
+    <div class="hero-content">
+        <div class="hero-badge">
+            <i data-lucide="sparkles" style="width:14px;height:14px;color:var(--primary)"></i>
+            {{ trans('home.hero_title') }}
+        </div>
+
+        <h1 class="hero-title">
+            {{ trans('home.where_doors_knock_you') }}
+        </h1>
+
+        <p class="hero-subtitle">{{ trans('home.hero_subtitle') }}</p>
+
+        <div class="hero-actions">
+            @if(auth()->check())
+                <a href="{{ auth()->user()->user_type == 'employee' ? route('employee.home') : (auth()->user()->user_type == 'employer' ? route('employer.home') : route('dashboard')) }}" class="hero-btn-primary">
+                    {{ trans('home.visit_dashboard') }}
+                    <i data-lucide="arrow-right" style="width:18px;height:18px"></i>
+                </a>
+            @else
+                <a href="{{ route('auth.socialite.redirect', ['provider' => 'google', 'user' => 'Employee', 'g_req_from' => 'home']) }}" class="hero-btn-primary">
+                    <img src="{{ asset('/') }}frontend/home-landing/images/gooleIcon.png" alt="Google" style="width:20px;height:20px;">
+                    Sign Up With Google
+                </a>
+                <a href="{{ route('auth.select-auth-method') }}" class="hero-btn-secondary">
+                    {{ trans('home.continue_with_email') }}
+                    <i data-lucide="arrow-right" style="width:18px;height:18px"></i>
+                </a>
+            @endif
+        </div>
+
+        <p class="hero-terms-text">{{ trans('home.by_continuing_agree_terms') }}</p>
+
+        <div class="hero-stats">
+            <div class="hero-stat-pill">
+                <div class="hero-stat-icon">
+                    <i data-lucide="briefcase" style="width:16px;height:16px;color:var(--primary)"></i>
                 </div>
-                <h1 class="hero-title">
-
-                    {{ trans('home.where_doors_knock_you') }}
-                </h1>
-                <p class="hero-subtitle">{{ trans('home.hero_subtitle') }}</p>
-
-                <div class="hero-actions">
-                    @if(auth()->check())
-                        <a href="{{ auth()->user()->user_type == 'employee' ? route('employee.home') : (auth()->user()->user_type == 'employer' ? route('employer.home') : route('dashboard')) }}" class="btn-primary-custom">
-                            {{ trans('home.visit_dashboard') }}
-                            <i data-lucide="arrow-right" style="width:18px;height:18px"></i>
-                        </a>
-                    @else
-                        <a href="{{ route('auth.socialite.redirect', ['provider' => 'google', 'user' => 'Employee', 'g_req_from' => 'home']) }}" class="btn-primary-custom">
-                            <img src="{{ asset('/') }}frontend/home-landing/images/gooleIcon.png" alt="Google" style="width:20px;height:20px;">
-                            Sign Up With Google
-                        </a>
-                        <a href="{{ route('auth.select-auth-method') }}" class="btn-outline-custom">
-                            {{ trans('home.continue_with_email') }}
-                            <i data-lucide="arrow-right" style="width:18px;height:18px"></i>
-                        </a>
-                    @endif
+                <div>
+                    <div class="hero-stat-number">10K+</div>
+                    <div class="hero-stat-label">Active Jobs</div>
                 </div>
-
-                <p style="font-size:0.82rem;color:var(--dark-400)">{{ trans('home.by_continuing_agree_terms') }}</p>
             </div>
-
-            <div class="col-lg-6">
-                <div class="hero-image-wrapper">
-                    <img src="{{ asset('/frontend/home-landing/images/left.jpeg') }}" alt="Find your dream job" class="hero-image-main">
-
-                    <div class="hero-float-card card-1">
-                        <div class="hero-float-icon green">
-                            <i data-lucide="check-circle" style="width:22px;height:22px;color:#059669"></i>
-                        </div>
-                        <div>
-                            <div style="font-weight:700;font-size:0.9rem;color:var(--dark)">{{ trans('home.verified_employers') }}</div>
-                            <div style="font-size:0.78rem;color:var(--dark-500)">{{ trans('home.easy_requirements') }}</div>
-                        </div>
-                    </div>
-
-                    <div class="hero-float-card card-2">
-                        <div class="hero-float-icon yellow">
-                            <i data-lucide="briefcase" style="width:22px;height:22px;color:var(--primary-dark)"></i>
-                        </div>
-                        <div>
-                            <div style="font-weight:700;font-size:0.9rem;color:var(--dark)">{{ trans('home.smart_matching') }}</div>
-                            <div style="font-size:0.78rem;color:var(--dark-500)">{{ trans('home.find_and_apply_to_jobs') }}</div>
-                        </div>
-                    </div>
+            <div class="hero-stat-pill">
+                <div class="hero-stat-icon">
+                    <i data-lucide="building-2" style="width:16px;height:16px;color:var(--primary)"></i>
+                </div>
+                <div>
+                    <div class="hero-stat-number">500+</div>
+                    <div class="hero-stat-label">Companies</div>
+                </div>
+            </div>
+            <div class="hero-stat-pill">
+                <div class="hero-stat-icon">
+                    <i data-lucide="users" style="width:16px;height:16px;color:var(--primary)"></i>
+                </div>
+                <div>
+                    <div class="hero-stat-number">50K+</div>
+                    <div class="hero-stat-label">Job Seekers</div>
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- Scroll Indicator -->
+    <div class="hero-scroll-hint">
+        <span>Scroll</span>
+        <div class="scroll-line"></div>
+    </div>
 </section>
 
 
-<!-- ═══════════════ SEARCH BAR ═══════════════ -->
-<div class="search-bar-section">
-    <form class="search-bar" action="{{ route('auth.set-login-role') }}" method="GET">
-        <div class="search-input-group">
-            <i data-lucide="search" style="width:20px;height:20px;color:var(--dark-400);flex-shrink:0"></i>
-            <input type="text" name="q" placeholder="{{ trans('home.search_placeholder') }}">
-        </div>
-        <div class="search-input-group">
-            <i data-lucide="map-pin" style="width:20px;height:20px;color:var(--dark-400);flex-shrink:0"></i>
-            <input type="text" name="location" placeholder="{{ trans('home.location_placeholder') }}">
-        </div>
-        <button type="submit" class="search-btn">{{ trans('home.find_jobs') }}</button>
-    </form>
-</div>
 
 
 <!-- ═══════════════ TRUSTED BY ═══════════════ -->
-<section class="trusted-section">
-    <div class="container">
-        <p class="trusted-label">{{ trans('home.trusted_by') }}</p>
-        <div class="trusted-logos">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg" alt="Google">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg" alt="Amazon">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg" alt="Microsoft">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg" alt="Apple" style="height:32px">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg" alt="Netflix">
-        </div>
-    </div>
-</section>
+{{--<section class="trusted-section">--}}
+{{--    <div class="container">--}}
+{{--        <p class="trusted-label">{{ trans('home.trusted_by') }}</p>--}}
+{{--        <div class="trusted-logos">--}}
+{{--            <img src="https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg" alt="Google">--}}
+{{--            <img src="https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg" alt="Amazon">--}}
+{{--            <img src="https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg" alt="Microsoft">--}}
+{{--            <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg" alt="Apple" style="height:32px">--}}
+{{--            <img src="https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg" alt="Netflix">--}}
+{{--        </div>--}}
+{{--    </div>--}}
+{{--</section>--}}
 
 
 <!-- ═══════════════ FEATURES ═══════════════ -->
@@ -1122,13 +1366,13 @@
             </div>
 
             <!-- Work With Us -->
-            <div class="col-lg-2 col-md-6 col-6">
-                <h6 class="footer-heading">{{ trans('home.work_with_us') }}</h6>
-                <ul class="footer-links">
-                    <li><a href="{{ url('auth/user-registration-page?user=Employer') }}">{{ trans('home.advertisers') }}</a></li>
-                    <li><a href="{{ url('auth/user-registration-page?user=Employee') }}">{{ trans('home.careers') }}</a></li>
-                </ul>
-            </div>
+{{--            <div class="col-lg-2 col-md-6 col-6">--}}
+{{--                <h6 class="footer-heading">{{ trans('home.work_with_us') }}</h6>--}}
+{{--                <ul class="footer-links">--}}
+{{--                    <li><a href="{{ url('auth/user-registration-page?user=Employer') }}">{{ trans('home.advertisers') }}</a></li>--}}
+{{--                    <li><a href="{{ url('auth/user-registration-page?user=Employee') }}">{{ trans('home.careers') }}</a></li>--}}
+{{--                </ul>--}}
+{{--            </div>--}}
 
             <!-- Download & Connect -->
             <div class="col-lg-2 col-md-6 col-6">

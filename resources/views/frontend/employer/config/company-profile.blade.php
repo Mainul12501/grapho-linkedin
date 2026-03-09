@@ -272,23 +272,18 @@
     </div>
 
     {{-- View Job Modal --}}
-    <div class="modal" id="viewJobModal">
-        <div class="modal-dialog modal-dialog-centered modal-lg cp-modal-dialog">
-            <div class="modal-content cp-modal-content">
-                <div class="cp-modal-header">
-                    <div class="cp-modal-icon cp-modal-icon-job">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
-                    </div>
-                    <h5 class="cp-modal-title" id="viewJobModalTitle">View Job</h5>
-                    <button type="button" class="cp-modal-close" data-bs-dismiss="modal" aria-label="Close">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-                    </button>
+    <div class="modal eh-view-modal" tabindex="-1" id="viewJobModal">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="viewJobModalTitle">View Job</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="cp-modal-body" id="viewJobModalBody">
+                <div class="modal-body" id="viewJobModalBody">
                     <p>Loading...</p>
                 </div>
-                <div class="cp-modal-footer">
-                    <button type="button" class="cp-btn-cancel" data-bs-dismiss="modal">{{ trans('common.close') }}</button>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ trans('common.close') }}</button>
                 </div>
             </div>
         </div>
@@ -882,10 +877,223 @@
         .image-grid img { width: 100%; height: 100%; object-fit: cover; display: block; }
         .more-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.6); color: #fff; font-size: 26px; font-weight: 600; display: flex; align-items: center; justify-content: center; }
 
+        /* --- View Job Modal --- */
+        .eh-view-modal .modal-content {
+            border-radius: 12px;
+            border: none;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
+        }
+        .eh-view-modal .modal-header {
+            border-bottom: 1px solid #E5E7EB;
+            padding: 18px 24px;
+        }
+        .eh-view-modal .modal-title {
+            font-weight: 700;
+            font-size: 18px;
+            color: #111827;
+        }
+        .eh-view-modal .modal-body {
+            padding: 24px;
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+        .eh-view-modal .modal-footer {
+            border-top: 1px solid #E5E7EB;
+            padding: 14px 24px;
+        }
+        .eh-view-modal .modal-footer .btn-secondary {
+            border-radius: 8px;
+            font-weight: 600;
+        }
+
+        /* --- Job Detail Content (inside modal) --- */
+        .sj-detail-company-row {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 16px;
+        }
+        .sj-detail-logo {
+            width: 48px;
+            height: 48px;
+            border-radius: 10px;
+            object-fit: cover;
+            border: 1px solid #eee;
+        }
+        .sj-detail-logo-link { flex-shrink: 0; }
+        .sj-detail-company-info { min-width: 0; }
+        .sj-detail-company-name {
+            font-size: 15px;
+            font-weight: 650;
+            color: #484f5b;
+            margin: 0;
+        }
+        .sj-detail-company-name a { color: inherit; text-decoration: none; }
+        .sj-detail-company-name a:hover { color: #141c25; }
+        .sj-detail-company-addr {
+            font-size: 13px;
+            color: #8c919d;
+            margin: 2px 0 0;
+        }
+        .sj-detail-job-title {
+            font-size: 24px;
+            font-weight: 800;
+            color: #141c25;
+            margin: 0 0 10px;
+            letter-spacing: -0.3px;
+            line-height: 1.25;
+        }
+        .sj-tag {
+            display: inline-block;
+            padding: 3px 10px;
+            font-size: 11px;
+            font-weight: 600;
+            color: #556070;
+            background: #f0f1f4;
+            border-radius: 6px;
+        }
+        .sj-detail-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+        .sj-detail-actions {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 24px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #f0f1f3;
+        }
+        .sj-apply-btn {
+            display: inline-flex !important;
+            align-items: center;
+            gap: 7px;
+            padding: 10px 24px !important;
+            font-size: 14px !important;
+            font-weight: 700;
+            color: #141c25 !important;
+            background: #FFCB11 !important;
+            border: none !important;
+            border-radius: 12px !important;
+            cursor: pointer;
+            transition: all .2s ease;
+            width: auto !important;
+            margin: 0 !important;
+        }
+        .sj-apply-btn:hover {
+            background: #f0be00 !important;
+            box-shadow: 0 4px 14px rgba(255,203,17,.3);
+            color: #141c25 !important;
+        }
+        .sj-applied-btn {
+            display: inline-flex !important;
+            align-items: center;
+            gap: 7px;
+            padding: 10px 24px !important;
+            font-size: 14px !important;
+            font-weight: 600;
+            color: #22c55e !important;
+            background: #F0FDF4 !important;
+            border: 1px solid #BBF7D0 !important;
+            border-radius: 12px !important;
+            cursor: default;
+            width: auto !important;
+            margin: 0 !important;
+        }
+        .sj-save-btn {
+            display: inline-flex !important;
+            align-items: center;
+            gap: 6px;
+            padding: 10px 20px !important;
+            font-size: 14px !important;
+            font-weight: 600;
+            color: #484f5b !important;
+            background: #f3f4f6 !important;
+            border: 1px solid #e4e5e9 !important;
+            border-radius: 12px !important;
+            cursor: pointer;
+            transition: all .2s ease;
+            width: auto !important;
+            margin: 0 !important;
+        }
+        .sj-save-btn:hover {
+            background: #e8e9ec !important;
+            color: #484f5b !important;
+        }
+        .sj-detail-meta-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+            padding: 16px;
+            background: #f8f9fb;
+            border-radius: 12px;
+        }
+        .sj-meta-item {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .sj-meta-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: #8c919d;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+        .sj-meta-value {
+            font-size: 14px;
+            font-weight: 700;
+            color: #141c25;
+        }
+        .sj-detail-section { margin-bottom: 20px; }
+        .sj-detail-heading {
+            font-size: 16px;
+            font-weight: 700;
+            color: #141c25;
+            margin: 0 0 8px;
+        }
+        .sj-detail-subheading {
+            font-size: 14px;
+            font-weight: 650;
+            color: #141c25;
+            margin: 0 0 8px;
+        }
+        .sj-detail-text {
+            font-size: 14px;
+            color: #556070;
+            line-height: 1.7;
+        }
+        .sj-detail-text p { color: #556070; }
+        .sj-detail-list { padding-left: 20px; margin: 0; }
+        .sj-detail-list li {
+            font-size: 14px;
+            color: #556070;
+            margin-bottom: 4px;
+        }
+        .sj-skills-wrap {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .sj-skill-pill {
+            padding: 5px 14px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #484f5b;
+            background: #f0f1f4;
+            border-radius: 20px;
+        }
+
         /* ========================================
            RESPONSIVE
            ======================================== */
         @media (max-width: 768px) {
+            .sj-detail-meta-grid { grid-template-columns: 1fr; }
+            .sj-detail-job-title { font-size: 20px; }
             .cp-wrapper {
                 padding: 16px 0 100px;
             }

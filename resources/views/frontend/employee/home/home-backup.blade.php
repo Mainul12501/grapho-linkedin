@@ -181,13 +181,13 @@
                 @foreach($moreJobsForEmployee as $topJobForEmployee)
                     <div class="row jobCard border-bottom">
                         <div class="col-md-2 col-lg-1 pe-0" style="border-radius: 50%">
-                            <a href="{{ route('view-company-profile', ['employerCompany' => $topJobForEmployee->employer_company_id, 'view' => 'employee']) }}"><img style="cursor: pointer" src="{{ asset($topJobForEmployee?->employerCompany?->logo ?? '/frontend/employee/images/contentImages/companyLogoFor job.png') }}" alt="Company Logo" class="companyLogo" /></a>
+                            <a href="{{ route('view-company-profile', ['employerCompany' => $topJobForEmployee->employer_company_id, 'view' => 'employee']) }}"><img style="cursor: pointer" src="{{ asset($topJobForEmployee?->employerCompany?->logo ?? '/frontend/company-vector.jpg') }}" alt="Company Logo" class="companyLogo" /></a>
                         </div>
                         <div class="col-md-10 col-lg-11">
                             <div class="jobPosition d-flex justify-content-between">
                                 <div class="d-flex">
                                     <a href="{{ route('view-company-profile', ['employerCompany' => $topJobForEmployee->employer_company_id, 'view' => 'employee']) }}">
-                                        <img style="width: 40px; height: 42px" src="{{ asset($topJobForEmployee?->employerCompany?->logo ?? '/frontend/employee/images/contentImages/companyLogoFor job.png') }}"
+                                        <img style="width: 40px; height: 42px" src="{{ asset($topJobForEmployee?->employerCompany?->logo ?? '/frontend/company-vector.jpg') }}"
                                              alt="Company Logo" class="mobileLogo" />
                                     </a>
 

@@ -134,7 +134,7 @@
                 <!-- LEFT: Job cards list -->
                 <div class="sj-job-list-col" id="job-options-container">
                     <div class="sj-results-header">
-                        <h5>{{ trans('common.showing_results') }}: <strong id="job-count">{{ count($jobTasks) ?? 0 }}</strong> results</h5>
+                        <h5>{{ trans('common.showing_results') }}: <strong id="job-count">{{ count($jobTasks) ?? 0 }}</strong> results. Please click job to view it's details.</h5>
                     </div>
 
                     <div id="job-list-container">
@@ -213,7 +213,7 @@
                             @endif
                             @if(!$isSaved && !$isApplied)
                                 <button type="button" is-saved="no" class="sj-save-btn save-btn" style="    background-color: rgb(13, 110, 253) !important; color: white !important;" data-job-id="{{ $singleJobTask->id }}">
-                                    <img id="saveBtnImg{{ $singleJobTask->id }}" src="{{ asset('/frontend/employee/images/bookmark-white.png') }}" alt="Save" class="save-icon" style="width:16px;height:16px;filter:brightness(0);">
+                                    <img id="saveBtnImg{{ $singleJobTask->id }}" src="{{ asset('/frontend/employee/images/bookmark-white.png') }}" alt="Save" class="save-icon" style="width:16px;height:16px;">
                                     <span id="saveBtnTxt{{ $singleJobTask->id }}">{{ trans('common.save') }}</span>
                                 </button>
                             @endif

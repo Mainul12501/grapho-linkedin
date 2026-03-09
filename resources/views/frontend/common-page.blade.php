@@ -287,13 +287,13 @@
             </div>
 
             <!-- Work With Us -->
-            <div class="col-lg-2 col-md-6 col-6">
-                <h6 class="footer-heading">{{ trans('home.work_with_us') }}</h6>
-                <ul class="footer-links">
-                    <li><a href="{{ url('auth/user-registration-page?user=Employer') }}">{{ trans('home.advertisers') }}</a></li>
-                    <li><a href="{{ url('auth/user-registration-page?user=Employee') }}">{{ trans('home.careers') }}</a></li>
-                </ul>
-            </div>
+{{--            <div class="col-lg-2 col-md-6 col-6">--}}
+{{--                <h6 class="footer-heading">{{ trans('home.work_with_us') }}</h6>--}}
+{{--                <ul class="footer-links">--}}
+{{--                    <li><a href="{{ url('auth/user-registration-page?user=Employer') }}">{{ trans('home.advertisers') }}</a></li>--}}
+{{--                    <li><a href="{{ url('auth/user-registration-page?user=Employee') }}">{{ trans('home.careers') }}</a></li>--}}
+{{--                </ul>--}}
+{{--            </div>--}}
 
             <!-- Download & Connect -->
             <div class="col-lg-2 col-md-6 col-6">

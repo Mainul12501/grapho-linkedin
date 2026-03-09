@@ -599,7 +599,7 @@
                         <p id="reviewDeadline">20-5-25</p>
                     </div>
                     <div class="col-md-4">
-                        <p class="mb-1"><b>Salary</b></p>
+                        <p class="mb-1"><b>Salary (BDT)</b></p>
                         <p ><span id="reviewSalary">BDT 10000</span> / <span id="view_job_pref_salary_payment_type">month</span></p>
                     </div>
                 </div>

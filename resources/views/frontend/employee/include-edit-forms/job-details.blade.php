@@ -50,7 +50,7 @@
         <span class="sj-meta-value" id="reviewDeadline">{{ \Illuminate\Support\Carbon::parse($singleJobTask->deadline)->format('d-M-Y') }}</span>
     </div>
     <div class="sj-meta-item">
-        <span class="sj-meta-label">Salary</span>
+        <span class="sj-meta-label">Salary (BDT)</span>
         <span class="sj-meta-value" id="reviewSalary">BDT {{ $singleJobTask->salary_amount.' / '. $singleJobTask->job_pref_salary_payment_type }}</span>
     </div>
 </div>
