@@ -110,12 +110,12 @@
                     <i class="fas fa-newspaper"></i>
                     <span>Posts</span>
                 </a>
-
-                <a href="{{ route('employer.employer-subscriptions') }}" class="drawer-item">
-                    <i class="fas fa-crown"></i>
-                    <span>Subscriptions</span>
-                </a>
-
+                @if(isset($siteSetting) && $siteSetting->subscription_system_status ==1)
+                    <a href="{{ route('employer.employer-subscriptions') }}" class="drawer-item">
+                        <i class="fas fa-crown"></i>
+                        <span>Subscriptions</span>
+                    </a>
+                @endif
                 <a href="{{ route('employer.my-job-wise-applicants') }}" class="drawer-item">
                     <i class="fas fa-user-check"></i>
                     <span>Applicants</span>

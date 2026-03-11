@@ -181,7 +181,7 @@
                     <p>Loading...</p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ trans('common.close') }}</button>
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">{{ trans('common.close') }}</button>
                 </div>
             </div>
         </div>
@@ -199,7 +199,7 @@
                     <p>Loading...</p>
                 </div>
                 <div class="modal-footer cp-modal-footer">
-                    <button type="button" class="btn cp-btn-close" data-bs-dismiss="modal">{{ trans('common.close') }}</button>
+                    <button type="button" class="btn cp-btn-close btn-primary" data-bs-dismiss="modal">{{ trans('common.close') }}</button>
                 </div>
             </div>
         </div>

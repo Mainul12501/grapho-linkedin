@@ -488,7 +488,7 @@ class EmployeeViewController extends Controller
             'totalSavedJobs'    => $totalSavedJobs,
         ];
         return ViewHelper::checkViewForApi($data, 'frontend.employee.base-functionalities.my-profile');
-        return \view('frontend.employee.base-functionalities.my-profile');
+        return \view('frontend.employee.base-functionalities.my-profile-backup');
     }
 
     public function myNotifications(Request $request)
