@@ -105,22 +105,19 @@
                 {{-- header buttons --}}
                 <nav class="m-header-right">
                     @if(auth()->user()->user_type == 'employer' || auth()->user()->user_type == 'sub_employer')
-{{--                        <a href="{{ route('twilio.view') }}" target="_blank" class="bg-warning"><i class="fas fa-video"></i></a>--}}
-                        <a href="javascript:void(0)"  onclick="makeAudioCall({{ $id }})" class="bg-warning"><i class="fas fa-phone"></i></a>
-{{--                        <a href="javascript:void(0)"  onclick="makeVideoCall({{ $id }})" class="bg-warning"><i class="fas fa-video"></i></a>--}}
-                        <div class="video-call-dropdown">
-                            <a href="javascript:void(0)" class="bg-warning video-call-btn" onclick="toggleVideoDropdown(event)">
-                                <i class="fas fa-video"></i>
-                            </a>
-                            <ul class="video-dropdown-menu" id="videoDropdownMenu">
-                                <li><a href="javascript:void(0)" onclick="makeVideoCall({{ $id }}); closeVideoDropdown();"><i class="fas fa-user"></i> Single Call</a></li>
-                                <li><a href="javascript:void(0)" onclick="initiateGroupCall({{ $id }}); closeVideoDropdown();"><i
-                                            class="fas fa-users"></i> Group Call</a></li>
-                            </ul>
-                        </div>
-{{--                        <a href="javascript:void(0)"  onclick="makeVideoCall({{ $id }})" class="bg-warning"><i class="fas fa-video"></i></a>--}}
-                        <!-- Add buttons container -->
-{{--                        <div id="call-buttons"></div>--}}
+                        <span id="callButtonsContainer" style="{{ !$id ? 'display:none;' : '' }}">
+                            <a href="javascript:void(0)"  onclick="makeAudioCall(getCurrentChatUserId())" class="bg-warning"><i class="fas fa-phone"></i></a>
+                            <div class="video-call-dropdown">
+                                <a href="javascript:void(0)" class="bg-warning video-call-btn" onclick="toggleVideoDropdown(event)">
+                                    <i class="fas fa-video"></i>
+                                </a>
+                                <ul class="video-dropdown-menu" id="videoDropdownMenu">
+                                    <li><a href="javascript:void(0)" onclick="makeVideoCall(getCurrentChatUserId()); closeVideoDropdown();"><i class="fas fa-user"></i> Single Call</a></li>
+                                    <li><a href="javascript:void(0)" onclick="initiateGroupCall(getCurrentChatUserId()); closeVideoDropdown();"><i
+                                                class="fas fa-users"></i> Group Call</a></li>
+                                </ul>
+                            </div>
+                        </span>
                     @endif
                     <a href="#" class="add-to-favorite"><i class="fas fa-star"></i></a>
                     <a href="/"><i class="fas fa-home"></i></a>
@@ -180,6 +177,12 @@
 <script>
     {{--const csrfToken = "{{ csrf_token() }}";--}}
 
+    function getCurrentChatUserId() {
+        var pathParts = window.location.pathname.split('/');
+        var id = pathParts[pathParts.length - 1];
+        return id ? parseInt(id) : null;
+    }
+
     function makeVideoCall(userId) {
         ZegoCloudCaller.initiateCall(userId, 'video', csrfToken);
     }
@@ -190,6 +193,13 @@
 </script>
 
 <script>
+    // Show/hide call buttons based on whether a user is selected
+    $(document).ready(function() {
+        $("body").on("click", ".messenger-list-item, .favorite-list-item", function () {
+            var container = document.getElementById('callButtonsContainer');
+            if (container) container.style.display = '';
+        });
+    });
 
     // Video Call Dropdown Toggle
     function toggleVideoDropdown(event) {
