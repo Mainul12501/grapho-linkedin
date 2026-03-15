@@ -161,7 +161,7 @@
             <div class="modal-content rounded-4 p-4">
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <h6 class="mb-0 fw-semibold">
-                        <img src="{{ asset('/') }}frontend/employer/images/employersHome/leftarrow.png" alt="" class="me-2"> Job details
+                        <img src="{{ asset('/') }}frontend/employer/images/employersHome/leftarrow.png" alt="" class="me-2" data-bs-dismiss="modal"> <span>Job details</span>
                     </h6>
                     <div class="d-flex gap-2">
 {{--                        <button class="btn btn-outline-secondary btn-sm">--}}
@@ -227,7 +227,7 @@
                     <div class="wizard-step stepOne">
                         <!-- Modal Header -->
                         <div class="d-flex align-items-center gap-2 mb-4">
-                            <img src="{{ asset('/') }}frontend/employer/images/employersHome/leftarrow.png" alt="" class="me-2" style="cursor: default;">
+                            <img src="{{ asset('/') }}frontend/employer/images/employersHome/leftarrow.png" alt="" data-bs-dismiss="modal" class="me-2" style="cursor: default;">
                             <h5 class="mb-0 fw-semibold">Post job</h5>
                             <button type="button" class="btn-close position-absolute modal-redirect-previous-page"  style="right: 4%;" data-bs-dismiss="modal"></button>
                         </div>

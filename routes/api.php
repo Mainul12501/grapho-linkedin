@@ -177,19 +177,20 @@ Route::middleware([
         Route::get('/users/{user_id}', [ZegoCloudApiController::class, 'getUserDetails']);
         Route::post('/search-users', [ZegoCloudApiController::class, 'searchUsers']);
     });
+
+    //zego cloud group call routes starts
+    Route::prefix('group-call')->name('api.zego.group.')->group(function (){
+        Route::post('/initiate', [ZegoGroupCallController::class, 'initiateCall'])->name('initiate');
+        Route::post('/{groupCall}/add-participants', [ZegoGroupCallController::class, 'addParticipants'])->name('add-participants');
+        Route::post('/{groupCall}/join', [ZegoGroupCallController::class, 'joinCall'])->name('join');
+        Route::post('/{groupCall}/reject', [ZegoGroupCallController::class, 'rejectCall'])->name('reject');
+        Route::post('/{groupCall}/leave', [ZegoGroupCallController::class, 'leaveCall'])->name('leave');
+        Route::post('/{groupCall}/end', [ZegoGroupCallController::class, 'endCall'])->name('end');
+        Route::get('/{groupCall}/details', [ZegoGroupCallController::class, 'getCallDetails'])->name('details');
+        Route::get('/{groupCall}/participants', [ZegoGroupCallController::class, 'getParticipants'])->name('participants');
+        Route::get('/callable-users', [ZegoGroupCallController::class, 'getCallableUsers'])->name('callable-users');
+    });
+    //zego cloud group call routes ends
 });
 
 Route::post('auth/g-login-check', [SocialLoginController::class , 'gLoginCheck'])->name('auth.g-login-check');
-//zego cloud group call routes starts
-Route::prefix('group-call')->name('zego.group.')->middleware(['auth'])->group(function (){
-    Route::get('/call-page', [ZegoGroupCallController::class, 'viewCallPage'])->name('call-page');
-    Route::post('/initiate', [ZegoGroupCallController::class, 'initiateCall'])->name('initiate');
-    Route::post('/{groupCall}/add-participants', [ZegoGroupCallController::class, 'addParticipants'])->name('add-participants');
-    Route::post('/{groupCall}/join', [ZegoGroupCallController::class, 'joinCall'])->name('join');
-    Route::post('/{groupCall}/reject', [ZegoGroupCallController::class, 'rejectCall'])->name('reject');
-    Route::post('/{groupCall}/leave', [ZegoGroupCallController::class, 'leaveCall'])->name('leave');
-    Route::post('/{groupCall}/end', [ZegoGroupCallController::class, 'endCall'])->name('end');
-    Route::get('/{groupCall}/details', [ZegoGroupCallController::class, 'getCallDetails'])->name('details');
-    Route::get('/{groupCall}/participants', [ZegoGroupCallController::class, 'getParticipants'])->name('participants');
-    Route::get('/callable-users', [ZegoGroupCallController::class, 'getCallableUsers'])->name('callable-users');
-});

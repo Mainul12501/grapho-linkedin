@@ -31,6 +31,9 @@ class ZegoGroupCallController extends Controller
         $groupCallId = $request->query('groupCallId');
 
         if (!$user) {
+            if (CustomHelper::isApiRequest()) {
+                return response()->json(['error' => 'Unauthenticated'], 401);
+            }
             return redirect()->route('auth.user-login-page');
         }
 
@@ -45,13 +48,6 @@ class ZegoGroupCallController extends Controller
             'callType' => $callType,
             'groupCall' => $groupCall,
         ], 'frontend.zegocloud.group-call');
-
-        return view('frontend.zegocloud.group-call', [
-            'user' => $user,
-            'roomID' => $roomId,
-            'callType' => $callType,
-            'groupCall' => $groupCall,
-        ]);
     }
 
     /**
@@ -64,7 +60,7 @@ class ZegoGroupCallController extends Controller
             'call_type' => 'required|in:audio,video',
         ]);
 
-        $host = ViewHelper::loggedUser();
+        $host = CustomHelper::loggedUser();
 
         if (!in_array($host->user_type, ['employer', 'sub_employer'])) {
             return response()->json(['error' => 'Only employers can initiate group calls'], 403);
@@ -118,15 +114,24 @@ class ZegoGroupCallController extends Controller
             );
         }
 
-        return response()->json([
+        $responseData = [
             'success' => true,
             'group_call' => $groupCall->load('participants.user'),
-            'room_url' => route('zego.group.call-page', [
+        ];
+
+        if (!CustomHelper::isApiRequest()) {
+            $responseData['room_url'] = route('zego.group.call-page', [
                 'roomID' => $roomId,
                 'type' => $request->call_type,
                 'groupCallId' => $groupCall->id
-            ])
-        ]);
+            ]);
+        } else {
+            $responseData['room_id'] = $roomId;
+            $responseData['call_type'] = $request->call_type;
+            $responseData['group_call_id'] = $groupCall->id;
+        }
+
+        return response()->json($responseData);
     }
 
     /**
@@ -232,15 +237,24 @@ class ZegoGroupCallController extends Controller
 
         broadcast(new GroupCallParticipantJoined($groupCall, $user))->toOthers();
 
-        return response()->json([
+        $responseData = [
             'success' => true,
             'group_call' => $groupCall->load('participants.user'),
-            'room_url' => route('zego.group.call-page', [
+        ];
+
+        if (!CustomHelper::isApiRequest()) {
+            $responseData['room_url'] = route('zego.group.call-page', [
                 'roomID' => $groupCall->room_id,
                 'type' => $groupCall->call_type,
                 'groupCallId' => $groupCall->id
-            ])
-        ]);
+            ]);
+        } else {
+            $responseData['room_id'] = $groupCall->room_id;
+            $responseData['call_type'] = $groupCall->call_type;
+            $responseData['group_call_id'] = $groupCall->id;
+        }
+
+        return response()->json($responseData);
     }
 
     /**

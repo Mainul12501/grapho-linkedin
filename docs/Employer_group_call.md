@@ -168,10 +168,12 @@ final kitToken = ZegoUIKitPrebuilt.generateKitTokenForTest(
 
 **Base URL:** `https://your-domain.com/api/group-call`
 
-**Authentication:** All endpoints require `auth` middleware. Send the authentication token in the `Authorization` header:
+**Authentication:** All endpoints require `auth:sanctum` middleware. You must send a valid Sanctum Bearer token in the `Authorization` header:
 ```
-Authorization: Bearer {token}
+Authorization: Bearer {sanctum_token}
 ```
+
+> **Important:** The token is obtained from the login API. Without a valid Bearer token, all endpoints will return a `401 Unauthenticated` error.
 
 ---
 
@@ -246,14 +248,19 @@ POST /api/group-call/initiate
       }
     ]
   },
-  "room_url": "https://your-domain.com/group-call/call-page?roomID=group_room_abc123def456_1709312400&type=video&groupCallId=1"
+  "room_id": "group_room_abc123def456_1709312400",
+  "call_type": "video",
+  "group_call_id": 1
 }
 ```
+
+> **Note:** The API returns `room_id`, `call_type`, and `group_call_id` as separate fields for easy access. Use `room_id` to connect to the ZEGOCLOUD room.
 
 **Error Responses:**
 
 | Status | Condition |
 |---|---|
+| 401 | Unauthenticated (missing or invalid Bearer token) |
 | 403 | User is not an employer or sub_employer |
 | 400 | Trying to call yourself |
 | 422 | Validation error (invalid receiver_id or call_type) |
@@ -293,7 +300,9 @@ POST /api/group-call/{groupCallId}/join
     "duration": null,
     "participants": [ ... ]
   },
-  "room_url": "https://your-domain.com/group-call/call-page?roomID=..."
+  "room_id": "group_room_abc123def456_1709312400",
+  "call_type": "video",
+  "group_call_id": 1
 }
 ```
 
@@ -301,6 +310,7 @@ POST /api/group-call/{groupCallId}/join
 
 | Status | Condition |
 |---|---|
+| 401 | Unauthenticated (missing or invalid Bearer token) |
 | 403 | User was not invited to this call |
 | 400 | Call is full (max participants reached) or already ended |
 
@@ -335,6 +345,7 @@ POST /api/group-call/{groupCallId}/reject
 
 | Status | Condition |
 |---|---|
+| 401 | Unauthenticated (missing or invalid Bearer token) |
 | 400 | Participant status is not "invited" (already joined/left/rejected) |
 
 ---
@@ -371,6 +382,7 @@ POST /api/group-call/{groupCallId}/leave
 
 | Status | Condition |
 |---|---|
+| 401 | Unauthenticated (missing or invalid Bearer token) |
 | 400 | User is not a participant of this call |
 
 ---
@@ -402,6 +414,7 @@ POST /api/group-call/{groupCallId}/end
 
 | Status | Condition |
 |---|---|
+| 401 | Unauthenticated (missing or invalid Bearer token) |
 | 403 | Only the host can end the call |
 
 ---
@@ -449,6 +462,7 @@ POST /api/group-call/{groupCallId}/add-participants
 
 | Status | Condition |
 |---|---|
+| 401 | Unauthenticated (missing or invalid Bearer token) |
 | 403 | User is not the host or a participant |
 | 400 | Call has already ended |
 | 422 | Validation error (empty array, invalid user IDs) |
@@ -523,6 +537,7 @@ GET /api/group-call/{groupCallId}/details
 
 | Status | Condition |
 |---|---|
+| 401 | Unauthenticated (missing or invalid Bearer token) |
 | 403 | User is not the host or a participant |
 
 ---
@@ -563,6 +578,7 @@ GET /api/group-call/{groupCallId}/participants
 
 | Status | Condition |
 |---|---|
+| 401 | Unauthenticated (missing or invalid Bearer token) |
 | 403 | User is not the host or a participant |
 
 ---
@@ -847,8 +863,8 @@ Future<void> startGroupCall(int receiverId, String callType) async {
 
   if (response.statusCode == 200) {
     final data = jsonDecode(response.body);
-    final roomId = data['group_call']['room_id'];
-    final groupCallId = data['group_call']['id'];
+    final roomId = data['room_id'];
+    final groupCallId = data['group_call_id'];
 
     // Navigate to the call screen
     Navigator.push(context, MaterialPageRoute(
@@ -874,8 +890,8 @@ Future<void> acceptCall(int groupCallId) async {
 
   if (response.statusCode == 200) {
     final data = jsonDecode(response.body);
-    final roomId = data['group_call']['room_id'];
-    final callType = data['group_call']['call_type'];
+    final roomId = data['room_id'];
+    final callType = data['call_type'];
 
     Navigator.push(context, MaterialPageRoute(
       builder: (_) => GroupCallPage(
