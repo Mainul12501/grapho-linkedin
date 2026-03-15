@@ -449,20 +449,6 @@
 
             <div class="drawer-divider"></div>
 
-            <div class="drawer-section-title">Account</div>
-
-            <a href="{{ route('employee.settings') }}" class="drawer-item">
-                <i class="fas fa-cog"></i>
-                <span>Settings</span>
-            </a>
-            @if(isset($siteSetting) && $siteSetting->subscription_system_status ==1)
-                <a href="{{ route('employee.my-subscriptions') }}" class="drawer-item">
-                    <i class="fas fa-crown"></i>
-                    <span>Subscription</span>
-                </a>
-            @endif
-            <div class="drawer-divider"></div>
-
             <div class="drawer-section-title">My Activity</div>
 
             <a href="{{ route('employee.my-profile-viewers') }}" class="drawer-item">
@@ -479,6 +465,21 @@
                 <i class="fas fa-bookmark"></i>
                 <span>Saved Jobs</span>
             </a>
+
+            <div class="drawer-divider"></div>
+
+            <div class="drawer-section-title">Account</div>
+
+            <a href="{{ route('employee.settings') }}" class="drawer-item">
+                <i class="fas fa-cog"></i>
+                <span>Settings</span>
+            </a>
+            @if(isset($siteSetting) && $siteSetting->subscription_system_status ==1)
+                <a href="{{ route('employee.my-subscriptions') }}" class="drawer-item">
+                    <i class="fas fa-crown"></i>
+                    <span>Subscription</span>
+                </a>
+            @endif
 
             <div class="drawer-divider"></div>
 

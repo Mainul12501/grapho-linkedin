@@ -31,6 +31,7 @@ class ZegoCloudMobileController extends Controller
 
         $user->update([
             'device_token' => $request->device_token,
+            'fcm_token' => $request->device_token,
             'device_platform' => $request->device_platform,
             'is_online' => true,
             'last_seen' => now(),
