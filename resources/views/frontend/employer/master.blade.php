@@ -106,10 +106,10 @@
                     <span>Chat</span>
                 </a>
 
-                <a href="{{ route('employer.posts.index') }}" class="drawer-item">
-                    <i class="fas fa-newspaper"></i>
-                    <span>Posts</span>
-                </a>
+{{--                <a href="{{ route('employer.posts.index') }}" class="drawer-item">--}}
+{{--                    <i class="fas fa-newspaper"></i>--}}
+{{--                    <span>Posts</span>--}}
+{{--                </a>--}}
                 @if(isset($siteSetting) && $siteSetting->subscription_system_status ==1)
                     <a href="{{ route('employer.employer-subscriptions') }}" class="drawer-item">
                         <i class="fas fa-crown"></i>

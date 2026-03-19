@@ -110,8 +110,13 @@ Route::middleware([
 
         Route::resources([
             'job-tasks'  => JobTaskController::class,
-            'posts'  => PostController::class
+
         ]);
+        Route::as('api.')->group(function (){
+            Route::resources([
+                'posts'  => PostController::class
+            ]);
+        });
     });
     Route::prefix('employee')->as('employee.')->middleware('isEmployee')->group(function (){
         Route::get('home', [EmployeeViewController::class, 'employeeHome']);

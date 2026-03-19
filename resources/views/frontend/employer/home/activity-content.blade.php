@@ -88,7 +88,7 @@
                                 <img src="{{ asset($images[0]) }}" class="ed-post-thumb-img" alt="post img">
                             </a>
                         @else
-                            <img src="{{ asset('frontend/photo.png') }}" class="ed-post-thumb-img" alt="post img" style="object-fit:contain;padding:30px;opacity:.4;">
+                            <img src="{{ asset('frontend/photo.png') }}" class="ed-post-thumb-img def-img-on-mob" alt="post img" style="object-fit:contain;padding:30px;opacity:.4;">
                         @endif
                     </div>
 

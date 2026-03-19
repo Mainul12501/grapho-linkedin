@@ -358,6 +358,17 @@
     }
 
 </script>
+{{--disable enter button for form--}}
+<script>
+    document.querySelectorAll("form").forEach(function(form) {
+        form.addEventListener("keydown", function (e) {
+            if (e.key === "Enter") {
+                toastr.error('Enter button disabled. Please use click the button instead. Thanks..');
+                e.preventDefault();
+            }
+        });
+    });
+</script>
 {!! $siteSetting->meta_footer ?? '' !!}
 <script src="https://js.pusher.com/7.2.0/pusher.min.js"></script>
 @include('frontend.zegocloud.incoming-call-popup')

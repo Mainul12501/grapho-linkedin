@@ -12,7 +12,7 @@
                     <p class="ed-page-subtitle">Your jobs, posts &amp; company updates</p>
                 </div>
                 <div class="ed-header-actions">
-                    <a href="{{ route('employer.my-jobs', ['show_modal' => 'create']) }}" class="ed-btn ed-btn-primary">
+                    <a href="{{ route('employer.my-jobs', ['show_modal' => 'create']) }}" class="ed-btn ed-btn-primary post-job-hide-mobile">
                         <i class="fa-solid fa-plus"></i>
                         <span>Post a Job</span>
                     </a>
@@ -987,11 +987,11 @@
 
             .ed-sidebar {
                 width: 100%;
-                order: 2;
+                order: 1;
             }
 
             .ed-main {
-                order: 1;
+                order: 2;
                 width: 100%;
             }
 
@@ -1084,10 +1084,11 @@
             }
 
             .ed-sidebar-sticky {
-                grid-template-columns: 1fr;
+                grid-template-columns: 1fr 1fr;
             }
 
             .ed-quick-links {
+                grid-column: 1 / -1;
                 flex-direction: column;
             }
 
@@ -1199,6 +1200,10 @@
             display: flex;
             align-items: center;
             justify-content: center;
+        }
+        @media screen and (max-width: 768px){
+            .post-job-hide-mobile {display: none!important;}
+            .def-img-on-mob {padding: 0px!important; height: 160px!important;}
         }
     </style>
 @endpush

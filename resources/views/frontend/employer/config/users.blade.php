@@ -219,7 +219,7 @@
                 <div class="modal-header um-modal-header">
                     <h5 class="modal-title um-modal-title">
                         <div class="um-modal-icon">
-                            <i class="fa-solid fa-user-plus"></i>
+                            <i class="fa-solid fa-user-plus text-white"></i>
                         </div>
                         {{ trans('common.add') }} {{ trans('common.user') }}
                     </h5>
@@ -393,6 +393,7 @@
             box-shadow: 0 4px 12px rgba(20,28,37,.18);
         }
         .um-add-btn i { font-size: 13px; }
+        .um-add-btn:hover i,span { color: white!important; }
 
 
         /* --- Empty State --- */
