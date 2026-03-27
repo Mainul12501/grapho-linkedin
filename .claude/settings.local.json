@@ -3,5 +3,9 @@
     "allow": [
       "WebFetch(domain:www.zegocloud.com)"
     ]
-  }
+  },
+  "enabledMcpjsonServers": [
+    "laravel-boost"
+  ],
+  "enableAllProjectMcpServers": true
 }

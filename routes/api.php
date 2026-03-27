@@ -26,7 +26,7 @@ Route::get('/user', function (Request $request) {
 
 Route::get('/page/{slug?}', [FrontendViewController::class, 'showCommonPage']);
 Route::get('/check-block-approve-status', [FrontendViewController::class, 'checkBlockApproveStatus']);
-Route::post('send-otp', [CustomLoginController::class, 'sendOtp'])->name('send-otp');
+Route::post('send-otp', [CustomLoginController::class, 'sendOtp']);
 Route::post('verify-otp', [CustomLoginController::class, 'verifyOtp']);
 Route::post('login-with-google-app', [CustomLoginController::class, 'loginWithGoogleApp']);
 Route::post('buy-subscription/{subscriptionPlan}', [FrontendViewController::class, 'buySubscription']);
@@ -39,7 +39,7 @@ Route::get('get-site-settings', [FrontendViewController::class, 'getSiteSetting'
 
 Route::post('/call/initiate', [ZegoCloudController::class, 'initiateCall']);
 
-Route::prefix('auth')->name('auth.')->group(function (){
+Route::prefix('auth')->group(function (){
     Route::get('select-auth-method', [CustomLoginController::class, 'selectAuthMethod']);
     Route::get('set-registration-role', [CustomLoginController::class, 'setRegistrationRole']);
     Route::get('set-login-role', [CustomLoginController::class, 'setLoginRole']);

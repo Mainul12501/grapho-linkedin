@@ -1051,7 +1051,8 @@
                     <form action="{{ route('logout') }}" method="post" class="logoutForm">@csrf</form>
                 @else
                     <a href="{{ route('auth.select-auth-method') }}" class="btn-outline-custom">{{ trans('auth.sign_in') }}</a>
-                    <a href="{{ url('auth/user-registration-page?user=Employee') }}" class="btn-primary-custom">{{ trans('home.get_started_free') }}</a>
+{{--                    <a href="{{ url('auth/user-registration-page?user=Employee') }}" class="btn-primary-custom">{{ trans('home.get_started_free') }}</a>--}}
+                    <a href="{{ route('auth.set-registration-role') }}" class="btn-primary-custom">{{ trans('home.get_started_free') }}</a>
                 @endif
             </div>
 

@@ -318,26 +318,58 @@
     //     $('#signUpEmailDiv2').removeClass('d-none');
     // })
     var serverOtp = 0;
+
+    function startOtpCooldown($btn, originalText, seconds) {
+        let resendText = 'Resend OTP';
+        let remaining = seconds;
+        $btn.addClass('disabled opacity-75').css('pointer-events', 'none');
+        $btn.html(resendText + ' (' + remaining + 's)');
+        let timer = setInterval(function () {
+            remaining--;
+            if (remaining <= 0) {
+                clearInterval(timer);
+                $btn.html(resendText);
+                $btn.removeClass('disabled opacity-75').css('pointer-events', 'auto');
+            } else {
+                $btn.html(resendText + ' (' + remaining + 's)');
+            }
+        }, 1000);
+    }
+
     $(document).on('click', '#sendOtpBtn', function () {
+        let $btn = $(this);
+        if ($btn.hasClass('disabled')) return;
+
+        let mobile = $('#phoneNumber').val().trim();
+        if (!/^01\d{9}$/.test(mobile)) {
+            toastr.error('Please enter a valid 11-digit Bangladeshi mobile number starting with 01.');
+            return;
+        }
+
+        let originalText = '{{ trans('auth.send_otp') }}';
+        $btn.addClass('disabled opacity-75').css('pointer-events', 'none');
+
         $.ajax({
             url: '{{ route('send-otp') }}',
             type: 'POST',
             data: {
                 _token: '{{ csrf_token() }}',
-                mobile: $('#phoneNumber').val()
+                mobile: mobile
             },
             success: function (response) {
-                if (response.status == 'success')
-                {
+                if (response.status == 'success') {
                     serverOtp = response.otp;
                     $('#otpDiv').removeClass('d-none');
                     toastr.success(response.msg);
+                    startOtpCooldown($btn, originalText, 30);
                 } else {
                     toastr.error(response.msg);
+                    $btn.removeClass('disabled opacity-75').css('pointer-events', 'auto');
                 }
             },
             error: function (xhr) {
                 toastr.error('An error occurred while sending the OTP.');
+                $btn.removeClass('disabled opacity-75').css('pointer-events', 'auto');
             }
         })
     })
@@ -352,7 +384,8 @@
             return;
         }
         if ($btn.hasClass('disabled')) return;
-        // ✅ Disable button + show spinner
+
+        let originalText = '{{ trans('auth.send_otp') }}';
         $btn.addClass('disabled opacity-75');
         $spinner.removeClass('d-none');
 
@@ -361,24 +394,23 @@
             type: 'POST',
             data: {
                 _token: '{{ csrf_token() }}',
-                email: $('#signUpMail').val(),
+                email: email,
                 req_from: "register"
             },
             success: function (response) {
-                if (response.status == 'success')
-                {
-                    // serverOtp = response.otp;
+                if (response.status == 'success') {
                     toastr.success(response.msg);
                     $('#emailOtpDiv').removeClass('d-none');
+                    $spinner.addClass('d-none');
+                    startOtpCooldown($btn, originalText, 30);
                 } else {
                     toastr.error(response.msg);
+                    $btn.removeClass('disabled opacity-75');
+                    $spinner.addClass('d-none');
                 }
             },
             error: function (xhr) {
                 toastr.error('An error occurred while sending the OTP.');
-            },
-            complete: function () {
-                // ✅ Always restore button state
                 $btn.removeClass('disabled opacity-75');
                 $spinner.addClass('d-none');
             }

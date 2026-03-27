@@ -17,6 +17,7 @@ use App\Models\Backend\JobType;
 use App\Models\Backend\SiteSetting;
 use App\Models\Backend\UniversityName;
 use App\Models\User;
+use App\Mail\OtpVerifyMail;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -376,7 +377,7 @@ class CustomLoginController extends Controller
         if ($loggedUser->is_profile_updated == 1)
         {
             Toastr::error('you already updated your profile');
-            return  redirect('/');
+//            return  redirect('/');
         }
 
         $data = [];
@@ -444,15 +445,22 @@ class CustomLoginController extends Controller
                 }
             }
             $otp = ViewHelper::generateOtp($request->email);
-            $data = [
-                'otp'   => $otp,
-                'request'   => $request,
-                'purpose'   => 'verify',
-                'siteSetting'   => SiteSetting::first(),
-            ];
-            Mail::send('frontend.auth.email-otp-verify-account', $data, function ($message) use ($data){
-                $message->to($data['request']->email, 'Like Wise Bd')->subject('Verify Email');
-            });
+            $siteSetting = SiteSetting::first();
+            if (!isset($user)) {
+                $user = User::where('email', $request->email)->first();
+            }
+
+            Mail::to($request->email)->send(new OtpVerifyMail(
+                otp: $otp,
+                email: $request->email,
+                purpose: 'verify',
+                siteSetting: $siteSetting,
+                userName: $user?->name,
+            ));
+
+            // Auto-start queue worker if not already running
+            $this->ensureQueueWorkerRunning();
+
             return response()->json(['status'=> 'success', 'msg' => "An OTP has sent to your email - $request->email.",]);
         } else {
             return response()->json(['status' => 'error', 'msg' => 'No mobile Number found.']);
@@ -474,6 +482,30 @@ class CustomLoginController extends Controller
             return response()->json(['status'=> 'success', 'msg' => "OTP verified successfully",]);
         } else {
             return response()->json(['status'=> 'error', 'msg' => "OTP mismatched. Please try again.",]);
+        }
+    }
+
+    private function ensureQueueWorkerRunning(): void
+    {
+        $isWindows = strtoupper(substr(PHP_OS, 0, 3)) === 'WIN';
+
+        if ($isWindows) {
+            exec('tasklist /FI "WINDOWTITLE eq queue:work" 2>NUL', $output);
+            $isRunning = false;
+            foreach ($output as $line) {
+                if (stripos($line, 'php') !== false) {
+                    $isRunning = true;
+                    break;
+                }
+            }
+            if (!$isRunning) {
+                pclose(popen('start /B php "' . base_path('artisan') . '" queue:work --stop-when-empty', 'r'));
+            }
+        } else {
+            exec('pgrep -f "artisan queue:work" 2>/dev/null', $output);
+            if (empty($output)) {
+                exec('php ' . base_path('artisan') . ' queue:work --stop-when-empty > /dev/null 2>&1 &');
+            }
         }
     }
 

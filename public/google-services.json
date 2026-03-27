@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "244274632620",
+    "project_id": "likewise-abdaf",
+    "storage_bucket": "likewise-abdaf.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:244274632620:android:55d35ab7534f374cc40c09",
+        "android_client_info": {
+          "package_name": "com.likewise.user"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "244274632620-fcutlfkcndhstifekmqkqe723lhc8cp1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.likewise.user",
+            "certificate_hash": "5bcd611d2126849a27710ba48f36faf0e1e3023d"
+          }
+        },
+        {
+          "client_id": "244274632620-l8pg19nlpr1bkjq3f21ql8kao99f2h35.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAkT4SNA-rClcJpo5cS8hMVNzFUkTI7zzE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "244274632620-l8pg19nlpr1bkjq3f21ql8kao99f2h35.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "244274632620-3du5s5v5mrklsraptmkov0qc41icn7n6.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.likewise.user"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
