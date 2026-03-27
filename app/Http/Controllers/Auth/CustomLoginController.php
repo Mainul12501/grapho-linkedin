@@ -377,7 +377,7 @@ class CustomLoginController extends Controller
         if ($loggedUser->is_profile_updated == 1)
         {
             Toastr::error('you already updated your profile');
-//            return  redirect('/');
+            return  redirect('/');
         }
 
         $data = [];

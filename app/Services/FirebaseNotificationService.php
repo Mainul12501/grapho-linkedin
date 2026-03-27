@@ -60,11 +60,13 @@ class FirebaseNotificationService
      */
     protected function loadCredentials()
     {
-        if (!Storage::exists($this->credentialsPath)) {
-            throw new \Exception("Firebase credentials file not found at: {$this->credentialsPath}");
+        $absolutePath = storage_path('app/' . $this->credentialsPath);
+
+        if (!file_exists($absolutePath)) {
+            throw new \Exception("Firebase credentials file not found at: {$absolutePath}");
         }
 
-        $credentialsJson = Storage::get($this->credentialsPath);
+        $credentialsJson = file_get_contents($absolutePath);
         $this->credentials = json_decode($credentialsJson, true);
 
         if (!$this->credentials || !isset($this->credentials['project_id'])) {
@@ -236,22 +238,26 @@ class FirebaseNotificationService
         $accessToken = $this->getAccessToken();
         $fcmEndpoint = "https://fcm.googleapis.com/v1/projects/{$this->projectId}/messages:send";
 
-        // Build notification payload
-        $notification = [
-            'title' => $title,
-            'body' => $body,
-        ];
-
-        // Add optional notification properties
-        if (isset($options['image'])) {
-            $notification['image'] = $options['image'];
-        }
-
         // Build message payload
         $message = [
             'token' => $fcmToken,
-            'notification' => $notification,
         ];
+
+        // For data-only messages (e.g. call notifications), skip the 'notification' key
+        // so Flutter's onBackgroundMessage can handle them when the app is in background
+        if (!empty($options['data_only'])) {
+            $data['title'] = $title;
+            $data['body'] = $body;
+        } else {
+            $notification = [
+                'title' => $title,
+                'body' => $body,
+            ];
+            if (isset($options['image'])) {
+                $notification['image'] = $options['image'];
+            }
+            $message['notification'] = $notification;
+        }
 
         // Add data payload if provided
         if (!empty($data)) {
@@ -306,6 +312,10 @@ class FirebaseNotificationService
             Log::info('Firebase: Notification sent successfully', [
                 'token' => substr($fcmToken, 0, 20) . '...',
                 'title' => $title,
+                'is_data_only' => !empty($options['data_only']),
+                'has_notification_key' => isset($message['notification']),
+                'data_keys' => array_keys($message['data'] ?? []),
+                'full_payload' => $payload,
                 'response' => $responseData,
             ]);
 

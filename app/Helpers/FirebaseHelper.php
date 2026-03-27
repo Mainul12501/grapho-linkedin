@@ -337,28 +337,24 @@ class FirebaseHelper
             'timestamp' => now()->toIso8601String(),
         ];
 
-        // Use high priority options for incoming calls
+        // Use data-only message so Flutter's onBackgroundMessage can handle call UI
         $options = [
+            'data_only' => true,
             'android' => [
                 'priority' => 'high',
-                'notification' => [
-                    'sound' => 'default',
-                    'priority' => 'high',
-                    'click_action' => 'FLUTTER_NOTIFICATION_CLICK',
-                    'channel_id' => 'likewise',
-                ],
             ],
             'apns' => [
                 'payload' => [
                     'aps' => [
+                        'content-available' => 1,
                         'sound' => 'default',
                         'badge' => 1,
                         'category' => 'likewise',
-                        'alert' => [
-                            'title' => $title,
-                            'body' => $body,
-                        ],
                     ],
+                ],
+                'headers' => [
+                    'apns-priority' => '10',
+                    'apns-push-type' => 'background',
                 ],
             ],
         ];
@@ -507,28 +503,24 @@ class FirebaseHelper
             'timestamp' => now()->toIso8601String(),
         ];
 
-        // Use high priority options for incoming calls
+        // Use data-only message so Flutter's onBackgroundMessage can handle call UI
         $options = [
+            'data_only' => true,
             'android' => [
                 'priority' => 'high',
-                'notification' => [
-                    'sound' => 'default',
-                    'priority' => 'high',
-                    'click_action' => 'FLUTTER_NOTIFICATION_CLICK',
-                    'channel_id' => 'likewise',
-                ],
             ],
             'apns' => [
                 'payload' => [
                     'aps' => [
+                        'content-available' => 1,
                         'sound' => 'default',
                         'badge' => 1,
                         'category' => 'likewise',
-                        'alert' => [
-                            'title' => $title,
-                            'body' => $body,
-                        ],
                     ],
+                ],
+                'headers' => [
+                    'apns-priority' => '10',
+                    'apns-push-type' => 'background',
                 ],
             ],
         ];

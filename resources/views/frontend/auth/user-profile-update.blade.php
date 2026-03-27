@@ -613,6 +613,8 @@
         #stepBadge {
             border-radius: 5px!important;
         }
+        /*fixing modal height issue for mobile bottom menu*/
+        #modal {padding-bottom: 35px!important;}
     }
     .choices {margin-bottom: 0px!important;}
 </style>
