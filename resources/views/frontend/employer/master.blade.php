@@ -120,6 +120,10 @@
                     <i class="fas fa-user-check"></i>
                     <span>Applicants</span>
                 </a>
+                <a href="{{ route('employer.my-notifications') }}" class="drawer-item">
+                    <i class="fas fa-bell"></i>
+                    <span>Notifications</span>
+                </a>
 
                 <div class="drawer-divider"></div>
 

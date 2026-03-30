@@ -171,7 +171,7 @@
                 if (response.status == 'success')
                 {
                     $this.removeClass('notification-viewed').addClass('notification-accepted');
-                    toastr.success(response.msg);
+                    // toastr.success(response.msg);
                 } else {
                     toastr.error(response.msg);
                 }

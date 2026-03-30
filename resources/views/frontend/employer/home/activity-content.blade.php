@@ -142,7 +142,7 @@
     </div>
 @empty
     <div class="col-12">
-        <div class="ed-empty-state">
+        <div class="ed-empty-state bg-white">
             <div class="ed-empty-icon"><i class="fa-solid fa-folder-open"></i></div>
             <p class="ed-empty-text">No Published Activity Yet</p>
             <p class="ed-empty-sub">Post a job or create content to see your activity here</p>

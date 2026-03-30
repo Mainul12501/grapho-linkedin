@@ -45,6 +45,10 @@ class MessagesController extends Controller
      */
     public function index( $id = null)
     {
+        if (ViewHelper::checkIfUserApprovedOrBlocked(auth()->user()))
+        {
+            return ViewHelper::returnRedirectWithMessage(route('employer.dashboard', ['is_own' => 'true']),  'error','Your account is blocked or has not approved yet. Please contact with Likewise.');
+        }
         $messenger_color = ViewHelper::loggedUser()->messenger_color;
         return view('Chatify::pages.app', [
             'id' => $id ?? 0,

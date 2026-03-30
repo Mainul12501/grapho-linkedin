@@ -188,7 +188,7 @@ Route::middleware([
         });
 
 
-        Route::post('make-msg-seen/{web_notification_id}', [EmployeeViewController::class, 'makeMsgSeen'])->name('make-msg-seen');
+
         Route::post('apply-job/{jobTask}', [EmployeeViewController::class, 'applyJob'])->name('apply-job');
         Route::post('update-profile/{user}', [EmployeeViewController::class, 'updateProfile'])->name('update-profile');
         Route::post('update-employee-info', [EmployeeViewController::class, 'updateEmployeeInfo'])->name('update-employee-info');
@@ -199,6 +199,7 @@ Route::middleware([
             'employee-documents'    => EmployeeDocumentsController::class,
         ]);
     });
+    Route::post('employee/make-msg-seen/{web_notification_id}', [EmployeeViewController::class, 'makeMsgSeen'])->name('employee.make-msg-seen');
 });
 
 

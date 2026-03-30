@@ -57,6 +57,12 @@
 <script>
     var base_url = "{!! url('/') !!}/";
 
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+
     let response;
 
     function sendAjaxRequest(url, method, data = {}) {
