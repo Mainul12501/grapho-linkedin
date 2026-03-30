@@ -210,7 +210,8 @@ class EmployerViewController extends Controller
         {
             return ViewHelper::returnRedirectWithMessage(route('employer.dashboard', ['is_own' => 'true']),  'error','Your account is blocked or has not approved yet. Please contact with Likewise.');
         }
-        $jobTasks = JobTask::where(['user_id' => ViewHelper::loggedUser()->id, 'status' => 1])->where('is_softly_deleted', 0)->get(['id', 'job_title']);
+        $employerId = ViewHelper::loggedUser()->user_type == 'sub_employer' ? ViewHelper::loggedUser()->employerCompany->user_id : ViewHelper::loggedUser()->id;
+        $jobTasks = JobTask::where(['user_id' => $employerId, 'status' => 1])->where('is_softly_deleted', 0)->get(['id', 'job_title']);
         if (ViewHelper::checkIfRequestFromApi()) {
             foreach ($jobTasks as $jobTask) {
                 $jobTask->total_applicants = $jobTask->employeeAppliedJobs()->count() ?? 0;
@@ -492,8 +493,8 @@ class EmployerViewController extends Controller
                 }
             }
             $webNotification = new WebNotification();
-            $webNotification->viewer_id = $loggedUser->id;
-            $webNotification->viewed_user_id = $userId;
+            $webNotification->viewer_id = $loggedUser->id;  // employer id
+            $webNotification->viewed_user_id = $userId;  // employee id
             $webNotification->notification_type = 'view_profile';
             $webNotification->msg = "$loggedUser->name have viewed your profile.";
             $webNotification->save();
@@ -537,6 +538,7 @@ class EmployerViewController extends Controller
     {
         $employerView = (isset($request->view) && $request->view == 'employer') ? false : true;
         $loggedUser = ViewHelper::loggedUser();
+
         if (isset($request->company_id) && isset($request->view)) {
             $companyDetails = EmployerCompany::find($request->company_id);
             $jobTasks = JobTask::with(['jobType', 'jobLocationType', 'employeeAppliedJobs'])
@@ -584,7 +586,7 @@ class EmployerViewController extends Controller
                 ['path' => request()->url(), 'query' => request()->query()]
             );
         } else {
-            $companyDetails = EmployerCompany::where(['user_id' => ViewHelper::loggedUser()->id])->first();
+            $companyDetails = ViewHelper::loggedUser()->user_type == 'sub_employer' ? EmployerCompany::where(['user_id' => ViewHelper::loggedUser()->employerCompany->user_id])->first() : EmployerCompany::where(['user_id' => ViewHelper::loggedUser()->id])->first();
             $paginatedData = new \Illuminate\Pagination\LengthAwarePaginator(
                 collect([]),
                 0,
@@ -658,7 +660,8 @@ class EmployerViewController extends Controller
     public function changeEmployeeJobApplicationStatus(Request $request, JobTask $jobTask, User $user, $status = 'pending')
     {
         $loggedUser = ViewHelper::loggedUser();
-        if ($loggedUser->id != $jobTask->user_id) {
+        $jobCreatorId = $loggedUser->user_type == 'sub_employer' ? $loggedUser->employerCompany->user_id : ViewHelper::loggedUser()->id;
+        if ($jobCreatorId != $jobTask->user_id) {
             return ViewHelper::returEexceptionError('You are not authorized to change this status');
         }
         try {
@@ -678,8 +681,8 @@ class EmployerViewController extends Controller
             FirebaseHelper::sendCustomNotification($user->id, 'Job status changed', "$loggedUser->name has updated your job: $jobTask->job_title status to $status.", 'new_message');
 
             $webNotification = new WebNotification();
-            $webNotification->viewer_id = $loggedUser->id;
-            $webNotification->viewed_user_id = $user->id;
+            $webNotification->viewer_id = $loggedUser->id; // employer id
+            $webNotification->viewed_user_id = $user->id;  // employee id
             $webNotification->notification_type = 'accept_application';
             $webNotification->msg = "$loggedUser->name has updated your job: $jobTask->job_title status to $status.";
             $webNotification->save();
@@ -926,11 +929,19 @@ After careful consideration, we regret to inform you that we have decided to mov
         return \view('frontend.employer.config.my-subscriptions');
     }
 
-    public function myNotifications()
+    public function myNotifications(Request $request)
     {
         $loggedUser = ViewHelper::loggedUser();
-        $webNotifications = WebNotification::where(['status' => 1])->where('viewed_user_id', $loggedUser->id)->paginate(20);
+        $webNotifications = WebNotification::where(['status' => 1])->where('viewed_user_id', $loggedUser->id)->orWhere('notification_type','new_post')->latest()->paginate(20);
         $newNotifications = $webNotifications->where('is_seen', 0)->count();
+
+        if ($request->ajax()) {
+            return view(
+                'frontend.employee.base-functionalities.partials.notification-items',
+                compact('webNotifications')
+            )->render();
+        }
+
         $data = [
             'notifications' => $webNotifications,
             'newNotifications' => $newNotifications,

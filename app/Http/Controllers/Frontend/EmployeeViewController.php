@@ -506,7 +506,7 @@ class EmployeeViewController extends Controller
     public function myNotifications(Request $request)
     {
         $loggedUser = ViewHelper::loggedUser();
-        $webNotifications = WebNotification::where(['status' => 1])->latest()->where('viewed_user_id', $loggedUser->id)->paginate(10);
+        $webNotifications = WebNotification::where(['status' => 1])->latest()->where('viewed_user_id', $loggedUser->id)->orWhere('notification_type', 'new_job')->paginate(10);
         $newNotifications = $webNotifications->where('is_seen', 0)->count();
         // 👇 When loading more via scroll
         if ($request->ajax()) {
@@ -574,7 +574,7 @@ class EmployeeViewController extends Controller
         }
         if (ViewHelper::checkIfUserApprovedOrBlocked(ViewHelper::loggedUser()))
         {
-            return ViewHelper::returnRedirectWithMessage(route('employee.home', 'error', 'Your account is blocked or has not approved yet. Please contact with admin.'));
+            return ViewHelper::returnRedirectWithMessage(route('employee.home', 'error', 'Your account is blocked or has not approved yet. Please contact with Likewise.'));
         }
 //        return $jobTask;
         $loggedUser = ViewHelper::loggedUser();
@@ -590,8 +590,15 @@ class EmployeeViewController extends Controller
                     $loggedUser->employeeSavedJobs()->detach($jobTask->id);
 
                 $webNotification = new WebNotification();
-                $webNotification->viewer_id = $jobTask->id;
-                $webNotification->viewed_user_id = $loggedUser->id;
+                $webNotification->viewer_id = $jobTask->user_id;  // employer id
+                $webNotification->viewed_user_id = $loggedUser->id; // employee id
+                $webNotification->notification_type = 'accept_application';
+                $webNotification->msg = "$loggedUser->name has applied for job post: $jobTask->job_title.";
+                $webNotification->save();
+
+                $webNotification = new WebNotification();
+                $webNotification->viewed_user_id = $jobTask->user_id;  // employer id
+                $webNotification->viewer_id = $loggedUser->id; // employee id
                 $webNotification->notification_type = 'accept_application';
                 $webNotification->msg = "$loggedUser->name has applied for job post: $jobTask->job_title.";
                 $webNotification->save();

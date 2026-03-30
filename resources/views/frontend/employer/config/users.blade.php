@@ -57,7 +57,22 @@
                                 <!-- Empty State -->
                                 <div class="um-empty-state">
                                     <div class="um-empty-visual">
-                                        <img src="https://illustrations.popsy.co/gray/team-work.svg" alt="No team members" class="um-empty-img" />
+                                        <svg class="um-empty-img" viewBox="0 0 280 220" fill="none" xmlns="http://www.w3.org/2000/svg" style="max-width:260px;margin:0 auto;display:block;">
+                                            <ellipse cx="140" cy="200" rx="120" ry="14" fill="#f0f0f0"/>
+                                            <circle cx="140" cy="80" r="28" fill="#e0e0e0" stroke="#bbb" stroke-width="2"/>
+                                            <circle cx="132" cy="74" r="2.5" fill="#999"/><circle cx="148" cy="74" r="2.5" fill="#999"/>
+                                            <path d="M134 84a8 8 0 0012 0" stroke="#999" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                                            <path d="M140 108c-28 0-50 14-50 32v12h100v-12c0-18-22-32-50-32z" fill="#e0e0e0" stroke="#bbb" stroke-width="2"/>
+                                            <circle cx="56" cy="96" r="22" fill="#ebebeb" stroke="#ccc" stroke-width="1.5"/>
+                                            <circle cx="49" cy="91" r="2" fill="#aaa"/><circle cx="63" cy="91" r="2" fill="#aaa"/>
+                                            <path d="M50 99a7 7 0 0010 0" stroke="#aaa" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+                                            <path d="M56 118c-22 0-40 11-40 26v8h80v-8c0-15-18-26-40-26z" fill="#ebebeb" stroke="#ccc" stroke-width="1.5"/>
+                                            <circle cx="224" cy="96" r="22" fill="#ebebeb" stroke="#ccc" stroke-width="1.5"/>
+                                            <circle cx="217" cy="91" r="2" fill="#aaa"/><circle cx="231" cy="91" r="2" fill="#aaa"/>
+                                            <path d="M218 99a7 7 0 0010 0" stroke="#aaa" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+                                            <path d="M224 118c-22 0-40 11-40 26v8h80v-8c0-15-18-26-40-26z" fill="#ebebeb" stroke="#ccc" stroke-width="1.5"/>
+                                            <path d="M92 140c14-10 30-14 48-14s34 4 48 14" stroke="#ccc" stroke-width="1.5" stroke-dasharray="5 3" fill="none" stroke-linecap="round"/>
+                                        </svg>
                                     </div>
                                     <h5 class="um-empty-title">No team members yet</h5>
                                     <p class="um-empty-desc">Start building your team by adding sub-users who can help manage your company profile, job postings, and candidate communications.</p>
@@ -393,7 +408,7 @@
             box-shadow: 0 4px 12px rgba(20,28,37,.18);
         }
         .um-add-btn i { font-size: 13px; }
-        .um-add-btn:hover i,span { color: white!important; }
+        /*.um-add-btn:hover i,span { color: white!important; }*/
 
 
         /* --- Empty State --- */

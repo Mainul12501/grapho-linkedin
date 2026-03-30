@@ -1,5 +1,5 @@
 <aside class="sidebar bg-white p-3">
-    <a href="" class="brand mb-3 d-block">
+    <a href="{{ auth()->user()->user_type == 'employer' ? route('employer.home') : route('/') }}" class="brand mb-3 d-block">
 {{--        <img src="{{ isset($siteSetting) ? asset($siteSetting->logo) : asset('/frontend/likewise.png') }}" alt="" class="" style="max-height: 40px; max-width: 120px; min-width: 90px" /></a>--}}
         <img src="{{ asset('/frontend/likewise.png') }}" alt="" class="" style="max-height: 40px; max-width: 120px; min-width: 90px" /></a>
     <ul class="nav flex-column">

@@ -16,6 +16,7 @@ return [
     'deadline' => 'Deadline:',
     'applicants' => 'Applicants',
     'no_available_job_found' => 'No Available job Found.',
+    'no_closed_job_found' => 'No Closed job Found.',
     'job_details' => 'Job details',
     'about' => 'About',
     'job_requirements' => 'Job Requirements',

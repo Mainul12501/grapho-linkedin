@@ -128,7 +128,7 @@
                                     <div class="mj-empty-icon">
                                         <i class="fas fa-briefcase"></i>
                                     </div>
-                                    <h5 class="mj-empty-title">{{ trans('employer.no_available_job_found') }}</h5>
+                                    <h5 class="mj-empty-title">{{ isset($_GET['job_status']) && $_GET['job_status'] == 'closed' ? trans('employer.no_closed_job_found') :trans('employer.no_available_job_found') }}</h5>
                                     <p class="mj-empty-text">Post your first job to start receiving applications</p>
                                     <button class="mj-post-btn" data-bs-toggle="modal" data-bs-target="#createJobModal">
                                         <i class="fas fa-plus"></i> {{ trans('employer.post_a_job') }}

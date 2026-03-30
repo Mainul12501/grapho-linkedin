@@ -16,6 +16,7 @@ return [
     'deadline' => 'সময়সীমা:',
     'applicants' => 'আবেদনকারী',
     'no_available_job_found' => 'কোন উপলব্ধ চাকরি পাওয়া যায়নি।',
+    'no_closed_job_found' => 'কোন বন্ধ চাকরি পাওয়া যায়নি।',
     'job_details' => 'চাকরির বিবরণ',
     'about' => 'সম্পর্কে',
     'job_requirements' => 'চাকরির প্রয়োজনীয়তা',

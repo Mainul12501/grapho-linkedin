@@ -5,6 +5,7 @@
 @section('body')
 
 
+
     <!-- Main Content -->
     <section class="notificationContent">
         <div class="container">
@@ -39,6 +40,99 @@
 
 
 @endsection
+
+@push('style')
+    <style>
+        .notificationContent h2{
+            font-weight: 600;
+            font-size: 24px;
+            line-height: 100%;
+            letter-spacing: -2%;
+            color: #141C25;
+        }
+
+        .notificationContent h6{
+            font-weight: 400;
+            font-size: 16px;
+            line-height: 160%;
+            letter-spacing: -1%;
+            color: #484f5b;
+            margin-bottom: 20px;
+        }
+
+        .notificationContent .container {
+            max-width: 760px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .notificationContent .notification-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .notificationContent .notification-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            background-color: #fff;
+            position: relative;
+            border-bottom: 1px solid #E5E7EB;
+        }
+
+        .notificationContent .notification-item:hover {
+            background-color: #f1f1f1;
+        }
+
+        .notificationContent .notification-viewed {
+            background-color: #FFCB111A;
+        }
+
+        .notificationContent .notification-accepted {
+            background-color: #fff;
+        }
+
+        .notificationContent .notification-icon img {
+            margin-right: 15px;
+        }
+
+        .notificationContent .notification-content {
+            flex-grow: 1;
+        }
+
+        .notificationContent .notification-content p {
+            font-size: 14px;
+            margin: 0;
+        }
+
+        .notificationContent .notification-content .time {
+            font-size: 12px;
+            color: #6c757d;
+        }
+
+        .notificationContent .more-options {
+            font-size: 20px;
+            color: #6c757d;
+            cursor: pointer;
+        }
+
+        .notificationContent .show-more a {
+            display: block;
+            text-decoration: none;
+            padding: 10px 0;
+            font-weight: 600;
+            font-size: 16px;
+            line-height: 150%;
+            letter-spacing: -1%;
+            text-align: center;
+            color: #141C25;
+        }
+
+        .notificationContent .show-more a:hover {
+            text-decoration: underline;
+        }
+    </style>
+@endpush
 
 @push('script')
     <script>

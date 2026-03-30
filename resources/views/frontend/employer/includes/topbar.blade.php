@@ -5,7 +5,8 @@
 
 
     <div class="d-flex align-items-center gap-3">
-        <a href="{{ route('employer.my-notifications') }}"><img src="{{ asset('/') }}frontend/employer/images/employersHome/notification.png" alt="" class="me-3" /></a>
+{{--        <a href="{{ route('employer.my-notifications') }}"><img src="{{ asset('/') }}frontend/employer/images/employersHome/notification.png" alt="" class="me-3" /></a>--}}
+        <a href="{{ route('employer.my-notifications') }}"><img src="https://cdn-icons-png.flaticon.com/512/3119/3119338.png" style="max-height: 25px" alt="notification" class="me-3" /></a>
         <a href="{{ route('employer.settings') }}"><img src="{{ asset('/') }}frontend/employer/images/employersHome/gearIcon.png" alt="" class="me-3" /></a>
 
         <div class="dropdown d-flex align-items-center" style="cursor: pointer">
