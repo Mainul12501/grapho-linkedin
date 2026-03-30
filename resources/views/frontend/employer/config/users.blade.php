@@ -87,6 +87,7 @@
 
                                 <!-- Desktop Table View (md+) -->
                                 <div class="um-table-card d-none d-md-block">
+                                    <div class="um-table-responsive">
                                     <table class="um-table">
                                         <thead>
                                             <tr>
@@ -157,6 +158,7 @@
                                             @endforeach
                                         </tbody>
                                     </table>
+                                    </div>
                                 </div>
 
                                 <!-- Mobile Card View (below md) -->
@@ -471,6 +473,11 @@
             border: 1px solid #E2E8F0;
             border-radius: 14px;
             overflow: hidden;
+        }
+
+        .um-table-responsive {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
         }
 
         .um-table {
