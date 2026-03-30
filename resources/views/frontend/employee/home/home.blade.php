@@ -44,7 +44,7 @@
         </aside>
 
         {{-- ====== JOB FEED ====== --}}
-        <section class="eh-feed">
+        <section class="eh-feed mx-md-auto">
 
             {{-- Top Job Picks --}}
             @if(count($topJobsForEmployee) > 0)

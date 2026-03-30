@@ -34,7 +34,7 @@
 
             <!-- Mobile Subheader -->
             <div class="forSmall ma-mobile-subheader">
-                <p>{{ trans('employee.you_have_applied_to_jobs', ['count' => count($myApplications) ?? 0]) }}</p>
+{{--                <p>{{ trans('employee.you_have_applied_to_jobs', ['count' => count($myApplications) ?? 0]) }}</p>--}}
             </div>
 
             <!-- Applications Table -->

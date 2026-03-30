@@ -589,12 +589,12 @@ class EmployeeViewController extends Controller
                 if ($loggedUser->employeeSavedJobs()->where('job_task_id', $jobTask->id)->exists())
                     $loggedUser->employeeSavedJobs()->detach($jobTask->id);
 
-                $webNotification = new WebNotification();
-                $webNotification->viewer_id = $jobTask->user_id;  // employer id
-                $webNotification->viewed_user_id = $loggedUser->id; // employee id
-                $webNotification->notification_type = 'accept_application';
-                $webNotification->msg = "$loggedUser->name has applied for job post: $jobTask->job_title.";
-                $webNotification->save();
+//                $webNotification = new WebNotification();
+//                $webNotification->viewer_id = $jobTask->user_id;  // employer id
+//                $webNotification->viewed_user_id = $loggedUser->id; // employee id
+//                $webNotification->notification_type = 'accept_application';
+//                $webNotification->msg = "$loggedUser->name has applied for job post: $jobTask->job_title.";
+//                $webNotification->save();
 
                 $webNotification = new WebNotification();
                 $webNotification->viewed_user_id = $jobTask->user_id;  // employer id
