@@ -1119,6 +1119,7 @@
                     $('#saveBtnImg'+jobId).attr('src', "{{ asset('/frontend/bookmark-circle.png') }}");
                     $('#saveBtnTxt'+jobId).text('{{ trans('common.saved') }}');
                     toastr.success(response.msg);
+                    location.reload();
                 } else if (response.status == 'error') {
                     toastr.error(response.msg);
                 }

@@ -450,16 +450,16 @@ class CustomLoginController extends Controller
                 $user = User::where('email', $request->email)->first();
             }
 
-            Mail::to($request->email)->send(new OtpVerifyMail(
-                otp: $otp,
-                email: $request->email,
-                purpose: 'verify',
-                siteSetting: $siteSetting,
-                userName: $user?->name,
-            ));
-
-            // Auto-start queue worker if not already running
-            $this->ensureQueueWorkerRunning();
+            // Send OTP mail synchronously (onConnection('sync') bypasses ShouldQueue)
+            Mail::to($request->email)->send(
+                (new OtpVerifyMail(
+                    otp: $otp,
+                    email: $request->email,
+                    purpose: 'verify',
+                    siteSetting: $siteSetting,
+                    userName: $user?->name,
+                ))->onConnection('sync')
+            );
 
             return response()->json(['status'=> 'success', 'msg' => "An OTP has sent to your email - $request->email.",]);
         } else {
@@ -482,30 +482,6 @@ class CustomLoginController extends Controller
             return response()->json(['status'=> 'success', 'msg' => "OTP verified successfully",]);
         } else {
             return response()->json(['status'=> 'error', 'msg' => "OTP mismatched. Please try again.",]);
-        }
-    }
-
-    private function ensureQueueWorkerRunning(): void
-    {
-        $isWindows = strtoupper(substr(PHP_OS, 0, 3)) === 'WIN';
-
-        if ($isWindows) {
-            exec('tasklist /FI "WINDOWTITLE eq queue:work" 2>NUL', $output);
-            $isRunning = false;
-            foreach ($output as $line) {
-                if (stripos($line, 'php') !== false) {
-                    $isRunning = true;
-                    break;
-                }
-            }
-            if (!$isRunning) {
-                pclose(popen('start /B php "' . base_path('artisan') . '" queue:work --stop-when-empty', 'r'));
-            }
-        } else {
-            exec('pgrep -f "artisan queue:work" 2>/dev/null', $output);
-            if (empty($output)) {
-                exec('php ' . base_path('artisan') . ' queue:work --stop-when-empty > /dev/null 2>&1 &');
-            }
         }
     }
 

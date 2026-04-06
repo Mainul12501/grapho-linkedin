@@ -459,6 +459,7 @@
                     $('#saveBtnTxt'+jobId).text("{{ trans('common.saved') }}");
                     thisBtn.removeClass('bg-primary text-white').addClass('bg-gray-300 bg-light text-dark');
                     toastr.success(response.msg);
+                    thisElement.closest('.eh-job-card').hide();
                 }
                 else if (response.status == 'error')
                 {
