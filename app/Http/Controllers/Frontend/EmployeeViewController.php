@@ -506,7 +506,7 @@ class EmployeeViewController extends Controller
     public function myNotifications(Request $request)
     {
         $loggedUser = ViewHelper::loggedUser();
-        $webNotifications = WebNotification::where(['status' => 1])->latest()->where('viewed_user_id', $loggedUser->id)->orWhere('notification_type', 'new_job')->paginate(10);
+        $webNotifications = WebNotification::where(['status' => 1])->latest()->where('viewed_user_id', $loggedUser->id)/*->orWhere('notification_type', 'new_job')*/->paginate(10);
         $newNotifications = $webNotifications->where('is_seen', 0)->count();
         // 👇 When loading more via scroll
         if ($request->ajax()) {

@@ -932,7 +932,7 @@ After careful consideration, we regret to inform you that we have decided to mov
     public function myNotifications(Request $request)
     {
         $loggedUser = ViewHelper::loggedUser();
-        $webNotifications = WebNotification::where(['status' => 1])->where('viewed_user_id', $loggedUser->id)->orWhere('notification_type','new_post')->latest()->paginate(20);
+        $webNotifications = WebNotification::where(['status' => 1])->where('viewed_user_id', $loggedUser->id)/*->orWhere('notification_type','new_post')*/->latest()->paginate(20);
         $newNotifications = $webNotifications->where('is_seen', 0)->count();
 
         if ($request->ajax()) {

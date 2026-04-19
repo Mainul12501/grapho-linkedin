@@ -169,11 +169,11 @@
             <div class="container px-0 border-bottom">
                 <div style="border-radius: 0px" class="bg-white p-4 shadow-sm">
                     <h6 class="fw-semibold mb-3">{{ trans('employer.salary') }}</h6>
-                    <ul class="nav nav-tabs mb-3" id="salaryTab" role="tablist">
-                        <li class="nav-item"><a class="nav-link {{ $jobTask->job_pref_salary_payment_type == 'monthly' ? 'active' : '' }} salary-type" data-value="monthly" data-bs-toggle="tab" href="#">{{ trans('employer.monthly') }}</a></li>
-                        <li class="nav-item"><a class="nav-link salary-type {{ $jobTask->job_pref_salary_payment_type == 'hourly' ? 'active' : '' }}" data-value="hourly" data-bs-toggle="tab" href="#">{{ trans('employer.hourly') }}</a></li>
-                        <li class="nav-item"><a class="nav-link salary-type {{ $jobTask->job_pref_salary_payment_type == 'yearly' ? 'active' : '' }}" data-value="yearly" data-bs-toggle="tab" href="#">{{ trans('employer.yearly') }}</a></li>
-                        <li class="nav-item"><a class="nav-link salary-type {{ $jobTask->job_pref_salary_payment_type == 'fixed' ? 'active' : '' }}" data-value="fixed" data-bs-toggle="tab" href="#">{{ trans('employer.fixed_amount') }}</a></li>
+                    <ul class="nav nav-pills mb-3" id="salaryTab" role="tablist">
+                        <li class="nav-item"><a class="nav-link {{ $jobTask->job_pref_salary_payment_type == 'monthly' ? 'active' : '' }} salary-type" data-value="monthly" data-bs-toggle="pill" href="#">{{ trans('employer.monthly') }}</a></li>
+                        <li class="nav-item"><a class="nav-link salary-type {{ $jobTask->job_pref_salary_payment_type == 'hourly' ? 'active' : '' }}" data-value="hourly" data-bs-toggle="pill" href="#">{{ trans('employer.hourly') }}</a></li>
+                        <li class="nav-item"><a class="nav-link salary-type {{ $jobTask->job_pref_salary_payment_type == 'yearly' ? 'active' : '' }}" data-value="yearly" data-bs-toggle="pill" href="#">{{ trans('employer.yearly') }}</a></li>
+                        <li class="nav-item"><a class="nav-link salary-type {{ $jobTask->job_pref_salary_payment_type == 'fixed' ? 'active' : '' }}" data-value="fixed" data-bs-toggle="pill" href="#">{{ trans('employer.fixed_amount') }}</a></li>
                     </ul>
                     <input type="hidden" name="job_pref_salary_payment_type" class="job_pref_salary_payment_type" value="monthly">
                     <input type="number" min="0" name="salary_amount" value="{{ $jobTask->salary_amount ?? 0 }}" class="form-control mb-2" placeholder="{{ trans('employer.bdt_50000') }}">

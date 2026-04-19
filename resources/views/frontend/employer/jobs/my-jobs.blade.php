@@ -400,11 +400,11 @@
                             <div class="container px-0 border-bottom">
                                 <div class="bg-white  p-4 shadow-sm" style="border-radius: 0px">
                                     <h6 class="fw-semibold mb-3">Salary</h6>
-                                    <ul class="nav nav-tabs mb-3" id="salaryTab" role="tablist">
-                                        <li class="nav-item"><a class="nav-link active salary-type" data-value="monthly" data-bs-toggle="tab" href="#">Monthly</a></li>
-                                        <li class="nav-item"><a class="nav-link salary-type" data-value="hourly" data-bs-toggle="tab" href="#">Hourly</a></li>
-                                        <li class="nav-item"><a class="nav-link salary-type" data-value="yearly" data-bs-toggle="tab" href="#">Yearly</a></li>
-                                        <li class="nav-item"><a class="nav-link salary-type" data-value="fixed" data-bs-toggle="tab" href="#">Fixed amount</a></li>
+                                    <ul class="nav nav-pills mb-3" id="salaryTab" role="tablist">
+                                        <li class="nav-item"><a class="nav-link active salary-type" data-value="monthly" data-bs-toggle="pill" href="#">Monthly</a></li>
+                                        <li class="nav-item"><a class="nav-link salary-type" data-value="hourly" data-bs-toggle="pill" href="#">Hourly</a></li>
+                                        <li class="nav-item"><a class="nav-link salary-type" data-value="yearly" data-bs-toggle="pill" href="#">Yearly</a></li>
+                                        <li class="nav-item"><a class="nav-link salary-type" data-value="fixed" data-bs-toggle="pill" href="#">Fixed amount</a></li>
                                     </ul>
                                     <input type="hidden" name="job_pref_salary_payment_type" class="job_pref_salary_payment_type" value="monthly">
                                     <input type="number" min="0" name="salary_amount" class="form-control mb-2" placeholder="BDT 50,000">
@@ -1417,6 +1417,7 @@
         .skill-search-input:focus + .clear-skill-search {
             border-color: #86b7fe;
         }
+        .nav-pills .active {background-color: #FFCB11!important;}
     </style>
 @endpush
 
