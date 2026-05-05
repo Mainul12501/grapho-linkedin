@@ -1,0 +1,463 @@
+
+    /* =============================================
+       Employer Settings — eh- design system
+       ============================================= */
+
+    /* --- Page Header --- */
+.st-page-header {
+    margin-bottom: 24px;
+    padding-top: 4px;
+}
+
+.st-page-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: #0F172A;
+    margin: 0;
+    line-height: 1.2;
+}
+
+.st-page-subtitle {
+    font-size: 13px;
+    color: #64748B;
+    margin: 4px 0 0;
+}
+
+/* --- Side Navigation --- */
+.st-sidenav {
+    background: #fff;
+    border: 1px solid #E2E8F0;
+    border-radius: 14px;
+    padding: 8px;
+    /*position: sticky;*/
+    position: static;
+    top: 80px;
+}
+.st-sidenav .active i, .st-sidenav .active span {color: white!important;}
+
+.st-nav-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 14px;
+    border-radius: 10px;
+    text-decoration: none;
+    color: #475569;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all .2s;
+}
+
+.st-nav-item:hover {
+    background: #F8FAFC;
+    color: #0F172A;
+}
+
+.st-nav-item.active {
+    background: #141C25;
+    color: #fff;
+    font-weight: 600;
+}
+
+.st-nav-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: #F1F5F9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    color: #64748B;
+    flex-shrink: 0;
+    transition: all .2s;
+}
+
+.st-nav-item.active .st-nav-icon {
+    background: rgba(255,203,17,.2);
+    color: #FFCB11;
+}
+
+.st-nav-item:hover .st-nav-icon {
+    background: #E2E8F0;
+    color: #0F172A;
+}
+
+.st-nav-item.active:hover .st-nav-icon {
+    background: rgba(255,203,17,.2);
+    color: #FFCB11;
+}
+
+/* --- Settings Card --- */
+.st-card {
+    background: #fff;
+    border: 1px solid #E2E8F0;
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+/* --- Settings Row --- */
+.st-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 20px;
+    border-bottom: 1px solid #F1F5F9;
+    cursor: pointer;
+    transition: background .15s;
+    gap: 12px;
+}
+
+.st-row:last-of-type {
+    border-bottom: none;
+}
+
+.st-row:hover {
+    background: #F8FAFC;
+}
+
+.st-row-no-click {
+    cursor: default;
+}
+
+.st-row-no-click:hover {
+    background: transparent;
+}
+
+.st-row-left {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    min-width: 0;
+}
+
+.st-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: #F1F5F9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    color: #64748B;
+    flex-shrink: 0;
+    transition: all .2s;
+}
+
+.st-row:hover .st-icon {
+    background: #E2E8F0;
+    color: #0F172A;
+}
+
+.st-row-no-click:hover .st-icon {
+    background: #F1F5F9;
+    color: #64748B;
+}
+
+.st-icon-danger {
+    background: #FEF2F2;
+    color: #EF4444;
+}
+
+.st-row:hover .st-icon-danger {
+    background: #FEE2E2;
+    color: #DC2626;
+}
+
+.st-label-group {
+    min-width: 0;
+}
+
+.st-label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    color: #0F172A;
+    line-height: 1.3;
+}
+
+.st-label-danger {
+    color: #EF4444;
+}
+
+.st-sublabel {
+    display: block;
+    font-size: 12px;
+    color: #94A3B8;
+    margin-top: 2px;
+    line-height: 1.3;
+}
+
+.st-row-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+}
+
+.st-value {
+    font-size: 13px;
+    color: #64748B;
+    max-width: 200px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.st-masked {
+    letter-spacing: 2px;
+    color: #94A3B8;
+}
+
+.st-arrow {
+    font-size: 11px;
+    color: #CBD5E1;
+    transition: transform .2s, color .2s;
+}
+
+.st-row:hover .st-arrow {
+    color: #64748B;
+    transform: translateX(2px);
+}
+
+/* --- Language Button --- */
+.st-lang-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #F1F5F9;
+    border: 1px solid #E2E8F0;
+    border-radius: 8px;
+    padding: 7px 14px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #0F172A;
+    cursor: pointer;
+    transition: all .2s;
+    font-family: 'Geist', sans-serif;
+}
+
+.st-lang-btn:hover,
+.st-lang-btn:focus {
+    background: #E2E8F0;
+    border-color: #CBD5E1;
+}
+
+.st-lang-btn i {
+    color: #FFCB11;
+}
+
+.st-dropdown {
+    border: 1px solid #E2E8F0;
+    border-radius: 10px;
+    box-shadow: 0 8px 24px rgba(15,23,42,.1);
+    padding: 4px;
+    min-width: 140px;
+}
+
+.st-dropdown .dropdown-item {
+    border-radius: 6px;
+    padding: 8px 12px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #475569;
+    transition: all .15s;
+}
+
+.st-dropdown .dropdown-item:hover {
+    background: #F1F5F9;
+    color: #0F172A;
+}
+
+.st-dropdown .dropdown-item.active {
+    background: #141C25;
+    color: #FFCB11;
+    font-weight: 600;
+}
+
+/* --- Modal Styles --- */
+.st-modal {
+    border: none;
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+.st-modal-header {
+    border-bottom: 1px solid #F1F5F9;
+    padding: 20px 24px;
+}
+
+.st-modal-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #0F172A;
+}
+
+.st-modal-body {
+    padding: 24px;
+}
+
+.st-form-group {
+    margin-bottom: 18px;
+}
+
+.st-form-group:last-child {
+    margin-bottom: 0;
+}
+
+.st-form-label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: #0F172A;
+    margin-bottom: 6px;
+}
+
+.st-input {
+    border: 1.5px solid #E2E8F0;
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-size: 14px;
+    color: #0F172A;
+    transition: border-color .2s, box-shadow .2s;
+    font-family: 'Geist', sans-serif;
+}
+
+.st-input:focus {
+    border-color: #FFCB11;
+    box-shadow: 0 0 0 3px rgba(255,203,17,.15);
+}
+
+.st-input::placeholder {
+    color: #94A3B8;
+}
+
+.st-modal-footer {
+    border-top: 1px solid #F1F5F9;
+    padding: 16px 24px;
+    gap: 8px;
+}
+
+.st-btn-cancel {
+    background: #F1F5F9;
+    border: 1px solid #E2E8F0;
+    border-radius: 8px;
+    padding: 8px 18px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #475569;
+    transition: all .2s;
+    font-family: 'Geist', sans-serif;
+}
+
+.st-btn-cancel:hover {
+    background: #E2E8F0;
+    color: #0F172A;
+}
+
+.st-btn-save {
+    background: #141C25;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 20px;
+    font-size: 13px;
+    font-weight: 700;
+    color: #FFCB11;
+    transition: all .2s;
+    font-family: 'Geist', sans-serif;
+}
+
+.st-btn-save:hover {
+    background: #0F172A;
+    color: #FFCB11;
+}
+
+/* =============================================
+   Responsive
+   ============================================= */
+
+@media (max-width: 767px) {
+    .st-page-header {
+        margin-bottom: 16px;
+    }
+
+    .st-page-title {
+        font-size: 20px;
+    }
+
+    .st-card {
+        border-radius: 12px;
+    }
+
+    .st-row {
+        padding: 14px 16px;
+        gap: 10px;
+    }
+
+    .st-icon {
+        width: 36px;
+        height: 36px;
+        font-size: 14px;
+        border-radius: 8px;
+    }
+
+    .st-label {
+        font-size: 13px;
+    }
+
+    .st-sublabel {
+        font-size: 11px;
+    }
+
+    .st-value {
+        max-width: 120px;
+        font-size: 12px;
+    }
+
+    .st-modal-header {
+        padding: 16px 18px;
+    }
+
+    .st-modal-body {
+        padding: 18px;
+    }
+
+    .st-modal-footer {
+        padding: 14px 18px;
+    }
+}
+
+@media (max-width: 575px) {
+    .st-row {
+        padding: 12px 14px;
+    }
+
+    .st-row-left {
+        gap: 10px;
+    }
+
+    .st-icon {
+        width: 34px;
+        height: 34px;
+        font-size: 13px;
+    }
+
+    .st-label {
+        font-size: 12.5px;
+    }
+
+    .st-value {
+        max-width: 90px;
+        font-size: 11px;
+    }
+
+    .st-sublabel {
+        display: none;
+    }
+
+    .st-lang-btn {
+        padding: 6px 10px;
+        font-size: 12px;
+    }
+}
