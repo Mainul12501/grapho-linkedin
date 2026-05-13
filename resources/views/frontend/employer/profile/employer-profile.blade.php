@@ -29,7 +29,7 @@
                             @if($employeeDetails->is_open_for_hire == 1)
                                 <span class="ep-hire-badge">
                                     <span class="ep-hire-dot"></span>
-                                    Open to hire
+                                    Open to Work
                                 </span>
                             @endif
 

@@ -86,7 +86,7 @@ return [
     'male' => 'Male',
     'female' => 'Female',
     'all' => 'All',
-    'bdt_50000' => 'BDT 50,000',
+    'bdt_50000' => 'Ex: 50,000',
     'submit' => 'Submit',
     'new_password' => 'New Password',
     'home' => 'Home',

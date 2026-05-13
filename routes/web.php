@@ -1,5 +1,6 @@
 <?php
 
+
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Frontend\FrontendViewController;
@@ -224,9 +225,4 @@ Route::get('/run-db-seeder', function () {
 
 Route::get('/phpinfo', function () {
     phpinfo();
-});
-
-Route::get('/get-mid', function (){
-//    return \App\Helpers\CustomHelper::isApiRequest();
-    return \App\Helpers\ViewHelper::loggedUser();
 });

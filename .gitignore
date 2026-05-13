@@ -23,3 +23,5 @@ yarn-error.log
 /.zed
 /storage/debugbar
 /storage/app/firebase
+/.claude
+/.qodo

@@ -379,7 +379,7 @@
                             <div class="container px-0 border-bottom">
                                 <div class="bg-white  p-4 shadow-sm" style="border-radius: 0px">
                                     <h6 class="fw-semibold mb-3">CGPA </h6>
-                                    <input type="number" min="0" name="cgpa" class="form-control" placeholder="Min 3.50">
+                                    <input type="number" min="0" name="cgpa" class="form-control" placeholder="Ex: 3.50">
                                 </div>
                             </div>
 
@@ -407,7 +407,7 @@
                                         <li class="nav-item"><a class="nav-link salary-type" data-value="fixed" data-bs-toggle="pill" href="#">Fixed amount</a></li>
                                     </ul>
                                     <input type="hidden" name="job_pref_salary_payment_type" class="job_pref_salary_payment_type" value="monthly">
-                                    <input type="number" min="0" name="salary_amount" class="form-control mb-2" placeholder="BDT 50,000">
+                                    <input type="number" min="0" name="salary_amount" class="form-control mb-2" placeholder="Ex: 50,000">
 {{--                                    <div class="form-check">--}}
 {{--                                        <input class="form-check-input" type="checkbox" id="rangeCheck">--}}
 {{--                                        <label class="form-check-label text-muted" for="rangeCheck">Use salary range</label>--}}

@@ -17,20 +17,20 @@ class UserSeeder extends Seeder
         $user = User::insert([
             [
                 'id' => 1,
-                'name'  => 'Super Admin',
-                'email' => 'admin@admin.com',
+                'name'  => 'Developer',
+                'email' => 'developer@likewisebd.com',
                 'user_type' => 'super_admin',
 //                'mobile' => '01911522517',
-                'password'  => Hash::make('admin@admin.com'), // superadmin
+                'password'  => Hash::make('developer@likewisebd.com'), // developer@likewisebd.com
 //                'status'    => 1
             ],
             [
                 'id' => 2,
-                'name'  => 'Developer',
-                'email' => 'developer@grapho.com',
+                'name'  => 'Super Admin',
+                'email' => 'likewisebd2025@gmail.com',
                 'user_type' => 'super_admin',
 //                'mobile' => '01646688970',
-                'password'  => Hash::make('mainulislam'), // superadmin
+                'password'  => Hash::make('likewise.bd.%%2025'), // superadmin
 //                'status'    => 1
             ],
         ]);

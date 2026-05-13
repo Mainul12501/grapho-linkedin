@@ -150,7 +150,7 @@
             <div class="container px-0 border-bottom">
                 <div style="border-radius: 0px" class="bg-white p-4 shadow-sm">
                     <h6 class="fw-semibold mb-3">{{ trans('employer.cgpa_preference') }}</h6>
-                    <input type="number" min="0" name="cgpa" value="{{ $jobTask->cgpa ?? 0 }}" class="form-control" placeholder="Min 3.50">
+                    <input type="number" min="0" name="cgpa" value="{{ $jobTask->cgpa ?? 0 }}" class="form-control" placeholder="Ex: 3.50">
                 </div>
             </div>
             <!-- Gender Preference -->
