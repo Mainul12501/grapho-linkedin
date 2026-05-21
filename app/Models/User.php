@@ -129,6 +129,52 @@ class User extends Authenticatable
         ];
     }
 
+    protected static function boot()
+    {
+        parent::boot();
+        static::deleting(function (User $user) {
+            // Delete HasMany relationships
+            if ($user->employeeWorkExperiences()->exists()) $user->employeeWorkExperiences()->delete();
+            if ($user->employeeEducations()->exists()) $user->employeeEducations()->delete();
+            if ($user->employeeDocuments()->exists()) $user->employeeDocuments()->delete();
+            if ($user->webNotifications()->exists()) $user->webNotifications()->delete();
+            if ($user->viewerWebNotifications()->exists()) $user->viewerWebNotifications()->delete();
+            if ($user->viewedUserwebNotifications()->exists()) $user->viewedUserwebNotifications()->delete();
+            if ($user->posts()->exists()) $user->posts()->delete();
+            if ($user->postViewers()->exists()) $user->postViewers()->delete();
+            if ($user->followedEmployers()->exists()) $user->followedEmployers()->delete();
+            if ($user->employerFollowers()->exists()) $user->employerFollowers()->delete();
+            if ($user->appliedJobs()->exists()) $user->appliedJobs()->delete();
+            if ($user->viewEmployerIds()->exists()) $user->viewEmployerIds()->delete();
+            if ($user->viewEmployeeIds()->exists()) $user->viewEmployeeIds()->delete();
+            if ($user->initiatedCalls()->exists()) $user->initiatedCalls()->delete();
+            if ($user->receivedCalls()->exists()) $user->receivedCalls()->delete();
+            if ($user->employerCompanies()->exists()) $user->employerCompanies()->delete();
+            if ($user->jobs()->exists()) $user->jobs()->update(['is_softly_deleted' => 1]);
+
+            // Detach BelongsToMany pivot records
+            if ($user->employeeSkills()->exists()) $user->employeeSkills()->detach();
+            if ($user->jobTypes()->exists()) $user->jobTypes()->detach();
+            if ($user->jobLocationTypes()->exists()) $user->jobLocationTypes()->detach();
+            if ($user->employeeSavedJobs()->exists()) $user->employeeSavedJobs()->detach();
+            if ($user->roles()->exists()) $user->roles()->detach();
+
+            // Clean up Chatify and other tables without relationships
+            DB::table('ch_messages')->where('from_id', $user->id)->orWhere('to_id', $user->id)->delete();
+            DB::table('ch_favorites')->where('user_id', $user->id)->orWhere('favorite_id', $user->id)->delete();
+            DB::table('chatify_deleted_conversations')->where('user_id', $user->id)->orWhere('contact_id', $user->id)->delete();
+            DB::table('sessions')->where('user_id', $user->id)->delete();
+            DB::table('personal_access_tokens')->where('tokenable_type', self::class)->where('tokenable_id', $user->id)->delete();
+            DB::table('order_payments')->where('user_id', $user->id)->delete();
+            DB::table('group_call_participants')->where('user_id', $user->id)->delete();
+            DB::table('group_calls')->where('host_id', $user->id)->delete();
+            DB::table('call_logs')->where('host_id', $user->id)->delete();
+
+            // Nullify sub-employers' parent reference
+            if ($user->subEmployers()->exists()) $user->subEmployers()->update(['user_id' => null]);
+        });
+    }
+
 //    public function setProviderTokenAttribute($value){
 //        return $this->attributes['provider_token'] = Crypt::crypt($value);
 //    }

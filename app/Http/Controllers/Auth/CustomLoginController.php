@@ -245,6 +245,8 @@ class CustomLoginController extends Controller
             {
                 $company = new EmployerCompany();
                 $company->user_id   = $user->id;
+                $company->email   = $user->email ?? '';
+                $company->phone   = $user->mobile ?? '';
 //                $company->industry_id   = $request->industry_id;
 //                $company->employer_company_category_id   = $request->employer_company_category_id;
                 $company->name  = $request->organization_name;

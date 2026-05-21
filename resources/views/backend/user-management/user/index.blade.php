@@ -89,7 +89,7 @@
                                         <form class="d-inline" action="{{ route('users.destroy', ['user' => $user->id, 'req_for' => 'delete']) }}" method="post" >
                                             @csrf
                                             @method('delete')
-                                            <button type="button" class="btn btn-sm btn-danger data-delete-form">
+                                            <button type="button" class="btn btn-sm btn-danger user-delete-form">
                                                 <i class="fa-solid fa-trash"></i>
                                             </button>
                                         </form>
@@ -148,12 +148,35 @@
         }
         Swal.fire({
             title: 'Are you sure?',
-            text: "You won't be able to revert this!",
+            text: "Sure to change block status! ",
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
             confirmButtonText: `Yes, ${currentBlockStatus} it!`
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Swal.fire(
+                //     'Deleted!',
+                //     'Your file has been deleted.',
+                //     'success'
+                // )
+                $(this).parent().submit();
+            }
+
+        })
+    })
+    $(document).on('click', '.user-delete-form', function (event) {
+        event.preventDefault();
+
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "Deleted user can't be reverted! All related data to this user will be deleted too!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: `Yes, Delete !`
         }).then((result) => {
             if (result.isConfirmed) {
                 // Swal.fire(

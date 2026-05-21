@@ -119,6 +119,212 @@
             padding: 0px 3px 5px 0px !important;
         }
         .job-type .badge {background-color: gray}
+
+        /* Job details modal styles */
+        .sj-detail-company-row {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 16px;
+        }
+        .sj-detail-logo {
+            width: 48px;
+            height: 48px;
+            border-radius: 10px;
+            object-fit: cover;
+            border: 1px solid #eee;
+        }
+        .sj-detail-logo-link {
+            flex-shrink: 0;
+        }
+        .sj-detail-company-info {
+            min-width: 0;
+        }
+        .sj-detail-company-name {
+            font-size: 15px;
+            font-weight: 650;
+            color: #484f5b;
+            margin: 0;
+        }
+        .sj-detail-company-name a {
+            color: inherit;
+            text-decoration: none;
+        }
+        .sj-detail-company-name a:hover {
+            color: #141c25;
+        }
+        .sj-detail-company-addr {
+            font-size: 13px;
+            color: #8c919d;
+            margin: 2px 0 0;
+        }
+        .sj-detail-job-title {
+            font-size: 24px;
+            font-weight: 800;
+            color: #141c25;
+            margin: 0 0 10px;
+            letter-spacing: -0.3px;
+            line-height: 1.25;
+        }
+        .sj-tag {
+            display: inline-block;
+            padding: 3px 10px;
+            font-size: 11px;
+            font-weight: 600;
+            color: #556070;
+            background: #f0f1f4;
+            border-radius: 6px;
+        }
+        .sj-detail-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+        .sj-detail-actions {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 24px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #f0f1f3;
+        }
+        .sj-apply-btn {
+            display: inline-flex !important;
+            align-items: center;
+            gap: 7px;
+            padding: 10px 24px !important;
+            font-size: 14px !important;
+            font-weight: 700;
+            color: #141c25 !important;
+            background: #FFCB11 !important;
+            border: none !important;
+            border-radius: 12px !important;
+            cursor: pointer;
+            transition: all .2s ease;
+            width: auto !important;
+            margin: 0 !important;
+        }
+        .sj-apply-btn:hover {
+            background: #f0be00 !important;
+            box-shadow: 0 4px 14px rgba(255,203,17,.3);
+            color: #141c25 !important;
+        }
+        .sj-applied-btn {
+            display: inline-flex !important;
+            align-items: center;
+            gap: 7px;
+            padding: 10px 24px !important;
+            font-size: 14px !important;
+            font-weight: 600;
+            color: #22c55e !important;
+            background: #F0FDF4 !important;
+            border: 1px solid #BBF7D0 !important;
+            border-radius: 12px !important;
+            cursor: default;
+            width: auto !important;
+            margin: 0 !important;
+        }
+        .sj-save-btn {
+            display: inline-flex !important;
+            align-items: center;
+            gap: 6px;
+            padding: 10px 20px !important;
+            font-size: 14px !important;
+            font-weight: 600;
+            color: #484f5b !important;
+            background: #f3f4f6 !important;
+            border: 1px solid #e4e5e9 !important;
+            border-radius: 12px !important;
+            cursor: pointer;
+            transition: all .2s ease;
+            width: auto !important;
+            margin: 0 !important;
+        }
+        .sj-save-btn:hover {
+            background: #e8e9ec !important;
+            color: #484f5b !important;
+        }
+        .sj-detail-meta-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+            padding: 16px;
+            background: #f8f9fb;
+            border-radius: 12px;
+        }
+        .sj-meta-item {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .sj-meta-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: #8c919d;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+        .sj-meta-value {
+            font-size: 14px;
+            font-weight: 700;
+            color: #141c25;
+        }
+        .sj-detail-section {
+            margin-bottom: 20px;
+        }
+        .sj-detail-heading {
+            font-size: 16px;
+            font-weight: 700;
+            color: #141c25;
+            margin: 0 0 8px;
+        }
+        .sj-detail-subheading {
+            font-size: 14px;
+            font-weight: 650;
+            color: #141c25;
+            margin: 0 0 8px;
+        }
+        .sj-detail-text {
+            font-size: 14px;
+            color: #556070;
+            line-height: 1.7;
+        }
+        .sj-detail-text p {
+            color: #556070;
+        }
+        .sj-detail-list {
+            padding-left: 20px;
+            margin: 0;
+        }
+        .sj-detail-list li {
+            font-size: 14px;
+            color: #556070;
+            margin-bottom: 4px;
+        }
+        .sj-skills-wrap {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .sj-skill-pill {
+            padding: 5px 14px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #484f5b;
+            background: #f0f1f4;
+            border-radius: 20px;
+        }
+        .about-company-name {
+            margin-top: 10px;
+        }
+        @media (max-width: 768px) {
+            .sj-detail-meta-grid {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 @endpush
 
