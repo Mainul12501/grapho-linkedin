@@ -222,10 +222,11 @@
     <div class="container">
         <div class="row">
             <div class="col-md-6 mx-auto">
-                <h2 class="text-center" style="margin-top: 100px;">Account Delete Process</h2>
+                <h2 class="text-center" style="margin-top: 100px;">Delete Your Account !!</h2>
             </div>
             <div class="col-md-12 mt-3">
-                <p style="text-align: justify">{!! $page->content ?? 'Page content here' !!}</p>
+                <p style="text-align: justify">Users can request deletion of their LikeWise account and associated personal data by contacting us at: support@example.com
+                    Please include your registered email address or phone number.</p>
             </div>
         </div>
     </div>
