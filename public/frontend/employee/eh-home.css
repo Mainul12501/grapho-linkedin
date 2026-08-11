@@ -1,0 +1,838 @@
+/* ============================================
+   Employee Home Page Redesign
+   Prefix: eh-*
+   ============================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap');
+
+/* --- Design Tokens --- */
+.eh-home {
+    --eh-font: 'Plus Jakarta Sans', 'Geist', -apple-system, BlinkMacSystemFont, sans-serif;
+    --eh-bg: #F3F4F6;
+    --eh-surface: #FFFFFF;
+    --eh-text: #111827;
+    --eh-text-secondary: #6B7280;
+    --eh-text-muted: #9CA3AF;
+    --eh-border: #E5E7EB;
+    --eh-border-light: #F3F4F6;
+    --eh-accent: #FFCB11;
+    --eh-accent-dark: #E5B50E;
+    --eh-accent-light: #FFF8E1;
+    --eh-blue: #2563EB;
+    --eh-blue-dark: #1D4ED8;
+    --eh-blue-light: #EFF6FF;
+    --eh-green: #059669;
+    --eh-green-light: #ECFDF5;
+    --eh-radius-xs: 6px;
+    --eh-radius-sm: 8px;
+    --eh-radius-md: 12px;
+    --eh-radius-lg: 16px;
+    --eh-shadow-xs: 0 1px 2px rgba(0,0,0,0.04);
+    --eh-shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+    --eh-shadow-md: 0 4px 6px -1px rgba(0,0,0,0.07), 0 2px 4px -1px rgba(0,0,0,0.04);
+    --eh-shadow-hover: 0 10px 25px -3px rgba(0,0,0,0.08), 0 4px 6px -2px rgba(0,0,0,0.04);
+    --eh-transition: 0.2s ease;
+}
+
+/* --- Base Layout --- */
+.eh-home {
+    font-family: var(--eh-font);
+    display: flex;
+    gap: 24px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 24px 16px;
+    align-items: flex-start;
+}
+
+.eh-home *, .eh-home *::before, .eh-home *::after {
+    box-sizing: border-box;
+}
+
+/* =========================================
+   SIDEBAR
+   ========================================= */
+.eh-sidebar {
+    position: sticky;
+    top: 80px;
+    width: 300px;
+    min-width: 300px;
+    flex-shrink: 0;
+}
+
+/* --- Profile Card --- */
+.eh-profile-card {
+    background: var(--eh-surface);
+    border-radius: var(--eh-radius-md);
+    border: 1px solid var(--eh-border);
+    padding: 28px 24px 24px;
+    text-align: center;
+    animation: eh-fadeInUp 0.35s ease both;
+}
+
+.eh-avatar-wrap {
+    position: relative;
+    display: inline-block;
+    margin-bottom: 14px;
+}
+
+.eh-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--eh-border-light);
+    transition: transform var(--eh-transition);
+}
+
+.eh-avatar:hover {
+    transform: scale(1.04);
+}
+
+.eh-status-dot {
+    position: absolute;
+    bottom: 4px;
+    right: 4px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border: 2.5px solid var(--eh-surface);
+}
+
+.eh-status-dot--online {
+    background: var(--eh-green);
+}
+
+.eh-status-dot--offline {
+    background: var(--eh-text-muted);
+}
+
+.eh-name {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--eh-text);
+    margin: 0 0 8px;
+    line-height: 1.3;
+}
+
+.eh-status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 14px;
+    border-radius: 100px;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.eh-status-badge--open {
+    background: var(--eh-green-light);
+    color: var(--eh-green);
+}
+
+.eh-status-badge--offline {
+    background: var(--eh-border-light);
+    color: var(--eh-text-muted);
+}
+
+.eh-status-badge i {
+    font-size: 7px;
+}
+
+.eh-bio {
+    font-size: 14px;
+    color: var(--eh-text-secondary);
+    margin: 0 0 4px;
+    line-height: 1.55;
+    word-break: break-word;
+}
+
+.eh-location {
+    font-size: 13px;
+    color: var(--eh-text-muted);
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    word-break: break-word;
+}
+
+.eh-location i {
+    font-size: 11px;
+    color: var(--eh-text-muted);
+}
+
+/* --- Stats Grid --- */
+.eh-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-top: 12px;
+    animation: eh-fadeInUp 0.4s ease both;
+    animation-delay: 0.08s;
+}
+
+.eh-stat-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 14px 6px 12px;
+    background: var(--eh-surface);
+    border: 1px solid var(--eh-border);
+    border-radius: var(--eh-radius-sm);
+    text-decoration: none !important;
+    transition: all var(--eh-transition);
+    cursor: pointer;
+}
+
+.eh-stat-card:hover {
+    border-color: var(--eh-accent);
+    background: var(--eh-accent-light);
+    transform: translateY(-2px);
+    box-shadow: var(--eh-shadow-sm);
+}
+
+.eh-stat-icon {
+    width: 34px;
+    height: 34px;
+    border-radius: var(--eh-radius-xs);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+
+.eh-stat-icon--bookmark {
+    background: #FEF3C7;
+    color: #D97706;
+}
+
+.eh-stat-icon--check {
+    background: #D1FAE5;
+    color: #059669;
+}
+
+.eh-stat-icon--eye {
+    background: #DBEAFE;
+    color: #2563EB;
+}
+
+.eh-stat-value {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--eh-text);
+    line-height: 1;
+    margin-bottom: 4px;
+}
+
+.eh-stat-label {
+    font-size: 11px;
+    color: var(--eh-text-muted);
+    font-weight: 500;
+    text-align: center;
+    line-height: 1.3;
+}
+
+/* =========================================
+   FEED AREA
+   ========================================= */
+.eh-feed {
+    flex: 1;
+    min-width: 0;
+}
+
+/* --- Job Section --- */
+.eh-section {
+    background: var(--eh-surface);
+    border-radius: var(--eh-radius-md);
+    border: 1px solid var(--eh-border);
+    overflow: hidden;
+    animation: eh-fadeInUp 0.4s ease both;
+}
+
+.eh-section + .eh-section {
+    margin-top: 16px;
+}
+
+.eh-section:nth-child(2) {
+    animation-delay: 0.08s;
+}
+
+.eh-section-header {
+    padding: 20px 24px 16px;
+    border-bottom: 1px solid var(--eh-border);
+}
+
+.eh-section-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--eh-text);
+    margin: 0 0 4px;
+    line-height: 1.35;
+}
+
+.eh-section-subtitle {
+    font-size: 14px;
+    color: var(--eh-text-secondary);
+    margin: 0;
+    line-height: 1.5;
+}
+
+/* =========================================
+   JOB CARD
+   ========================================= */
+.eh-job-card {
+    display: flex;
+    gap: 16px;
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--eh-border);
+    transition: background var(--eh-transition);
+    position: relative;
+}
+
+.eh-job-card:last-of-type {
+    border-bottom: none;
+}
+
+.eh-job-card:hover {
+    background: #FAFBFC;
+}
+
+/* Desktop logo */
+.eh-job-logo {
+    flex-shrink: 0;
+}
+
+.eh-job-logo img {
+    width: 52px;
+    height: 52px;
+    border-radius: var(--eh-radius-sm);
+    object-fit: cover;
+    border: 1px solid var(--eh-border);
+    background: var(--eh-surface);
+}
+
+/* Mobile logo (hidden on desktop) */
+.eh-job-logo--mobile {
+    display: none;
+}
+
+.eh-job-logo--mobile img {
+    width: 40px;
+    height: 40px;
+    border-radius: var(--eh-radius-xs);
+    object-fit: cover;
+    border: 1px solid var(--eh-border);
+    background: var(--eh-surface);
+}
+
+/* Job body */
+.eh-job-body {
+    flex: 1;
+    min-width: 0;
+}
+
+.eh-job-header-row {
+    margin-bottom: 0;
+}
+
+.eh-job-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--eh-text);
+    margin: 0 0 2px;
+    line-height: 1.4;
+}
+
+.eh-view-link {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--eh-blue);
+    cursor: pointer;
+    margin-left: 8px;
+    text-decoration: none;
+    transition: color var(--eh-transition);
+}
+
+.eh-view-link:hover {
+    color: var(--eh-blue-dark);
+    text-decoration: underline;
+}
+
+.eh-job-company {
+    font-size: 14px;
+    color: var(--eh-text-secondary);
+    margin: 0 0 10px;
+}
+
+.eh-job-company a {
+    color: var(--eh-text-secondary);
+    text-decoration: none;
+    transition: color var(--eh-transition);
+}
+
+.eh-job-company a:hover {
+    color: var(--eh-blue);
+    text-decoration: underline;
+}
+
+/* Job Tags */
+.eh-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 10px;
+}
+
+.eh-tag {
+    display: inline-block;
+    padding: 3px 10px;
+    background: var(--eh-border-light);
+    color: var(--eh-text-secondary);
+    font-size: 12px;
+    font-weight: 500;
+    border-radius: var(--eh-radius-xs);
+    border: 1px solid var(--eh-border);
+    line-height: 1.5;
+}
+
+/* Job Meta */
+.eh-job-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-bottom: 14px;
+}
+
+.eh-job-meta span {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 13px;
+    color: var(--eh-text-secondary);
+    line-height: 1.4;
+}
+
+.eh-job-meta i {
+    font-size: 11px;
+    color: var(--eh-text-muted);
+    width: 14px;
+    text-align: center;
+}
+
+/* =========================================
+   JOB ACTION BUTTONS
+   ========================================= */
+.eh-job-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: nowrap;
+}
+
+.eh-job-actions form,
+.eh-job-actions .eh-btn-save {
+    flex: 0 0 auto;
+}
+
+/* Easy Apply button */
+.eh-home .eh-btn-apply {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 20px;
+    background: var(--eh-accent) !important;
+    color: var(--eh-text) !important;
+    border: none !important;
+    border-radius: var(--eh-radius-sm);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--eh-transition);
+    font-family: var(--eh-font);
+    line-height: 1.5;
+    letter-spacing: 0;
+    text-align: center;
+    margin: 0;
+}
+
+.eh-home .eh-btn-apply:hover {
+    background: var(--eh-accent-dark) !important;
+    transform: translateY(-1px);
+    box-shadow: var(--eh-shadow-sm);
+    color: var(--eh-text) !important;
+}
+
+.eh-home .eh-btn-apply:active {
+    transform: translateY(0);
+}
+
+.eh-home .eh-btn-apply:disabled,
+.eh-home .eh-btn-apply.eh-btn-applied {
+    opacity: 0.85;
+    cursor: default;
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+/* Applied state */
+.eh-home .eh-btn-applied {
+    background: var(--eh-green-light) !important;
+    color: var(--eh-green) !important;
+    border: 1.5px solid #A7F3D0 !important;
+}
+
+/* Save button */
+.eh-home .eh-btn-save {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px !important;
+    margin: 0 !important;
+    background: var(--eh-blue) !important;
+    color: #FFFFFF !important;
+    border: none !important;
+    border-radius: var(--eh-radius-sm) !important;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--eh-transition);
+    font-family: var(--eh-font);
+    line-height: 1.5;
+    letter-spacing: 0;
+}
+
+.eh-home .eh-btn-save:hover {
+    background: var(--eh-blue-dark) !important;
+    color: #FFFFFF !important;
+    transform: translateY(-1px);
+    box-shadow: var(--eh-shadow-sm);
+}
+
+.eh-home .eh-btn-save:active {
+    transform: translateY(0);
+}
+
+/* After save (JS adds bg-light text-dark classes) */
+.eh-home .eh-btn-save.bg-light {
+    background: var(--eh-border-light) !important;
+    color: var(--eh-text-secondary) !important;
+    border: 1.5px solid var(--eh-border) !important;
+}
+
+.eh-home .eh-btn-save .save-icon {
+    width: 16px;
+    height: 16px;
+    margin-right: 0;
+    vertical-align: middle;
+}
+
+/* =========================================
+   SEE ALL LINK
+   ========================================= */
+.eh-see-all {
+    padding: 14px 24px;
+    text-align: center;
+    border-top: 1px solid var(--eh-border);
+}
+
+.eh-see-all a {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--eh-blue);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: color var(--eh-transition);
+}
+
+.eh-see-all a:hover {
+    color: var(--eh-blue-dark);
+}
+
+.eh-see-all a i {
+    font-size: 12px;
+    transition: transform var(--eh-transition);
+}
+
+.eh-see-all a:hover i {
+    transform: translateX(3px);
+}
+
+/* =========================================
+   EASY APPLY MODAL (scoped overrides)
+   ========================================= */
+.eh-apply-modal .images-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    margin-bottom: 1.5rem;
+    height: 100px;
+}
+
+.eh-apply-modal .user-image {
+    width: 84px;
+    height: 84px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid white;
+    background-color: white;
+    position: relative;
+    z-index: 3;
+}
+
+.eh-apply-modal .company-image {
+    width: 84px;
+    height: 84px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid white;
+    background-color: #f3f4f6;
+    position: relative;
+    z-index: 1;
+    margin-left: -20px;
+}
+
+.eh-apply-modal .arrow-icon {
+    background-color: var(--eh-accent, #FFCB11);
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    color: #000;
+    position: absolute;
+    z-index: 4;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    border: 2px solid white;
+}
+
+.eh-apply-modal .modal-content {
+    border-radius: var(--eh-radius-lg, 16px) !important;
+    padding: 28px 24px !important;
+}
+
+.eh-apply-modal h2 {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 700;
+    font-size: 20px;
+}
+
+.eh-apply-modal .modal-description {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    text-align: center;
+    color: #6B7280;
+    font-size: 14px;
+}
+
+.eh-apply-modal .share-profile-btn {
+    background-color: #FFCB11 !important;
+    border: none;
+    color: #111827;
+    padding: 12px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 15px;
+    transition: background 0.2s ease;
+}
+
+.eh-apply-modal .share-profile-btn:hover {
+    background-color: #E5B50E !important;
+}
+
+.eh-apply-modal .cancel-btn {
+    background-color: #2563EB !important;
+    border: none !important;
+    color: white !important;
+    padding: 11px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 15px;
+    transition: background 0.2s ease;
+}
+
+.eh-apply-modal .cancel-btn:hover {
+    background-color: #1D4ED8 !important;
+    color: white !important;
+}
+
+/* =========================================
+   VIEW JOB MODAL (subtle overrides)
+   ========================================= */
+.eh-view-modal .modal-content {
+    border-radius: var(--eh-radius-md, 12px);
+    border: none;
+    box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
+}
+
+.eh-view-modal .modal-header {
+    border-bottom: 1px solid #E5E7EB;
+    padding: 18px 24px;
+}
+
+.eh-view-modal .modal-title {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 700;
+    font-size: 18px;
+    color: #111827;
+}
+
+.eh-view-modal .modal-body {
+    padding: 24px;
+}
+
+.eh-view-modal .modal-footer {
+    border-top: 1px solid #E5E7EB;
+    padding: 14px 24px;
+}
+
+.eh-view-modal .modal-footer .btn-secondary {
+    border-radius: 8px;
+    font-weight: 600;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+/* =========================================
+   ANIMATIONS
+   ========================================= */
+@keyframes eh-fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* =========================================
+   RESPONSIVE
+   ========================================= */
+
+/* Tablet */
+@media (max-width: 992px) {
+    .eh-sidebar {
+        width: 260px;
+        min-width: 260px;
+    }
+
+    .eh-home {
+        gap: 16px;
+    }
+
+    .eh-job-card {
+        padding: 18px 20px;
+    }
+
+    .eh-section-header {
+        padding: 18px 20px 14px;
+    }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    .eh-home {
+        flex-direction: column;
+        padding: 12px 12px 20px;
+        gap: 12px;
+    }
+
+    .eh-sidebar {
+        display: none;
+    }
+
+    .eh-section-header {
+        padding: 16px 16px 12px;
+    }
+
+    .eh-section-title {
+        font-size: 17px;
+    }
+
+    .eh-section-subtitle {
+        font-size: 13px;
+    }
+
+    .eh-job-card {
+        padding: 16px;
+        gap: 0;
+    }
+
+    /* Hide desktop logo on mobile */
+    .eh-job-logo {
+        display: none;
+    }
+
+    /* Show mobile logo */
+    .eh-job-logo--mobile {
+        display: block;
+        flex-shrink: 0;
+    }
+
+    .eh-job-header-row {
+        display: flex;
+        gap: 12px;
+        align-items: flex-start;
+    }
+
+    .eh-job-meta {
+        gap: 6px 14px;
+    }
+
+    .eh-job-meta span {
+        font-size: 12px;
+    }
+
+    .eh-home .eh-btn-apply {
+        padding: 7px 16px;
+        font-size: 13px;
+        width: auto !important;
+    }
+
+    .eh-home .eh-btn-save {
+        padding: 7px 14px !important;
+        font-size: 13px;
+        width: auto !important;
+    }
+
+    .eh-see-all {
+        padding: 12px 16px;
+    }
+
+    .eh-see-all a {
+        font-size: 13px;
+    }
+}
+
+/* Small mobile */
+@media (max-width: 480px) {
+    .eh-home {
+        padding: 8px 8px 16px;
+    }
+
+    .eh-job-meta {
+        flex-direction: column;
+        gap: 3px;
+    }
+
+    .eh-tags {
+        gap: 4px;
+    }
+
+    .eh-tag {
+        font-size: 11px;
+        padding: 2px 8px;
+    }
+}

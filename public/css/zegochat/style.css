@@ -1,0 +1,80 @@
+/**
+ * ZegoChat - Additional Styles
+ * Main styles are embedded in the view for better performance
+ * This file can be used for future style overrides
+ */
+
+/* Custom scrollbar for chat messages */
+.chat-messages::-webkit-scrollbar,
+.contacts-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.chat-messages::-webkit-scrollbar-track,
+.contacts-list::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.chat-messages::-webkit-scrollbar-thumb,
+.contacts-list::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 3px;
+}
+
+.chat-messages::-webkit-scrollbar-thumb:hover,
+.contacts-list::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+/* Smooth transitions */
+.contact-item,
+.message-item {
+    transition: all 0.2s ease-in-out;
+}
+
+/* Focus states */
+.search-input:focus,
+.chat-input:focus {
+    outline: 2px solid #0084ff;
+    outline-offset: 2px;
+}
+
+/* Disabled state */
+button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed !important;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 576px) {
+    .messenger-sidebar {
+        width: 100% !important;
+    }
+
+    .contact-avatar {
+        width: 48px !important;
+        height: 48px !important;
+        font-size: 20px !important;
+    }
+
+    .chat-avatar {
+        width: 36px !important;
+        height: 36px !important;
+        font-size: 16px !important;
+    }
+}
+
+/* Print styles */
+@media print {
+    .messenger-sidebar,
+    .chat-header,
+    .chat-input-container,
+    .connection-status {
+        display: none !important;
+    }
+
+    .chat-messages {
+        height: auto !important;
+        overflow: visible !important;
+    }
+}

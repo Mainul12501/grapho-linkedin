@@ -1,0 +1,396 @@
+<?php
+
+namespace App\Models;
+
+// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\Backend\EmployeeAppliedJob;
+use App\Models\Backend\EmployeeDocument;
+use App\Models\Backend\EmployeeEducation;
+use App\Models\Backend\EmployeeWorkExperience;
+use App\Models\Backend\EmployerCompany;
+use App\Models\Backend\FieldOfStudy;
+use App\Models\Backend\FollowerHistory;
+use App\Models\Backend\Industry;
+use App\Models\Backend\JobLocationType;
+use App\Models\Backend\JobTask;
+use App\Models\Backend\JobType;
+use App\Models\Backend\Post;
+use App\Models\Backend\PostViewer;
+use App\Models\Backend\RoleManagement\Role;
+use App\Models\Backend\Skill;
+use App\Models\Backend\SubscriptionPlan;
+use App\Models\Backend\UniversityName;
+use App\Models\Backend\UserProfileView;
+use App\Models\Backend\WebNotification;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\DB;
+use Laravel\Fortify\TwoFactorAuthenticatable;
+use Laravel\Jetstream\HasProfilePhoto;
+use Laravel\Sanctum\HasApiTokens;
+use App\Models\Scopes\Searchable;
+
+class User extends Authenticatable
+{
+    use HasApiTokens;
+
+    /** @use HasFactory<\Database\Factories\UserFactory> */
+    use HasFactory;
+    use HasProfilePhoto;
+    use Notifiable;
+    use TwoFactorAuthenticatable;
+    use Searchable;
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'user_id',
+        'subscription_plan_id',
+        'employer_company_id',
+        'name',
+        'email',
+        'password',
+        'mobile',
+        'user_type',
+        'provider',
+        'provider_id',
+        'google_id',
+        'organization_name',
+        'subscription_started_from',
+        'profile_image',
+        'profile_title',
+        'address',
+        'website',
+        'fb_link',
+        'linkedin_link',
+        'x_link',
+        'gender',
+        'user_slug',
+        'dob',
+        'language',
+        'is_open_for_hire',
+        'employer_agent_active_status',
+        'is_approved',
+        'status',
+        'subscription_system_status',
+        'university_name_id',
+        'industry_id',
+        'field_of_study_id',
+        'device_token',
+        'device_platform',
+        'is_online',
+        'last_seen',
+        'fcm_token',
+        'zego_caller_id',
+    ];
+
+    /**
+     * The attributes that should be hidden for serialization.
+     *
+     * @var array<int, string>
+     */
+    protected $hidden = [
+        'password',
+        'remember_token',
+        'two_factor_recovery_codes',
+        'two_factor_secret',
+        'device_token',
+    ];
+
+    /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array<int, string>
+     */
+    protected $appends = [
+        'profile_photo_url',
+    ];
+
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'email_verified_at' => 'datetime',
+            'password' => 'hashed',
+            'is_online' => 'boolean',
+            'last_seen' => 'datetime',
+        ];
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+        static::deleting(function (User $user) {
+            // Delete HasMany relationships
+            if ($user->employeeWorkExperiences()->exists()) $user->employeeWorkExperiences()->delete();
+            if ($user->employeeEducations()->exists()) $user->employeeEducations()->delete();
+            if ($user->employeeDocuments()->exists()) $user->employeeDocuments()->delete();
+            if ($user->webNotifications()->exists()) $user->webNotifications()->delete();
+            if ($user->viewerWebNotifications()->exists()) $user->viewerWebNotifications()->delete();
+            if ($user->viewedUserwebNotifications()->exists()) $user->viewedUserwebNotifications()->delete();
+            if ($user->posts()->exists()) $user->posts()->delete();
+            if ($user->postViewers()->exists()) $user->postViewers()->delete();
+            if ($user->followedEmployers()->exists()) $user->followedEmployers()->delete();
+            if ($user->employerFollowers()->exists()) $user->employerFollowers()->delete();
+            if ($user->appliedJobs()->exists()) $user->appliedJobs()->delete();
+            if ($user->viewEmployerIds()->exists()) $user->viewEmployerIds()->delete();
+            if ($user->viewEmployeeIds()->exists()) $user->viewEmployeeIds()->delete();
+            if ($user->initiatedCalls()->exists()) $user->initiatedCalls()->delete();
+            if ($user->receivedCalls()->exists()) $user->receivedCalls()->delete();
+            if ($user->employerCompanies()->exists()) $user->employerCompanies()->delete();
+            if ($user->jobs()->exists()) $user->jobs()->update(['is_softly_deleted' => 1]);
+
+            // Detach BelongsToMany pivot records
+            if ($user->employeeSkills()->exists()) $user->employeeSkills()->detach();
+            if ($user->jobTypes()->exists()) $user->jobTypes()->detach();
+            if ($user->jobLocationTypes()->exists()) $user->jobLocationTypes()->detach();
+            if ($user->employeeSavedJobs()->exists()) $user->employeeSavedJobs()->detach();
+            if ($user->roles()->exists()) $user->roles()->detach();
+
+            // Clean up Chatify and other tables without relationships
+            DB::table('ch_messages')->where('from_id', $user->id)->orWhere('to_id', $user->id)->delete();
+            DB::table('ch_favorites')->where('user_id', $user->id)->orWhere('favorite_id', $user->id)->delete();
+            DB::table('chatify_deleted_conversations')->where('user_id', $user->id)->orWhere('contact_id', $user->id)->delete();
+            DB::table('sessions')->where('user_id', $user->id)->delete();
+            DB::table('personal_access_tokens')->where('tokenable_type', self::class)->where('tokenable_id', $user->id)->delete();
+            DB::table('order_payments')->where('user_id', $user->id)->delete();
+            DB::table('group_call_participants')->where('user_id', $user->id)->delete();
+            DB::table('group_calls')->where('host_id', $user->id)->delete();
+            DB::table('call_logs')->where('host_id', $user->id)->delete();
+
+            // Nullify sub-employers' parent reference
+            if ($user->subEmployers()->exists()) $user->subEmployers()->update(['user_id' => null]);
+        });
+    }
+
+//    public function setProviderTokenAttribute($value){
+//        return $this->attributes['provider_token'] = Crypt::crypt($value);
+//    }
+//
+//    public function getProviderTokenAttribute($value)
+//    {
+//        return Crypt::decrypt($value);
+//    }
+
+    public function users()
+    {
+        return $this->hasMany(User::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function subscriptionPlan()
+    {
+        return $this->belongsTo(SubscriptionPlan::class);
+    }
+
+    public function employeeWorkExperiences()
+    {
+        return $this->hasMany(EmployeeWorkExperience::class);
+    }
+
+    public function employeeEducations()
+    {
+        return $this->hasMany(EmployeeEducation::class);
+    }
+
+    public function employeeDocuments()
+    {
+        return $this->hasMany(EmployeeDocument::class);
+    }
+
+    public function employeeSkills()
+    {
+        return $this->belongsToMany(Skill::class);
+    }
+
+    public function webNotifications()
+    {
+        return $this->hasMany(WebNotification::class);
+    }
+
+    public function employerCompany()
+    {
+        return $this->belongsTo(EmployerCompany::class, 'employer_company_id');
+    }
+    public function employerCompanyInfo()
+    {
+        return $this->hasOne(EmployerCompany::class, 'user_id');
+    }
+
+    public function employerCompanies()
+    {
+        return $this->hasMany(EmployerCompany::class);
+    }
+
+    public function universityName()
+    {
+        return $this->belongsTo(UniversityName::class);
+    }
+
+    public function industry()
+    {
+        return $this->belongsTo(Industry::class);
+    }
+
+    public function fieldOfStudy()
+    {
+        return $this->belongsTo(FieldOfStudy::class);
+    }
+    public function posts()
+    {
+        return $this->hasMany(Post::class);
+    }
+
+    public function postViewers()
+    {
+        return $this->hasMany(PostViewer::class, 'viewer_id');
+    }
+
+    public function followedEmployers()
+    {
+        return $this->hasMany(FollowerHistory::class, 'employer_id');
+    }
+
+    public function employerFollowers()
+    {
+        return $this->hasMany(FollowerHistory::class, 'follower_id');
+    }
+
+    public function jobTypes()
+    {
+        return $this->belongsToMany(JobType::class);
+    }
+
+    public function jobLocationTypes()
+    {
+        return $this->belongsToMany(JobLocationType::class);
+    }
+
+    public function jobs()
+    {
+        return $this->hasMany(JobTask::class, 'user_id');
+    }
+
+    public function appliedJobs()
+    {
+        return $this->hasMany(EmployeeAppliedJob::class, 'user_id');
+    }
+    public function appliedJobsWithJobDetails()
+    {
+        return $this->hasMany(EmployeeAppliedJob::class, 'user_id')->with('jobTask.employerCompany');
+    }
+
+    public function viewEmployerIds()
+    {
+        return $this->hasMany(UserProfileView::class, 'employer_id');
+    }
+
+    public function viewEmployeeIds()
+    {
+        return $this->hasMany(UserProfileView::class, 'employee_id');
+    }
+
+    public function employeeSavedJobs()
+    {
+        return $this->belongsToMany(JobTask::class)->with('jobType','employerCompany');
+    }
+
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class);
+    }
+
+    public function viewerWebNotifications()
+    {
+        return $this->hasMany(WebNotification::class, 'viewer_id');
+    }
+
+    public function viewedUserwebNotifications()
+    {
+        return $this->hasMany(WebNotification::class, 'viewed_user_id');
+    }
+
+    public function employeeAppliedJobs()
+    {
+        return $this->hasManyThrough(JobTask::class, EmployeeAppliedJob::class, 'user_id', 'id', 'id', 'job_task_id');
+    }
+
+    public function employeeVersity()
+    {
+        return $this->belongsTo(UniversityName::class);
+    }
+
+    public function viewedEmployees()
+    {
+        return $this->hasManyThrough(
+            User::class,
+            UserProfileView::class,
+            'id',
+            'employee_id'
+        );
+    }
+
+    public function viewedEmployers()
+    {
+        return $this->hasManyThrough(
+            User::class,
+            UserProfileView::class,
+            'employee_id',
+            'id',
+            'id',
+            'employer_id'
+        );
+    }
+
+    public function viewedEmployerCompanies()
+    {
+        return $this->hasManyThrough(
+            EmployerCompany::class,
+            UserProfileView::class,
+            'id',
+            'employer_company_id'
+        );
+    }
+
+    public function initiatedCalls()
+    {
+        return $this->hasMany(\App\Models\Backend\Call::class, 'caller_id');
+    }
+
+    public function receivedCalls()
+    {
+        return $this->hasMany(\App\Models\Backend\Call::class, 'receiver_id');
+    }
+
+    public function isSuperAdmin(): bool
+    {
+        return in_array($this->email, config('auth.super_admins'));
+    }
+
+    public function parentEmployer(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function subEmployers(): HasMany
+    {
+        return $this->hasMany(User::class, 'user_id');
+    }
+
+}
