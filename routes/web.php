@@ -24,6 +24,7 @@ use App\Http\Controllers\Frontend\ZegoCloud\ZegoGroupCallController;
 Route::get('change-local-language/{local}', [FrontendViewController::class, 'changeLocalLanguage'])->name('change-local-language');
 
 Route::get('/', [FrontendViewController::class, 'homePage'])->name('/');
+Route::get('/delete-account', [FrontendViewController::class, 'deleteAccountPolicy'])->name('delete-account');
 Route::get('/page/{slug?}', [FrontendViewController::class, 'showCommonPage'])->name('show-common-page');
 
 Route::get('employee-profile/{employeeId}', [EmployerViewController::class, 'employeeProfile'])->name('employee-profile');

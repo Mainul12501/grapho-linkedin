@@ -21,6 +21,11 @@ class FrontendViewController extends Controller
         return ViewHelper::checkViewForApi($data, 'frontend.home-landing');
         return view('frontend.home-landing');
     }
+
+    public function deleteAccountPolicy()
+    {
+        return view('frontend.delete-account-policy');
+    }
     public function showCommonPage($slug = null)
     {
         $data = [
